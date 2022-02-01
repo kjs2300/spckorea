@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+    <head lang="ko">
+        <title>생명존중희망재단 관리자</title> 
+
+        <meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        <meta name="author" content=""생명존중희망재단 관리자 페이지>
+        <meta name="copyright" content="생명존중희망재단 관리자 페이지">
+        <meta name="description" content="생명존중희망재단 관리자 페이지">
+        <meta name="keywords" content="생명존중희망재단 관리자 페이지">
+        
+        <meta name="title" content="생명존중희망재단 관리자 페이지">
+        
+        <link href="./css/reset.css" rel="stylesheet" type="text/css">
+        <link href="./css/common.css" rel="stylesheet" type="text/css">
+        <link href="./css/admin.css" rel="stylesheet" type="text/css">
+        
+        <!--script src="./js/jquery-2.2.0.min.js"></script-->
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+        <script src="./js/commonUtil.js"></script>
+    </head>
+
+    <body>
+        <aside id="header">
+            <a class="logo" href="/">
+                <img src="./images/common/logo.png" alt="생명존중희망재단 관리자 로고"/>
+            </a>
+        </aside>
+        
+        <!--  lnb begin -->
+        <nav id="nav">
+            <ul class="depth01-menu">
+                <li>
+                    <a href="#">메인화면</a>
+                    <ul class="depth02-menu">
+                        <li class="active"><a href="#">로고</a></li>
+                        <li><a href="#">메인이미지</a></li>
+                        <li><a href="#">배너관리</a></li>
+                        <li><a href="#">팝업창 관리</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">교육안내</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">교육안내 등록</a></li>
+                        <li><a href="#">교육일정</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">교육등록</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">교육분류 등록</a></li>
+                        <li><a href="#">온라인 교육</a></li>
+                        <li><a href="#">온오프라인 교육</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">교육신청</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">온라인 교육 신청</a></li>
+                        <li><a href="#">오프라인 교육 신청</a></li>
+                        <li><a href="#">기관교육 신청(1)</a></li>
+                        <li><a href="#">기관교육 신청(2)</a></li>
+                        <li><a href="#">신청자 관리</a></li>
+                    </ul>
+
+                </li>
+                <li>
+                    <a href="#">기관(결과보고)</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">기관(결과보고)</a></li>
+                        <li><a href="#">교육신청 현황</a></li>
+                        <li><a href="#">교육결과 보고</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">강사공간</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">강사 자격정보</a></li>
+                        <li><a href="#">강사 활동 지정</a></li>
+                        <li><a href="#">강사 활동 현황</a></li>
+                        <li><a href="#">강사 활동 신청현황</a></li>
+                        <li><a href="#">강사 휴직 신청</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">LMS</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">콘텐츠/교육자료 등록</a></li>
+                        <li><a href="#">퀴즈 등록</a></li>
+                        <li><a href="#">수강생/수료생 현황</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">게시판</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">공지사항</a></li>
+                        <li><a href="#">자료실</a></li>
+                        <li><a href="#">소식</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">참여마당</a></li>
+                        <li><a href="#">강사 공지사항</a></li>
+                        <li><a href="#">강사 자료실</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">수료증/기타</a>
+                
+                </li>
+            </ul>
+        </nav><!--  lnb end -->
+
+        <!--  container begin -->
+        <article id="container">
+
+            <!--  contents begin -->
+            <section class="contents-wrap">
+                <h1 class="h1-tit">강사 자격 정보</h1>
+
+                <div class="table-wrap">
+                    <h2 class="h2-tit">회원정보</h2>
+
+                    <table class="detail-tb">
+                        <caption>아이디, 이름, 비밀번호, 전화번호, 휴대폰, 팩스번호, 이메일, 성별 정보가 있는 테이블</caption>
+                        <colgroup>
+                            <col width="20%"/>
+                            <col width="*"/>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>아이디</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>이름</th>
+                                <td><input type="text" class="input-box lg-width" value=""/></td>
+                            </tr>
+                            <tr>
+                                <th>비밀번호</th>
+                                <td>
+                                    <input type="text" class="input-box lg-width" value=""/>
+                                    <span class="point">변경 할 경우에만 입력하세요.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>전화번호</th>
+                                <td>
+                                    <input type="text" class="input-box lg-width" placeholder="- 없이 입력해주세요" value=""/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>휴대폰</th>
+                                <td>
+                                    <input type="text" class="input-box lg-width" placeholder="- 없이 입력해주세요" value=""/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>팩스번호</th>
+                                <td>
+                                    <input type="text" class="input-box lg-width" placeholder="- 없이 입력해주세요" value=""/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>이메일</th>
+                                <td>
+                                    <div class="tb-cont">
+                                        <input type="text" class="input-box" value=""/>
+                                        <span>@</span>
+                                        <input type="text" class="input-box" value=""/>
+                                        <select class="select">
+                                            <option>직접입력</option>
+                                            <option>naver.com</option>
+                                            <option>gmail.com</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>성별</th>
+                                <td>
+                                    <div class="tb-cont">
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="" checked>
+                                            <label>남자</label>
+                                        </div>
+                                          
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="">
+                                            <label>여자</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-wrap">
+                    <h2 class="h2-tit">강사정보 1</h2>
+
+                    <table class="detail-tb">
+                        <caption>활동상태, 강사분류, 지역, 기관명, 휴직이력, 신청서 보기, 휴직기간 정보가 있는 테이블</caption>
+                        <colgroup>
+                            <col width="20%"/>
+                            <col width="30%"/>
+                            <col width="20%"/>
+                            <col width="*"/>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>활동상태</th>
+                                <td colspan="3">
+                                    <div class="tb-cont">
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="" checked>
+                                            <label>활동</label>
+                                        </div>
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="">
+                                            <label>상실(일반)</label>
+                                        </div>
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="">
+                                            <label>휴직</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>활동상태</th>
+                                <td colspan="3">
+                                    <div class="tb-cont">
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="" checked>
+                                            <label>전체</label>
+                                        </div>
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="">
+                                            <label>일반강사</label>
+                                        </div>
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="">
+                                            <label>실무자</label>
+                                        </div>
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="">
+                                            <label>공공기간(학교, 군, 경찰, 도시철도 등)</label>
+                                        </div>
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="">
+                                            <label>기업(삼성,현대. sk 등)</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>지역</th>
+                                <td>
+                                    <select class="select">
+                                        <option>서울</option>
+                                        <option>부산</option>
+                                    </select>
+                                </td>
+                                <th>기관명</th>
+                                <td>
+                                    <input type="text" class="input-box" value=""/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>휴직이력</th>
+                                <td>
+                                    <input type="text" class="input-box" value=""/>
+                                </td>
+                                <th>신청서 보기</th>
+                                <td>
+                                    <a class="link block">신청서1</a>
+                                    <a class="link block">신청서2</a>
+                                    <a class="link block">신청서3</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>휴직기간</th>
+                                <td colspan="3">
+                                    <div class="picker-wrap">
+                                        <input type="text" id="datepickerFrom02" class="input-box"/>
+                                        <span class="next-ico">-</span>
+                                        <input type="text" id="datepickerTo02" class="input-box"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-wrap">
+                    <h2 class="h2-tit">강사정보 2</h2>
+
+                    <table class="detail-tb">
+                        <caption>수료증번호, 최종수료일, 교육횟수, 교육 누적횟수, 오프라인 2회 교육, 온라인 보수 교육 정보가 있는 테이블</caption>
+                        <colgroup>
+                            <col width="20%"/>
+                            <col width="30%"/>
+                            <col width="20%"/>
+                            <col width="*"/>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>수료증번호</th>
+                                <td>교육 제21 – 0000호</td>
+                                <th>최종 수료일</th>
+                                <td>
+                                    <div class="picker-wrap">
+                                        <input type="text" id="datepickerDefault" class="input-box"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>교육횟수 (해당 년도)</th>
+                                <td>32</td>
+                                <th>교육 누적횟수</th>
+                                <td>82</td>
+                            </tr>
+                            <tr>
+                                <th>오프라인 2회 교육</th>
+                                <td colspan="3">
+                                    <div class="tb-cont">
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="" checked>
+                                            <label>완료</label>
+                                        </div>
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="">
+                                            <label>미완료</label>
+                                        </div>
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="">
+                                            <label>해당년도 수료 시 체크 ( 오프/온라인 교육 모두 완료 시 1년 자격연장 )</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>온라인 보수 교육</th>
+                                <td colspan="3">
+                                    <div class="tb-cont">
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="" checked>
+                                            <label>완료</label>
+                                        </div>
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="">
+                                            <label>미완료</label>
+                                        </div>
+                                        <div class="radio-cont">
+                                            <input type="radio" class="radio-box" id="" name="" value="">
+                                            <label>해당년도 수료 시 체크 ( 오프/온라인 교육 모두 완료 시 1년 자격연장 )</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-wrap">
+                    <h2 class="h2-tit">강사 자격기간 정보</h2>
+
+                    <!------   20211223  수정  ------>
+                    <table class="list-tb">
+                        <caption>자격기간, 강사자격정보, 수료일, 유지기간, 관리 정보가 있는 테이블</caption>
+                        <colgroup>
+                            <col width="15%"/>
+                            <col width="*"/>
+                            <col width="15%"/>
+                            <col width="30%"/>
+                            <col width="10%"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>자격기간</th>
+                                <th>강사 자격정보</th>
+                                <th>수료일</th>   
+                                <th>유지기간</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="4" class="no-border-b"></td>
+                                <td class="tl">보고듣고말하기 2.0 기본형</td>
+                                <td><input type="text" class="input-box" value="" readonly/></td>
+                                <td>
+                                    <div class="picker-wrap">
+                                        <input type="text" id="datepickerFrom" class="input-box"/>
+                                        <span class="next-ico">-</span>
+                                        <input type="text" id="datepickerTo" class="input-box"/>
+                                    </div>
+                                </td>
+                                <td><button class="sm-btn blue-btn">수정</button></td>
+                            </tr>
+                            <tr>
+                                <td class="tl">보고듣고말하기 2.0 중학생</td>
+                                <td><input type="text" class="input-box" value="" readonly/></td>
+                                <td>
+                                    <div class="picker-wrap">
+                                        <input type="text" id="datepickerFrom" class="input-box"/>
+                                        <span class="next-ico">-</span>
+                                        <input type="text" id="datepickerTo" class="input-box"/>
+                                    </div>
+                                </td>
+                                <td><button class="sm-btn blue-btn">수정</button></td>
+                            </tr>
+                            <tr>
+                                <td class="tl">이어줌인 직장인</td>
+                                <td><input type="text" class="input-box" value="" readonly/></td>
+                                <td>
+                                    <div class="picker-wrap">
+                                        <input type="text" id="datepickerFrom" class="input-box"/>
+                                        <span class="next-ico">-</span>
+                                        <input type="text" id="datepickerTo" class="input-box"/>
+                                    </div>
+                                </td>
+                                <td><button class="sm-btn blue-btn">수정</button></td>
+                            </tr>
+                            <tr>
+                                <td class="tl">이어줌인 노인</td>
+                                <td><input type="text" class="input-box" value="" readonly/></td>
+                                <td>
+                                    <div class="picker-wrap">
+                                        <input type="text" id="datepickerFrom" class="input-box"/>
+                                        <span class="next-ico">-</span>
+                                        <input type="text" id="datepickerTo" class="input-box"/>
+                                    </div>
+                                </td>
+                                <td><button class="sm-btn blue-btn">수정</button></td>
+                            </tr>
+                        </tbody>
+                    </table><!------   // 20211223  수정  ------>
+                </div>
+
+                <div class="btn-cont">
+                    <button class="mid-btn blue-btn">저장하기</button>
+                    <button class="mid-btn white-btn">취소</button>
+                </div>
+
+            </section>
+            <!--  contents end -->
+
+            <!--  footer begin -->
+            <footer class="footer">
+                <img src="./images/common/foot_logo.png" alt="생명존중희망재단 관리자 로고"/>
+                <dl>
+                    <dt>서울특별시 중구 을지로 6 재능빌딩 15층 교육운영팀 (을지로1가 192-11)</dt>
+                    <dt>Tel : 02-3706-0423~4 Fax : 02-3706-0402 E-mail : edu@kfsp.org</dt>
+                </dl>
+            </footer>
+            <!--  footer end -->
+
+        </article>
+        <!--  container end -->
+        
+    </body>
+</html>

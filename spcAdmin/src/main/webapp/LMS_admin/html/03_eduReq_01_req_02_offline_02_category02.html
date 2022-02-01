@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+    <head lang="ko">
+        <title>생명존중희망재단 관리자</title> 
+
+        <meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        <meta name="author" content=""생명존중희망재단 관리자 페이지>
+        <meta name="copyright" content="생명존중희망재단 관리자 페이지">
+        <meta name="description" content="생명존중희망재단 관리자 페이지">
+        <meta name="keywords" content="생명존중희망재단 관리자 페이지">
+        
+        <meta name="title" content="생명존중희망재단 관리자 페이지">
+        
+        <link href="./css/reset.css" rel="stylesheet" type="text/css">
+        <link href="./css/common.css" rel="stylesheet" type="text/css">
+        <link href="./css/admin.css" rel="stylesheet" type="text/css">
+        
+        <script src="./js/jquery-2.2.0.min.js"></script>
+        
+        <script src="./js/commonUtil.js"></script>
+    </head>
+
+    <body>
+        <aside id="header">
+            <a class="logo" href="/">
+                <img src="./images/common/logo.png" alt="생명존중희망재단 관리자 로고"/>
+            </a>
+        </aside>
+        
+        <!--  lnb begin -->
+        <nav id="nav">
+            <ul class="depth01-menu">
+                <li>
+                    <a href="#">메인화면</a>
+                    <ul class="depth02-menu">
+                        <li class="active"><a href="#">로고</a></li>
+                        <li><a href="#">메인이미지</a></li>
+                        <li><a href="#">배너관리</a></li>
+                        <li><a href="#">팝업창 관리</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">교육안내</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">교육안내 등록</a></li>
+                        <li><a href="#">교육일정</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">교육등록</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">교육분류 등록</a></li>
+                        <li><a href="#">온라인 교육</a></li>
+                        <li><a href="#">온오프라인 교육</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">교육신청</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">온라인 교육 신청</a></li>
+                        <li><a href="#">오프라인 교육 신청</a></li>
+                        <li><a href="#">기관교육 신청(1)</a></li>
+                        <li><a href="#">기관교육 신청(2)</a></li>
+                        <li><a href="#">신청자 관리</a></li>
+                    </ul>
+
+                </li>
+                <li>
+                    <a href="#">기관(결과보고)</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">기관(결과보고)</a></li>
+                        <li><a href="#">교육신청 현황</a></li>
+                        <li><a href="#">교육결과 보고</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">강사공간</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">강사 자격정보</a></li>
+                        <li><a href="#">강사 활동 지정</a></li>
+                        <li><a href="#">강사 활동 현황</a></li>
+                        <li><a href="#">강사 활동 신청현황</a></li>
+                        <li><a href="#">강사 휴직 신청</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">LMS</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">콘텐츠/교육자료 등록</a></li>
+                        <li><a href="#">퀴즈 등록</a></li>
+                        <li><a href="#">수강생/수료생 현황</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">게시판</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">공지사항</a></li>
+                        <li><a href="#">자료실</a></li>
+                        <li><a href="#">소식</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">참여마당</a></li>
+                        <li><a href="#">강사 공지사항</a></li>
+                        <li><a href="#">강사 자료실</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">수료증/기타</a>
+                
+                </li>
+            </ul>
+        </nav><!--  lnb end -->
+
+        <!--  container begin -->
+        <article id="container">
+
+            <!--  contents begin -->
+            <section class="contents-wrap">
+                <h1 class="h1-tit">교육분류 등록</h1>
+
+                <div class="tab-cont">
+                    <ul>
+                        <li><a href="">온라인 교육</a></li>
+                        <li class="on"><a href="">오프라인 교육</a></li>
+                    </ul>
+                </div>
+
+                <div class="sub-cont">
+                    <button class="mid-btn black-btn">전체분류 보기</button>
+                    <div class="req-box">
+                        <label>일반</label>
+                        <span class="next-ico">&gt;</span>
+                        <label for="categorySname">분류2 등록</label>
+                        <input type="text" id="categorySname" class="input-box"/>
+                        <button class="mid-btn blue-btn">등록</button>
+                    </div>
+                    
+                </div>
+                
+                <div class="table-wrap">
+                    <table class="list-tb">
+                        <caption>분류2, 수정, 삭제, 분류3 정보가 있는 테이블</caption>
+                        <colgroup>
+                            <col width="30%"/>
+                            <col width="15%"/>
+                            <col width="15%"/>
+                            <col width="*"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>분류2</th>
+                                <th>수정</th>
+                                <th>삭제</th>
+                                <th>분류3 (서브분류)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="input-box" readonly value="default"/></td>
+                                <td><button class="sm-btn blue-btn">수정</button></td>
+                                <td><button class="sm-btn white-btn">삭제</button></td>
+                                <td><a class="link">분류3 등록/관리</a></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="input-box" value="수정버튼 클릭시"/></td>
+                                <td><button class="sm-btn blue-btn">저장</button></td>
+                                <td><button class="sm-btn white-btn">삭제</button></td>
+                                <td><a class="link">분류3 등록/관리</a></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="page-wrap">
+                    <ul class="paging">
+                        <li><a>&lt;&lt;</a></li>
+                        <li><a>&lt;</a></li>
+                        <li class="on"><a>1</a></li>
+                        <li><a>2</a></li>
+                        <li><a>3</a></li>
+                        <li><a>4</a></li>
+                        <li><a>5</a></li>
+                        <li><a>6</a></li>
+                        <li><a>7</a></li>
+                        <li><a>8</a></li>
+                        <li><a>9</a></li>
+                        <li><a>10</a></li>
+                        <li><a>&gt;</a></li>
+                        <li><a>&gt;&gt;</a></li>
+                    </ul>
+                </div>
+            </section>
+            <!--  contents end -->
+
+            <!--  footer begin -->
+            <footer class="footer">
+                <img src="./images/common/foot_logo.png" alt="생명존중희망재단 관리자 로고"/>
+                <dl>
+                    <dt>서울특별시 중구 을지로 6 재능빌딩 15층 교육운영팀 (을지로1가 192-11)</dt>
+                    <dt>Tel : 02-3706-0423~4 Fax : 02-3706-0402 E-mail : edu@kfsp.org</dt>
+                </dl>
+            </footer>
+            <!--  footer end -->
+
+        </article>
+        <!--  container end -->
+        
+    </body>
+</html>
