@@ -16,7 +16,7 @@
 	/**  페이지 이동 */
 	function goOkPage(){	
 		var frm = document.commonForm;
-		frm.action = "<c:url value='/edu/eduInfoScheduleList.do'/>";
+		frm.action = "<c:url value='/edu/eduInfoClassCate.do'/>";
 		frm.submit();
 	}
 		

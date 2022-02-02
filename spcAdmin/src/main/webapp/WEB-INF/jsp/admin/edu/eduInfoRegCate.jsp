@@ -178,10 +178,10 @@
                   <input type="text" id="categoryName" name="categoryName" class="input-box" maxlength=100/>
                                     
                   <c:if test="${categoryVo.gubun2 eq 'category1'}">
-						<button class="mid-btn blue-btn" onClick="fn_save(0,'category1');">등록</button>
+						<button type="button" class="mid-btn blue-btn" onClick="fn_save(0,'category1');">등록</button>
 				  </c:if>
 				  <c:if test="${categoryVo.gubun2 eq 'category2'}">
-				        <button class="mid-btn blue-btn" onClick="fn_save(${categoryVo.category1_key},'category2');">등록</button>
+				        <button type="button" class="mid-btn blue-btn" onClick="fn_save(${categoryVo.category1_key},'category2');">등록</button>
 				  </c:if>
 					
               </div>              

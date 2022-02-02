@@ -172,11 +172,11 @@
 				</form>
 	            <div class="btn-cont">
 		            <c:if test="${empty categoryForm.category3_name }">
-		            	<button class="mid-btn blue-btn"  onClick="javascript:fn_save('I');">저장</button>
+		            	<button type="button" class="mid-btn blue-btn"  onClick="javascript:fn_save('I');">저장</button>
 		            </c:if>                    
                     <c:if test="${not empty categoryForm.category3_name }">
-	                    <button class="mid-btn blue-btn"  onClick="javascript:fn_save('E');">수정</button>
-	               	    <button class="mid-btn black-btn" onClick="javascript:fn_save('D');">삭제</button>
+	                    <button type="button" class="mid-btn blue-btn"  onClick="javascript:fn_save('E');">수정</button>
+	               	    <button type="button" class="mid-btn black-btn" onClick="javascript:fn_save('D');">삭제</button>
                	   </c:if>
                 </div>
 

@@ -36,6 +36,24 @@ public class EduMapper extends EgovAbstractMapper{
 			sqlName = "eduInfoScheduleList";
 		}
 		
+		if("categoryClass".equals(categoryVo.getGubun2())){
+			sqlName = "getCategoryClassList";
+		}
+		
+		if("category4".equals(categoryVo.getGubun2())){
+			sqlName = "getCategoryClassList1";
+		}
+		
+		if("category5".equals(categoryVo.getGubun2())){
+			sqlName = "getCategoryClassList2";
+		}
+		
+		if("category6".equals(categoryVo.getGubun2())){
+			sqlName = "getCategoryClassList3";
+		}
+		
+		
+		
 		return selectList(nameSpace + "." + sqlName, categoryVo);
 	}
 
@@ -50,6 +68,17 @@ public class EduMapper extends EgovAbstractMapper{
 		
 		if("category3".equals(categoryVo.getGubun2())){
 			sqlName = "getCategoryExist3";
+		}
+		if("category4".equals(categoryVo.getGubun2())){
+			sqlName = "getClassCategoryExist1";
+		}
+		
+		if("category5".equals(categoryVo.getGubun2())){
+			sqlName = "getClassCategoryExist2";
+		}
+		
+		if("category6".equals(categoryVo.getGubun2())){
+			sqlName = "getClassCategoryExist3";
 		}
 		return (Integer)selectOne(nameSpace + "." + sqlName , categoryVo);
 	}
@@ -66,7 +95,17 @@ public class EduMapper extends EgovAbstractMapper{
 		if("category3".equals(categoryVo.getGubun2())){
 			sqlName = "insertCategory3";
 		}
+		if("category4".equals(categoryVo.getGubun2())){
+			sqlName = "insertClassCategory1";
+		}
 		
+		if("category5".equals(categoryVo.getGubun2())){
+			sqlName = "insertClassCategory2";
+		}
+		
+		if("category6".equals(categoryVo.getGubun2())){
+			sqlName = "insertClassCategory3";
+		}
 		return (Integer) insert(nameSpace + "." + sqlName, categoryVo);
 	}
 
@@ -89,6 +128,23 @@ public class EduMapper extends EgovAbstractMapper{
 		if("eduInfoScheduleList".equals(categoryVo.getGubun2())){
 			sqlName = "eduInfoScheduleCount";
 		}
+		
+		if("categoryClass".equals(categoryVo.getGubun2())){
+			sqlName = "getCategoryClassCount";
+		}
+		
+		if("category4".equals(categoryVo.getGubun2())){
+			sqlName = "getCategoryClassCount1";
+		}
+		
+		if("category5".equals(categoryVo.getGubun2())){
+			sqlName = "getCategoryClassCount2";
+		}
+		
+		if("category6".equals(categoryVo.getGubun2())){
+			sqlName = "getCategoryClassCount3";
+		}
+		
 		return (Integer)selectOne(nameSpace + "." + sqlName, categoryVo);
 	}
 	
@@ -115,6 +171,15 @@ public class EduMapper extends EgovAbstractMapper{
 		if("category3".equals(categoryVo.getGubun2())){
 			sqlName = "deleteCategory3";
 		}
+		if("category4".equals(categoryVo.getGubun2())){
+			sqlName = "deleteClassCategory1";
+		}
+		if("category5".equals(categoryVo.getGubun2())){
+			sqlName = "deleteClassCategory2";
+		}
+		if("category6".equals(categoryVo.getGubun2())){
+			sqlName = "deleteClassCategory3";
+		}
 		return (Integer) delete(nameSpace + "." + sqlName, categoryVo);
 	}
 	
@@ -128,6 +193,18 @@ public class EduMapper extends EgovAbstractMapper{
 		
 		if("category3".equals(categoryVo.getGubun2())){
 			sqlName = "updateCategory3";
+		}
+		
+		if("category4".equals(categoryVo.getGubun2())){
+			sqlName = "updateClassCategory1";
+		}
+		
+		if("category5".equals(categoryVo.getGubun2())){
+			sqlName = "updateClassCategory2";
+		}
+		
+		if("category6".equals(categoryVo.getGubun2())){
+			sqlName = "updateClassCategory3";
 		}
 		return (Integer) update(nameSpace + "." + sqlName, categoryVo);
 	}
@@ -145,6 +222,21 @@ public class EduMapper extends EgovAbstractMapper{
    
    public int deleteCategory2Sub3(CategoryVo categoryVo) {
 		String sqlName = "deleteCategory2Sub3";
+		return (Integer) delete(nameSpace + "." + sqlName, categoryVo);
+	}
+   
+   public int deleteClassCategory1Sub2(CategoryVo categoryVo) {
+		String sqlName = "deleteClassCategory1Sub2";
+		return (Integer) delete(nameSpace + "." + sqlName, categoryVo);
+	}
+	
+   public int deleteClassCategory1Sub3(CategoryVo categoryVo) {
+		String sqlName = "deleteClassCategory1Sub3";
+		return (Integer) delete(nameSpace + "." + sqlName, categoryVo);
+	}
+   
+   public int deleteClassCategory2Sub3(CategoryVo categoryVo) {
+		String sqlName = "deleteClassCategory2Sub3";
 		return (Integer) delete(nameSpace + "." + sqlName, categoryVo);
 	}
    

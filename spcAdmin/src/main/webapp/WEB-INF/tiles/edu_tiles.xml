@@ -32,4 +32,16 @@
        <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoScheduleCate.jsp" />  
    </definition> 
    
+     <!-- admin > 교육 분류 등록 - 온라인/오프라인   -->
+   <definition name="eduInfoClassList" extends="base-definition">  
+       <put-attribute name="title" value="교육 분류 등록" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoClassList.jsp" />  
+   </definition>  
+   
+   <!-- admin > 교육 분류 등록 - 온라인/오프라인   -->
+   <definition name="eduInfoClassCate" extends="base-definition">  
+       <put-attribute name="title" value="교육 분류 등록" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoClassCate.jsp" />  
+   </definition> 
+   
   </tiles-definitions>

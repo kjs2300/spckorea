@@ -412,4 +412,133 @@ public class EduController {
 
 		return new ModelAndView("schduleExcelView", map);
 	}
+	
+	@RequestMapping(value = "/eduInfoClassList.do")
+	public String eduInfoClassList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model) throws Exception {
+
+		/** EgovPropertyService.sample */
+		categoryVo.setPageUnit(propertiesService.getInt("pageUnit"));
+		categoryVo.setPageSize(propertiesService.getInt("pageSize"));
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(categoryVo.getPageIndex());
+		paginationInfo.setRecordCountPerPage(categoryVo.getPageUnit());
+		paginationInfo.setPageSize(categoryVo.getPageSize());
+		
+		/***  offSet 설정  ***/
+		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
+		categoryVo.setOffset(offset);
+		
+		if ( StringUtil.isEmpty(categoryVo.getGubun1())) {
+			categoryVo.setGubun1("R");
+		}
+		
+		if ( StringUtil.isEmpty(categoryVo.getGubun2())) {
+			categoryVo.setGubun2("categoryClass");
+		}
+		
+		if ( StringUtil.isEmpty(categoryVo.getDivision())) {
+			categoryVo.setDivision("on");
+		}
+		
+		List<CategoryVo> list = eduService.getCategoryList(categoryVo);
+		model.addAttribute("resultList", list);
+			
+		
+		int totCnt = eduService.getCategoryCount(categoryVo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+
+		return "eduInfoClassList";
+	}
+
+	@RequestMapping(value = "/eduInfoClassCate.do")
+	public String eduInfoClassCate(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model) throws Exception {
+
+		if ( StringUtil.isEmpty(categoryVo.getGubun1())) {
+			categoryVo.setGubun1("R");
+		}
+		
+		if ( StringUtil.isEmpty(categoryVo.getGubun2())) {
+			categoryVo.setGubun2("category4");
+		}
+		
+		if ( StringUtil.isEmpty(categoryVo.getDivision())) {
+			categoryVo.setDivision("on");
+		}
+		
+		/** EgovPropertyService.sample */
+		categoryVo.setPageUnit(propertiesService.getInt("pageUnit"));
+		categoryVo.setPageSize(propertiesService.getInt("pageSize"));
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(categoryVo.getPageIndex());
+		paginationInfo.setRecordCountPerPage(categoryVo.getPageUnit());
+		paginationInfo.setPageSize(categoryVo.getPageSize());
+		
+		/***  offSet 설정  ***/
+		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
+		categoryVo.setOffset(offset);
+		
+		List<CategoryVo> list = eduService.getCategoryList(categoryVo);
+		model.addAttribute("resultList", list);
+			
+		
+		int totCnt = eduService.getCategoryCount(categoryVo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("categoryVo",     categoryVo);
+
+		return "eduInfoClassCate";
+	}
+	
+	@RequestMapping(value = "/eduInfoClassCateSave.do")
+	@ResponseBody
+	public CategoryVo eduInfoClassCateSave(HttpServletRequest request, CategoryVo categoryVo) throws Exception {
+		
+		int resultCnt = 0;
+		
+		try {
+			
+			
+			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+			
+			categoryVo.setReg_id(loginvo.getId());
+		
+			if("I".equals(categoryVo.getGubun1())){
+
+				resultCnt = eduService.getCategoryExist(categoryVo);
+	
+				
+				if(resultCnt ==1) {
+					categoryVo.setResult("EXIST");
+				}else {
+					resultCnt = eduService.insertCatgegory(categoryVo);				
+					categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL") ;		
+				}
+				
+			}
+			
+			if("E".equals(categoryVo.getGubun1())){
+				
+				resultCnt = eduService.updateCategory(categoryVo);				
+				categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL") ;	
+			}
+
+			if("D".equals(categoryVo.getGubun1())){
+				resultCnt = eduService.deleteCategory(categoryVo);				
+				categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL") ;	
+			}
+			
+			
+		} catch (Exception e) {
+			categoryVo.setResult("FAIL");
+		}
+		
+		return categoryVo;
+	}
 }
+
+

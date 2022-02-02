@@ -50,10 +50,17 @@ public  class EduServiceImpl extends EgovAbstractServiceImpl implements EduServi
 		if("category1".equals(categoryVo.getGubun2())){
 			eduMapper.deleteCategory1Sub2(categoryVo);
 			eduMapper.deleteCategory1Sub3(categoryVo);
-		}
-		
+		}		
 		if("category2".equals(categoryVo.getGubun2())){
 			eduMapper.deleteCategory2Sub3(categoryVo);
+		}
+		if("category4".equals(categoryVo.getGubun2())){
+			eduMapper.deleteClassCategory1Sub2(categoryVo);
+			eduMapper.deleteClassCategory1Sub3(categoryVo);
+		}
+		
+		if("category5".equals(categoryVo.getGubun2())){
+			eduMapper.deleteClassCategory2Sub3(categoryVo);
 		}
 		return eduMapper.deleteCategory(categoryVo);
 	}

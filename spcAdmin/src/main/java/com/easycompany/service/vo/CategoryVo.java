@@ -50,6 +50,16 @@ public class CategoryVo extends DefaultVO {
 	String gubun3;
     String checkdstr;
     String checkdate;
+    String division;
+
+    
+	public String getDivision() {
+		return division;
+	}
+
+	public void setDivision(String division) {
+		this.division = division;
+	}
 
 	public String getCheckdate() {
 		return checkdate;
