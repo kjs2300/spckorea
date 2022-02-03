@@ -3,15 +3,134 @@
 
 <mapper namespace="com.easycompany.mapper.MainMapper">
                   
-	<select id="getCategoryList1" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
-		 /**  com.easycompany.mapper.EduMapper.getCategoryList1 **/
-	    SELECT   CATEGORY1_KEY
-		  	   , CATEGORY1_NAME
-	     FROM  COM_CATEGORY1 
-	    ORDER BY CATEGORY1_KEY 
-	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}
-		
-	</select>
+	<insert id="insertCommonFile" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.insertCommonFile **/	
+		<selectKey resultType="int" keyProperty="file_seq" order="BEFORE">			
+			SELECT IFNULL(MAX(FILE_SEQ), 0) + 1 
+			FROM COM_FILE			  
+		</selectKey>		
+		INSERT 
+		INTO COM_FILE
+		(
+		  	  FILE_GUBUN
+		  	, FILE_ID
+		  	, FILE_NAME
+		  	, FILE_FULL_PATH
+		  	, FILE_SEQ
+		  	, FILE_SIZE
+		) 
+		VALUES 
+		(
+			  #{gubun2}
+			, #{file_id}
+			, #{file_name}
+			, #{file_full_path}
+			, #{file_seq}
+			, #{file_size}
+		)	
+	</insert>
 	
+	<insert id="insertLogo" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.insertLogo **/	
+		<selectKey resultType="int" keyProperty="logo_no" order="BEFORE">			
+			SELECT IFNULL(MAX(LOGO_NO), 0) + 1 
+			FROM COM_LOGO			  
+		</selectKey>		
+		INSERT 
+		INTO COM_LOGO
+		(
+		  	  LOGO_NO
+		  	, REG_ID
+		  	, FILE_ID
+		) 
+		VALUES 
+		(
+			  #{logo_no}
+			, IFNULL(#{reg_id},'SYSTEM')
+			, #{file_id}
+		)	
+	</insert>
+	
+	<insert id="insertImg" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.insertImg **/	
+		<selectKey resultType="int" keyProperty="logo_no" order="BEFORE">			
+			SELECT IFNULL(MAX(LOGO_NO), 0) + 1 
+			FROM COM_LOGO			  
+		</selectKey>		
+		INSERT 
+		INTO COM_LOGO
+		(
+		  	  LOGO_NO
+		  	, REG_ID
+		  	, FILE_ID
+		) 
+		VALUES 
+		(
+			  #{logo_no}
+			, IFNULL(#{reg_id},'SYSTEM')
+			, #{file_id}
+		)	
+	</insert>
+	
+	<insert id="insertBaner" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.insertBaner **/	
+		<selectKey resultType="int" keyProperty="logo_no" order="BEFORE">			
+			SELECT IFNULL(MAX(LOGO_NO), 0) + 1 
+			FROM COM_LOGO			  
+		</selectKey>		
+		INSERT 
+		INTO COM_LOGO
+		(
+		  	  LOGO_NO
+		  	, REG_ID
+		  	, FILE_ID
+		) 
+		VALUES 
+		(
+			  #{logo_no}
+			, IFNULL(#{reg_id},'SYSTEM')
+			, #{file_id}
+		)	
+	</insert>
+	
+	<insert id="insertPopUp" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.insertPopUp **/	
+		<selectKey resultType="int" keyProperty="logo_no" order="BEFORE">			
+			SELECT IFNULL(MAX(LOGO_NO), 0) + 1 
+			FROM COM_LOGO			  
+		</selectKey>		
+		INSERT 
+		INTO COM_LOGO
+		(
+		  	  LOGO_NO
+		  	, REG_ID
+		  	, FILE_ID
+		) 
+		VALUES 
+		(
+			  #{logo_no}
+			, IFNULL(#{reg_id},'SYSTEM')
+			, #{file_id}
+		)	
+	</insert>
+	
+	<update id="updateLogo" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.updateLogo **/	
+		UPDATE COM_LOGO 
+		   SET FILE_ID = #{file_id}
+		      , CHG_ID  = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_DT  = NOW()
+ 		 WHERE LOGO_NO = #{logo_no}
+	</update>	
+	
+	<select id="getLogoDetail" parameterType="com.easycompany.service.vo.MainVo" resultType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.getLogoDetail **/	
+		SELECT A.LOGO_NO, A.FILE_ID , B.FILE_NAME, B.FILE_FULL_PATH, B.FILE_SEQ,B.FILE_SIZE
+	      FROM COM_LOGO A, COM_FILE B
+	     WHERE A.FILE_ID    = B.FILE_ID
+	       AND A.LOGO_NO    = #{logo_no}
+	       AND B.FILE_GUBUN = #{gubun2}	   
+	     LIMIT 1 OFFSET 0    	    
+	</select>
 	
 </mapper>

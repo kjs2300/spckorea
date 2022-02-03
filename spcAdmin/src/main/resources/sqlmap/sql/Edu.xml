@@ -46,7 +46,7 @@
 	</select>		
 	
 	
-		<select id="getCategoryClassList1" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
+	<select id="getCategoryClassList1" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
 		 /**  com.easycompany.mapper.EduMapper.getCategoryClassList1 **/
 	    SELECT   CATEGORY1_KEY
 		  	   , CATEGORY1_NAME

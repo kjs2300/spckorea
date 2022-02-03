@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.easycompany.mapper.MainMapper;
 import com.easycompany.service.MainService;
+import com.easycompany.service.vo.CategoryVo;
 import com.easycompany.service.vo.MainVo ;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -18,20 +19,30 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 @Service("mainService")
 @Transactional
 public  class MainServiceImpl extends EgovAbstractServiceImpl implements MainService {
-	
-	
+		
 	@Autowired
 	private MainMapper mainMapper;
 	
-	
-
 	public MainVo  getCommonDetail(MainVo  mainVo) {
 		return (MainVo)mainMapper.getCommonDetail(mainVo);
 	}
 	
 	
 	public int insertCommon(MainVo mainVo) {
-		return mainMapper.insertCommon(mainVo);
+		
+		
+		int cnt = mainMapper.insertCommonFile(mainVo);
+		if(cnt > 0) {
+			return mainMapper.insertCommon(mainVo);
+		}
+		return 0;
 	}
 	
+	public int updateCommon(MainVo  mainVo) {
+		return mainMapper.updateCommon(mainVo);
 	}
+	
+	public int deleteCommon(MainVo  mainVo) {
+		return mainMapper.deleteCommon(mainVo);
+	}
+}

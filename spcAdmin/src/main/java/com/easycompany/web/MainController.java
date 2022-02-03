@@ -58,59 +58,94 @@ public class MainController {
 
 	/** admin > 메인관리  > List  */
 	@RequestMapping(value = "/logoList.do")
-	public String getEduInfoRegList(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model,HttpServletRequest request) throws Exception {
+	public String logoList(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model,HttpServletRequest request) throws Exception {
 
 		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
 		
-		mainVo.setReg_id(loginvo.getId());
+		MainVo mainForm = mainService.getCommonDetail(mainVo);
 		
-		model.addAttribute("mainVo", mainVo);
+		mainVo.setReg_id(loginvo.getId());		
+		model.addAttribute("mainVo",   mainVo);
+		model.addAttribute("mainForm", mainForm);
 
 		return "logoList";
 	}
 
-	/*
-	@RequestMapping(value = "/eduInfoRegCate3Save.do")
+	
+	@RequestMapping(value = "/logoSave.do")
 	@ResponseBody
-	public CategoryVo eduInfoRegCate3Save(HttpServletRequest request, CategoryVo categoryVo) throws Exception {
+	public MainVo logoSave(HttpServletRequest request, MainVo mainVo) throws Exception {
 		
 		int resultCnt = 0;
 		
 		try {
 			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
 			
-			categoryVo.setReg_id(loginvo.getId());
-			categoryVo.setGubun2("category3");
+			mainVo.setReg_id(loginvo.getId());
+			mainVo.setGubun2("logo");
+			String fileAddpath = filePath + File.separator + "logo";
 			
-			if("I".equals(categoryVo.getGubun1())) {
+			if("I".equals(mainVo.getGubun1())) {
 				//fileUpload
-				BoardVo fileVo= FileUtil.uploadFile ( request,  filePath);
+				BoardVo fileVo= FileUtil.uploadFile (request,  fileAddpath);
 				
-				categoryVo.setFile_uuid(fileVo.getFile_uuid());
-				categoryVo.setFile_name(fileVo.getFile_name());
-				categoryVo.setFile_full_path(fileVo.getFile_full_path());
-				categoryVo.setFile_size(fileVo.getFile_size());
-				resultCnt = eduService.insertCatgegory3(categoryVo);
+				mainVo.setFile_id(fileVo.getFile_uuid());
+				mainVo.setFile_name(fileVo.getFile_name());
+				mainVo.setFile_full_path(fileVo.getFile_full_path());
+				mainVo.setFile_size(fileVo.getFile_size());
+				resultCnt = mainService.insertCommon(mainVo);
 			}
 			
-			if("E".equals(categoryVo.getGubun1())) {
-				resultCnt = eduService.updateCategory(categoryVo);
+			
+			if("E".equals(mainVo.getGubun1())) {
+				BoardVo fileVo= FileUtil.uploadFile (request,  fileAddpath);
+				
+				String fileFullPath = mainVo.getFile_full_path();
+				mainVo.setFile_id(fileVo.getFile_uuid());
+				mainVo.setFile_name(fileVo.getFile_name());
+				mainVo.setFile_full_path(fileVo.getFile_full_path());
+				mainVo.setFile_size(fileVo.getFile_size());
+				resultCnt = mainService.updateCommon(mainVo);
+				
+				FileUtil.deleteFile(request, fileFullPath);
 			}
 
-			if("D".equals(categoryVo.getGubun1())) {
-				resultCnt = eduService.deleteCategory(categoryVo);
+			/*
+			 * 
+			if("D".equals(mainVo.getGubun1())) {
+				resultCnt = mainService.deleteCategory(mainVo);
 			}
-			
-		    categoryVo.setResult((resultCnt > 0 ? "SUCCESS" : "FAIL") );
+			*/
+			mainVo.setResult((resultCnt > 0 ? "SUCCESS" : "FAIL") );
 
 			
 		} catch (Exception e) {
-			categoryVo.setResult("FAIL");
+			mainVo.setResult("FAIL");
 		}
 		
-		return categoryVo;
+		return mainVo;
 	}
-	*/
+	
+	
+	/** 게시판 -   File Downlaod */
+	@RequestMapping(value = "/fileDownload.do")
+	@ResponseBody
+	public void fileDownload(HttpServletRequest request, HttpServletResponse response, MainVo mainVo) throws Exception {
+		
+		MainVo fileVo = mainService.getCommonDetail(mainVo);
+		
+		BoardVo boardVoForm = new BoardVo();
+		mainVo.setFile_id(fileVo.getFile_id());
+		mainVo.setFile_name(fileVo.getFile_name());
+		mainVo.setFile_full_path(fileVo.getFile_full_path());
+		mainVo.setFile_size(fileVo.getFile_size());
+		
+		FileUtil.fileDownload(request, response, boardVoForm);
+		
 	}
+	
+	
+	
+}
 
 

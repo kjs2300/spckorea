@@ -27,59 +27,31 @@
 	}
 	
      
-     function fn_save(gubun1){
+     function fn_save(gubun1, logo_no){
     	
-    	var category3_name = $("#category3_name").val();
- 		var category3_cont = $("#category3_cont").val();
- 	    var category1_key  = $("#category1_key").val();
- 	    var category2_key  = $("#category2_key").val();
- 	    var category3_key  = $("#category3_key").val();
- 	    
- 		if (category3_name == ""){			
- 			alert("카테고리3명을 입력해주세요.");
- 			$("#category3_name").focus();
+    	var file= $("input[name=files]")[0].files[0];
+
+ 		if( file ==null || file =='null' || file =='undefined' || file ==undefined){
+ 			alert("선택된 파일이 없습니다.");	
  			return;
  		}
- 		
- 		if (category3_cont == ""){			
- 			alert("내용을 입력해주세요.");
- 			$("#category3_cont").focus();
- 			return;
- 		}
- 		
- 		if (gubun1 == "I"){	
-	 		var file= $("input[name=files]")[0].files[0];
-	
-	 		if( file ==null || file =='null' || file =='undefined' || file ==undefined){
-	 			alert("선택된 파일이 없습니다.");	
-	 			return;
-	 		}
- 		}
- 		
  		
  		var formData = new FormData(); 
- 		formData.append("category1_key",  category1_key);
- 		formData.append("category2_key",  category2_key);
- 		formData.append("category3_key",  category3_key);
- 		formData.append("category3_name", category3_name);
- 		formData.append("gubun1",         gubun1);
- 		formData.append("category3_cont", category3_cont);
- 		formData.append("files", $("input[name=files]")[0].files[0]);
+ 		formData.append("gubun1", gubun1);
+ 		formData.append("gubun2", "logo");
+ 		formData.append("files",  $("input[name=files]")[0].files[0]);
  		
- 		var msg = "카테고리를 등록 하시겠습니까?";
+ 		var msg = "로고를 등록 하시겠습니까?";
  		if (gubun1 == "E"){
- 			msg = "카테고리를 수정 하시겠습니까?"
- 		}else if (gubun1 == "D"){
- 			msg = "카테고리를 삭제 하시겠습니까?"
+ 			msg = "로고를  수정 하시겠습니까?"
  		}
  		
  		var yn = confirm(msg);		
  		if(yn){
  				
  			$.ajax({	
- 				//data     : $("#commonForm").serialize(),
  				data       : formData,
- 			    url		   : "<c:url value='/edu/eduInfoRegCate3Save.do'/>",
+ 			    url		   : "<c:url value='/main/logoSave.do'/>",
  			    dataType   : "JSON",
  		        processData: false, 
  		        contentType: false,
@@ -94,10 +66,8 @@
     
  	function commonCallBack(obj){
  	
- 		if(obj != null){		
- 			
+ 		if(obj != null){	
  			var result = obj.result;
- 			
  			if(result == "SUCCESS"){				
  				alert("성공하였습니다.");				
  				goOkPage();				 
@@ -110,16 +80,15 @@
  			}
  		}
  	}	
- 	
-
-     //-->
+ 	 //-->
  </script>
  
 
           <form  id="commonForm" name="commonForm"  method="post"   enctype="multipart/form-data" >
-
+			<input type="hidden" id="gubun1"  name="gubun1"  value=''/>
+			<input type="hidden" id="gubun2"  name="gubun2"  value="logo" />
+			<input type="hidden" id="logo_no" name="logo_no" value="" />
            <h1 class="h1-tit">로고 등록</h1>
-
 
              <div class="table-wrap">
                  <table class="detail-tb">
@@ -132,9 +101,10 @@
                          <tr>
                              <th>이미지 업로드</th>
                              <td>
-                                 <div class="upload-box">
-                                     <input type="file" />
-                                 </div>
+                                  <div class="upload-box">
+                                      <input id="files" name="files" type="file"  id="fileNm"  accept=".jpg, .jpeg, .png"/>
+                                  </div>
+
                                  <p class="point">업로드 이미지 사이즈 : 1920px * 520px</p>
                              </td>
                          </tr>
@@ -143,8 +113,13 @@
              </div>
 
              <div class="btn-cont">
-                 <button type="button" class="mid-btn blue-btn">저장</button>
+             	<c:if test="${empty mainForm.logo_no }">
+		           	<button type="button" class="mid-btn blue-btn"  onClick="javascript:fn_save('I','${mainForm.logo_no}');">저장</button>
+		        </c:if>    
+                <c:if test="${not empty mainForm.logo_no }">
+	                <button type="button" class="mid-btn blue-btn"  onClick="javascript:fn_save('E','${mainForm.logo_no}');">수정</button>
+	            </c:if>
                </div>
-				</form>
+			</form>
 	            
    

@@ -22,7 +22,7 @@ public class MainVo extends DefaultVO {
 	String file_uuid;
 	String file_name;
 	String file_full_path;
-	String file_seq;
+	int    file_seq;
 	long file_size;
 	
 	public int getLogo_no() {
@@ -115,10 +115,11 @@ public class MainVo extends DefaultVO {
 	public void setFile_full_path(String file_full_path) {
 		this.file_full_path = file_full_path;
 	}
-	public String getFile_seq() {
+
+	public int getFile_seq() {
 		return file_seq;
 	}
-	public void setFile_seq(String file_seq) {
+	public void setFile_seq(int file_seq) {
 		this.file_seq = file_seq;
 	}
 	public long getFile_size() {
