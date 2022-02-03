@@ -201,12 +201,12 @@
 			   </form>	
                <div class="btn-cont">
            		 	<c:if test="${empty categoryForm.edu_key }">
-                   		<button class="mid-btn blue-btn"   onClick="javascript:fn_save('I');">저장</button>
+                   		<button type="button" class="mid-btn blue-btn"   onClick="javascript:fn_save('I');">저장</button>
                    </c:if>
                     <c:if test="${not empty categoryForm.edu_key }">
-                   		<button class="mid-btn blue-btn"   onClick="javascript:fn_save('E');">저장</button>
+                   		<button type="button" class="mid-btn blue-btn"   onClick="javascript:fn_save('E');">저장</button>
                    </c:if>
-                   <button class="mid-btn white-btn"  onClick="javascript:fn_load('R');">취소</button>
+                   <button type="button" class="mid-btn white-btn"  onClick="javascript:fn_load('R');">취소</button>
                 </div>
 
 	            

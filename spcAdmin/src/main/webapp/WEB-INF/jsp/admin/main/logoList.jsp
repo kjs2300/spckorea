@@ -1,0 +1,150 @@
+
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="ui"     uri="http://egovframework.gov/ctl/ui"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<script type="text/javascript" src="<c:url value='/resources/common/jquery.js'/>"></script>
+
+ <script type="text/javaScript" language="javascript" defer="defer">
+     <!--
+    
+     function fn_load(str) {
+    	var frm = document.commonForm;
+ 		$("#gubun1").val('R'); 
+		$("#gubun2").val('category2'); 
+    	frm.action = "<c:url value='/edu/eduInfoRegCate.do'/>";    
+    	frm.submit();
+     }
+     
+ 	function goOkPage(){	
+		var frm = document.commonForm;
+		$("#gubun1").val('R'); 
+		$("#gubun2").val('category2'); 
+		frm.action = "<c:url value='/edu/eduInfoRegCate.do'/>";
+		frm.submit();
+	}
+	
+     
+     function fn_save(gubun1){
+    	
+    	var category3_name = $("#category3_name").val();
+ 		var category3_cont = $("#category3_cont").val();
+ 	    var category1_key  = $("#category1_key").val();
+ 	    var category2_key  = $("#category2_key").val();
+ 	    var category3_key  = $("#category3_key").val();
+ 	    
+ 		if (category3_name == ""){			
+ 			alert("카테고리3명을 입력해주세요.");
+ 			$("#category3_name").focus();
+ 			return;
+ 		}
+ 		
+ 		if (category3_cont == ""){			
+ 			alert("내용을 입력해주세요.");
+ 			$("#category3_cont").focus();
+ 			return;
+ 		}
+ 		
+ 		if (gubun1 == "I"){	
+	 		var file= $("input[name=files]")[0].files[0];
+	
+	 		if( file ==null || file =='null' || file =='undefined' || file ==undefined){
+	 			alert("선택된 파일이 없습니다.");	
+	 			return;
+	 		}
+ 		}
+ 		
+ 		
+ 		var formData = new FormData(); 
+ 		formData.append("category1_key",  category1_key);
+ 		formData.append("category2_key",  category2_key);
+ 		formData.append("category3_key",  category3_key);
+ 		formData.append("category3_name", category3_name);
+ 		formData.append("gubun1",         gubun1);
+ 		formData.append("category3_cont", category3_cont);
+ 		formData.append("files", $("input[name=files]")[0].files[0]);
+ 		
+ 		var msg = "카테고리를 등록 하시겠습니까?";
+ 		if (gubun1 == "E"){
+ 			msg = "카테고리를 수정 하시겠습니까?"
+ 		}else if (gubun1 == "D"){
+ 			msg = "카테고리를 삭제 하시겠습니까?"
+ 		}
+ 		
+ 		var yn = confirm(msg);		
+ 		if(yn){
+ 				
+ 			$.ajax({	
+ 				//data     : $("#commonForm").serialize(),
+ 				data       : formData,
+ 			    url		   : "<c:url value='/edu/eduInfoRegCate3Save.do'/>",
+ 			    dataType   : "JSON",
+ 		        processData: false, 
+ 		        contentType: false,
+ 				type	   : "POST",	
+ 		        success    : function(obj) {
+ 		        	commonCallBack(obj);				
+ 		        },	       
+ 		        error 	: function(xhr, status, error) {} 		        
+ 		    });
+ 		}
+ 	}	
+    
+ 	function commonCallBack(obj){
+ 	
+ 		if(obj != null){		
+ 			
+ 			var result = obj.result;
+ 			
+ 			if(result == "SUCCESS"){				
+ 				alert("성공하였습니다.");				
+ 				goOkPage();				 
+ 			} else if(result == "EXIST"){				
+ 				alert("이미 등록 되었습니다.");	
+ 				return false;
+ 			}else {				
+ 				alert("등록이 실패 했습니다.");	
+ 				return false;
+ 			}
+ 		}
+ 	}	
+ 	
+
+     //-->
+ </script>
+ 
+
+          <form  id="commonForm" name="commonForm"  method="post"   enctype="multipart/form-data" >
+
+           <h1 class="h1-tit">로고 등록</h1>
+
+
+             <div class="table-wrap">
+                 <table class="detail-tb">
+                     <caption>이미지 업로드 정보가 있는 테이블</caption>
+                     <colgroup>
+                         <col width="20%"/>
+                         <col width="*"/>
+                     </colgroup>
+                     <tbody>
+                         <tr>
+                             <th>이미지 업로드</th>
+                             <td>
+                                 <div class="upload-box">
+                                     <input type="file" />
+                                 </div>
+                                 <p class="point">업로드 이미지 사이즈 : 1920px * 520px</p>
+                             </td>
+                         </tr>
+                     </tbody>
+                 </table>
+             </div>
+
+             <div class="btn-cont">
+                 <button type="button" class="mid-btn blue-btn">저장</button>
+               </div>
+				</form>
+	            
+   

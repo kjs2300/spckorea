@@ -126,7 +126,7 @@
 			<input type="hidden" id="gubun1"         name="gubun1"         class="input-box" value=''/>
 			<input type="hidden" id="gubun2"         name="gubun2"         class="input-box" value=''/>
            <div class="sub-cont">
-               <button class="mid-btn black-btn" onClick="fn_load('${categoryVo.gubun2}');">전체분류 보기</button>
+               <button  type="button" class="mid-btn black-btn" onClick="fn_load('${categoryVo.gubun2}');">전체분류 보기</button>
               <div class="req-box">
                   <label for="categoryFname">
 				        ${categoryVo.category1_name} >  ${categoryVo.category2_name} >  카테고리03 등록

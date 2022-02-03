@@ -16,11 +16,11 @@
     	if(gubun2=='category4'){
     		frm.action = "/admin/edu/eduInfoClassList.do";
     	}    	
-    	if(str !='category4'){
+    	if(gubun2 !='category4'){
     		frm.action = "/admin/edu/eduInfoClassCate.do";
     	}
     	if(gubun2=='category4'){
-    		$("#gubun2").val(gubun2);  
+    		$("#gubun2").val("categoryClass");
     	} 
     	if(gubun2=='category5'){
     		$("#gubun2").val('category4');  
@@ -28,9 +28,17 @@
     	if(gubun2=='category6'){
     		$("#gubun2").val('category5');  
     	} 
-    	alert($("#gubun2").val());
+
     	frm.submit();
      }
+ 
+ 	function fn_move(str) {
+	  	var frm = document.commonForm;
+	  	$("#gubun1").val("R"); 
+		$("#site").val(str);  
+	   	frm.action = "<c:url value='/edu/eduInfoClassCate.do'/>";
+	  	frm.submit();
+    }
      
  	function goOkPage(){	
 		var frm = document.commonForm;
@@ -78,7 +86,7 @@
        	document.commonForm.submit();
     }
  	
-    function fn_edit(key1,key2,key3, idx,gubun1,gubun2){
+    function fn_edit(key1,key2,key3, name1,name2,idx,gubun1,gubun2){
  		
  		var categoryName = $("input[name=categoryname]:eq(" + idx + ")").val() ;
  		
@@ -95,9 +103,12 @@
  		if(gubun2=='category4'){
  			$("#category1_name").val(categoryName); 
  		}else if(gubun2=='category5'){
+ 			$("#category1_name").val(name1);
  			$("#category2_name").val(categoryName); 
- 		}else if(gubun3=='category6'){
- 			$("#category2_name").val(categoryName); 
+ 		}else if(gubun2=='category6'){
+ 			$("#category1_name").val(name1);
+ 			$("#category2_name").val(name2); 
+ 			$("#category3_name").val(categoryName); 
  		}
  
  		$("#gubun1").val(gubun1); 
@@ -122,7 +133,7 @@
  		}
   	}	
     
-    function fn_regt(key1,key2,key3, idx,gubun1,gubun2){	
+    function fn_regt(key1,key2,key3,name1,name2, idx,gubun1,gubun2){	
 		var frm = document.commonForm;
 		
 		var categoryName = $("input[name=categoryname]:eq(" + idx + ")").val() ;
@@ -131,8 +142,8 @@
 		$("#category2_key").val(key2);
 		$("#category3_key").val(key3);
 		
-		$("#category1_name").val(categoryName);
-		$("#category2_name").val(categoryName);
+		$("#category1_name").val(name1);
+		$("#category2_name").val(name2);
  		$("#category3_name").val(categoryName);
  		$("#gubun1").val(gubun1); 
  		$("#gubun2").val(gubun2);  
@@ -173,26 +184,26 @@
 			<input type="hidden" id="category3_key"  name="category3_key"  class="input-box" value="${categoryVo.category3_key}"  />
 			<input type="hidden" id="gubun1"         name="gubun1"         class="input-box" value=''/>
 			<input type="hidden" id="gubun2"         name="gubun2"         class="input-box" value=''/>
-			<input type="hidden" id="divsion"        name="division"       class="input-box" value="${categoryVo.division}"  />
+			<input type="hidden" id="site"           name="site"           class="input-box" value="${categoryVo.site}"  />
 			
           <h1 class="h1-tit">교육분류 등록</h1>
            <div class="tab-cont">
                <ul>
-                	<c:if test="${categoryVo.division eq 'on'}">
-						 <li class="on"><a href="">온라인 교육</a></li>
-                   		<li><a href="">오프라인 교육</a></li>
-					</c:if>
-                    <c:if test="${categoryVo.division eq 'off'}">
-						<li><a href="">온라인 교육</a></li>
-                   		<li class="on"><a href="">오프라인 교육</a></li>
-					</c:if>
+                	<c:if test="${categoryVo.site eq 'on'}">
+                        <li class="on">온라인 교육</li>
+                        <li><a onClick="fn_move('off')">오프라인 교육</a></li>
+                    </c:if>
+                    <c:if test="${categoryVo.site eq 'off'}">
+	                    <li><a onClick="fn_move('on')">온라인 교육</a></li>
+	                    <li class="on">오프라인 교육</li>
+                    </c:if>
                </ul>
            </div>
 
 
 			
            <div class="sub-cont">
-               <button class="mid-btn black-btn" onClick="fn_load('${categoryVo.gubun2}');">전체분류 보기</button>
+               <button  type="button" class="mid-btn black-btn" onClick="fn_load('${categoryVo.gubun2}');">전체분류 보기</button>
               <div class="req-box">
                   <label for="categoryFname">
                    <c:if test="${categoryVo.gubun2 eq 'category4'}">
@@ -260,24 +271,24 @@
 	                          <td>
 	                          	<input type="text" id='categoryname' name='categoryname' class="input-box" value="${result.category1_name}"/>
 	                          </td>
-	                          <td><button class="sm-btn blue-btn"   onClick="javascript:fn_edit('${result.category1_key}',0,0,'${status.index}','E','category4');">저장</button></td>
-	                          <td><button class="sm-btn white-btn"  onClick="javascript:fn_edit('${result.category1_key}',0,0,'${status.index}','D','category4');">삭제</button></td>
-	                          <td><a class="link" onClick="javascript:fn_regt('${result.category1_key}',0,0,'${status.index}','R','category5');" >카테고리02 등록/관리 </a></td>
+	                          <td><button  type="button" class="sm-btn blue-btn"   onClick="javascript:fn_edit('${result.category1_key}',0,0,'${result.category1_name}','${result.category2_name}','${status.index}','E','category4');">저장</button></td>
+	                          <td><button  type="button" class="sm-btn white-btn"  onClick="javascript:fn_edit('${result.category1_key}',0,0,'${result.category1_name}','${result.category2_name}','${status.index}','D','category4');">삭제</button></td>
+	                          <td><a class="link" onClick="javascript:fn_regt('${result.category1_key}',0,0,'${result.category1_name}','${result.category2_name}','${status.index}','R','category5');" >카테고리02 등록/관리 </a></td>
 	                	  </c:if>
 				 		 <c:if test="${categoryVo.gubun2 eq 'category5'}">
 	                          <td>
 	                          	<input type="text" id='categoryname' name='categoryname' class="input-box" value="${result.category2_name}"/>
 	                          </td>
-	                          <td><button class="sm-btn blue-btn"   onClick="javascript:fn_edit('${result.category1_key}','${result.category2_key}',0,'${status.index}','E','category5');">저장</button></td>
-	                          <td><button class="sm-btn white-btn"  onClick="javascript:fn_edit('${result.category1_key}','${result.category2_key}',0,'${status.index}','D','category5');">삭제</button></td>
-	                          <td><a class="link" onClick="javascript:fn_regt('${result.category1_key}','${result.category2_key}',0,'${status.index}','R','category6');" > 카테고리03 등록/관리 </a></td>
+	                          <td><button  type="button" class="sm-btn blue-btn"   onClick="javascript:fn_edit('${result.category1_key}','${result.category2_key}',0,'${result.category1_name}','${result.category2_name}','${status.index}','E','category5');">저장</button></td>
+	                          <td><button  type="button" class="sm-btn white-btn"  onClick="javascript:fn_edit('${result.category1_key}','${result.category2_key}',0,'${result.category1_name}','${result.category2_name}',${status.index}','D','category5');">삭제</button></td>
+	                          <td><a class="link" onClick="javascript:fn_regt('${result.category1_key}','${result.category2_key}',0,'${result.category1_name}','${result.category2_name}','${status.index}','R','category6');" > 카테고리03 등록/관리 </a></td>
 				 		</c:if>      
 				 		 <c:if test="${categoryVo.gubun2 eq 'category6'}">
 	                          <td>
 	                          	<input type="text" id='categoryname' name='categoryname' class="input-box" value="${result.category3_name}"/>
 	                          </td>
-	                          <td><button class="sm-btn blue-btn"   onClick="javascript:fn_edit('${result.category1_key}','${result.category2_key}','${result.category3_key}','${status.index}','E','category6');">저장</button></td>
-	                          <td><button class="sm-btn white-btn"  onClick="javascript:fn_edit('${result.category1_key}','${result.category2_key}','${result.category3_key}','${status.index}','D','category6');">삭제</button></td>
+	                          <td><button class="sm-btn blue-btn"   onClick="javascript:fn_edit('${result.category1_key}','${result.category2_key}','${result.category3_key}','${result.category1_name}','${result.category2_name}','${status.index}','E','category6');">저장</button></td>
+	                          <td><button class="sm-btn white-btn"  onClick="javascript:fn_edit('${result.category1_key}','${result.category2_key}','${result.category3_key}','${result.category1_name}','${result.category2_name}','${status.index}','D','category6');">삭제</button></td>
 	                          <td>&nbsp;</td>
 				 		</c:if>       
 	              

@@ -23,8 +23,8 @@
  				    <input type="hidden" id="gubun2"         name="gubun2"   value='category1'    class="input-box" />		
 	           </form>
 	                <div class="sub-cont">
-	                    <button class="mid-btn black-btn">전체분류 보기</button>
-	                    <button class="mid-btn blue-btn" onClick="fn_load('1');">등록</button>
+	                    <button type="button" class="mid-btn black-btn">전체분류 보기</button>
+	                    <button type="button" class="mid-btn blue-btn" onClick="fn_load('1');">등록</button>
 	                </div>
                
                 <div class="table-wrap">

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.easycompany.mapper.MainMapper">
+                  
+	<select id="getCategoryList1" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
+		 /**  com.easycompany.mapper.EduMapper.getCategoryList1 **/
+	    SELECT   CATEGORY1_KEY
+		  	   , CATEGORY1_NAME
+	     FROM  COM_CATEGORY1 
+	    ORDER BY CATEGORY1_KEY 
+	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}
+		
+	</select>
+	
+	
+</mapper>

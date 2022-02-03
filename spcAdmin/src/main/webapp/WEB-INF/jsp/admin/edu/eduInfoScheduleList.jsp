@@ -208,14 +208,14 @@
                    </div>
                    <input type="text" class="input-box" id="category3_name" name="category3_name"  placeholder="교육명"/>
                    </form>
-                   <button class="search-btn" onClick="fn_search();">검색</button>
+                   <button  type="button" class="search-btn" onClick="fn_search();">검색</button>
                </div>
            </div>
 
            <div class="btn-cont mb20">
-               <button class="mid-btn black-btn"  onClick="fn_excel();">엑셀다운</button>
-               <button class="mid-btn blue-btn"   onClick="fn_load('1');">등록</button>
-               <button class="mid-btn white-btn btnOneApr">선택삭제</button>
+               <button type="button" class="mid-btn black-btn"  onClick="fn_excel();">엑셀다운</button>
+               <button type="button" class="mid-btn blue-btn"   onClick="fn_load('1');">등록</button>
+               <button type="button" class="mid-btn white-btn btnOneApr">선택삭제</button>
            </div>
            
            <div class="table-wrap">
@@ -263,8 +263,8 @@
                            <td>${result.edu_target}</td>
                            <td>${result.edu_number}</td>
                            <td>${result.edu_teac_name}</td>
-                           <td><button class="sm-btn blue-btn"  onClick="javascript:fn_edit('${result.edu_key}',  'E', 'eduInfoScheduleList');" >수정</button></td>
-                           <td><button class="sm-btn white-btn" onClick="javascript:fn_delete('${result.edu_key}','D', 'eduInfoScheduleList');">삭제</button></td>
+                           <td><button type="button" class="sm-btn blue-btn"  onClick="javascript:fn_edit('${result.edu_key}',  'E', 'eduInfoScheduleList');" >수정</button></td>
+                           <td><button type="button" class="sm-btn white-btn" onClick="javascript:fn_delete('${result.edu_key}','D', 'eduInfoScheduleList');">삭제</button></td>
                        </tr>
                       </c:forEach>
                    </tbody>

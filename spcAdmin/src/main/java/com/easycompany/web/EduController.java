@@ -438,8 +438,8 @@ public class EduController {
 			categoryVo.setGubun2("categoryClass");
 		}
 		
-		if ( StringUtil.isEmpty(categoryVo.getDivision())) {
-			categoryVo.setDivision("on");
+		if ( StringUtil.isEmpty(categoryVo.getSite())) {
+			categoryVo.setSite("on");
 		}
 		
 		List<CategoryVo> list = eduService.getCategoryList(categoryVo);
@@ -464,8 +464,8 @@ public class EduController {
 			categoryVo.setGubun2("category4");
 		}
 		
-		if ( StringUtil.isEmpty(categoryVo.getDivision())) {
-			categoryVo.setDivision("on");
+		if ( StringUtil.isEmpty(categoryVo.getSite())) {
+			categoryVo.setSite("on");
 		}
 		
 		/** EgovPropertyService.sample */
