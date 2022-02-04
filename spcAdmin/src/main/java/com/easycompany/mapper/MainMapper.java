@@ -55,6 +55,10 @@ public class MainMapper extends EgovAbstractMapper{
 		return (Integer) insert(nameSpace + "." + sqlName, mainVo);
 	}
 	
+	public int deleteCommonFile(MainVo mainVo) {		
+		String sqlName = "deleteCommonFile";
+		return (Integer) delete(nameSpace + "." + sqlName, mainVo);
+	}
 	
 	public int updateCommon(MainVo mainVo) {
 		
@@ -93,4 +97,33 @@ public class MainMapper extends EgovAbstractMapper{
 		}
 		return (Integer) update(nameSpace + "." + sqlName, mainVo);
 	}
+	
+	public List<MainVo> getCommonList(MainVo mainVo) throws DataAccessException {
+		
+		String sqlName = "getImgist";
+
+		if("banner".equals(mainVo.getGubun2())){
+			sqlName = "getBannerList";
+		}
+		if("popUp".equals(mainVo.getGubun2())){
+			sqlName = "getPopUpList";
+		}
+		return selectList(nameSpace + "." + sqlName, mainVo);
+	}
+	
+	public int getCommonCount(MainVo mainVo) {
+		
+		String sqlName = "getImgCount";
+		
+		if("banner".equals(mainVo.getGubun2())){
+			sqlName = "getBannerCount";
+		}
+		if("popUp".equals(mainVo.getGubun2())){
+			sqlName = "getPopUpCount";
+		}
+		
+		return (Integer)selectOne(nameSpace + "." + sqlName, mainVo);
+	}
+	
+	
 }

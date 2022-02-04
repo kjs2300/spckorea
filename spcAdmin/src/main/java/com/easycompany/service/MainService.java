@@ -14,6 +14,7 @@ public interface MainService {
 	public int insertCommon(MainVo mainVo);
 	public int deleteCommon(MainVo mainVo);	
 	public int updateCommon(MainVo mainVo);	
-
+	public List<MainVo> getCommonList(MainVo mainVo) throws Exception;
+	public int getCommonCount(MainVo      mainVo);
 	
 }

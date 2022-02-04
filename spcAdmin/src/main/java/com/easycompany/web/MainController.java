@@ -123,6 +123,7 @@ public class MainController {
 				mainVo.setFile_name(fileVo.getFile_name());
 				mainVo.setFile_full_path(fileVo.getFile_full_path());
 				mainVo.setFile_size(fileVo.getFile_size());
+				mainVo.setFile_seq(fileDeleteVo1.getFile_seq());
 				resultCnt = mainService.updateCommon(mainVo);
 				
 				FileUtil.deleteFile(request, fileFullPath);
@@ -162,7 +163,147 @@ public class MainController {
 		
 	}
 	
+	/** admin > 메인배너  List  */
+	@RequestMapping(value = "/imgList.do")
+	public String imgList(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model,HttpServletRequest request) throws Exception {
+
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		
+		/** EgovPropertyService.sample */
+		mainVo.setPageUnit(propertiesService.getInt("pageUnit"));
+		mainVo.setPageSize(propertiesService.getInt("pageSize"));
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(mainVo.getPageIndex());
+		paginationInfo.setRecordCountPerPage(mainVo.getPageUnit());
+		paginationInfo.setPageSize(mainVo.getPageSize());
+		
+		/***  offSet 설정  ***/
+		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
+		mainVo.setOffset(offset);
+		
+		if ( StringUtil.isEmpty(mainVo.getGubun1())) {
+			mainVo.setGubun1("R");
+		}
+		
+		if ( StringUtil.isEmpty(mainVo.getGubun2())) {
+			mainVo.setGubun2("img");
+		}
+		
+		
+		List<MainVo> list = mainService.getCommonList(mainVo);
+		model.addAttribute("resultList", list);
+			
+		
+		int totCnt = mainService.getCommonCount(mainVo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+		
 	
+		
+		mainVo.setReg_id(loginvo.getId());		
+		model.addAttribute("mainVo",   mainVo);
+	
+
+		return "imgList";
+	}
+
+	
+	/** admin > 메인이미지 등록  */
+	@RequestMapping(value = "/imgReg.do")
+	public String imgReg(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model,HttpServletRequest request) throws Exception {
+
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		
+		if ( StringUtil.isEmpty(mainVo.getGubun1())) {
+			mainVo.setGubun1("R");
+		}		
+		if ( StringUtil.isEmpty(mainVo.getGubun2())) {
+			mainVo.setGubun2("img");
+		}	
+		
+		MainVo mainForm = mainService.getCommonDetail(mainVo);
+		
+		
+		mainVo.setReg_id(loginvo.getId());		
+		model.addAttribute("mainVo",   mainVo);
+		model.addAttribute("mainForm", mainForm);
+
+		return "imgReg";
+	}
+
+	@RequestMapping(value = "/imgSave.do")
+	@ResponseBody
+	public MainVo imgSave(HttpServletRequest request, MainVo mainVo) throws Exception {
+		
+		int resultCnt = 0;
+		
+		try {
+			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+			
+			mainVo.setReg_id(loginvo.getId());
+		
+			if ( StringUtil.isEmpty(mainVo.getGubun2())) {
+				mainVo.setGubun2("img");
+			}
+			
+			String fileAddpath = filePath + File.separator + mainVo.getGubun2();
+			
+			if("I".equals(mainVo.getGubun1())) {
+				//fileUpload
+				BoardVo fileVo= FileUtil.uploadFile (request,  fileAddpath);
+				
+				
+				mainVo.setFile_id(fileVo.getFile_uuid());
+				mainVo.setFile_name(fileVo.getFile_name());
+				mainVo.setFile_full_path(fileVo.getFile_full_path());
+				mainVo.setFile_size(fileVo.getFile_size());
+				resultCnt = mainService.insertCommon(mainVo);
+			}
+			
+			
+			if("E".equals(mainVo.getGubun1())) {
+				BoardVo fileVo= FileUtil.uploadFile (request,  fileAddpath);
+				
+				MainVo fileDeleteVo1 = mainService.getCommonDetail(mainVo);
+				
+				String fileFullPath = fileDeleteVo1.getFile_full_path();
+				mainVo.setFile_id(fileVo.getFile_uuid());
+				mainVo.setFile_name(fileVo.getFile_name());
+				mainVo.setFile_full_path(fileVo.getFile_full_path());
+				mainVo.setFile_size(fileVo.getFile_size());
+				mainVo.setFile_seq(fileDeleteVo1.getFile_seq());
+				resultCnt = mainService.updateCommon(mainVo);
+				
+				if(fileFullPath != null && fileFullPath.length()>3) {
+					FileUtil.deleteFile(request, fileFullPath);
+				}
+			}
+
+
+			if("D".equals(mainVo.getGubun1())) {
+				
+				
+				resultCnt = mainService.deleteCommon(mainVo);
+				
+				MainVo fileDeleteVo = mainService.getCommonDetail(mainVo);
+				String fileFullPath = fileDeleteVo.getFile_full_path();
+				if(fileFullPath != null && fileFullPath.length()>3) {
+					FileUtil.deleteFile(request, fileFullPath);
+				}
+				
+			}
+
+			mainVo.setResult((resultCnt > 0 ? "SUCCESS" : "FAIL") );
+
+			
+		} catch (Exception e) {
+			mainVo.setResult("FAIL");
+		}
+		
+		return mainVo;
+	}
 	
 }
 

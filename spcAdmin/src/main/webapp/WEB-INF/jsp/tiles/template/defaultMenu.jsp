@@ -7,7 +7,7 @@
         <a href="#">메인화면</a>
         <ul class="depth02-menu">
             <li class="active"><a href="<c:url value='/main/logoList.do' />">로고</a></li>
-            <li><a href="<c:url value='/main/logoList.do' />">메인이미지</a></li>
+            <li><a href="<c:url value='/main/imgList.do' />">메인이미지</a></li>
             <li><a href="#">배너관리</a></li>
             <li><a href="#">팝업창 관리</a></li>
         </ul>

@@ -736,14 +736,6 @@
 		  	 , EDU_TEAC_NAME
 		  	 , EDU_KEY
 		 FROM EDU_SCHEDULE a
-		 <choose>
-			<when test ="checkdate !=null and checkdate !='' and checkdate =='A' ">
-			</when>
-			<when test ="checkdate !=null and checkdate !='' and checkdate =='T' ">
-			</when>
-			<when test ="checkdate !=null and checkdate !='' and checkdate =='S' ">
-			</when>
-		 </choose>
 		ORDER BY a.CATEGORY1_KEY
 		LIMIT #{recordCountPerPage}  OFFSET  #{offset}
 		

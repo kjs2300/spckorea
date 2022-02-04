@@ -145,6 +145,34 @@
  		 WHERE FILE_GUBUN       = #{gubun2}  
  		   AND FILE_SEQ         = #{file_seq}
 	</update>	
+	
+	<delete id="deleteCommonFile" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.deleteCommonFile **/	
+		DELETE 
+		  FROM EDU_FILE
+ 		 WHERE FILE_GUBUN       = #{gubun2}  
+ 		   AND FILE_SEQ         = #{file_seq}
+	</delete>
+	
+	<delete id="deleteImg" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.deleteImg **/	
+		DELETE 
+		  FROM EDU_IMG
+ 		 WHERE IMG_NO       = #{img_no}  
+	</delete>
+	
+	<delete id="deleteBanner" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.deleteBanner **/	
+		DELETE 
+		  FROM EDU_BANNER
+ 		 WHERE BANNER_NO       = #{banner_no}  
+	</delete>
+	
+	<delete id="deletePopUp" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.deletePopUp **/	
+		DELETE EDU_POPUP
+ 		 WHERE POPUP_NO       = #{popup_no}  
+	</delete>
 		
 	<select id="getLogoDetail" parameterType="com.easycompany.service.vo.MainVo" resultType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.getLogoDetail **/	
@@ -163,8 +191,8 @@
 	     LIMIT 1 OFFSET 0    	    
 	</select>
 	
-	<select id="commonBannerList" parameterType="com.easycompany.service.vo.MainVo"	resultType="com.easycompany.service.vo.MainVo">
-		 /**  com.easycompany.mapper.MainMapper.commonBannerList **/
+	<select id="getBannerList" parameterType="com.easycompany.service.vo.MainVo"	resultType="com.easycompany.service.vo.MainVo">
+		 /**  com.easycompany.mapper.MainMapper.getBannerList **/
 	    SELECT BANNER_NO, BANNER_NM, BANNER_POS, LINK_URL, REG_ID, DATE_FORMAT(REG_DT,'%x-%m-%d') REG_DT
 	      FROM EDU_BANNER 
 	     WHERE 1= 1
@@ -177,8 +205,8 @@
 	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
 	</select>	
 	
-	<select id="commonBannerCount" parameterType="com.easycompany.service.vo.MainVo" resultType="int">
-    	/**  com.easycompany.mapper.MainMapper.commonBannerCount **/
+	<select id="getBannerCount" parameterType="com.easycompany.service.vo.MainVo" resultType="int">
+    	/**  com.easycompany.mapper.MainMapper.getBannerCount **/
 		 SELECT COUNT(*) cnt
 	       FROM EDU_BANNER 
 	      WHERE 1= 1
@@ -187,6 +215,43 @@
 		       AND  BANNER_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
 		  </when>
 	     </choose>
+	</select>
+	
+	<select id="getImgist" parameterType="com.easycompany.service.vo.MainVo"	resultType="com.easycompany.service.vo.MainVo">
+		 /**  com.easycompany.mapper.MainMapper.getImgist **/
+	    SELECT A.IMG_NO, A.IMG_NM, A.IMG_POS, A.LINK_URL, A.REG_ID, DATE_FORMAT(A.REG_DT,'%x-%m-%d') REG_DT,
+               A.FILE_ID ,  (SELECT FILE_NAME FROM EDU_FILE WHERE FILE_ID = A.FILE_ID) FILE_NAME
+	      FROM EDU_IMG A
+	     WHERE 1= 1
+	     <choose>
+		  <when test ="searchCondition !=null and searchCondition !='' and searchCondition =='IMG_NM' and searchKeyword !=null and searchKeyword !='' ">
+		       AND  A.IMG_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
+		  </when>
+	     </choose>
+	     ORDER BY A.IMG_NO 
+	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
+	</select>	
+	
+	<select id="getImgCount" parameterType="com.easycompany.service.vo.MainVo" resultType="int">
+    	/**  com.easycompany.mapper.MainMapper.getImgCount **/
+		 SELECT COUNT(*) cnt
+	       FROM EDU_IMG 
+	      WHERE 1= 1
+	     <choose>
+		  <when test ="searchCondition !=null and searchCondition !='' and searchCondition =='IMG_NM' and searchKeyword !=null and searchKeyword !='' ">
+		       AND  IMG_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
+		  </when>
+	     </choose>
+	</select>
+	
+	<select id="getImgDetail" parameterType="com.easycompany.service.vo.MainVo" resultType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.getImgDetail **/	
+		SELECT A.IMG_NO, A.IMG_NM,A.IMG_POS,A.LINK_URL, A.FILE_ID , B.FILE_NAME, B.FILE_FULL_PATH, B.FILE_SEQ,B.FILE_SIZE,B.FILE_SEQ
+	      FROM EDU_IMG A, EDU_FILE B
+	     WHERE A.FILE_ID    = B.FILE_ID
+	       AND A.IMG_NO     = #{img_no}
+	  	   AND B.FILE_GUBUN = #{gubun2}	   
+	     LIMIT 1 OFFSET 0    	    
 	</select>
 	
 </mapper>

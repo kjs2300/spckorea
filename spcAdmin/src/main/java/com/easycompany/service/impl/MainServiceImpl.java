@@ -1,17 +1,12 @@
 package com.easycompany.service.impl;
 
 import java.util.List;
-import java.util.Map;
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.easycompany.mapper.MainMapper;
 import com.easycompany.service.MainService;
-import com.easycompany.service.vo.CategoryVo;
 import com.easycompany.service.vo.MainVo ;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -30,7 +25,6 @@ public  class MainServiceImpl extends EgovAbstractServiceImpl implements MainSer
 	
 	public int insertCommon(MainVo mainVo) {
 		
-		
 		int cnt = mainMapper.insertCommonFile(mainVo);
 		if(cnt > 0) {
 			return mainMapper.insertCommon(mainVo);
@@ -39,6 +33,7 @@ public  class MainServiceImpl extends EgovAbstractServiceImpl implements MainSer
 	}
 	
 	public int updateCommon(MainVo  mainVo) {
+		
 		int cnt = mainMapper.updateCommonFile(mainVo);
 		if(cnt > 0) {
 			return mainMapper.updateCommon(mainVo);
@@ -46,7 +41,16 @@ public  class MainServiceImpl extends EgovAbstractServiceImpl implements MainSer
 		return 0;
 	}
 	
-	public int deleteCommon(MainVo  mainVo) {
+	public int deleteCommon(MainVo  mainVo) {		
+		mainMapper.deleteCommonFile(mainVo);
 		return mainMapper.deleteCommon(mainVo);
+	}
+	
+	public List<MainVo> getCommonList(MainVo  mainVo) throws Exception{
+		return mainMapper.getCommonList(mainVo);
+	}
+	
+	public int getCommonCount(MainVo  mainVo) {
+		return mainMapper.getCommonCount(mainVo);
 	}
 }

@@ -87,7 +87,7 @@
           <form  id="commonForm" name="commonForm"  method="post"   enctype="multipart/form-data" >
 			<input type="hidden" id="gubun1"  name="gubun1"  value=''/>
 			<input type="hidden" id="gubun2"  name="gubun2"  value="logo" />
-			<input type="hidden" id="file_full_path"  name="file_full_path"  value="${mainForm.file_full_path}" />
+			
 			<c:if test="${empty mainForm.logo_no }">
 	           	<input type="hidden" id="logo_no"  name="logo_no"  value="1" />
 	        </c:if>    

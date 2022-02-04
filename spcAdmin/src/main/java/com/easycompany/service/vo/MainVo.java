@@ -33,9 +33,51 @@ public class MainVo extends DefaultVO {
 	int img_no;
 	String img_nm;
 	String img_pos;
+
 	
 	
-	
+	public int getBanner_no() {
+		return banner_no;
+	}
+	public void setBanner_no(int banner_no) {
+		this.banner_no = banner_no;
+	}
+	public String getBanner_nm() {
+		return banner_nm;
+	}
+	public void setBanner_nm(String banner_nm) {
+		this.banner_nm = banner_nm;
+	}
+	public String getBanner_pos() {
+		return banner_pos;
+	}
+	public void setBanner_pos(String banner_pos) {
+		this.banner_pos = banner_pos;
+	}
+	public String getLink_url() {
+		return link_url;
+	}
+	public void setLink_url(String link_url) {
+		this.link_url = link_url;
+	}
+	public int getImg_no() {
+		return img_no;
+	}
+	public void setImg_no(int img_no) {
+		this.img_no = img_no;
+	}
+	public String getImg_nm() {
+		return img_nm;
+	}
+	public void setImg_nm(String img_nm) {
+		this.img_nm = img_nm;
+	}
+	public String getImg_pos() {
+		return img_pos;
+	}
+	public void setImg_pos(String img_pos) {
+		this.img_pos = img_pos;
+	}
 	public int getLogo_no() {
 		return logo_no;
 	}

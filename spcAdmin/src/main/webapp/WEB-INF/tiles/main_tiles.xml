@@ -6,9 +6,21 @@
    
     <!-- admin > 메인화면  > List Page -->
    <definition name="logoList" extends="base-definition">  
-       <put-attribute name="title" value="로고 등록" />  
+       <put-attribute name="title" value="로고 관리" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/main/logoList.jsp" />  
-   </definition>  
+   </definition> 
+   
+    <!-- admin > 메인이미지 List Page -->
+   <definition name="imgList" extends="base-definition">  
+       <put-attribute name="title" value="메인이미지 관리" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/main/imgList.jsp" />  
+   </definition> 
+   
+    <!-- admin > 메인이미지 등록  -->
+   <definition name="imgReg" extends="base-definition">  
+       <put-attribute name="title" value="로고 등록" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/main/imgReg.jsp" />  
+   </definition> 
    
    
   </tiles-definitions>
