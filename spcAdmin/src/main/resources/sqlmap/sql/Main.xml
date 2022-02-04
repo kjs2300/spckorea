@@ -7,7 +7,7 @@
 		/**  com.easycompany.mapper.MainMapper.insertCommonFile **/	
 		<selectKey resultType="int" keyProperty="file_seq" order="BEFORE">			
 			SELECT IFNULL(MAX(FILE_SEQ), 0) + 1 
-			FROM COM_FILE			  
+			  FROM COM_FILE			  
 		</selectKey>		
 		INSERT 
 		INTO COM_FILE
@@ -34,7 +34,7 @@
 		/**  com.easycompany.mapper.MainMapper.insertLogo **/	
 		<selectKey resultType="int" keyProperty="logo_no" order="BEFORE">			
 			SELECT IFNULL(MAX(LOGO_NO), 0) + 1 
-			FROM COM_LOGO			  
+			  FROM COM_LOGO			  
 		</selectKey>		
 		INSERT 
 		INTO COM_LOGO
@@ -53,41 +53,53 @@
 	
 	<insert id="insertImg" parameterType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.insertImg **/	
-		<selectKey resultType="int" keyProperty="logo_no" order="BEFORE">			
-			SELECT IFNULL(MAX(LOGO_NO), 0) + 1 
-			FROM COM_LOGO			  
+		<selectKey resultType="int" keyProperty="img_no" order="BEFORE">			
+			SELECT IFNULL(MAX(IMG_NO), 0) + 1 
+			  FROM COM_IMG			  
 		</selectKey>		
 		INSERT 
-		INTO COM_LOGO
+		INTO COM_IMG
 		(
-		  	  LOGO_NO
+		  	  IMG_NO
+		  	, IMG_NM
+		  	, IMG_POS
+		  	, LINK_URL
 		  	, REG_ID
 		  	, FILE_ID
 		) 
 		VALUES 
 		(
-			  #{logo_no}
+			  #{img_no}
+			, #{img_nm}
+			, #{img_pos}
+			, #{link_url}
 			, IFNULL(#{reg_id},'SYSTEM')
 			, #{file_id}
-		)	
+		)
 	</insert>
 	
-	<insert id="insertBaner" parameterType="com.easycompany.service.vo.MainVo">
-		/**  com.easycompany.mapper.MainMapper.insertBaner **/	
-		<selectKey resultType="int" keyProperty="logo_no" order="BEFORE">			
-			SELECT IFNULL(MAX(LOGO_NO), 0) + 1 
-			FROM COM_LOGO			  
+	<insert id="insertBanner" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.insertBanner **/	
+		<selectKey resultType="int" keyProperty="banner_no" order="BEFORE">			
+			SELECT IFNULL(MAX(BANNER_NO), 0) + 1 
+			  FROM COM_BANNER			  
 		</selectKey>		
 		INSERT 
-		INTO COM_LOGO
+		INTO COM_BANNER
 		(
-		  	  LOGO_NO
+		  	  BANNER_NO
+		  	, BANNER_NM
+		  	, BANNER_POS
+		  	, LINK_URL
 		  	, REG_ID
 		  	, FILE_ID
 		) 
 		VALUES 
 		(
-			  #{logo_no}
+			  #{banner_no}
+			, #{banner_nm}
+			, #{banner_pos}
+			, #{link_url}
 			, IFNULL(#{reg_id},'SYSTEM')
 			, #{file_id}
 		)	
@@ -123,14 +135,58 @@
  		 WHERE LOGO_NO = #{logo_no}
 	</update>	
 	
+	<update id="updateCommonFile" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.updateCommonFile **/	
+		UPDATE COM_FILE 
+		   SET  FILE_NAME       = #{file_name}
+		      , FILE_FULL_PATH  = #{file_full_path}
+		  	  , FILE_SIZE       = #{file_size}
+		  	  , FILE_ID         = #{file_id}
+ 		 WHERE FILE_GUBUN       = #{gubun2}  
+ 		   AND FILE_SEQ         = #{file_seq}
+	</update>	
+		
 	<select id="getLogoDetail" parameterType="com.easycompany.service.vo.MainVo" resultType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.getLogoDetail **/	
-		SELECT A.LOGO_NO, A.FILE_ID , B.FILE_NAME, B.FILE_FULL_PATH, B.FILE_SEQ,B.FILE_SIZE
+		SELECT A.LOGO_NO, A.FILE_ID , B.FILE_NAME, B.FILE_FULL_PATH, B.FILE_SEQ,B.FILE_SIZE,B.FILE_SEQ
 	      FROM COM_LOGO A, COM_FILE B
 	     WHERE A.FILE_ID    = B.FILE_ID
-	       AND A.LOGO_NO    = #{logo_no}
+	     <choose>
+	      <when test="logo_no ==0">
+	           AND A.LOGO_NO =(SELECT max(logo_no) FROM COM_LOGO)
+	      </when>
+	      <otherwise>
+	            AND A.LOGO_NO = #{logo_no}
+	  	   </otherwise>
+	    </choose>
 	       AND B.FILE_GUBUN = #{gubun2}	   
 	     LIMIT 1 OFFSET 0    	    
+	</select>
+	
+	<select id="commonBannerList" parameterType="com.easycompany.service.vo.MainVo"	resultType="com.easycompany.service.vo.MainVo">
+		 /**  com.easycompany.mapper.MainMapper.commonBannerList **/
+	    SELECT BANNER_NO, BANNER_NM, BANNER_POS, LINK_URL, REG_ID, DATE_FORMAT(REG_DT,'%x-%m-%d') REG_DT
+	      FROM COM_BANNER 
+	     WHERE 1= 1
+	     <choose>
+		  <when test ="searchCondition !=null and searchCondition !='' and searchCondition =='BANNER_NM' and searchKeyword !=null and searchKeyword !='' ">
+		       AND  BANNER_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
+		  </when>
+	     </choose>
+	     ORDER BY BANNER_NO 
+	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
+	</select>	
+	
+	<select id="commonBannerCount" parameterType="com.easycompany.service.vo.MainVo" resultType="int">
+    	/**  com.easycompany.mapper.MainMapper.commonBannerCount **/
+		 SELECT COUNT(*) cnt
+	       FROM COM_BANNER 
+	      WHERE 1= 1
+	     <choose>
+		  <when test ="searchCondition !=null and searchCondition !='' and searchCondition =='BANNER_NM' and searchKeyword !=null and searchKeyword !='' ">
+		       AND  BANNER_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
+		  </when>
+	     </choose>
 	</select>
 	
 </mapper>

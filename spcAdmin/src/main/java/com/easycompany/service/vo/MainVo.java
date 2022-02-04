@@ -25,6 +25,17 @@ public class MainVo extends DefaultVO {
 	int    file_seq;
 	long file_size;
 	
+	int banner_no;
+	String banner_nm;
+	String banner_pos;
+	String link_url;
+	
+	int img_no;
+	String img_nm;
+	String img_pos;
+	
+	
+	
 	public int getLogo_no() {
 		return logo_no;
 	}

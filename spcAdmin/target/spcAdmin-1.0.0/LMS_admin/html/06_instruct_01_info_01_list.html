@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+    <head lang="ko">
+        <title>생명존중희망재단 관리자</title> 
+
+        <meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        <meta name="author" content=""생명존중희망재단 관리자 페이지>
+        <meta name="copyright" content="생명존중희망재단 관리자 페이지">
+        <meta name="description" content="생명존중희망재단 관리자 페이지">
+        <meta name="keywords" content="생명존중희망재단 관리자 페이지">
+        
+        <meta name="title" content="생명존중희망재단 관리자 페이지">
+        
+        <link href="./css/reset.css" rel="stylesheet" type="text/css">
+        <link href="./css/common.css" rel="stylesheet" type="text/css">
+        <link href="./css/admin.css" rel="stylesheet" type="text/css">
+        
+        <!--script src="./js/jquery-2.2.0.min.js"></script-->
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+        <script src="./js/commonUtil.js"></script>
+    </head>
+
+    <body>
+        <aside id="header">
+            <a class="logo" href="/">
+                <img src="./images/common/logo.png" alt="생명존중희망재단 관리자 로고"/>
+            </a>
+        </aside>
+        
+        <!--  lnb begin -->
+        <nav id="nav">
+            <ul class="depth01-menu">
+                <li>
+                    <a href="#">메인화면</a>
+                    <ul class="depth02-menu">
+                        <li class="active"><a href="#">로고</a></li>
+                        <li><a href="#">메인이미지</a></li>
+                        <li><a href="#">배너관리</a></li>
+                        <li><a href="#">팝업창 관리</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">교육안내</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">교육안내 등록</a></li>
+                        <li><a href="#">교육일정</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">교육등록</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">교육분류 등록</a></li>
+                        <li><a href="#">온라인 교육</a></li>
+                        <li><a href="#">온오프라인 교육</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">교육신청</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">온라인 교육 신청</a></li>
+                        <li><a href="#">오프라인 교육 신청</a></li>
+                        <li><a href="#">기관교육 신청(1)</a></li>
+                        <li><a href="#">기관교육 신청(2)</a></li>
+                        <li><a href="#">신청자 관리</a></li>
+                    </ul>
+
+                </li>
+                <li>
+                    <a href="#">기관(결과보고)</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">기관(결과보고)</a></li>
+                        <li><a href="#">교육신청 현황</a></li>
+                        <li><a href="#">교육결과 보고</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">강사공간</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">강사 자격정보</a></li>
+                        <li><a href="#">강사 활동 지정</a></li>
+                        <li><a href="#">강사 활동 현황</a></li>
+                        <li><a href="#">강사 활동 신청현황</a></li>
+                        <li><a href="#">강사 휴직 신청</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">LMS</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">콘텐츠/교육자료 등록</a></li>
+                        <li><a href="#">퀴즈 등록</a></li>
+                        <li><a href="#">수강생/수료생 현황</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">게시판</a>
+                    <ul class="depth02-menu">
+                        <li><a href="#">공지사항</a></li>
+                        <li><a href="#">자료실</a></li>
+                        <li><a href="#">소식</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">참여마당</a></li>
+                        <li><a href="#">강사 공지사항</a></li>
+                        <li><a href="#">강사 자료실</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">수료증/기타</a>
+                
+                </li>
+            </ul>
+        </nav><!--  lnb end -->
+
+        <!--  container begin -->
+        <article id="container">
+
+            <!--  contents begin -->
+            <section class="contents-wrap">
+                <h1 class="h1-tit">강사 자격 정보</h1>
+
+
+                <div class="search-wrap">
+                    <div class="search-cont  search-sub full-width">
+                        <h3 class="h3-tit">강사 자격범위</h3>
+
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="" checked>
+                            <label for="">전체</label>
+                        </div>
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="">
+                            <select class="select">
+                                <option>분류1</option>
+                            </select>
+                            <select class="select">
+                                <option>분류2</option>
+                            </select>
+                            <select class="select">
+                                <option>분류3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="search-cont search-sub">
+                        <h3 class="h3-tit">기관명</h3>
+
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="" checked>
+                            <label for="">전체</label>
+                        </div>
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="">
+                            <input type="text" class="input-box" placeholder="직접입력"/>
+                        </div>
+                    </div>
+
+                    <div class="search-cont search-sub">
+                        <h3 class="h3-tit">지역</h3>
+
+                        <div class="radio-cont">
+                            <input type="text" class="input-box" placeholder="직접입력"/>
+                        </div>
+                    </div>
+
+                    <div class="search-cont search-sub">
+                        <h3 class="h3-tit">강사명</h3>
+                        
+                        <div class="radio-cont">
+                            <input type="text" class="input-box" placeholder="직접입력"/>
+                        </div>
+                    </div>
+
+                    <div class="search-cont search-sub">
+                        <h3 class="h3-tit">강사상태</h3>
+                        
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="" checked>
+                            <label for="">전체</label>
+                        </div>
+
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="">
+                            <label for="">활동</label>
+                        </div>
+
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="">
+                            <label for="">상실(일반)</label>
+                        </div>
+
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="">
+                            <label for="">휴직</label>
+                        </div>
+                    </div>
+
+                    <div class="search-cont search-sub full-width">
+                        <h3 class="h3-tit">강사분류</h3>
+
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="" checked>
+                            <label for="">전체</label>
+                        </div>
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="">
+                            <label for="">일반강사</label>
+                        </div>
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="">
+                            <label for="">실무자</label>
+                        </div>
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="">
+                            <label for="">공공기간(학교, 군, 경찰, 도시철도 등)</label>
+                        </div>
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="" name="" value="">
+                            <label for="">기업(삼성,현대. sk 등)</label>
+                        </div>
+                    </div>
+
+                    <div class="search-cont">
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="dateAll" name="radioGroupDate" value="" checked>
+                            <label for="dateAll">전체</label>
+                        </div>
+                          
+                        <div class="radio-cont">
+                            <input type="radio" class="radio-box" id="dateToday" name="radioGroupDate" value="">
+                            <label for="dateToday">오늘</label>
+                        </div>
+                        
+                        <div class="radio-cont mr10">
+                            <input type="radio" class="radio-box" id="dateTerm" name="radioGroupDate" value="">
+                            <label for="dateTerm">기간선택</label>
+                        </div>
+                        <div class="picker-wrap">
+                            <input type="text" id="datepickerFrom" class="input-box"/>
+                            <span class="next-ico">-</span>
+                            <input type="text" id="datepickerTo" class="input-box"/>
+                        </div>
+                        
+                        <button class="search-btn">검색</button>
+                        <button class="search-btn white-btn ml20">초기화</button>
+                    </div>
+
+                </div>
+                
+                <div class="btn-cont mb20">
+                    <dl class="count-txt">
+                        <dt>전체 <span>115</span></dt>
+                        <dt class="green-txt">활동<span>115</span></dt>
+                        <dt class="gray-txt">상실(일반) <span>115</span></dt>
+                        <dt class="purple-txt">휴직 <span>115</span></dt>
+                    </dl>
+
+                    <button class="mid-btn black-btn">엑셀다운</button>
+                    <button class="mid-btn white-btn">선택삭제</button>
+                </div>
+                
+                <div class="table-wrap scroll-wrap">
+                    <table class="list-tb">
+                        <caption>선택, 상태, 강사명, 강사분류, 성별, 이메일, 연락처, 강의횟수,누적 강의횟수, 지역, 소속기관, 최종 수료일, 오프라인 2회교육, 온라인 보수교육, 수정 정보가 있는 테이블</caption>
+                        <colgroup>
+                            <col width="3%"/>
+                            <col width="4%"/>
+                            <col width="5%"/>
+                            <col width="8%"/>
+                            <col width="6%"/>
+                            <col width="5%"/>
+                            <col width="*"/>
+                            <col width="8%"/>
+                            <col width="6%"/>
+                            <col width="6%"/>
+                            <col width="6%"/>
+                            <col width="6%"/>
+                            <col width="6%"/>
+                            <col width="6%"/>
+                            <col width="6%"/>
+                            <col width="6%"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" class="check-box"/></th>
+                                <th>No.</th>
+                                <th>상태</th>   
+                                <th>강사(ID)</th>
+                                <th>강사분류</th>
+                                <th>성별</th>
+                                <th>이메일</th>
+                                <th>연락처</th>
+                                <th>강의횟수</th>
+                                <th>누적<br/>강의횟수</th>
+                                <th>지역</th>
+                                <th>소속기관</th>
+                                <th>최종<br/>수료일</th>
+                                <th>오프라인<br/>2회교육</th>
+                                <th>온라인<br/>보수교육</th>
+                                <th>수정</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" class="check-box"/></td>
+                                <td>1</td>
+                                <td>활동</td>
+                                <td><span class="block">이보람</span><span  class="block">fgfdfdgfdgg</span></td>
+                                <td>기업</td>
+                                <td>남</td>
+                                <td>fgfdfdgfdgg@naver.com</td>
+                                <td>01012345678</td>
+                                <td>32</td>
+                                <td>120</td>
+                                <td>서울</td>
+                                <td>한신만어ㅏㅣ러ㅏㅁ러</td>
+                                <td>2021.10.05</td>
+                                <td><span class="blue-txt">완료</span></td>
+                                <td><span class="red-txt">미완료</span></td>
+                                <td><button class="sm-btn blue-btn">수정</button></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="page-wrap">
+                    <ul class="paging">
+                        <li><a>&lt;&lt;</a></li>
+                        <li><a>&lt;</a></li>
+                        <li class="on"><a>1</a></li>
+                        <li><a>2</a></li>
+                        <li><a>3</a></li>
+                        <li><a>4</a></li>
+                        <li><a>5</a></li>
+                        <li><a>6</a></li>
+                        <li><a>7</a></li>
+                        <li><a>8</a></li>
+                        <li><a>9</a></li>
+                        <li><a>10</a></li>
+                        <li><a>&gt;</a></li>
+                        <li><a>&gt;&gt;</a></li>
+                    </ul>
+                </div>
+            </section>
+            <!--  contents end -->
+
+            <!--  footer begin -->
+            <footer class="footer">
+                <img src="./images/common/foot_logo.png" alt="생명존중희망재단 관리자 로고"/>
+                <dl>
+                    <dt>서울특별시 중구 을지로 6 재능빌딩 15층 교육운영팀 (을지로1가 192-11)</dt>
+                    <dt>Tel : 02-3706-0423~4 Fax : 02-3706-0402 E-mail : edu@kfsp.org</dt>
+                </dl>
+            </footer>
+            <!--  footer end -->
+
+        </article>
+        <!--  container end -->
+        
+    </body>
+</html>

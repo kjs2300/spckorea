@@ -13,7 +13,7 @@
 	    WHERE USER_ID  =  #{id}
 	      AND PASSWORD =  #{shaPassword}    
 	</select>
-	
+	 
     <insert id="signUpInsert" parameterType="com.easycompany.cmm.vo.LoginVo">
 		/**  com.easycompany.mapper.LoginMapper.signUpInsert **/	
 		INSERT 

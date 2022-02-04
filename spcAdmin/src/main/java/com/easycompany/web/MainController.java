@@ -62,7 +62,17 @@ public class MainController {
 
 		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
 		
+		if ( StringUtil.isEmpty(mainVo.getGubun1())) {
+			mainVo.setGubun1("R");
+		}		
+		if ( StringUtil.isEmpty(mainVo.getGubun2())) {
+			mainVo.setGubun2("logo");
+		}	
+		if ( StringUtil.isEmpty(mainVo.getGubun2())) {
+			mainVo.setGubun2("logo");
+		}	
 		MainVo mainForm = mainService.getCommonDetail(mainVo);
+		
 		
 		mainVo.setReg_id(loginvo.getId());		
 		model.addAttribute("mainVo",   mainVo);
@@ -82,8 +92,16 @@ public class MainController {
 			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
 			
 			mainVo.setReg_id(loginvo.getId());
-			mainVo.setGubun2("logo");
-			String fileAddpath = filePath + File.separator + "logo";
+		
+			if ( StringUtil.isEmpty(mainVo.getGubun1())) {
+				mainVo.setGubun1("R");
+			}
+			
+			if ( StringUtil.isEmpty(mainVo.getGubun2())) {
+				mainVo.setGubun2("logo");
+			}
+			
+			String fileAddpath = filePath + File.separator + mainVo.getGubun2();
 			
 			if("I".equals(mainVo.getGubun1())) {
 				//fileUpload
@@ -135,10 +153,10 @@ public class MainController {
 		MainVo fileVo = mainService.getCommonDetail(mainVo);
 		
 		BoardVo boardVoForm = new BoardVo();
-		mainVo.setFile_id(fileVo.getFile_id());
-		mainVo.setFile_name(fileVo.getFile_name());
-		mainVo.setFile_full_path(fileVo.getFile_full_path());
-		mainVo.setFile_size(fileVo.getFile_size());
+		boardVoForm.setFile_uuid(fileVo.getFile_id());
+		boardVoForm.setFile_name(fileVo.getFile_name());
+		boardVoForm.setFile_full_path(fileVo.getFile_full_path());
+		boardVoForm.setFile_size(fileVo.getFile_size());
 		
 		FileUtil.fileDownload(request, response, boardVoForm);
 		
