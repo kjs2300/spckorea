@@ -68,9 +68,7 @@ public class MainController {
 		if ( StringUtil.isEmpty(mainVo.getGubun2())) {
 			mainVo.setGubun2("logo");
 		}	
-		if ( StringUtil.isEmpty(mainVo.getGubun2())) {
-			mainVo.setGubun2("logo");
-		}	
+		
 		MainVo mainForm = mainService.getCommonDetail(mainVo);
 		
 		
@@ -118,7 +116,9 @@ public class MainController {
 			if("E".equals(mainVo.getGubun1())) {
 				BoardVo fileVo= FileUtil.uploadFile (request,  fileAddpath);
 				
-				String fileFullPath = mainVo.getFile_full_path();
+				MainVo fileDeleteVo1 = mainService.getCommonDetail(mainVo);
+				
+				String fileFullPath = fileDeleteVo1.getFile_full_path();
 				mainVo.setFile_id(fileVo.getFile_uuid());
 				mainVo.setFile_name(fileVo.getFile_name());
 				mainVo.setFile_full_path(fileVo.getFile_full_path());

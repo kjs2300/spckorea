@@ -39,7 +39,11 @@ public  class MainServiceImpl extends EgovAbstractServiceImpl implements MainSer
 	}
 	
 	public int updateCommon(MainVo  mainVo) {
-		return mainMapper.updateCommon(mainVo);
+		int cnt = mainMapper.updateCommonFile(mainVo);
+		if(cnt > 0) {
+			return mainMapper.updateCommon(mainVo);
+		}
+		return 0;
 	}
 	
 	public int deleteCommon(MainVo  mainVo) {

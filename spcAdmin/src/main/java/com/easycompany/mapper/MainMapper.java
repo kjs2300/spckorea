@@ -72,6 +72,12 @@ public class MainMapper extends EgovAbstractMapper{
 		return (Integer) update(nameSpace + "." + sqlName, mainVo);
 	}
 	
+	public int updateCommonFile(MainVo mainVo) {
+		
+		String sqlName = "updateCommonFile";
+		return (Integer) update(nameSpace + "." + sqlName, mainVo);
+	}
+	
 	public int deleteCommon(MainVo mainVo) {
 	
 		String sqlName = "deleteLogo";

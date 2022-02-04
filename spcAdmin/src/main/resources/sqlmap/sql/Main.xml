@@ -7,10 +7,10 @@
 		/**  com.easycompany.mapper.MainMapper.insertCommonFile **/	
 		<selectKey resultType="int" keyProperty="file_seq" order="BEFORE">			
 			SELECT IFNULL(MAX(FILE_SEQ), 0) + 1 
-			  FROM COM_FILE			  
+			  FROM EDU_FILE			  
 		</selectKey>		
 		INSERT 
-		INTO COM_FILE
+		INTO EDU_FILE
 		(
 		  	  FILE_GUBUN
 		  	, FILE_ID
@@ -34,10 +34,10 @@
 		/**  com.easycompany.mapper.MainMapper.insertLogo **/	
 		<selectKey resultType="int" keyProperty="logo_no" order="BEFORE">			
 			SELECT IFNULL(MAX(LOGO_NO), 0) + 1 
-			  FROM COM_LOGO			  
+			  FROM EDU_LOGO			  
 		</selectKey>		
 		INSERT 
-		INTO COM_LOGO
+		INTO EDU_LOGO
 		(
 		  	  LOGO_NO
 		  	, REG_ID
@@ -55,10 +55,10 @@
 		/**  com.easycompany.mapper.MainMapper.insertImg **/	
 		<selectKey resultType="int" keyProperty="img_no" order="BEFORE">			
 			SELECT IFNULL(MAX(IMG_NO), 0) + 1 
-			  FROM COM_IMG			  
+			  FROM EDU_IMG			  
 		</selectKey>		
 		INSERT 
-		INTO COM_IMG
+		INTO EDU_IMG
 		(
 		  	  IMG_NO
 		  	, IMG_NM
@@ -82,10 +82,10 @@
 		/**  com.easycompany.mapper.MainMapper.insertBanner **/	
 		<selectKey resultType="int" keyProperty="banner_no" order="BEFORE">			
 			SELECT IFNULL(MAX(BANNER_NO), 0) + 1 
-			  FROM COM_BANNER			  
+			  FROM EDU_BANNER			  
 		</selectKey>		
 		INSERT 
-		INTO COM_BANNER
+		INTO EDU_BANNER
 		(
 		  	  BANNER_NO
 		  	, BANNER_NM
@@ -109,10 +109,10 @@
 		/**  com.easycompany.mapper.MainMapper.insertPopUp **/	
 		<selectKey resultType="int" keyProperty="logo_no" order="BEFORE">			
 			SELECT IFNULL(MAX(LOGO_NO), 0) + 1 
-			FROM COM_LOGO			  
+			FROM EDU_LOGO			  
 		</selectKey>		
 		INSERT 
-		INTO COM_LOGO
+		INTO EDU_LOGO
 		(
 		  	  LOGO_NO
 		  	, REG_ID
@@ -128,7 +128,7 @@
 	
 	<update id="updateLogo" parameterType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.updateLogo **/	
-		UPDATE COM_LOGO 
+		UPDATE EDU_LOGO 
 		   SET FILE_ID = #{file_id}
 		      , CHG_ID  = IFNULL(#{reg_id},'SYSTEM')
 		      , CHG_DT  = NOW()
@@ -137,7 +137,7 @@
 	
 	<update id="updateCommonFile" parameterType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.updateCommonFile **/	
-		UPDATE COM_FILE 
+		UPDATE EDU_FILE 
 		   SET  FILE_NAME       = #{file_name}
 		      , FILE_FULL_PATH  = #{file_full_path}
 		  	  , FILE_SIZE       = #{file_size}
@@ -149,11 +149,11 @@
 	<select id="getLogoDetail" parameterType="com.easycompany.service.vo.MainVo" resultType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.getLogoDetail **/	
 		SELECT A.LOGO_NO, A.FILE_ID , B.FILE_NAME, B.FILE_FULL_PATH, B.FILE_SEQ,B.FILE_SIZE,B.FILE_SEQ
-	      FROM COM_LOGO A, COM_FILE B
+	      FROM EDU_LOGO A, EDU_FILE B
 	     WHERE A.FILE_ID    = B.FILE_ID
 	     <choose>
 	      <when test="logo_no ==0">
-	           AND A.LOGO_NO =(SELECT max(logo_no) FROM COM_LOGO)
+	           AND A.LOGO_NO =(SELECT max(logo_no) FROM EDU_LOGO)
 	      </when>
 	      <otherwise>
 	            AND A.LOGO_NO = #{logo_no}
@@ -166,7 +166,7 @@
 	<select id="commonBannerList" parameterType="com.easycompany.service.vo.MainVo"	resultType="com.easycompany.service.vo.MainVo">
 		 /**  com.easycompany.mapper.MainMapper.commonBannerList **/
 	    SELECT BANNER_NO, BANNER_NM, BANNER_POS, LINK_URL, REG_ID, DATE_FORMAT(REG_DT,'%x-%m-%d') REG_DT
-	      FROM COM_BANNER 
+	      FROM EDU_BANNER 
 	     WHERE 1= 1
 	     <choose>
 		  <when test ="searchCondition !=null and searchCondition !='' and searchCondition =='BANNER_NM' and searchKeyword !=null and searchKeyword !='' ">
@@ -180,7 +180,7 @@
 	<select id="commonBannerCount" parameterType="com.easycompany.service.vo.MainVo" resultType="int">
     	/**  com.easycompany.mapper.MainMapper.commonBannerCount **/
 		 SELECT COUNT(*) cnt
-	       FROM COM_BANNER 
+	       FROM EDU_BANNER 
 	      WHERE 1= 1
 	     <choose>
 		  <when test ="searchCondition !=null and searchCondition !='' and searchCondition =='BANNER_NM' and searchKeyword !=null and searchKeyword !='' ">

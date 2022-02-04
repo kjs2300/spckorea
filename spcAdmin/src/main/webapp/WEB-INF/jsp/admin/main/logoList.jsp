@@ -111,7 +111,7 @@
                                       <input id="files" name="files" type="file"  id="fileNm"  accept=".jpg, .jpeg, .png"/>
                                   </div>
 						 			<c:if test="${not empty mainForm.logo_no }">
-						               로고명 : <a onClick='fileDownload()' ></a> ${mainForm.file_name}</a>
+						                     로고명 :  <a onclick='javascript:fileDownload();'> ${mainForm.file_name}</a>
 						            </c:if>
                                  <p class="point">업로드 이미지 사이즈 : 1920px * 520px</p>
                              </td>
