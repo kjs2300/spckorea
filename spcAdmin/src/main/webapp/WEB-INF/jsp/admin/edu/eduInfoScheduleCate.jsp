@@ -35,7 +35,62 @@
          });
  		 
  		 $('#category1_key').change(function(){
- 			  var val  = $(this).val();
+ 			var val  = $(this).val();
+ 			if( val ==""){
+ 				return;
+ 			}
+ 			$("#gubun3").val('categorycode2');
+ 			$("#category2_key").val(0);
+ 			$("#category3_key").val(0);
+ 			$("#edu_number").val(0);
+ 			
+ 			 $.ajax({	
+ 			    url     : "<c:url value='/edu/eduInfoCategoryCodeList.do'/>",
+ 			    data    : $("#commonForm").serialize(),
+ 		        dataType: "JSON",
+ 		        cache   : false,
+ 				async   : true,
+ 				type	: "POST",	
+ 				success: function(data, opt, inx){
+					var option = '';
+					option += '<option value="">선택 하세요</opton>'; //선택
+					$.each(data, function(i, ret){
+						option += '<option value="'+ret.code_cd+'">'+ret.code_name+'</option>';		
+					});
+					$('select[name=category2_key]').html(option);						
+		        },	       
+ 		        error 	: function(xhr, status, error) {}
+ 		        
+ 		     });
+ 		 });
+ 		 
+ 		$('#category2_key').change(function(){
+ 			var val  = $(this).val();
+ 			if( val ==""){
+ 				return;
+ 			}
+ 			$("#gubun3").val('categorycode3');
+ 			$("#category3_key").val(0);
+ 			$("#edu_number").val(0);
+ 			
+ 			 $.ajax({	
+ 			    url     : "<c:url value='/edu/eduInfoCategoryCodeList.do'/>",
+ 			    data    : $("#commonForm").serialize(),
+ 		        dataType: "JSON",
+ 		        cache   : false,
+ 				async   : true,
+ 				type	: "POST",	
+ 				success: function(data, opt, inx){
+					var option = '';
+					option += '<option value="">선택 하세요</opton>'; //선택
+					$.each(data, function(i, ret){
+						option += '<option value="'+ret.code_cd+'">'+ret.code_name+'</option>';		
+					});
+					$('select[name=category3_key]').html(option);						
+ 		        },	       
+ 		        error 	: function(xhr, status, error) {}
+ 		        
+ 		     });
  		 });
 	
      });	
@@ -150,24 +205,30 @@
                                 <th><span class="red-txt">*</span>교육분류</th>
                                 <td>
                                     <select class="select mr30"  id="category1_key" name="category1_key" >
-                                    	<option value=''>분류1을 선택 하세요</option>
+                                    	<c:if test="${not empty categoryForm.category1_name }">
+                                    		<option value='${categoryForm.category1_key}'>${categoryForm.category1_name}</option>
+                                    	</c:if>
+                                        <option value=''>선택 하세요</option>
 	                                    <c:forEach var="result" items="${category1list}" varStatus="status">
-	                                        <option value='${result.code_cd}'>${result.code_name}</option>
+	                                    	<option value='${result.code_cd}'>${result.code_name}</option>
 	                                    </c:forEach>
                                     </select>
                                     <select class="select"  id="category2_key" name="category2_key" >
-                                        <option value=''>분류2을 선택 하세요</option>
-	                                    <option value='1'>2222</option>
-	                                    <option value='2'>333</option>
-                                    </select>
+                                    	<c:if test="${not empty categoryForm.category2_name }">
+                                    		<option value='${categoryForm.category2_key}'>${categoryForm.category2_name}</option>
+                                    	</c:if>
+                                        <option value=''>선택 하세요</option>
+	                                </select>
                                 </td>
                             </tr>
                             <tr>
                                 <th><span class="red-txt">*</span>교육명</th>
                                 <td>
                                     <select class="select lg-width"  id="category3_key" name="category3_key" >
-                                        <option value='2'>1-1-1ㅇㅇㅇ</option>
-	                                    <option value='3'>33333-22222</option>
+                                    	<c:if test="${not empty categoryForm.category2_name }">
+                                    		<option value='${categoryForm.category2_key}'>${categoryForm.category2_name}</option>
+                                    	</c:if>
+                                    	<option value=''>선택 하세요</option>
                                     </select>
                                 </td>
                             </tr>
@@ -206,7 +267,7 @@
                     <c:if test="${not empty categoryForm.edu_key }">
                    		<button type="button" class="mid-btn blue-btn"   onClick="javascript:fn_save('E');">저장</button>
                    </c:if>
-                   <button type="button" class="mid-btn white-btn"  onClick="javascript:fn_load('R');">취소</button>
+                   <button type="button" class="mid-btn white-btn"  onClick="javascript:history.back();">취소</button>
                 </div>
 
 	            

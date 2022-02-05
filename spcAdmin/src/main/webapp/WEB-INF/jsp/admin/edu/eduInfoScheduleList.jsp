@@ -40,6 +40,17 @@
     	    });
     	 });
  		
+ 		$('.cdate').bind('click', function(){
+ 			var checkdate = $("input[name='checkdate']:checked").val();
+ 			if(checkdate !="TERM"){
+ 				$("#edu_start_date").val(''); 
+ 				$("#edu_end_date").val('');
+ 			}
+ 			if(checkdate =="ALL"){
+ 				$("#category3_name").val(''); 
+ 			}
+     	});
+ 		
  		$('.btnOneApr').bind('click', function(){
  			var ischeckeds = false;
  			$('input:checkbox[name="checkNo"]').each(function() {
@@ -156,6 +167,27 @@
 	function fn_search(){	
 		var frm = document.commonForm;
 		$("#gubun1").val('R'); 
+		
+		var checkdate = $("input[name='checkdate']:checked").val();
+		if(checkdate =="TERM"){
+			var edu_start_date = $("#edu_start_date").val(); 
+			var edu_end_date   = $("#edu_end_date").val();
+			if (edu_start_date == ""){			
+				alert("기간을  선택 하세요.");
+				return;
+			}
+			if (edu_end_date == ""){			
+				alert("기간을  선택 하세요.");
+				return;
+			}
+		}
+		
+		if(checkdate =="ALL"){
+			$("#edu_start_date").val(''); 
+			$("#edu_end_date").val('');
+			$("#category3_name").val(''); 
+		}
+		
 		$("#gubun2").val('eduInfoScheduleList'); 
 		frm.action = "<c:url value='/edu/eduInfoScheduleList.do'/>";
 		frm.submit();
@@ -177,7 +209,7 @@
      //-->
  </script>
 
-           <h1 class="h1-tit">교육일정</h1>
+        <h1 class="h1-tit">교육일정</h1>
 		<form  id="commonForm" name="commonForm"  method="post"  action="">
 			<input type="hidden" id="gubun1"         name="gubun1"         value='I'               class="input-box" />
 		    <input type="hidden" id="gubun2"         name="gubun2"         value='eduInfoSchedule' class="input-box" />	
@@ -189,28 +221,28 @@
                <h2 class="h2-tit">교육일정 검색</h2>
                <div class="search-cont">
                    <div class="radio-cont">
-                       <input type="radio" class="radio-box" id="dateAll"  name="checkdate" value="A" checked>
+                       <input type="radio" class="radio-box cdate" id="checkdate"  name="checkdate" value="ALL"  <c:if test="${categoryVo.checkdate =='ALL'  || (empty categoryForm.category1_name) }">checked </c:if>  >
                        <label for="dateAll">전체</label>
                    </div>                          
                    <div class="radio-cont">
-                       <input type="radio" class="radio-box" id="dateToday" name="checkdate" value="T">
+                       <input type="radio" class="radio-box cdate" id="checkdate" name="checkdate" value="TODAY" <c:if test="${categoryVo.checkdate =='TODAY'}">checked </c:if>  >
                        <label for="dateToday">오늘</label>
                    </div>
                    
                    <div class="radio-cont mr10">
-                       <input type="radio" class="radio-box" id="dateTerm" name="checkdate" value="S">
+                       <input type="radio" class="radio-box cdate" id="checkdate" name="checkdate" value="TERM" <c:if test="${categoryVo.checkdate =='TERM'}">checked </c:if>  >
                        <label for="dateTerm">기간선택</label>
                    </div>
                    <div class="picker-wrap">
-                       <input type="text" id="edu_start_date" name="edu_start_date" readonly class="input-box"/>
+                       <input type="text" id="edu_start_date" name="edu_start_date" readonly class="input-box" value="${categoryVo.edu_start_date}"/>
                        <span class="next-ico">-</span>
-                       <input type="text" id="edu_end_date"   name="edu_end_date"   readonly class="input-box"/>
+                       <input type="text" id="edu_end_date"   name="edu_end_date"   readonly class="input-box" value="${categoryVo.edu_end_date}"/>
                    </div>
-                   <input type="text" class="input-box" id="category3_name" name="category3_name"  placeholder="교육명"/>
-                   </form>
+                   <input type="text" class="input-box" id="category3_name" name="category3_name" value="${categoryVo.category3_name}" placeholder="교육명"/>
                    <button  type="button" class="search-btn" onClick="fn_search();">검색</button>
                </div>
            </div>
+           </form>
 
            <div class="btn-cont mb20">
                <button type="button" class="mid-btn black-btn"  onClick="fn_excel();">엑셀다운</button>

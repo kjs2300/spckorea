@@ -1,16 +1,11 @@
 package com.easycompany.web;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URLDecoder;
+
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,23 +15,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
-import com.easycompany.cmm.util.EgovFileScrty;
 import com.easycompany.cmm.util.FileUtil;
 import com.easycompany.cmm.util.StringUtil;
-import com.easycompany.cmm.vo.Account;
-import com.easycompany.cmm.vo.DefaultVO;
 import com.easycompany.cmm.vo.LoginVo;
-import com.easycompany.service.vo.AddressVo;
 import com.easycompany.service.vo.BoardVo;
 import com.easycompany.service.vo.CategoryVo;
-import com.easycompany.service.BoardService;
-import com.easycompany.service.Department;
 import com.easycompany.service.EduService;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
@@ -46,10 +32,6 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 @RequestMapping("edu")
 public class EduController {
 
-	
-	@Autowired
-	private BoardService boardService;
-	
 	@Autowired
 	private EduService eduService;
 	
@@ -252,6 +234,7 @@ public class EduController {
 		categoryVo.setPageSize(propertiesService.getInt("pageSize"));
 		
 		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		categoryVo.setReg_id(loginvo.getId());
 		
 		/** pageing setting */
 		PaginationInfo paginationInfo = new PaginationInfo();
@@ -265,6 +248,10 @@ public class EduController {
 		
 		if ( StringUtil.isEmpty(categoryVo.getGubun1())) {
 			categoryVo.setGubun1("R");
+		}
+		
+		if ( StringUtil.isEmpty(categoryVo.getCheckdate())) {
+			categoryVo.setCheckdate("ALL");
 		}
 		
 		if ( StringUtil.isEmpty(categoryVo.getGubun2())) {
@@ -449,6 +436,7 @@ public class EduController {
 		int totCnt = eduService.getCategoryCount(categoryVo);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("categoryVo",     categoryVo);
 
 		return "eduInfoClassList";
 	}
@@ -538,6 +526,21 @@ public class EduController {
 		}
 		
 		return categoryVo;
+	}
+	
+	@RequestMapping(value = "/eduInfoCategoryCodeList.do")
+	@ResponseBody
+	public List<CategoryVo> eduInfoCategoryCodeList(HttpServletRequest request, CategoryVo categoryVo) throws Exception {
+	
+		List<CategoryVo> category1list = null;
+		try {
+		
+			category1list = eduService.getCategoryCodeList(categoryVo);
+		} catch (Exception e) {
+			categoryVo.setResult("FAIL");
+		}
+		
+		return category1list;
 	}
 }
 

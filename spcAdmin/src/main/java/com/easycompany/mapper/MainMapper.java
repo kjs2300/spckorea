@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
-
-import com.easycompany.service.vo.CategoryVo;
 import com.easycompany.service.vo.MainVo;
 
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
