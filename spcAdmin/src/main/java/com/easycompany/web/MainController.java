@@ -189,23 +189,18 @@ public class MainController {
 		
 		if ( StringUtil.isEmpty(mainVo.getGubun2())) {
 			mainVo.setGubun2("img");
-		}
-		
+		}		
 		
 		List<MainVo> list = mainService.getCommonList(mainVo);
 		model.addAttribute("resultList", list);
-			
-		
+				
 		int totCnt = mainService.getCommonCount(mainVo);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-		
-	
-		
+			
 		mainVo.setReg_id(loginvo.getId());		
 		model.addAttribute("mainVo",   mainVo);
 	
-
 		return "imgList";
 	}
 
@@ -251,6 +246,8 @@ public class MainController {
 			String fileAddpath = filePath + File.separator + mainVo.getGubun2();
 			
 			if("I".equals(mainVo.getGubun1())) {
+				mainVo.setGubun3("I");
+				
 				//fileUpload
 				BoardVo fileVo= FileUtil.uploadFile (request,  fileAddpath);
 				
@@ -281,14 +278,15 @@ public class MainController {
 						FileUtil.deleteFile(request, fileFullPath);
 					}
 				}else {
+					mainVo.setGubun3("I");
 					resultCnt = mainService.updateCommon(mainVo);
 				}
-				
-				
 			}
 
 
 			if("D".equals(mainVo.getGubun1())) {
+				
+				mainVo.setGubun3("I");
 				
 				MainVo fileDeleteVo = mainService.getCommonDetail(mainVo);
 				resultCnt = mainService.deleteCommon(mainVo);
@@ -399,6 +397,8 @@ public class MainController {
 			String fileAddpath = filePath + File.separator + mainVo.getGubun2();
 			
 			if("I".equals(mainVo.getGubun1())) {
+				
+				mainVo.setGubun3("I");
 				//fileUpload
 				BoardVo fileVo= FileUtil.uploadFile (request,  fileAddpath);
 				
@@ -409,8 +409,7 @@ public class MainController {
 				mainVo.setFile_size(fileVo.getFile_size());
 				resultCnt = mainService.insertCommon(mainVo);
 			}
-			
-			
+				
 			if("E".equals(mainVo.getGubun1())) {
 				
 				if(! "N".equals(mainVo.getGubun3())) {
@@ -429,12 +428,14 @@ public class MainController {
 						FileUtil.deleteFile(request, fileFullPath);
 					}
 				}else {
+					mainVo.setGubun3("I");
 					resultCnt = mainService.updateCommon(mainVo);
 				}
 			}
 
-
 			if("D".equals(mainVo.getGubun1())) {
+				
+				mainVo.setGubun3("I");
 				
 				MainVo fileDeleteVo = mainService.getCommonDetail(mainVo);
 				resultCnt = mainService.deleteCommon(mainVo);
@@ -448,7 +449,6 @@ public class MainController {
 			}
 
 			mainVo.setResult((resultCnt > 0 ? "SUCCESS" : "FAIL") );
-
 			
 		} catch (Exception e) {
 			mainVo.setResult("FAIL");
@@ -457,6 +457,116 @@ public class MainController {
 		return mainVo;
 	}
 	
+	/** admin >  팝업관리  List  */
+	@RequestMapping(value = "/popupList.do")
+	public String popupList(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model,HttpServletRequest request) throws Exception {
+
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		
+		/** EgovPropertyService.sample */
+		mainVo.setPageUnit(propertiesService.getInt("pageUnit"));
+		mainVo.setPageSize(propertiesService.getInt("pageSize"));
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(mainVo.getPageIndex());
+		paginationInfo.setRecordCountPerPage(mainVo.getPageUnit());
+		paginationInfo.setPageSize(mainVo.getPageSize());
+		
+		/***  offSet 설정  ***/
+		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
+		mainVo.setOffset(offset);
+		
+		if ( StringUtil.isEmpty(mainVo.getGubun1())) {
+			mainVo.setGubun1("R");
+		}
+		
+		if ( StringUtil.isEmpty(mainVo.getGubun2())) {
+			mainVo.setGubun2("popup");
+		}
+		
+		List<MainVo> list = mainService.getCommonList(mainVo);
+		model.addAttribute("resultList", list);
+				
+		int totCnt = mainService.getCommonCount(mainVo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+				
+		mainVo.setReg_id(loginvo.getId());		
+		model.addAttribute("mainVo",   mainVo);
+	
+		return "popupList";
+	}
+
+	
+	/** admin > 메인팝업 등록  */
+	@RequestMapping(value = "/popupReg.do")
+	public String popupReg(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model,HttpServletRequest request) throws Exception {
+
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		
+		if ( StringUtil.isEmpty(mainVo.getGubun1())) {
+			mainVo.setGubun1("R");
+		}		
+		if ( StringUtil.isEmpty(mainVo.getGubun2())) {
+			mainVo.setGubun2("popup");
+		}	
+		
+		MainVo mainForm = mainService.getCommonDetail(mainVo);
+				
+		mainVo.setReg_id(loginvo.getId());		
+		model.addAttribute("mainVo",   mainVo);
+		model.addAttribute("mainForm", mainForm);
+
+		return "popupReg";
+	}
+
+	@RequestMapping(value = "/popupSave.do")
+	@ResponseBody
+	public MainVo popupSave(HttpServletRequest request, MainVo mainVo) throws Exception {
+		
+		int resultCnt = 0;
+		
+		try {
+			
+			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+			
+			mainVo.setReg_id(loginvo.getId());
+		
+			if ( StringUtil.isEmpty(mainVo.getGubun2())) {
+				mainVo.setGubun2("popup");
+			}
+			
+			mainVo.setGubun3("N");
+			
+			if("I".equals(mainVo.getGubun1())) {
+				
+				resultCnt = mainService.insertCommon(mainVo);
+			}
+						
+			if("E".equals(mainVo.getGubun1())) {				
+				resultCnt = mainService.updateCommon(mainVo);
+			}
+
+			if("D".equals(mainVo.getGubun1())) {
+				resultCnt = mainService.deleteCommon(mainVo);
+			}
+			
+			//전체삭제
+			if("A".equals(mainVo.getGubun1())){
+				String[] ArraysStr = mainVo.getCheckdstr().split(",");
+				for(String s : ArraysStr) {
+					mainVo.setPopup_no(Integer.parseInt(s));
+					resultCnt = mainService.deleteCommon(mainVo);		
+				}	
+			}
+			
+			mainVo.setResult((resultCnt > 0 ? "SUCCESS" : "FAIL") );
+			
+		} catch (Exception e) {
+			mainVo.setResult("FAIL");
+		}
+		
+		return mainVo;
+	}
 }
-
-

@@ -7,9 +7,9 @@
         <a href="#">메인화면</a>
         <ul class="depth02-menu">
             <li class="active"><a href="<c:url value='/main/logoList.do' />">로고</a></li>
-            <li><a href="<c:url value='/main/imgList.do' />">메인이미지</a></li>
+            <li><a href="<c:url value='/main/imgList.do'    />">메인이미지</a></li>
             <li><a href="<c:url value='/main/bannerList.do' />">배너관리</a></li>
-            <li><a href="#">팝업창 관리</a></li>
+            <li><a href="<c:url value='/main/popupList.do' />">팝업창 관리</a></li>
         </ul>
     </li>
     <li>
@@ -77,7 +77,6 @@
         </ul>
     </li>
     <li>
-        <a href="#">수료증/기타</a>
-    
+        <a href="#">수료증/기타</a>    
     </li>
 </ul>

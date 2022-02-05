@@ -27,7 +27,7 @@ public class MainMapper extends EgovAbstractMapper{
 		if("banner".equals(mainVo.getGubun2())){
 			sqlName = "insertBanner";
 		}
-		if("popUp".equals(mainVo.getGubun2())){
+		if("popup".equals(mainVo.getGubun2())){
 			sqlName = "insertPopUp";
 		}
 		return (Integer) insert(nameSpace + "." + sqlName, mainVo);
@@ -44,7 +44,7 @@ public class MainMapper extends EgovAbstractMapper{
 		if("banner".equals(mainVo.getGubun2())){
 			sqlName = "getBannerDetail";
 		}
-		if("popUp".equals(mainVo.getGubun2())){
+		if("popup".equals(mainVo.getGubun2())){
 			sqlName = "getPopUpDetail";
 		}
 		return (MainVo)selectOne(nameSpace + "." + sqlName, mainVo);
@@ -70,7 +70,7 @@ public class MainMapper extends EgovAbstractMapper{
 		if("banner".equals(mainVo.getGubun2())){
 			sqlName = "updateBanner";
 		}
-		if("popUp".equals(mainVo.getGubun2())){
+		if("popup".equals(mainVo.getGubun2())){
 			sqlName = "updatePopUp";
 		}
 		return (Integer) update(nameSpace + "." + sqlName, mainVo);
@@ -92,7 +92,7 @@ public class MainMapper extends EgovAbstractMapper{
 		if("banner".equals(mainVo.getGubun2())){
 			sqlName = "deleteBanner";
 		}
-		if("popUp".equals(mainVo.getGubun2())){
+		if("popup".equals(mainVo.getGubun2())){
 			sqlName = "deletePopUp";
 		}
 		return (Integer) update(nameSpace + "." + sqlName, mainVo);
@@ -105,7 +105,7 @@ public class MainMapper extends EgovAbstractMapper{
 		if("banner".equals(mainVo.getGubun2())){
 			sqlName = "getBannerList";
 		}
-		if("popUp".equals(mainVo.getGubun2())){
+		if("popup".equals(mainVo.getGubun2())){
 			sqlName = "getPopUpList";
 		}
 		return selectList(nameSpace + "." + sqlName, mainVo);
@@ -118,7 +118,7 @@ public class MainMapper extends EgovAbstractMapper{
 		if("banner".equals(mainVo.getGubun2())){
 			sqlName = "getBannerCount";
 		}
-		if("popUp".equals(mainVo.getGubun2())){
+		if("popup".equals(mainVo.getGubun2())){
 			sqlName = "getPopUpCount";
 		}
 		

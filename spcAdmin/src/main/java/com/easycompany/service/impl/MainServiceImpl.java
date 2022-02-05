@@ -25,10 +25,15 @@ public  class MainServiceImpl extends EgovAbstractServiceImpl implements MainSer
 	
 	public int insertCommon(MainVo mainVo) {
 		
-		int cnt = mainMapper.insertCommonFile(mainVo);
-		if(cnt > 0) {
+		if(! "N".equals(mainVo.getGubun3())) {
+			int cnt = mainMapper.insertCommonFile(mainVo);
+			if(cnt > 0) {
+				return mainMapper.insertCommon(mainVo);
+			}
+		}else {
 			return mainMapper.insertCommon(mainVo);
 		}
+		
 		return 0;
 	}
 	
@@ -46,9 +51,18 @@ public  class MainServiceImpl extends EgovAbstractServiceImpl implements MainSer
 		return 0;
 	}
 	
-	public int deleteCommon(MainVo  mainVo) {		
-		mainMapper.deleteCommonFile(mainVo);
-		return mainMapper.deleteCommon(mainVo);
+	public int deleteCommon(MainVo  mainVo) {	
+		
+		if(! "N".equals(mainVo.getGubun3())) {
+			int cnt = mainMapper.deleteCommonFile(mainVo);
+			if(cnt > 0) {
+				return mainMapper.deleteCommon(mainVo);
+			}
+		}else {
+			return mainMapper.deleteCommon(mainVo);
+		}
+		
+		return 0;
 	}
 	
 	public List<MainVo> getCommonList(MainVo  mainVo) throws Exception{

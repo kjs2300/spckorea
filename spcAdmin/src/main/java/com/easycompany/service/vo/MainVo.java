@@ -33,8 +33,15 @@ public class MainVo extends DefaultVO {
 	int img_no;
 	String img_nm;
 	String img_pos;
-
 	
+	int popup_no;
+	int otpt_xaxs_lc;
+	int otpt_yaxs_lc;
+	int popup_ar;
+	int popup_hg;
+	String popup_nm;
+	String popup_cn;
+	String checkdstr;
 	
 	public int getBanner_no() {
 		return banner_no;
@@ -180,6 +187,55 @@ public class MainVo extends DefaultVO {
 	}
 	public void setFile_size(long file_size) {
 		this.file_size = file_size;
+	}
+
+	public int getPopup_no() {
+		return popup_no;
+	}
+	public void setPopup_no(int popup_no) {
+		this.popup_no = popup_no;
+	}
+	public int getOtpt_xaxs_lc() {
+		return otpt_xaxs_lc;
+	}
+	public void setOtpt_xaxs_lc(int otpt_xaxs_lc) {
+		this.otpt_xaxs_lc = otpt_xaxs_lc;
+	}
+	public int getOtpt_yaxs_lc() {
+		return otpt_yaxs_lc;
+	}
+	public void setOtpt_yaxs_lc(int otpt_yaxs_lc) {
+		this.otpt_yaxs_lc = otpt_yaxs_lc;
+	}
+	public int getPopup_ar() {
+		return popup_ar;
+	}
+	public void setPopup_ar(int popup_ar) {
+		this.popup_ar = popup_ar;
+	}
+	public int getPopup_hg() {
+		return popup_hg;
+	}
+	public void setPopup_hg(int popup_hg) {
+		this.popup_hg = popup_hg;
+	}
+	public String getPopup_nm() {
+		return popup_nm;
+	}
+	public void setPopup_nm(String popup_nm) {
+		this.popup_nm = popup_nm;
+	}
+	public String getPopup_cn() {
+		return popup_cn;
+	}
+	public void setPopup_cn(String popup_cn) {
+		this.popup_cn = popup_cn;
+	}
+	public String getCheckdstr() {
+		return checkdstr;
+	}
+	public void setCheckdstr(String checkdstr) {
+		this.checkdstr = checkdstr;
 	}
 
 	}

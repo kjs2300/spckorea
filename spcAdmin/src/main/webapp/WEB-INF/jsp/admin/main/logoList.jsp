@@ -111,7 +111,13 @@
                                       <input id="files" name="files" type="file"  id="fileNm"  accept=".jpg, .jpeg, .png"/>
                                   </div>
 						 			<c:if test="${not empty mainForm.logo_no }">
-						                     로고명 :  <a onclick='javascript:fileDownload();'> ${mainForm.file_name}</a>
+							 			 <c:if test="${not empty mainForm.file_name }">
+								           	<c:set var="ppx" value="${fn:split(mainForm.file_name,'.')}" />
+									          <a onclick='javascript:fileDownload();'>  
+									          	<img heigth="200px" width="120px" src="/editor/${mainVo.gubun2}/${mainForm.file_id}.${ppx[1]}"  alt="${mainForm.file_name}"/>
+									         </a>
+									        </c:if>
+						                     
 						            </c:if>
                                  <p class="point">업로드 이미지 사이즈 : 1920px * 520px</p>
                              </td>

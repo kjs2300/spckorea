@@ -107,22 +107,34 @@
 	
 	<insert id="insertPopUp" parameterType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.insertPopUp **/	
-		<selectKey resultType="int" keyProperty="logo_no" order="BEFORE">			
-			SELECT IFNULL(MAX(LOGO_NO), 0) + 1 
-			FROM EDU_LOGO			  
+		<selectKey resultType="int" keyProperty="popup_no" order="BEFORE">			
+			SELECT IFNULL(MAX(POPUP_NO), 0) + 1 
+			FROM EDU_POPUP			  
 		</selectKey>		
 		INSERT 
-		INTO EDU_LOGO
+		INTO EDU_POPUP
 		(
-		  	  LOGO_NO
+		  	  POPUP_NO
+		  	, POPUP_NM
+		  	, POPUP_CN
+		  	, OTPT_XAXS_LC
+		  	, OTPT_YAXS_LC
+		  	, POPUP_AR
+		  	, POPUP_HG
+		  	, USE_YN
 		  	, REG_ID
-		  	, FILE_ID
 		) 
 		VALUES 
 		(
-			  #{logo_no}
+			  #{popup_no}
+			, #{popup_nm}
+			, #{popup_cn}
+			, #{otpt_xaxs_lc}
+			, #{otpt_yaxs_lc}
+			, #{popup_ar}
+			, #{popup_hg}
+			, #{use_yn}
 			, IFNULL(#{reg_id},'SYSTEM')
-			, #{file_id}
 		)	
 	</insert>
 	
@@ -166,10 +178,16 @@
 	<update id="updatePopUp" parameterType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.updatePopUp **/	
 		UPDATE EDU_POPUP 
-		   SET FILE_ID = #{file_id}
-		      , CHG_ID  = IFNULL(#{reg_id},'SYSTEM')
-		      , CHG_DT  = NOW()
- 		 WHERE POPUP_NO = #{popup_no}
+		   SET  POPUP_NM    = #{popup_nm}
+		      , POPUP_CN     = #{popup_cn}
+		      , OTPT_XAXS_LC = #{otpt_xaxs_lc}
+		      , OTPT_YAXS_LC = #{otpt_yaxs_lc}
+		      , POPUP_AR     = #{popup_ar}
+		      , POPUP_HG     = #{popup_hg}
+		      , USE_YN       = #{use_yn}
+		      , CHG_ID       = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_DT       = NOW()
+ 		 WHERE POPUP_NO      = #{popup_no}
 	</update>	
 	
 	<update id="updateCommonFile" parameterType="com.easycompany.service.vo.MainVo">
@@ -207,7 +225,8 @@
 	
 	<delete id="deletePopUp" parameterType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.deletePopUp **/	
-		DELETE EDU_POPUP
+		DELETE 
+		  FROM EDU_POPUP
  		 WHERE POPUP_NO       = #{popup_no}  
 	</delete>
 		
@@ -253,6 +272,20 @@
 		       AND  BANNER_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
 		  </when>
 	     </choose>
+	</select>
+	
+	<select id="getPopUpList" parameterType="com.easycompany.service.vo.MainVo"	resultType="com.easycompany.service.vo.MainVo">
+		 /**  com.easycompany.mapper.MainMapper.getPopUpList **/
+	    SELECT POPUP_NO, POPUP_NM, POPUP_CN, OTPT_XAXS_LC, OTPT_YAXS_LC, POPUP_AR, POPUP_HG, USE_YN
+		  FROM EDU_POPUP
+	     ORDER BY POPUP_NO DESC 
+	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
+	</select>	
+	
+	<select id="getPopUpCount" parameterType="com.easycompany.service.vo.MainVo" resultType="int">
+    	/**  com.easycompany.mapper.MainMapper.getPopUpCount **/
+		 SELECT COUNT(*) cnt
+	       FROM EDU_POPUP 
 	</select>
 	
 	<select id="getImgist" parameterType="com.easycompany.service.vo.MainVo"	resultType="com.easycompany.service.vo.MainVo">
@@ -301,5 +334,13 @@
 	  	   AND B.FILE_GUBUN = #{gubun2}	   
 	     LIMIT 1 OFFSET 0    	    
 	</select>
+	
+	<select id="getPopUpDetail" parameterType="com.easycompany.service.vo.MainVo" resultType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.getPopUpDetail  **/	
+		SELECT POPUP_NO, POPUP_NM, POPUP_CN, OTPT_XAXS_LC, OTPT_YAXS_LC, POPUP_AR, POPUP_HG, USE_YN
+	      FROM EDU_POPUP
+	     WHERE POPUP_NO  = #{popup_no}
+	</select>
+	
 	
 </mapper>

@@ -49,7 +49,7 @@
  			});
 
  			if(!ischeckeds){
-	 			alert('선택 된 결재건이 없습니다.');
+	 			alert('선택 된 건이 없습니다.');
 	 			return false;
  			}
  			var checkNo ="";
