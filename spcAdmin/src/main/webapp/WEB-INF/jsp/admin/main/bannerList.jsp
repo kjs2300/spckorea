@@ -17,7 +17,7 @@
  	
 	 function fn_delete(gubun1, key1, fileid){
 			
-			$("#img_no").val(key1); 
+			$("#banner_no").val(key1); 
 			$("#gubun1").val(gubun1); 
 			$("#file_id").val(fileid); 
 			
@@ -28,7 +28,7 @@
 					
 				$.ajax({	
 					data     : $("#commonForm").serialize(),
-				    url		 : "<c:url value='/main/imgSave.do'/>",
+				    url		 : "<c:url value='/main/bannerSave.do'/>",
 			        dataType : "JSON",
 			        cache    : false,
 			        async    : false,
@@ -62,37 +62,38 @@
 	function goOkPage(){	
 		var frm = document.commonForm;
 		$("#gubun1").val('R'); 
-		frm.action = "<c:url value='/main/imgList.do'/>";
+		frm.action = "<c:url value='/main/bannerList.do'/>";
 		frm.submit();
 	}
-	function fn_load(){	
-		var frm = document.commonForm;
-		$("#gubun1").val('I'); 
-		frm.action = "<c:url value='/main/imgReg.do'/>";
-		frm.submit();
-	}
+	
 	function fn_search(){	
 		var frm = document.commonForm;
 		$("#gubun1").val('R'); 
-		frm.action = "<c:url value='/main/imgList.do'/>";
+		frm.action = "<c:url value='/main/bannerList.do'/>";
 		frm.submit();
 	}
     
 	  /* pagination 페이지 링크 function */
     function fn_egov_link_page(pageNo){
     	document.listForm.pageIndex.value = pageNo;
-    	document.listForm.action = "<c:url value='/main/imgList.do'/>";
+    	document.listForm.action = "<c:url value='/main/bannerList.do'/>";
        	document.listForm.submit();
     }	  
 	
-	  function fn_edit(str,key1) {
+	function fn_edit(str,key1) {
     	var frm = document.commonForm;
     	$("#gubun1").val(str);
-    	$("#img_no").val(key1); 
-     	frm.action = "<c:url value='/main/imgReg.do'/>";
+    	$("#banner_no").val(key1); 
+     	frm.action = "<c:url value='/main/bannerReg.do'/>";
     	frm.submit();
-     }
+    }
 	
+	function fn_load(){	
+		var frm = document.commonForm;
+		$("#gubun1").val('I'); 
+		frm.action = "<c:url value='/main/bannerReg.do'/>";
+		frm.submit();
+	}
      //-->
  </script>
 
@@ -101,16 +102,16 @@
 			<input type="hidden" id="gubun1"      name="gubun1"     value='I'   />
 		    <input type="hidden" id="gubun2"      name="gubun2"     value='${mainVo.gubun2}' />	
 		    <input type="hidden" id="pageIndex"   name="pageIndex"  value="${mainVo.pageIndex}"     />
-		    <input type="hidden" id="img_no"      name="img_no"     value="${mainVo.img_no}"     />
+		    <input type="hidden" id="banner_no"   name="banner_no"  value="${mainVo.banner_no}"     />
 		    <input type="hidden" id="file_id"     name="file_id"  /> 
 	
 		   
-		   <h1 class="h1-tit">메인 이미지 관리</h1>
+		   <h1 class="h1-tit">배너 관리</h1>
            <div class="search-wrap mb18">
                
                <div class="search-cont">
                    <select id='searchCondition' name='searchCondition' class="select">
-                       <option value='IMG_NM'>제목</option>
+                       <option value='BANNER_NM'>제목</option>
                    </select>
                    <input type="text" id='searchKeyword' name='searchKeyword' value="${mainVo.searchKeyword}" class="input-box" placeholder="직접입력"/>
                    
@@ -145,7 +146,7 @@
                    	<c:forEach var="result" items="${resultList}" varStatus="status">
                    	   
                        <tr>
-                           <td>${result.img_nm}</td>
+                           <td>${result.banner_nm}</td>
                            <c:if test="${empty result.file_name }">
                            	<td>no Image</td>
 				           </c:if>    
@@ -153,12 +154,12 @@
 				           	<c:set var="ppx" value="${fn:split(result.file_name,'.')}" />
 				            <td><img class="img-box" src="/editor/${mainVo.gubun2}/${result.file_id}.${ppx[1]}" /></td>
 				           </c:if>				            
-                           <td>${result.img_pos}</td>
+                           <td>${result.banner_pos}</td>
                            <td>${result.link_url}</td>
                            <td>${result.reg_dt}</td>
                            <td>
-                               <button type='button'   onClick="javascript:fn_edit('E',  '${result.img_no}');" class="sm-btn blue-btn"> 수정</button>
-                               <button type='button'   onClick="javascript:fn_delete('D','${result.img_no}','${result.file_id}');" class="sm-btn white-btn">삭제</button>
+                               <button type='button'   onClick="javascript:fn_edit('E',  '${result.banner_no}');" class="sm-btn blue-btn"> 수정</button>
+                               <button type='button'   onClick="javascript:fn_delete('D','${result.banner_no}','${result.file_id}');" class="sm-btn white-btn">삭제</button>
                            </td>
                        </tr>
                     </c:forEach>

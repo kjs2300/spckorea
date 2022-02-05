@@ -13,22 +13,22 @@
  function goOkPage(){	
 		var frm = document.commonForm;
 		$("#gubun1").val('R'); 
-		frm.action = "<c:url value='/main/imgList.do'/>";
+		frm.action = "<c:url value='/main/bannerList.do'/>";
 		frm.submit();
 	}
 	    
 	function fn_save(gubun1){
  	
 	   var gubun2    = $("#gubun2").val();
-	   var img_no    = $("#img_no").val();
-	   var img_nm    = $("#img_nm").val();
+	   var banner_no    = $("#banner_no").val();
+	   var banner_nm    = $("#banner_nm").val();
 	   var link_url  = $("#link_url").val();
 	   var gubun3   = "I";
-	   var img_pos = $("select[name=img_pos] option:selected").val();
+	   var banner_pos = $("select[name=banner_pos] option:selected").val();
 	     
-	   if (img_nm == ""){			
+	   if (banner_nm == ""){			
 			alert("제목을 입력하세요.");
-			$("#img_nm").focus();
+			$("#banner_nm").focus();
 			return;
 		}		
   
@@ -45,7 +45,7 @@
 	       		gubun3   = "N";
 			}
 	    }
-		if (img_pos == ""){			
+		if (banner_pos == ""){			
 			alert("배너 위치를  선택 하세요.");
 			return;
 		}
@@ -59,15 +59,15 @@
 		formData.append("gubun1",   gubun1);
 		formData.append("gubun2",   gubun2);
 		formData.append("gubun3",   gubun3);
-		formData.append("img_no",   img_no);
-	    formData.append("img_nm",   img_nm);
+		formData.append("banner_no",   banner_no);
+	    formData.append("banner_nm",   banner_nm);
 		formData.append("link_url", link_url);
-		formData.append("img_pos",  img_pos);
+		formData.append("banner_pos",  banner_pos);
 		formData.append("files",    $("input[name=files]")[0].files[0]);
 				
-		var msg = "이미지를 등록 하시겠습니까?";
+		var msg = "배너를 등록 하시겠습니까?";
 		if (gubun1 == "E"){
-			msg = "이미지를  수정 하시겠습니까?"
+			msg = "배너를  수정 하시겠습니까?"
 		}
 		
 		var yn = confirm(msg);		
@@ -75,7 +75,7 @@
 				
 			$.ajax({	
 				data       : formData,
-			    url		   : "<c:url value='/main/imgSave.do'/>",
+			    url		   : "<c:url value='/main/bannerSave.do'/>",
 			    dataType   : "JSON",
 		        processData: false, 
 		        contentType: false,
@@ -104,17 +104,24 @@
 			}
 		}
 	}	
+	
+	function fn_load(){	
+		var frm = document.commonForm;
+		$("#gubun1").val('I'); 
+		frm.action = "<c:url value='/main/bannerReg.do'/>";
+		frm.submit();
+	}
      //-->
  </script>
  
            <form  id="commonForm" name="commonForm"  method="post"  >
 			<input type="hidden" id="gubun1"         name="gubun1"         class="input-box" value=''/>
-			<input type="hidden" id="gubun2"         name="gubun2"         class="input-box" value='img'/>
+			<input type="hidden" id="gubun2"         name="gubun2"         class="input-box" value='banner'/>
 			<input type="hidden" id="gubun3"         name="gubun3"         class="input-box" value='I'/>
-			<input type="hidden" id="img_no"         name="img_no"         class="input-box" value='${mainVo.img_no}'/>
+			<input type="hidden" id="banner_no"       name="banner_no"     class="input-box" value='${mainVo.banner_no}'/>
 
 			
-            <h1 class="h1-tit">메인이미지 등록</h1>
+            <h1 class="h1-tit">베너 등록</h1>
 
 
                 <div class="table-wrap">
@@ -128,7 +135,7 @@
                             <tr>
                                 <th>제목</th>
                                 <td>
-                                    <input type="text"  id='img_nm' name='img_nm' value="${mainForm.img_nm}" class="input-box w768" value=""/>
+                                    <input type="text"  id='banner_nm' name='banner_nm' value="${mainForm.banner_nm}" class="input-box w768" value=""/>
                                 </td>
                             </tr>
                             <tr>
@@ -147,9 +154,9 @@
                             <tr>
                                 <th>배너위치</th>
                                 <td>
-                                    <select id='img_pos' name='img_pos' class="select">
-                                    	<c:if test="${not empty mainForm.img_pos }">
-                                    		<option value='${mainForm.img_pos}'>${mainForm.img_pos}</option>
+                                    <select id='banner_pos' name='banner_pos' class="select">
+                                    	<c:if test="${not empty mainForm.banner_pos }">
+                                    		<option value='${mainForm.banner_pos}'>${mainForm.banner_pos}</option>
                                     	</c:if>
                                         <option value='메인슬라이드'>메인슬라이드</option>
                                         <option value='컨텐츠 배너(좌측)'>컨텐츠 배너(좌측)</option>
@@ -169,10 +176,10 @@
                 </div>
 				</form>
                 <div class="btn-cont">
-                <c:if test="${empty mainForm.img_no }">
+                <c:if test="${empty mainForm.banner_no }">
 		           	<button type="button"  onClick="javascript:fn_save('I');" class="mid-btn blue-btn">저장</button>
 		        </c:if>    
-                <c:if test="${not empty mainForm.img_no }">
+                <c:if test="${not empty mainForm.banner_no }">
                 	<button type="button"  onClick="javascript:fn_save('E');" class="mid-btn blue-btn">수정</button>
 	            </c:if>
                     <!--  <button type="button" class="mid-btn white-btn">취소</button> -->

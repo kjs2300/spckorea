@@ -135,6 +135,43 @@
  		 WHERE LOGO_NO = #{logo_no}
 	</update>	
 	
+	<update id="updateImg" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.updateImg **/	
+		UPDATE EDU_IMG 
+		   SET  IMG_NM   = #{img_nm}
+		  	  , IMG_POS  = #{img_pos}
+		  	  , LINK_URL = #{link_url}
+		  	  <if test=" file_id !=null and file_id !=''">	
+			  , FILE_ID  = #{file_id}   
+			 </if>
+		      , CHG_ID   = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_DT   = NOW()
+ 		 WHERE IMG_NO    = #{img_no}
+	</update>	
+	
+	<update id="updateBanner" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.updateBanner **/	
+		UPDATE EDU_BANNER 
+		   SET  BANNER_NM  = #{banner_nm}
+		  	  , BANNER_POS = #{banner_pos}
+		  	  , LINK_URL   = #{link_url}
+		  	  <if test=" file_id !=null and file_id !=''">	
+			  , FILE_ID  = #{file_id}   
+			 </if>
+		      , CHG_ID     = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_DT     = NOW()
+ 		 WHERE BANNER_NO   = #{banner_no}
+	</update>	
+	
+	<update id="updatePopUp" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.updatePopUp **/	
+		UPDATE EDU_POPUP 
+		   SET FILE_ID = #{file_id}
+		      , CHG_ID  = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_DT  = NOW()
+ 		 WHERE POPUP_NO = #{popup_no}
+	</update>	
+	
 	<update id="updateCommonFile" parameterType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.updateCommonFile **/	
 		UPDATE EDU_FILE 
@@ -150,8 +187,8 @@
 		/**  com.easycompany.mapper.MainMapper.deleteCommonFile **/	
 		DELETE 
 		  FROM EDU_FILE
- 		 WHERE FILE_GUBUN       = #{gubun2}  
- 		   AND FILE_SEQ         = #{file_seq}
+ 		 WHERE FILE_GUBUN      = #{gubun2}  
+ 		   AND FILE_ID         = #{file_id}
 	</delete>
 	
 	<delete id="deleteImg" parameterType="com.easycompany.service.vo.MainVo">
@@ -193,15 +230,16 @@
 	
 	<select id="getBannerList" parameterType="com.easycompany.service.vo.MainVo"	resultType="com.easycompany.service.vo.MainVo">
 		 /**  com.easycompany.mapper.MainMapper.getBannerList **/
-	    SELECT BANNER_NO, BANNER_NM, BANNER_POS, LINK_URL, REG_ID, DATE_FORMAT(REG_DT,'%x-%m-%d') REG_DT
-	      FROM EDU_BANNER 
-	     WHERE 1= 1
+	    SELECT A.BANNER_NO, A.BANNER_NM, A.BANNER_POS, A.LINK_URL, A.REG_ID, DATE_FORMAT(A.REG_DT,'%x-%m-%d') REG_DT
+	           ,A.FILE_ID ,  (SELECT FILE_NAME FROM EDU_FILE WHERE FILE_ID = A.FILE_ID) FILE_NAME
+	      FROM EDU_BANNER A 
+	      WHERE 1= 1
 	     <choose>
 		  <when test ="searchCondition !=null and searchCondition !='' and searchCondition =='BANNER_NM' and searchKeyword !=null and searchKeyword !='' ">
-		       AND  BANNER_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
+		       AND  A.BANNER_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
 		  </when>
 	     </choose>
-	     ORDER BY BANNER_NO 
+	     ORDER BY A.BANNER_NO 
 	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
 	</select>	
 	
@@ -250,6 +288,16 @@
 	      FROM EDU_IMG A, EDU_FILE B
 	     WHERE A.FILE_ID    = B.FILE_ID
 	       AND A.IMG_NO     = #{img_no}
+	  	   AND B.FILE_GUBUN = #{gubun2}	   
+	     LIMIT 1 OFFSET 0    	    
+	</select>
+	
+	<select id="getBannerDetail" parameterType="com.easycompany.service.vo.MainVo" resultType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.MainMapper.getBannerDetail  **/	
+		SELECT A.BANNER_NO, A.BANNER_NM,A.BANNER_POS,A.LINK_URL, A.FILE_ID , B.FILE_NAME, B.FILE_FULL_PATH, B.FILE_SEQ,B.FILE_SIZE,B.FILE_SEQ
+	      FROM EDU_BANNER A, EDU_FILE B
+	     WHERE A.FILE_ID    = B.FILE_ID
+	       AND A.BANNER_NO  = #{banner_no}
 	  	   AND B.FILE_GUBUN = #{gubun2}	   
 	     LIMIT 1 OFFSET 0    	    
 	</select>

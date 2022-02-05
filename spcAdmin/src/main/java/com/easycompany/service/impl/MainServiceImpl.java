@@ -34,10 +34,15 @@ public  class MainServiceImpl extends EgovAbstractServiceImpl implements MainSer
 	
 	public int updateCommon(MainVo  mainVo) {
 		
-		int cnt = mainMapper.updateCommonFile(mainVo);
-		if(cnt > 0) {
+		if(! "N".equals(mainVo.getGubun3())) {
+			int cnt = mainMapper.updateCommonFile(mainVo);
+			if(cnt > 0) {
+				return mainMapper.updateCommon(mainVo);
+			}
+		}else {
 			return mainMapper.updateCommon(mainVo);
 		}
+		
 		return 0;
 	}
 	
