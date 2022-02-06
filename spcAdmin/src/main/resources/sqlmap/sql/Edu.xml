@@ -92,6 +92,27 @@
 	      AND A.CATEGORY2_KEY = #{category2_key}  
 	    ORDER BY A.CATEGORY1_KEY 
 	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
+	</select>	
+	
+	<select id="getEeuInfoOnlineLList" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
+		 /**  com.easycompany.mapper.EduMapper.getEeuInfoOnlineLList **/
+	    SELECT   A.CATEGORY1_KEY
+		  	   , A.CATEGORY2_KEY
+		  	   ,(SELECT b.CATEGORY1_NAME FROM EDU_CATEGORY1 b 
+				   WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
+				) CATEGORY1_NAME
+		      ,(SELECT b.CATEGORY2_NAME FROM EDU_CATEGORY2 b 
+				  WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
+				    AND b.CATEGORY2_KEY = a.CATEGORY2_KEY
+				  ) CATEGORY2_NAME
+		  	   , CATEGORY3_KEY
+		  	   , CATEGORY3_NAME
+	     FROM  EDU_CLASS_CATEGORY3 A 
+	    WHERE A.SITE = #{site}   
+	      AND A.CATEGORY1_KEY = #{category1_key}  
+	      AND A.CATEGORY2_KEY = #{category2_key}  
+	    ORDER BY A.CATEGORY1_KEY 
+	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
 	</select>		
 	
 	<select id="getCategoryClassList" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
@@ -208,6 +229,14 @@
 	      AND CATEGORY2_KEY = #{category2_key}  
 	</select>
 	
+	<select id="getEeuInfoOnlineCount" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
+    	/**  com.easycompany.mapper.EduMapper.getEeuInfoOnlineCount **/
+    	SELECT COUNT(*) cnt
+		 FROM  EDU_CLASS_CATEGORY3 
+	    WHERE SITE = #{site}   
+	      AND CATEGORY1_KEY = #{category1_key}  
+	      AND CATEGORY2_KEY = #{category2_key}  
+	</select>
 	
 	<select id="getCategoryExist1" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
 	    /**  com.easycompany.mapper.EduMapper.getCategoryExist1 **/
@@ -454,6 +483,31 @@
 		  WHERE A.EDU_KEY = #{edu_key}
 	</select>
 	
+	<select id="getEeuInfoOnlineDetail" parameterType="com.easycompany.service.vo.CategoryVo" resultType="com.easycompany.service.vo.CategoryVo">
+		/**  com.easycompany.mapper.EduMapper.getEeuInfoOnlineDetail **/	
+		SELECT   A.CATEGORY1_KEY, A.CATEGORY2_KEY, A.CATEGORY3_KEY, A.EDU_NAME, A.EDU_START_DATE, A.EDU_END_DATE, A.EDU_ORG_NAME, A.EDU_TARGET, A.EDU_NUMBER, A.EDU_TEAC_NAME, A.EDU_KEY
+		       , (
+					SELECT CATEGORY1_NAME
+					  FROM EDU_CATEGORY1
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY
+				) AS CATEGORY1_NAME
+			  , (
+					SELECT CATEGORY2_NAME
+					  FROM EDU_CATEGORY2
+				  	 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+				  	   AND CATEGORY2_KEY= A.CATEGORY2_KEY
+				 ) AS CATEGORY2_NAME
+			  , (
+					SELECT CATEGORY3_NAME
+					  FROM EDU_CATEGORY3
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+					   AND CATEGORY2_KEY= A.CATEGORY2_KEY 
+					   AND CATEGORY3_KEY= A.CATEGORY3_KEY
+				  ) AS CATEGORY2_NAMECATEGORY3_NAME
+		   FROM EDU_SCHEDULE A
+		  WHERE A.EDU_KEY = #{edu_key}
+	</select>
+	
 	<delete id="deleteCategory1" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteCategory1 **/	
 	   DELETE 
@@ -646,6 +700,44 @@
 		  SELECT CATEGORY3_KEY AS CODE_CD, CATEGORY3_NAME AS CODE_NAME
 			FROM TEMP
 		   WHERE CATEGORY3_KEY IS NOT NULL
+ 			 AND CATEGORY1_KEY = #{category1_key}
+ 			 AND CATEGORY2_KEY = #{category2_key}
+           GROUP BY  CATEGORY3_KEY, CATEGORY3_NAME
+		</when>
+	  </choose>
+	  </select>	
+	  
+	  <select id="getOnlineCategoryCodeList" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
+		 /**  com.easycompany.mapper.EduMapper.getOnlineCategoryCodeList **/
+	    WITH TEMP AS(
+					SELECT a.CATEGORY1_KEY, b.CATEGORY2_KEY,c.CATEGORY3_KEY, a.CATEGORY1_NAME, b.CATEGORY2_NAME,c.CATEGORY3_NAME,a.SITE
+					FROM EDU_CLASS_CATEGORY1 AS A
+					LEFT OUTER
+					JOIN EDU_CLASS_CATEGORY2 AS B ON a.CATEGORY1_KEY = b.CATEGORY1_KEY
+					LEFT OUTER
+					JOIN EDU_CLASS_CATEGORY3 AS C ON b.CATEGORY2_KEY = c.CATEGORY2_KEY
+		)
+		 <choose>
+		<when test ="gubun3 !=null and gubun3 !='' and gubun3 =='categorycode1' ">
+		   SELECT CATEGORY1_KEY AS CODE_CD, CATEGORY1_NAME AS CODE_NAME
+			FROM TEMP
+			WHERE CATEGORY3_KEY IS NOT NULL
+			  AND SITE= #{site}
+			GROUP BY  CATEGORY1_KEY, CATEGORY1_NAME
+		</when>
+		<when test ="gubun3 !=null and gubun3 !='' and gubun3 =='categorycode2' ">
+		  SELECT CATEGORY2_KEY AS CODE_CD, CATEGORY2_NAME AS CODE_NAME
+			FROM TEMP
+		   WHERE CATEGORY3_KEY IS NOT NULL
+		     AND SITE= #{site}
+ 			 AND CATEGORY1_KEY = #{category1_key}
+           GROUP BY  CATEGORY2_KEY, CATEGORY2_NAME
+		</when>
+		<when test ="gubun3 !=null and gubun3 !='' and gubun3 =='categorycode3' ">
+		  SELECT CATEGORY3_KEY AS CODE_CD, CATEGORY3_NAME AS CODE_NAME
+			FROM TEMP
+		   WHERE CATEGORY3_KEY IS NOT NULL
+		     AND SITE= #{site}
  			 AND CATEGORY1_KEY = #{category1_key}
  			 AND CATEGORY2_KEY = #{category2_key}
            GROUP BY  CATEGORY3_KEY, CATEGORY3_NAME

@@ -284,6 +284,7 @@ public class EduController {
 		CategoryVo categoryForm = eduService.getCategoryDetail(categoryVo);
 		
 		categoryVo.setGubun3("categorycode1");
+		
 		List<CategoryVo> category1list = eduService.getCategoryCodeList(categoryVo);
 	
 		model.addAttribute("categoryVo",    categoryVo);
@@ -431,7 +432,6 @@ public class EduController {
 		
 		List<CategoryVo> list = eduService.getCategoryList(categoryVo);
 		model.addAttribute("resultList", list);
-			
 		
 		int totCnt = eduService.getCategoryCount(categoryVo);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -534,7 +534,12 @@ public class EduController {
 	
 		List<CategoryVo> category1list = null;
 		try {
-		
+			if ( StringUtil.isEmpty(categoryVo.getGubun2())) {
+				categoryVo.setGubun2("eduInfoScheduleList");
+			}
+			if ( StringUtil.isEmpty(categoryVo.getSite())) {
+				categoryVo.setSite("on");
+			}
 			category1list = eduService.getCategoryCodeList(categoryVo);
 		} catch (Exception e) {
 			categoryVo.setResult("FAIL");
@@ -542,6 +547,142 @@ public class EduController {
 		
 		return category1list;
 	}
+	
+	
+	@RequestMapping(value = "/eduInfoOnlineList.do")
+	public String eduInfoOnlineList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model) throws Exception {
+
+		/** EgovPropertyService.sample */
+		categoryVo.setPageUnit(propertiesService.getInt("pageUnit"));
+		categoryVo.setPageSize(propertiesService.getInt("pageSize"));
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(categoryVo.getPageIndex());
+		paginationInfo.setRecordCountPerPage(categoryVo.getPageUnit());
+		paginationInfo.setPageSize(categoryVo.getPageSize());
+		
+		/***  offSet 설정  ***/
+		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
+		categoryVo.setOffset(offset);
+		
+		if ( StringUtil.isEmpty(categoryVo.getGubun1())) {
+			categoryVo.setGubun1("R");
+		}
+		
+		if ( StringUtil.isEmpty(categoryVo.getGubun2())) {
+			categoryVo.setGubun2("eduInfoOnline");
+		}
+		
+		if ( StringUtil.isEmpty(categoryVo.getSite())) {
+			categoryVo.setSite("on");
+		}
+		
+		List<CategoryVo> list = eduService.getCategoryList(categoryVo);
+		model.addAttribute("resultList", list);
+			
+		
+		int totCnt = eduService.getCategoryCount(categoryVo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("categoryVo",     categoryVo);
+
+		return "eduInfoClassList";
+	}
+
+	@RequestMapping(value = "/eduInfoOnlineReg.do")
+	public String eduInfoOnlineReg(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model) throws Exception {
+
+		if ( StringUtil.isEmpty(categoryVo.getGubun1())) {
+			categoryVo.setGubun1("R");
+		}
+		
+		if ( StringUtil.isEmpty(categoryVo.getGubun2())) {
+			categoryVo.setGubun2("eduInfoOnline");
+		}
+		
+		if ( StringUtil.isEmpty(categoryVo.getSite())) {
+			categoryVo.setSite("on");
+		}
+		
+		if ( StringUtil.isEmpty(categoryVo.getGubun1())) {
+			categoryVo.setGubun1("R");
+		}
+		
+		if ( StringUtil.isEmpty(categoryVo.getGubun2())) {
+			categoryVo.setGubun2("eduInfoOnline");
+		}
+		
+		categoryVo.setGubun3("categorycode1");
+		List<CategoryVo> category1list = eduService.getCategoryCodeList(categoryVo);
+		model.addAttribute("category1list", category1list);
+		
+		/*
+		CategoryVo categoryForm = eduService.getCategoryDetail(categoryVo);
+	
+		model.addAttribute("categoryForm",  categoryForm);
+		*/
+		
+		model.addAttribute("categoryVo",    categoryVo);
+
+		return "eduInfoOnlineReg";
+	}
+	
+	@RequestMapping(value = "/eduInfoOnlineSave.do")
+	@ResponseBody
+	public CategoryVo eduInfoOnlineSave(HttpServletRequest request, CategoryVo categoryVo) throws Exception {
+		
+		int resultCnt = 0;
+		
+		try {
+			
+			
+			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+			
+			categoryVo.setReg_id(loginvo.getId());
+			
+			if ( StringUtil.isEmpty(categoryVo.getGubun2())) {
+				categoryVo.setGubun2("eduInfoOnline");
+			}
+			
+			if ( StringUtil.isEmpty(categoryVo.getSite())) {
+				categoryVo.setSite("on");
+			}
+		
+			if("I".equals(categoryVo.getGubun1())){
+
+				resultCnt = eduService.getCategoryExist(categoryVo);
+	
+				
+				if(resultCnt ==1) {
+					categoryVo.setResult("EXIST");
+				}else {
+					resultCnt = eduService.insertCatgegory(categoryVo);				
+					categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL") ;		
+				}
+				
+			}
+			
+			if("E".equals(categoryVo.getGubun1())){
+				
+				resultCnt = eduService.updateCategory(categoryVo);				
+				categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL") ;	
+			}
+
+			if("D".equals(categoryVo.getGubun1())){
+				resultCnt = eduService.deleteCategory(categoryVo);				
+				categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL") ;	
+			}
+			
+			
+		} catch (Exception e) {
+			categoryVo.setResult("FAIL");
+		}
+		
+		return categoryVo;
+	}
+	
+	
 }
 
 

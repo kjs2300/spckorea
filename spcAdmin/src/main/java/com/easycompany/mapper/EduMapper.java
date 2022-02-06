@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.service.vo.CategoryVo;
 
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
@@ -52,6 +53,9 @@ public class EduMapper extends EgovAbstractMapper{
 			sqlName = "getCategoryClassList3";
 		}
 		
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "getEeuInfoOnlineLList";
+		}
 		
 		
 		return selectList(nameSpace + "." + sqlName, categoryVo);
@@ -144,6 +148,9 @@ public class EduMapper extends EgovAbstractMapper{
 		if("category6".equals(categoryVo.getGubun2())){
 			sqlName = "getCategoryClassCount3";
 		}
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "getEeuInfoOnlineCount";
+		}
 		
 		return (Integer)selectOne(nameSpace + "." + sqlName, categoryVo);
 	}
@@ -157,6 +164,9 @@ public class EduMapper extends EgovAbstractMapper{
 			sqlName = "getEduInfoDetail";
 		}
 		
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "getEeuInfoOnlineDetail";
+		}
 		return (CategoryVo)selectOne(nameSpace + "." + sqlName, categoryVo);
 	}
 	
@@ -249,6 +259,11 @@ public class EduMapper extends EgovAbstractMapper{
    
 	public List<CategoryVo> getCategoryCodeList(CategoryVo categoryVo) throws DataAccessException {
 		String sqlName = "getCategoryCodeList";
+	
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "getOnlineCategoryCodeList";
+		}
+		
 		return selectList(nameSpace + "." + sqlName, categoryVo);
 	}
 	
