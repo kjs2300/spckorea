@@ -23,7 +23,7 @@
         <a href="#">교육등록</a>
         <ul class="depth02-menu">
             <li><a href="<c:url value='/edu/eduInfoClassList.do' />">교육분류 등록</a></li>
-            <li><a href="#">온라인 교육</a></li>
+            <li><a href="<c:url value='/edu/eduInfoOnlineList.do' />">온라인 교육</a></li>
             <li><a href="#">온오프라인 교육</a></li>
         </ul>
     </li>

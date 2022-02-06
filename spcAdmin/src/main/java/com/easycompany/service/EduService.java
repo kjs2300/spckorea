@@ -2,9 +2,6 @@ package com.easycompany.service;
 
 import java.util.List;
 
-
-import com.easycompany.cmm.vo.DefaultVO;
-import com.easycompany.service.vo.BoardVo;
 import com.easycompany.service.vo.CategoryVo;;
 
 
@@ -25,8 +22,13 @@ public interface EduService {
 	public int updateSchedule(CategoryVo        categoryVo);
 	public int insertSchedule(CategoryVo categoryVo);
 	
+	public List<CategoryVo> getEducationList(CategoryVo categoryVo) throws Exception;
+	public int getEducationCount(CategoryVo      categoryVo);	
 	public int insertEducation(CategoryVo categoryVo);
 	public int getEducationNo(CategoryVo categoryVo);
 	public int insertEducationSub(CategoryVo categoryVo);
-	
+	public int deleteEduCation(CategoryVo        categoryVo);	
+	public String getEduCationFile(CategoryVo categoryVo);
+	public CategoryVo getEduCationDetail(CategoryVo categoryVo);
+	public List<CategoryVo>  getEduCationDetailSub(CategoryVo categoryVo);
 }

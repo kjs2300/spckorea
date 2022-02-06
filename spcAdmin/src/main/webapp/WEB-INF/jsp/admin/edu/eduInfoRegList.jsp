@@ -15,13 +15,13 @@
     	frm.submit();
      }
      
-	  /* pagination 페이지 링크 function */
+     /* pagination 페이지 링크 function */
      function fn_egov_link_page(pageNo){
-     	document.listForm.pageIndex.value = pageNo;
-     	document.listForm.action = "<c:url value='/board/boardList.do'/>";
-        	document.listForm.submit();
+    	var frm = document.commonForm;
+    	frm.pageIndex.value = pageNo;
+     	frm.action = "<c:url value='/edu/eduInfoRegList.do'/>";
+        frm.submit();
      }
-     
      //-->
  </script>
  

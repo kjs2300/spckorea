@@ -1,6 +1,7 @@
 package com.easycompany.service.impl;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,6 +76,14 @@ public  class EduServiceImpl extends EgovAbstractServiceImpl implements EduServi
 		return 0;
 	}
 	
+	public List<CategoryVo> getEducationList(CategoryVo categoryVo) throws Exception{
+		return eduMapper.getEducationList(categoryVo);
+	}
+	
+	public int getEducationCount(CategoryVo categoryVo) {
+		return eduMapper.getEducationCount(categoryVo);
+	}
+	
 	public int insertEducationSub(CategoryVo categoryVo) {
 		return eduMapper.insertEducationSub(categoryVo);
 	}
@@ -83,9 +92,31 @@ public  class EduServiceImpl extends EgovAbstractServiceImpl implements EduServi
 		return eduMapper.getEducationNo(categoryVo);
 	}
 	
+	public String getEduCationFile(CategoryVo categoryVo) {
+		return eduMapper.getEduCationFile(categoryVo);
+	}
+	
+	public int deleteEduCation(CategoryVo categoryVo) {
+		
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			eduMapper.deleteEduCationFile(categoryVo);
+			eduMapper.deleteEduCationDetail(categoryVo);
+		}		
+		return eduMapper.deleteEduCation(categoryVo);
+	}
+
 	public CategoryVo getCategoryDetail(CategoryVo categoryVo) {
 		return (CategoryVo)eduMapper.getCategoryDetail(categoryVo);
 	}
+	
+	public CategoryVo getEduCationDetail(CategoryVo categoryVo) {
+		return (CategoryVo)eduMapper.getEduCationDetail(categoryVo);
+	}
+	
+	public  List<CategoryVo>  getEduCationDetailSub(CategoryVo categoryVo) {
+		return eduMapper.getEduCationDetailSub(categoryVo);
+	}
+	
 	
 	public int deleteCategory(CategoryVo categoryVo) {
 		

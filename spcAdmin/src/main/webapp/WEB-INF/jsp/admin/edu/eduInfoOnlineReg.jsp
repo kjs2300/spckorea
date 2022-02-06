@@ -141,7 +141,10 @@
   function goOkPage(){	
 		var frm = document.commonForm;
 		$("#gubun1").val('R'); 
-		frm.action = "<c:url value='/main/popupList.do'/>";
+		$("#inst_nm").val('');      //강사명
+		$("#train_s_date").val(''); //교육기간
+		$("#train_e_date").val(''); //교육기간
+		frm.action = "<c:url value='/edu/eduInfoOnlineList.do'/>";
 		frm.submit();
    }
 	    
@@ -172,6 +175,7 @@
 	   var edu_cont    = $("#edu_cont").val();      //교육내용
 	   var edu_method  = $("#edu_method").val();    //교육방식
 	   var edu_target  = $("#edu_target").val();    //교육대상
+	   var edu_time    = $("#edu_time").val();      //학습시간
 	   var edu_garden  = $("#edu_garden").val();    //교육정원
 	   
 	   var edu_status    = $("#edu_status").val();  //교육상태(신청중:I,신청취소:C, 신청마감:F, 사용중지:P, 결과보고:R)*
@@ -238,6 +242,7 @@
 		formData.append("edu_cont",    edu_cont);
 		formData.append("edu_method",  edu_method);
 		formData.append("edu_target",  edu_target);
+		formData.append("edu_time",    edu_time);		
 		formData.append("edu_garden",  edu_garden);
 		
 		formData.append("edu_status",   edu_status);
@@ -323,15 +328,16 @@
      //-->
  </script>
  
+           <c:set var="addNum" value="${fn:length(categoryFormSubList)}" />
+ 
            <form  id="commonForm" name="commonForm"  method="post"  >
 			<input type="hidden" id="gubun1"   name="gubun1"   class="input-box" />
 			<input type="hidden" id="gubun2"   name="gubun2"   class="input-box" value='eduInfoOnline'/>
 			<input type="hidden" id="gubun3"   name="gubun3"   class="input-box" />
-			<input type="hidden" id="addNum"   name="addNum"   value='1' />
+			<input type="hidden" id="addNum"   name="addNum"   value='${addNum + 1}' />
 			<input type="hidden" id="edu_no"   name="edu_no"   class="input-box" value='${categoryVo.edu_no}'/>
 			<input type="hidden" id="edu_site" name="edu_site" class="input-box" value='on'/>
 
-			
             <h1 class="h1-tit">온라인 교육 등록</h1>
 
                 <div class="table-wrap">
@@ -356,6 +362,9 @@
 	                                    </c:forEach>
                                     </select>
                                     <select class="select"  id="category2_key" name="category2_key">
+                                    	<c:if test="${not empty categoryForm.category2_name }">
+                                    		<option value='${categoryForm.category2_key}'>${categoryForm.category2_name}</option>
+                                    	</c:if>
                                         <option value=''>선택 하세요</option>
                                     </select>
                                 </td>
@@ -364,54 +373,63 @@
                                 <th colspan="2"><span class="red-txt">*</span>교육명</th>
                                 <td>
                                     <select class="select lg-width"  id="category3_key" name="category3_key">
+                                       <c:if test="${not empty categoryForm.category3_name }">
+                                    		<option value='${categoryForm.category3_key}'>${categoryForm.category3_name}</option>
+                                    	</c:if>
                                         <option value=''>선택 하세요</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <th colspan="2"><span class="red-txt">*</span>강사명</th>
-                                <td><input type="text"  id="inst_nm" name="inst_nm" class="input-box" value=""/></td>
+                                <td><input type="text"  id="inst_nm" name="inst_nm" class="input-box" value="${categoryForm.inst_nm}"/></td>
                             </tr>
                             <tr>
                                 <th colspan="2">교육기간</th>
                                 <td>
                                     <div class="tb-cont">
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box cdate" id="set_use_yn" name="set_use_yn" value="NONE" checked>
+                                            <input type="radio" class="radio-box cdate" id="set_use_yn" name="set_use_yn" value="NONE" <c:if test="${categoryForm.set_use_yn =='NONE'  || (empty categoryForm.set_use_yn) }">checked </c:if>>
                                             <label for="">설정 없음</label>
                                         </div>
                                         <div class="radio-cont mr10">
-                                            <input type="radio" class="radio-box cdate" id="set_use_yn" name="set_use_yn" value="TERM">
+                                            <input type="radio" class="radio-box cdate" id="set_use_yn" name="set_use_yn" value="TERM" <c:if test="${categoryForm.set_use_yn =='TERM'}">checked </c:if>>
                                             <label for="">기간선택</label>
                                         </div>
     
                                         <div class="picker-wrap">
-                                            <input type="text" id="train_s_date"  name="train_s_date" readonly class="input-box"/>
+                                            <input type="text" id="train_s_date"  name="train_s_date" readonly value="${categoryForm.train_s_date}" class="input-box"/>
                                             <span class="next-ico">-</span>
-                                            <input type="text" id="train_e_date"  name="train_e_date" readonly class="input-box"/>
+                                            <input type="text" id="train_e_date"  name="train_e_date" readonly value="${categoryForm.train_e_date}" class="input-box"/>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <th colspan="2">교육내용</th>
-                                <td><input type="text" id="edu_cont"  name="edu_cont" class="input-box" value=""/></td>
+                                <td><input type="text" id="edu_cont"  name="edu_cont" class="input-box" value="${categoryForm.edu_cont}"/></td>
                             </tr>
                             <tr>
                                 <th colspan="2">교육방식</th>
-                                <td><input type="text" id="edu_method"  name="edu_method" class="input-box" value=""/></td>
+                                <td><input type="text" id="edu_method"  name="edu_method" class="input-box" value="${categoryForm.edu_method}"/></td>
                             </tr>
                             <tr>
                                 <th colspan="2">교육대상</th>
                                 <td>
-                                    <input type="text" id="edu_target"  name="edu_target" class="input-box" value=""/>
+                                    <input type="text" id="edu_target"  name="edu_target" class="input-box" value="${categoryForm.edu_target}""/>
                                     <span class="point">ex. 성인, 청소년, 중장년, 노인, 이어줌인, 대학생, 직장인 등</span>
+                                </td>
+                            </tr>
+                             <tr>
+                                <th colspan="2">학습시간</th>
+                                <td>
+                                    <input type="text" id="edu_time"  name="edu_time" class="input-box" value="${categoryForm.edu_time}""/>
                                 </td>
                             </tr>
                             <tr>
                                 <th colspan="2">교육정원</th>
                                 <td>
-                                    <input type="text" id="edu_garden"  name="edu_garden"  onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  maxlength="5" class="input-box" value=""/>
+                                    <input type="text" id="edu_garden"  name="edu_garden"  onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  maxlength="5" class="input-box" value="${categoryForm.edu_garden}""/>
                                     <span class="point">ex. 기입하지 않으면 무한대, 신청인원과 연동</span>
                                 </td>
                             </tr>
@@ -420,26 +438,26 @@
                                 <td>
                                     <div class="tb-cont">
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="edu_status"  name="edu_status" value="I" checked>
+                                            <input type="radio" class="radio-box" id="edu_status"  name="edu_status" value="신청중" <c:if test="${categoryForm.edu_status =='신청중'  || (empty categoryForm.edu_status) }">checked </c:if>>
                                             <label for="">신청중</label>
                                         </div>
                                           
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="edu_status"  name="edu_status" value="C">
+                                            <input type="radio" class="radio-box" id="edu_status"  name="edu_status" value="신청취소" <c:if test="${categoryForm.edu_status =='신청취소'}">checked </c:if>>
                                             <label for="">신청취소</label>
                                         </div>
                                         
                                         <div class="radio-cont mr10">
-                                            <input type="radio" class="radio-box" id="edu_status"  name="edu_status" value="F">
+                                            <input type="radio" class="radio-box" id="edu_status"  name="edu_status" value="신청마감" <c:if test="${categoryForm.edu_status =='신청마감'}">checked </c:if>>
                                             <label for="">신청마감</label>
                                         </div>
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="edu_status"  name="edu_status" value="P">
+                                            <input type="radio" class="radio-box" id="edu_status"  name="edu_status" value="사용중지" <c:if test="${categoryForm.edu_status =='사용중지'}">checked </c:if>>
                                             <label for="">사용중지</label>
                                         </div>
                                         
                                         <div class="radio-cont mr10">
-                                            <input type="radio" class="radio-box" id="edu_status"  name="edu_status" value="R">
+                                            <input type="radio" class="radio-box" id="edu_status"  name="edu_status" value="결과보고" <c:if test="${categoryForm.edu_status =='결과보고'}">checked </c:if>>
                                             <label for="">결과보고</label>
                                         </div>
                                     </div>
@@ -450,12 +468,12 @@
                                 <td>
                                     <div class="tb-cont">
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box"  id="exp_use_yn"  name="exp_use_yn" value="Y" checked>
+                                            <input type="radio" class="radio-box"  id="exp_use_yn"  name="exp_use_yn" value="Y" <c:if test="${categoryForm.exp_use_yn =='Y'  || (empty categoryForm.exp_use_yn) }">checked </c:if>>
                                             <label for="">YES</label>
                                         </div>
                                           
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="exp_use_yn"  name="exp_use_yn" value="N">
+                                            <input type="radio" class="radio-box" id="exp_use_yn"  name="exp_use_yn" value="N" <c:if test="${categoryForm.exp_use_yn =='N'}">checked </c:if>>
                                             <label for="">NO</label>
                                         </div>
                                     </div>
@@ -475,21 +493,33 @@
                             <tr>
                                 <th rowspan="3" class="no-border-b">교육상세</th>
                                 <th>교육 소개</th>
-                                <td><input type="text" id="edu_intro"  name="edu_intro"  class="input-box lg-width" value=""/></td>
+                                <td><input type="text" id="edu_intro"  name="edu_intro"  class="input-box lg-width" value="${categoryForm.edu_intro}""/></td>
                             </tr>
                             <tr>
                                 <th>교육 목표</th>
-                                <td><input type="text" id="edu_goals"  name="edu_goals"  class="input-box lg-width" value=""/></td>
+                                <td><input type="text" id="edu_goals"  name="edu_goals"  class="input-box lg-width" value="${categoryForm.edu_goals}""/></td>
                             </tr>
                             <tr>
                                 <th>커리큘럼</th>
                                 <td>
                                  <div id="insertCurr">
+                                   <c:if test="${empty categoryFormSubList }">
                                     <div class="grid-box">
                                         <input type="text" id="edu_curr1_arr"  name="edu_curr1_arr" class="input-box" value=""/>
                                         <input type="text" id="edu_curr2_arr"  name="edu_curr2_arr" class="input-box" value=""/>
                                         <input type="text" id="edu_curr3_arr"  name="edu_curr3_arr" class="input-box" value=""/>
                                     </div>
+                                    </c:if>
+                                     <c:forEach var="result" items="${categoryFormSubList}" varStatus="status">
+                                     <div class="grid-box">
+                                        <input type="text" id="edu_curr1_arr"  name="edu_curr1_arr" class="input-box" value="${result.edu_curr1}"/>
+                                        <input type="text" id="edu_curr2_arr"  name="edu_curr2_arr" class="input-box" value="${result.edu_curr3}"/>
+                                        <input type="text" id="edu_curr3_arr"  name="edu_curr3_arr" class="input-box" value="${result.edu_curr2}"/>
+                                        <c:if test="${status.index !=0 }">
+                                        	<button type='button' class='sm-btn black-btn'>삭제</button>
+                                		</c:if>
+                                    </div>
+                                     </c:forEach>
                                  </div>
                                   <button type="button" id="addTR" class="sm-btn black-btn">+ 추가</button>
                                 </td>
@@ -501,7 +531,7 @@
                 <div class="btn-cont">
                     
                     <button type="button"  onClick="javascript:fn_save('I');"  id="btnSave" class="mid-btn blue-btn ">저장</button>  
-                    <button type="button" onClick="javascript:history.back();" class="mid-btn white-btn btncan">취소</button>
+                    <button type="button"  onClick="javascript:history.back();" class="mid-btn white-btn btncan">목록</button>
                 </div>
 
 			</form>

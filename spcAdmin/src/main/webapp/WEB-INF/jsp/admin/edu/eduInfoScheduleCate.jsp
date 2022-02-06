@@ -225,8 +225,8 @@
                                 <th><span class="red-txt">*</span>교육명</th>
                                 <td>
                                     <select class="select lg-width"  id="category3_key" name="category3_key" >
-                                    	<c:if test="${not empty categoryForm.category2_name }">
-                                    		<option value='${categoryForm.category2_key}'>${categoryForm.category2_name}</option>
+                                    	<c:if test="${not empty categoryForm.category3_name }">
+                                    		<option value='${categoryForm.category3_key}'>${categoryForm.category3_name}</option>
                                     	</c:if>
                                     	<option value=''>선택 하세요</option>
                                     </select>

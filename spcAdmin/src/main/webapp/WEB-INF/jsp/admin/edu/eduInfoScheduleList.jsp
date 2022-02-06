@@ -206,6 +206,13 @@
     	 $("#excelFileName").val('ScheduleList'); 
     	 frm.submit();
     }
+     /* pagination 페이지 링크 function */
+     function fn_egov_link_page(pageNo){
+    	var frm = document.commonForm;
+    	frm.pageIndex.value = pageNo;
+     	frm.action = "<c:url value='/edu/eduInfoScheduleList.do'/>";
+        frm.submit();
+     }
      //-->
  </script>
 
@@ -216,6 +223,7 @@
 		    <input type="hidden" id="excelFileName"  name="excelFileName"  value=''                class="input-box" />
 		    <input type="hidden" id="edu_key"        name="edu_key"        value='0'               class="input-box" />		
 		    <input type="hidden" id="checkdstr"      name="checkdstr"      value=''                class="input-box" />	
+		    <input type="hidden" id="pageIndex"      name="pageIndex"      class="input-box" value=1 />	
 		  
            <div class="search-wrap">
                <h2 class="h2-tit">교육일정 검색</h2>

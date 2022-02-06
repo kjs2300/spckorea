@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.service.vo.CategoryVo;
 
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
@@ -140,6 +139,27 @@ public class EduMapper extends EgovAbstractMapper{
 		return (Integer) insert(nameSpace + "." + sqlName, categoryVo);
 	}
 	
+	public List<CategoryVo> getEducationList(CategoryVo categoryVo) throws DataAccessException {
+		
+		String sqlName = "getEduInfoOnlineList";
+		
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "getEduInfoOnlineList";
+		}
+		return selectList(nameSpace + "." + sqlName, categoryVo);
+	}
+
+	public int getEducationCount(CategoryVo categoryVo) {
+		
+		String sqlName = "getEduInfoOnlineCount";
+
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "getEduInfoOnlineCount";
+		}
+		
+		return (Integer)selectOne(nameSpace + "." + sqlName, categoryVo);
+	}
+	
 	public int getEducationNo(CategoryVo categoryVo) {
 		
 		String sqlName = "getEduInfoOnlineNo";
@@ -150,6 +170,16 @@ public class EduMapper extends EgovAbstractMapper{
 		return (Integer)selectOne(nameSpace + "." + sqlName , categoryVo);
 	}
 	
+	
+	public String getEduCationFile(CategoryVo categoryVo) {
+		
+		String sqlName = "getEduCationFile";
+		
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "getEduCationFile";
+		}
+		return (String)selectOne(nameSpace + "." + sqlName , categoryVo);
+	}
 	
 
 	public int getCategoryCount(CategoryVo categoryVo) {
@@ -208,6 +238,30 @@ public class EduMapper extends EgovAbstractMapper{
 		return (CategoryVo)selectOne(nameSpace + "." + sqlName, categoryVo);
 	}
 	
+	public CategoryVo getEduCationDetail(CategoryVo categoryVo) {
+		
+
+		String sqlName = "getEduCationDetail";
+
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "getEduCationDetail";
+		}
+
+		return (CategoryVo)selectOne(nameSpace + "." + sqlName, categoryVo);
+	}
+	
+	public  List<CategoryVo>  getEduCationDetailSub(CategoryVo categoryVo) {
+		
+
+		String sqlName = "getEduCationDetailSub";
+
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "getEduCationDetailSub";
+		}		
+		return selectList(nameSpace + "." + sqlName, categoryVo);
+	}
+	
+	
 	public int deleteCategory(CategoryVo categoryVo) {
 		
 		String sqlName = "deleteCategory1";
@@ -265,6 +319,29 @@ public class EduMapper extends EgovAbstractMapper{
 	
    public int deleteCategory1Sub3(CategoryVo categoryVo) {
 		String sqlName = "deleteCategory1Sub3";
+		return (Integer) delete(nameSpace + "." + sqlName, categoryVo);
+	}
+   
+   public int deleteEduCationFile(CategoryVo categoryVo) {
+		String sqlName = "deleteEduCationFile";
+		return (Integer) delete(nameSpace + "." + sqlName, categoryVo);
+	}
+   
+   public int deleteEduCationDetail(CategoryVo categoryVo) {
+		
+		String sqlName = "deleteEduCationDetail";
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "deleteEduCationDetail";
+		}		
+		return (Integer) delete(nameSpace + "." + sqlName, categoryVo);
+	}
+   
+   public int deleteEduCation(CategoryVo categoryVo) {
+		
+		String sqlName = "deleteEduCation";
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "deleteEduCation";
+		}		
 		return (Integer) delete(nameSpace + "." + sqlName, categoryVo);
 	}
    
