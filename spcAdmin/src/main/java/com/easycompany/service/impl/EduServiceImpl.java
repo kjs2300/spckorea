@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.easycompany.mapper.EduMapper;
+import com.easycompany.mapper.MainMapper;
 import com.easycompany.service.EduService;
 import com.easycompany.service.vo.CategoryVo;
+import com.easycompany.service.vo.MainVo;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
@@ -18,6 +20,9 @@ public  class EduServiceImpl extends EgovAbstractServiceImpl implements EduServi
 	
 	@Autowired
 	private EduMapper eduMapper;
+	
+	@Autowired
+	private MainMapper mainMapper;
 	
 	
 	public List<CategoryVo> getCategoryList(CategoryVo categoryVo) throws Exception{
@@ -37,6 +42,47 @@ public  class EduServiceImpl extends EgovAbstractServiceImpl implements EduServi
 		return eduMapper.insertCatgegory(categoryVo);
 	}
 
+	public int insertEducation(CategoryVo categoryVo) {
+
+		int cnt = 1 ;
+		//저장할 키 가져오기
+		categoryVo.setEdu_no(eduMapper.getEducationNo(categoryVo));
+		
+		if("YES".equals(categoryVo.getFileExit())) {
+			MainVo mainVo = new MainVo();
+			mainVo.setGubun2(categoryVo.getGubun2());
+			mainVo.setFile_id(categoryVo.getFile_uuid());
+			mainVo.setFile_name(categoryVo.getFile_name());
+			mainVo.setFile_full_path(categoryVo.getFile_full_path());
+			mainVo.setFile_size(categoryVo.getFile_size());			
+			cnt = mainMapper.insertCommonFile(mainVo);
+		}
+		//온라인 서브 등록
+		if(cnt > 0) {
+			 if(categoryVo.getEdu_curr1_arr() !=null && categoryVo.getEdu_curr1_arr().length > 0) {
+				
+				 for (int i = 0; i < categoryVo.getEdu_curr1_arr().length; i++) {				     
+					 categoryVo.setEdu_curr1((categoryVo.getEdu_curr1_arr() !=null ? categoryVo.getEdu_curr1_arr()[i] : ""));
+					 categoryVo.setEdu_curr2((categoryVo.getEdu_curr2_arr() !=null ? categoryVo.getEdu_curr2_arr()[i] : ""));
+					 categoryVo.setEdu_curr3((categoryVo.getEdu_curr3_arr() !=null ? categoryVo.getEdu_curr3_arr()[i] : ""));
+					 cnt = eduMapper.insertEducationSub(categoryVo);					 
+			     }
+			 }
+		}
+		if (cnt > 0) {
+			return eduMapper.insertEducation(categoryVo);
+		}
+		return 0;
+	}
+	
+	public int insertEducationSub(CategoryVo categoryVo) {
+		return eduMapper.insertEducationSub(categoryVo);
+	}
+	
+	public int getEducationNo(CategoryVo categoryVo) {
+		return eduMapper.getEducationNo(categoryVo);
+	}
+	
 	public CategoryVo getCategoryDetail(CategoryVo categoryVo) {
 		return (CategoryVo)eduMapper.getCategoryDetail(categoryVo);
 	}

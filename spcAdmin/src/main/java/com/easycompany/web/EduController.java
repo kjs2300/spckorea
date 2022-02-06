@@ -1,6 +1,7 @@
 package com.easycompany.web;
 
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -648,19 +649,27 @@ public class EduController {
 			if ( StringUtil.isEmpty(categoryVo.getSite())) {
 				categoryVo.setSite("on");
 			}
+			
+			if ( StringUtil.isEmpty(categoryVo.getFileExit())) {
+				categoryVo.setFileExit("NO");
+			}
+			
+			String fileAddpath = filePath + File.separator + categoryVo.getGubun2();
 		
+			
 			if("I".equals(categoryVo.getGubun1())){
-
-				resultCnt = eduService.getCategoryExist(categoryVo);
-	
 				
-				if(resultCnt ==1) {
-					categoryVo.setResult("EXIST");
-				}else {
-					resultCnt = eduService.insertCatgegory(categoryVo);				
-					categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL") ;		
+				//fileUpload
+				if("YES".equals(categoryVo.getFileExit())) {
+					BoardVo fileVo= FileUtil.uploadFile (request,  fileAddpath);
+					categoryVo.setFile_uuid(fileVo.getFile_uuid());
+					categoryVo.setFile_name(fileVo.getFile_name());
+					categoryVo.setFile_full_path(fileVo.getFile_full_path());
+					categoryVo.setFile_size(fileVo.getFile_size());					
 				}
 				
+				resultCnt = eduService.insertEducation(categoryVo);				
+				categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL") ;		
 			}
 			
 			if("E".equals(categoryVo.getGubun1())){

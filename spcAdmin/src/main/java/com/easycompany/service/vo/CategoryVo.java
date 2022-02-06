@@ -76,6 +76,12 @@ public class CategoryVo extends DefaultVO {
     String inst_nm;
     String set_use_yn;
     
+    String[] edu_curr1_arr;
+    String[] edu_curr2_arr;
+    String[] edu_curr3_arr;
+    
+    String fileExit;
+    
     public String getSet_use_yn() {
 		return set_use_yn;
 	}
@@ -523,6 +529,38 @@ public class CategoryVo extends DefaultVO {
 
 	public void setEdu_curr3(String edu_curr3) {
 		this.edu_curr3 = edu_curr3;
+	}
+
+	public String[] getEdu_curr1_arr() {
+		return edu_curr1_arr;
+	}
+
+	public void setEdu_curr1_arr(String[] edu_curr1_arr) {
+		this.edu_curr1_arr = edu_curr1_arr;
+	}
+
+	public String[] getEdu_curr2_arr() {
+		return edu_curr2_arr;
+	}
+
+	public void setEdu_curr2_arr(String[] edu_curr2_arr) {
+		this.edu_curr2_arr = edu_curr2_arr;
+	}
+
+	public String[] getEdu_curr3_arr() {
+		return edu_curr3_arr;
+	}
+
+	public void setEdu_curr3_arr(String[] edu_curr3_arr) {
+		this.edu_curr3_arr = edu_curr3_arr;
+	}
+
+	public String getFileExit() {
+		return fileExit;
+	}
+
+	public void setFileExit(String fileExit) {
+		this.fileExit = fileExit;
 	}
 	
 	

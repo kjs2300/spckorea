@@ -3,6 +3,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="ui"     uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -35,7 +36,7 @@
         ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
   	});
 	 
-	 $("#input_img").on('change', function(){
+	 $("#files").on('change', function(){
 	    readInputFile(this);
 	}); 
 	 
@@ -45,6 +46,14 @@
 	    resetInputFile($input, $preview);
 	});
    	
+	$('.cdate').bind('click', function(){
+		var checkdate = $("input[name='set_use_yn']:checked").val();
+		if(checkdate =="NONE"){
+			$("#train_s_date").val(''); 
+			$("#train_e_date").val(''); 
+		}
+ 	});
+	
 	 $('#category1_key').change(function(){
 		var val  = $(this).val();
 
@@ -105,20 +114,27 @@
 	 });
 	
 	$("#addTR").click(function () {
-	
+		var addNum = parseInt($("#addNum").val()) + 1;
+		$("#addNum").val(addNum);
+
 		var row = "<div class='grid-box'>";
-			row += "<input type='text' id='edu_curr1;  name='edu_curr1' class='input-box' />";
-			row += "<input type='text' id='edu_curr2;  name='edu_curr3' class='input-box' />";
-			row += "<input type='text' id='edu_curr3;  name='edu_curr3' class='input-box' />";
-			row += "<td><span>삭제</span></td>";
+			row += "<input type='text' id='edu_curr1_arr'  name='edu_curr1_arr' class='input-box' />";
+			row += "<input type='text' id='edu_curr2_arr'  name='edu_curr2_arr' class='input-box' />";
+			row += "<input type='text' id='edu_curr3_arr'  name='edu_curr3_arr' class='input-box' />";
+			//row += "<span>삭제</span>";
+			row += "<button type='button' class='sm-btn black-btn'>삭제</button>";
+			
 			row += "</div>";
 		$("#insertCurr").append(row);
 	});
 	
-	$("#insertCurr").on("click", "span", function() {
-	 
-		$(this).closest("div").remove();
+	$("#insertCurr").on("click", "button", function() {
+		var addNum = parseInt($("#addNum").val()) - 1;
+		$("#addNum").val(addNum);
+	 	$(this).closest("div").remove();
 	});
+	
+
 	
   });	
  
@@ -130,90 +146,126 @@
    }
 	    
 	function fn_save(gubun1){
- 	
-	   var popup_nm     = $("#popup_nm").val();
-	   var popup_ar     = $("#popup_ar").val();
-	   var popup_hg     = $("#popup_hg").val();
-	   var otpt_xaxs_lc = $("#otpt_xaxs_lc").val();
-	   var otpt_yaxs_lc = $("#otpt_yaxs_lc").val();
-	   var popup_cn     = $("#popup_cn").val();
-	   var popup_no     = $("#popup_no").val();
+	
+	   var addNum = parseInt($("#addNum").val());
+		
+	   var arr1 = [];
+	   var arr2 = [];
+	   var arr3 = [];
+	   for(i=0; addNum > i; i++){
+			var edu_curr1 = $('input[name=edu_curr1_arr]').eq(i).val();
+			var edu_curr2 = $('input[name=edu_curr2_arr]').eq(i).val();
+			var edu_curr3 = $('input[name=edu_curr3_arr]').eq(i).val();
+			arr1[i] = edu_curr1;
+			arr2[i] = edu_curr2;
+			arr3[i] = edu_curr3;
+	   }
+	   var edu_no       = $("#edu_no").val();
+	   var edu_site     = $("#edu_site").val();
 	   var gubun2       = $("#gubun2").val();
 	   
-	   $("#gubun1").val(gubun1);
-	     
-	   if (popup_nm == ""){			
-			alert("제목을 입력하세요.");
-			$("#popup_nm").focus();
+	   var inst_nm      = $("#inst_nm").val();      //강사명
+	   var set_use_yn   = $("#set_use_yn").val();   //교육기간설정여부
+	   var train_s_date = $("#train_s_date").val(); //교육기간
+	   var train_e_date = $("#train_e_date").val(); //교육기간
+	   
+	   var edu_cont    = $("#edu_cont").val();      //교육내용
+	   var edu_method  = $("#edu_method").val();    //교육방식
+	   var edu_target  = $("#edu_target").val();    //교육대상
+	   var edu_garden  = $("#edu_garden").val();    //교육정원
+	   
+	   var edu_status    = $("#edu_status").val();  //교육상태(신청중:I,신청취소:C, 신청마감:F, 사용중지:P, 결과보고:R)*
+	   var exp_use_yn    = $("#exp_use_yn").val();         //교육 노출여부
+	   //var edu_notice    = $("#edu_notice").val();       //안내문
+	   
+	   var edu_intro      = $("#edu_intro").val();         //교육소개
+	   var edu_goals      = $("#edu_goals").val();         //교육목표
+	   
+	   //var edu_curr1_arr  = $("#edu_curr1_arr").val();     //커리큘럼1
+	   //var edu_curr2_arr  = $("#edu_curr2_arr").val();     //커리큘럼2
+	   //var edu_curr3_arr  = $("#edu_curr3_arr").val();     //커리큘럼3
+	   
+	   var category1_key = $("select[name=category1_key] option:selected").val();  //교육분류1
+       var category2_key = $("select[name=category2_key] option:selected").val();  //교육분류2
+	   var category3_key = $("select[name=category3_key] option:selected").val();  //교육명		   
+	   	   
+	   if (category1_key == ""){			
+			alert("교육분류을 선택 하세요.");
+			return;
+		}
+		if (category2_key == ""){			
+			alert("교육분류을 선택 하세요.");
+			return;
+		}
+		
+		if (category3_key == ""){			
+			alert("교육명을 선택 하세요.");
+			return;
+		}	
+		
+	   if (inst_nm == ""){			
+			alert("강사명을 입력하세요.");
+			$("#inst_nm").focus();
 			return;
 		}		
-  
-		if (popup_ar == ""){			
-			alert("창의 가로를 입력 하세요.");
-			 $("#popup_ar").focus();
-			return;
-		}
 		
-		if (popup_hg == ""){			
-			alert("창의 세로를 입력 하세요.");
-			 $("#popup_hg").focus();
-			return;
-		}
-		
-		if (otpt_xaxs_lc == ""){			
-			alert("창위치 left 를 입력 하세요.");
-			$("#otpt_xaxs_lc").focus();
-			return;
-		}
-		
-		if (otpt_yaxs_lc == ""){			
-			alert("창위치 top을 입력 하세요.");
-			$("#otpt_yaxs_lc").focus();
-			return;
-		}
-		
-		if (popup_cn == ""){			
-			alert("내용을 입력 하세요.");
-			$("#popup_cn").focus();
-			return;
-		}
-		
-		var msg = "팝업을  등록 하시겠습니까?";
+		var msg = "온라인 교육을  등록 하시겠습니까?";
 		if (gubun1 == "E"){
-			msg = "팝얼을  수정 하시겠습니까?"
+			msg = "온라인 교육을  수정 하시겠습니까?"
 		}
 		
+		var fileExit = "YES";
+		var file= $("input[name=files]")[0].files[0];
+		if( file ==null || file =='null' || file =='undefined' || file ==undefined){
+	 		fileExit = "NO";
+	 	}
+				
 		var formData = new FormData(); 
 		formData.append("gubun1",       gubun1);
-		formData.append("gubun2",       gubun2);
+		formData.append("gubun2",       gubun2);		
+		formData.append("edu_no",       edu_no);
+		formData.append("edu_site",     edu_site);
 		
-		formData.append("popup_nm",     popup_nm);
-		formData.append("popup_ar",     popup_ar);
-	    formData.append("popup_hg",     popup_hg);
-		formData.append("otpt_xaxs_lc", otpt_xaxs_lc);
+		formData.append("category1_key",   category1_key);
+		formData.append("category2_key",   category2_key);
+		formData.append("category3_key",   category3_key);
 		
-		formData.append("otpt_yaxs_lc", otpt_yaxs_lc);
-		formData.append("popup_cn",     popup_cn);
-		formData.append("popup_no",     popup_no);
+	    formData.append("inst_nm",      inst_nm);
+		formData.append("set_use_yn",   set_use_yn);
+		formData.append("train_s_date", train_s_date);
+		formData.append("train_e_date", train_e_date);
 		
+		formData.append("edu_cont",    edu_cont);
+		formData.append("edu_method",  edu_method);
+		formData.append("edu_target",  edu_target);
+		formData.append("edu_garden",  edu_garden);
+		
+		formData.append("edu_status",   edu_status);
+		formData.append("exp_use_yn",   exp_use_yn);
+			
+		formData.append("edu_intro",     edu_intro);
+		formData.append("edu_goals",     edu_goals);
+		formData.append("edu_curr1_arr", arr1);
+		formData.append("edu_curr2_arr", arr2);
+		formData.append("edu_curr3_arr", arr3);
+		
+		formData.append("files",    $("input[name=files]")[0].files[0]);
+		formData.append("fileExit", fileExit);
 		
 		var yn = confirm(msg);		
 		if(yn){
-				
 			$.ajax({	
- 				data     : $("#commonForm").serialize(),
- 			    url		 : "<c:url value='/main/popupSave.do'/>",
- 		        dataType : "JSON",
- 		        cache    : false,
- 		        async    : false,
- 				type	 : "POST",	
- 		        success  : function(obj) {
- 		        	commonCallBack(obj);				
- 		        },	       
- 		        error 	: function(xhr, status, error) {} 		        
- 		    });
-			
-
+				data       : formData,
+			    url		   : "<c:url value='/edu/eduInfoOnlineSave.do'/>",
+			    dataType   : "JSON",
+		        processData: false, 
+		        contentType: false,
+				type	   : "POST",	
+		        success    : function(obj) {
+		        	commonCallBack(obj);				
+		        },	       
+		        error 	: function(xhr, status, error) {} 		        
+		    });
 		}
 	 }	
  
@@ -275,7 +327,9 @@
 			<input type="hidden" id="gubun1"   name="gubun1"   class="input-box" />
 			<input type="hidden" id="gubun2"   name="gubun2"   class="input-box" value='eduInfoOnline'/>
 			<input type="hidden" id="gubun3"   name="gubun3"   class="input-box" />
-			<input type="hidden" id="edu_no"   name="edu_no" class="input-box" value='${categoryVo.edu_no}'/>
+			<input type="hidden" id="addNum"   name="addNum"   value='1' />
+			<input type="hidden" id="edu_no"   name="edu_no"   class="input-box" value='${categoryVo.edu_no}'/>
+			<input type="hidden" id="edu_site" name="edu_site" class="input-box" value='on'/>
 
 			
             <h1 class="h1-tit">온라인 교육 등록</h1>
@@ -323,11 +377,11 @@
                                 <td>
                                     <div class="tb-cont">
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="set_use_yn" name="set_use_yn" value="N" checked>
+                                            <input type="radio" class="radio-box cdate" id="set_use_yn" name="set_use_yn" value="NONE" checked>
                                             <label for="">설정 없음</label>
                                         </div>
                                         <div class="radio-cont mr10">
-                                            <input type="radio" class="radio-box" id="set_use_yn" name="set_use_yn" value="Y">
+                                            <input type="radio" class="radio-box cdate" id="set_use_yn" name="set_use_yn" value="TERM">
                                             <label for="">기간선택</label>
                                         </div>
     
@@ -357,7 +411,7 @@
                             <tr>
                                 <th colspan="2">교육정원</th>
                                 <td>
-                                    <input type="text" id="edu_garden"  name="edu_garden" class="input-box" value=""/>
+                                    <input type="text" id="edu_garden"  name="edu_garden"  onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  maxlength="5" class="input-box" value=""/>
                                     <span class="point">ex. 기입하지 않으면 무한대, 신청인원과 연동</span>
                                 </td>
                             </tr>
@@ -411,7 +465,7 @@
                                 <th colspan="2">안내문</th>
                                 <td>
                                     <div class="upload-box">
-                                        <input  id="input_img"  type="file"   name="input_img" accept=".jpg, .jpeg, .png"/>
+                                        <input  id="files"  type="file"   name="files" accept=".jpg, .jpeg, .png"/>
                                         <button id="btn-delete" type='button' class="sm-btn black-btn">삭제</button>
                                         <div id="preview"></div>
                                         <span class="point">권장사이즈 : 600px * 600px</span>
@@ -432,13 +486,12 @@
                                 <td>
                                  <div id="insertCurr">
                                     <div class="grid-box">
-                                        <input type="text" id="edu_curr1"  name="edu_curr1" class="input-box" value=""/>
-                                        <input type="text" id="edu_curr2"  name="edu_curr2" class="input-box" value=""/>
-                                        <input type="text" id="edu_curr3"  name="edu_curr3" class="input-box" value=""/>
+                                        <input type="text" id="edu_curr1_arr"  name="edu_curr1_arr" class="input-box" value=""/>
+                                        <input type="text" id="edu_curr2_arr"  name="edu_curr2_arr" class="input-box" value=""/>
+                                        <input type="text" id="edu_curr3_arr"  name="edu_curr3_arr" class="input-box" value=""/>
                                     </div>
                                  </div>
-                                     
-                                    <button type="button" id="addTR" class="sm-btn black-btn">+ 추가</button>
+                                  <button type="button" id="addTR" class="sm-btn black-btn">+ 추가</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -446,8 +499,9 @@
                 </div>
 
                 <div class="btn-cont">
-                    <button type="button"  onClick="javascript:fn_save('E');"  class="mid-btn blue-btn">저장</button>
-                    <button type="button" onClick="javascript:history.back();" class="mid-btn white-btn">취소</button>
+                    
+                    <button type="button"  onClick="javascript:fn_save('I');"  id="btnSave" class="mid-btn blue-btn ">저장</button>  
+                    <button type="button" onClick="javascript:history.back();" class="mid-btn white-btn btncan">취소</button>
                 </div>
 
 			</form>

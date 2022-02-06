@@ -110,9 +110,47 @@ public class EduMapper extends EgovAbstractMapper{
 		if("category6".equals(categoryVo.getGubun2())){
 			sqlName = "insertClassCategory3";
 		}
+		
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "insertEduInfoOnline";
+		}
+		
 		return (Integer) insert(nameSpace + "." + sqlName, categoryVo);
 	}
 
+	public int insertEducation(CategoryVo categoryVo) {
+		
+		String sqlName = "insertEduInfoOnline";
+
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "insertEduInfoOnline";
+		}
+		
+		return (Integer) insert(nameSpace + "." + sqlName, categoryVo);
+	}
+	
+	public int insertEducationSub(CategoryVo categoryVo) {
+		
+		String sqlName = "insertEduInfoOnlineSub";
+
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "insertEduInfoOnlineSub";
+		}
+		
+		return (Integer) insert(nameSpace + "." + sqlName, categoryVo);
+	}
+	
+	public int getEducationNo(CategoryVo categoryVo) {
+		
+		String sqlName = "getEduInfoOnlineNo";
+		
+		if("eduInfoOnline".equals(categoryVo.getGubun2())){
+			sqlName = "getEduInfoOnlineNo";
+		}
+		return (Integer)selectOne(nameSpace + "." + sqlName , categoryVo);
+	}
+	
+	
 
 	public int getCategoryCount(CategoryVo categoryVo) {
 		

@@ -441,6 +441,100 @@
 		)	
 	</insert>
 	
+	<select id="getEduInfoOnlineNo" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
+    	/**  com.easycompany.mapper.EduMapper.getEduInfoOnlineNo **/
+    	SELECT IFNULL(MAX(EDU_NO), 0) + 1 
+		  FROM EDU_REGISTRATION 
+	</select>
+	
+	<insert id="insertEduInfoOnline" parameterType="com.easycompany.service.vo.CategoryVo">
+		/**  com.easycompany.mapper.EduMapper.insertEduInfoOnline **/	
+		INSERT 
+		INTO EDU_REGISTRATION 
+		(
+		  	  EDU_NO
+		  	, EDU_SITE
+		  	, CATEGORY1_KEY 
+		  	, CATEGORY2_KEY
+		  	, CATEGORY3_KEY
+		  	
+		  	, INST_NM
+		  	, SET_USE_YN 
+		  	, TRAIN_S_DATE
+		  	, TRAIN_E_DATE
+		  	
+		  	, EDU_CONT
+		  	, EDU_METHOD 
+		  	, EDU_TARGET
+		  	, EDU_GARDEN
+		  	
+	
+		  	, EDU_STATUS 
+		  	, EXP_USE_YN
+		  	, EDU_NOTICE
+		  	
+		  	, EDU_INTRO
+		  	, EDU_GOALS
+		  	
+		  	
+		  	, REG_ID
+		) 
+		VALUES 
+		(
+			  #{edu_no}
+			, #{edu_site}
+			, #{category1_key}
+			, #{category2_key}
+			, #{category3_key}
+			
+			, #{inst_nm}
+			, #{set_use_yn}
+			, #{train_s_date}
+			, #{train_e_date}
+			
+			, #{edu_cont}
+			, #{edu_method}
+			, #{edu_target}
+			, #{edu_garden}
+			
+			, #{edu_status}
+			, #{exp_use_yn}
+			, #{edu_notice}
+			
+			, #{edu_intro}
+			, #{edu_goals}
+			
+			, IFNULL(#{reg_id},'SYSTEM')
+		)	
+	</insert>
+	
+	<insert id="insertEduInfoOnlineSub" parameterType="com.easycompany.service.vo.CategoryVo">
+		/**  com.easycompany.mapper.EduMapper.insertEduInfoOnlineSub **/	
+		<selectKey resultType="int" keyProperty="edu_sub_no" order="BEFORE">			
+			SELECT IFNULL(MAX(EDU_SUB_NO), 0) + 1 
+			  FROM EDU_REGISTRATION_DETAIL	
+		</selectKey>
+		INSERT 
+		INTO EDU_REGISTRATION_DETAIL 
+		(
+		  	  EDU_NO
+		  	, EDU_SUB_NO
+		  	, EDU_CURR1 
+		  	, EDU_CURR2
+		  	, EDU_CURR3
+		  	, REG_ID
+		) 
+		VALUES 
+		(
+			  #{edu_no}
+			, #{edu_sub_no}
+			, #{edu_curr1}
+			, #{edu_curr2}
+			, #{edu_curr3}
+			, IFNULL(#{reg_id},'SYSTEM')
+		)	
+	</insert>
+	
 	<select id="getCategoryDetail" parameterType="com.easycompany.service.vo.CategoryVo" resultType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.getCategoryDetail **/	
 		WITH TEMP AS(

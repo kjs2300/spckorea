@@ -25,4 +25,8 @@ public interface EduService {
 	public int updateSchedule(CategoryVo        categoryVo);
 	public int insertSchedule(CategoryVo categoryVo);
 	
+	public int insertEducation(CategoryVo categoryVo);
+	public int getEducationNo(CategoryVo categoryVo);
+	public int insertEducationSub(CategoryVo categoryVo);
+	
 }
