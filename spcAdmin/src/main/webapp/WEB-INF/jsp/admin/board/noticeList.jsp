@@ -11,11 +11,7 @@
 
 
 <body>
-        <!--  container begin -->
-        <article id="container">
 
-            <!--  contents begin -->
-            <section class="contents-wrap">
                 <h1 class="h1-tit">공지사항</h1>
 
 
@@ -240,13 +236,3 @@
                         <li><a>&gt;&gt;</a></li>
                     </ul>
                 </div>
-            </section>
-            <!--  contents end -->
-
-            <!--  footer begin -->
-            <!--  footer end -->
-
-        </article>
-        <!--  container end -->
-        
-    </body>
