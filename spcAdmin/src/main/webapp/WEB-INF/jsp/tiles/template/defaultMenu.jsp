@@ -67,8 +67,8 @@
     <li>
         <a href="#">게시판</a>
         <ul class="depth02-menu">
-            <li><a href="#">공지사항</a></li>
-            <li><a href="#">자료실</a></li>
+            <li><a href="<c:url value='/adBoard/noticeList.do' />">공지사항</a></li>
+            <li><a href="<c:url value='/adBoard/referenceList.do' />">자료실</a></li>
             <li><a href="#">소식</a></li>
             <li><a href="#">FAQ</a></li>
             <li><a href="#">참여마당</a></li>
