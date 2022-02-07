@@ -414,22 +414,23 @@
                                 <td><input type="text" id="edu_method"  name="edu_method" class="input-box" value="${categoryForm.edu_method}"/></td>
                             </tr>
                             <tr>
-                                <th colspan="2">교육대상</th>
-                                <td>
-                                    <input type="text" id="edu_target"  name="edu_target" class="input-box" value="${categoryForm.edu_target}""/>
-                                    <span class="point">ex. 성인, 청소년, 중장년, 노인, 이어줌인, 대학생, 직장인 등</span>
-                                </td>
-                            </tr>
-                             <tr>
                                 <th colspan="2">학습시간</th>
                                 <td>
-                                    <input type="text" id="edu_time"  name="edu_time" class="input-box" value="${categoryForm.edu_time}""/>
+                                    <input type="text" id="edu_time"  name="edu_time" class="input-box" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  value="${categoryForm.edu_time}""/>분
                                 </td>
                             </tr>
                             <tr>
+                                <th colspan="2">교육대상</th>
+                                <td>
+                                    <input type="text" id="edu_target"  name="edu_target" class="input-box" value="${categoryForm.edu_target}"/>
+                                    <span class="point">ex. 성인, 청소년, 중장년, 노인, 이어줌인, 대학생, 직장인 등</span>
+                                </td>
+                            </tr>
+                          
+                            <tr>
                                 <th colspan="2">교육정원</th>
                                 <td>
-                                    <input type="text" id="edu_garden"  name="edu_garden"  onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  maxlength="5" class="input-box" value="${categoryForm.edu_garden}""/>
+                                    <input type="text" id="edu_garden"  name="edu_garden" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  maxlength="5" class="input-box" value="${categoryForm.edu_garden}""/>
                                     <span class="point">ex. 기입하지 않으면 무한대, 신청인원과 연동</span>
                                 </td>
                             </tr>
@@ -500,7 +501,7 @@
                                 <td><input type="text" id="edu_goals"  name="edu_goals"  class="input-box lg-width" value="${categoryForm.edu_goals}""/></td>
                             </tr>
                             <tr>
-                                <th>커리큘럼</th>
+                                <th>차시</th>
                                 <td>
                                  <div id="insertCurr">
                                    <c:if test="${empty categoryFormSubList }">
@@ -512,9 +513,9 @@
                                     </c:if>
                                      <c:forEach var="result" items="${categoryFormSubList}" varStatus="status">
                                      <div class="grid-box">
-                                        <input type="text" id="edu_curr1_arr"  name="edu_curr1_arr" class="input-box" value="${result.edu_curr1}"/>
-                                        <input type="text" id="edu_curr2_arr"  name="edu_curr2_arr" class="input-box" value="${result.edu_curr3}"/>
-                                        <input type="text" id="edu_curr3_arr"  name="edu_curr3_arr" class="input-box" value="${result.edu_curr2}"/>
+                                        <input type="text" id="edu_curr1_arr" placeholder="회차"   name="edu_curr1_arr" class="input-box" value="${result.edu_curr1}"/>
+                                        <input type="text" id="edu_curr2_arr" placeholder="단원명"  name="edu_curr2_arr" class="input-box" value="${result.edu_curr3}"/>
+                                        <input type="text" id="edu_curr3_arr" placeholder="강의시간" name="edu_curr3_arr"  onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  class="input-box" value="${result.edu_curr2}"/>
                                         <c:if test="${status.index !=0 }">
                                         	<button type='button' class='sm-btn black-btn'>삭제</button>
                                 		</c:if>

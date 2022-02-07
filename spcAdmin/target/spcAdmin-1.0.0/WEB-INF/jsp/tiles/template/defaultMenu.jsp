@@ -7,9 +7,9 @@
         <a href="#">메인화면</a>
         <ul class="depth02-menu">
             <li class="active"><a href="<c:url value='/main/logoList.do' />">로고</a></li>
-            <li><a href="<c:url value='/main/logoList.do' />">메인이미지</a></li>
-            <li><a href="#">배너관리</a></li>
-            <li><a href="#">팝업창 관리</a></li>
+            <li><a href="<c:url value='/main/imgList.do'    />">메인이미지</a></li>
+            <li><a href="<c:url value='/main/bannerList.do' />">배너관리</a></li>
+            <li><a href="<c:url value='/main/popupList.do' />">팝업창 관리</a></li>
         </ul>
     </li>
     <li>
@@ -23,7 +23,7 @@
         <a href="#">교육등록</a>
         <ul class="depth02-menu">
             <li><a href="<c:url value='/edu/eduInfoClassList.do' />">교육분류 등록</a></li>
-            <li><a href="#">온라인 교육</a></li>
+            <li><a href="<c:url value='/edu/eduInfoOnlineList.do' />">온라인 교육</a></li>
             <li><a href="#">온오프라인 교육</a></li>
         </ul>
     </li>
@@ -67,9 +67,8 @@
     <li>
         <a href="#">게시판</a>
         <ul class="depth02-menu">
-            <li><a href="#">공지사항</a></li>
-            <li><a href="#">자료실</a></li>
-            <li><a href="#">소식</a></li>
+            <li><a href="<c:url value='/adBoard/noticeList.do' />">공지사항</a></li>
+            <li><a href="<c:url value='/adBoard/referenceList.do' />">자료실</a></li>
             <li><a href="#">FAQ</a></li>
             <li><a href="#">참여마당</a></li>
             <li><a href="#">강사 공지사항</a></li>
@@ -77,7 +76,6 @@
         </ul>
     </li>
     <li>
-        <a href="#">수료증/기타</a>
-    
+        <a href="#">수료증/기타</a>    
     </li>
 </ul>

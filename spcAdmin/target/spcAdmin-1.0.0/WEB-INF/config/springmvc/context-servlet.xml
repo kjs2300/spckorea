@@ -95,7 +95,10 @@
     
     	
      <!-- address excel down  -->
-    <bean id="addressExcelView"    class="com.easycompany.cmm.excel.EgovExcel" />
-	<bean id="addressPOIExcelView" class="com.easycompany.cmm.excel.EgovPOIExcel" />
-	<bean id="schduleExcelView" class="com.easycompany.cmm.excel.EgovEduSchduleExcel" />
+    <bean id="addressExcelView"          class="com.easycompany.cmm.excel.EgovExcel" />
+	<bean id="addressPOIExcelView"       class="com.easycompany.cmm.excel.EgovPOIExcel" />
+	<bean id="schduleExcelView"          class="com.easycompany.cmm.excel.EgovEduSchduleExcel" />
+	<bean id="onLineEducationExcelView"  class="com.easycompany.cmm.excel.EgovoOLineEducationExcel" />
+	
+	
 </beans>

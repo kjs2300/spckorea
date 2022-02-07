@@ -14,13 +14,22 @@
      	frm.action = "<c:url value='/edu/eduInfoRegCate.do'/>";
     	frm.submit();
      }
+     
+     /* pagination 페이지 링크 function */
+     function fn_egov_link_page(pageNo){
+    	var frm = document.commonForm;
+    	frm.pageIndex.value = pageNo;
+     	frm.action = "<c:url value='/edu/eduInfoRegList.do'/>";
+        frm.submit();
+     }
      //-->
  </script>
  
                 <h1 class="h1-tit">교육안내 등록</h1>
 				<form  id="commonForm" name="commonForm"  method="post"  action="">
 					<input type="hidden" id="gubun1"         name="gubun1"   value='I'            class="input-box" />
- 				    <input type="hidden" id="gubun2"         name="gubun2"   value='category1'    class="input-box" />		
+ 				    <input type="hidden" id="gubun2"         name="gubun2"   value='category1'    class="input-box" />	
+ 				    <input type="hidden" id="pageIndex"      name="pageIndex"      class="input-box" value=1 />	
 	           </form>
 	                <div class="sub-cont">
 	                    <button type="button" class="mid-btn black-btn">전체분류 보기</button>

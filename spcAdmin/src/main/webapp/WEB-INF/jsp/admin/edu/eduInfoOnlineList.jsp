@@ -465,7 +465,7 @@
                                 <td class="tl">${result.category3_name}</td>
                                 <td>${result.inst_nm}</td>
                                 <td><span class="block">${result.train_s_date}</span> ~ <span class="block">${result.train_e_date}</span></td>
-                                <td>${result.edu_time}</td>
+                                <td>${result.edu_time}분</td>
                                 <td>${result.edu_target}</td>
                                 <td>${result.edu_garden}</td>
                                 <td>${result.edu_status}</td>

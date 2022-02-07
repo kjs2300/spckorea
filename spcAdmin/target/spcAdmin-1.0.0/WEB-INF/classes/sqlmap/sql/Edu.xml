@@ -7,7 +7,7 @@
 		 /**  com.easycompany.mapper.EduMapper.getCategoryList1 **/
 	    SELECT   CATEGORY1_KEY
 		  	   , CATEGORY1_NAME
-	     FROM  COM_CATEGORY1 
+	     FROM  EDU_CATEGORY1 
 	    ORDER BY CATEGORY1_KEY 
 	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}
 		
@@ -18,7 +18,7 @@
 	   SELECT    CATEGORY1_KEY
 		  	   , CATEGORY2_KEY
 		  	   , CATEGORY2_NAME
-	     FROM  COM_CATEGORY2
+	     FROM  EDU_CATEGORY2
 	    WHERE CATEGORY1_KEY = #{category1_key}   
 	    ORDER BY CATEGORY2_KEY 
 	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}
@@ -29,7 +29,7 @@
 		 /**  com.easycompany.mapper.EduMapper.getCategoryList3 **/
 	    SELECT   CATEGORY1_KEY
 		  	   , CATEGORY1_NAME
-	     FROM  COM_CATEGORY1 
+	     FROM  EDU_CATEGORY1 
 	    ORDER BY CATEGORY1_KEY 
 	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
 	</select>		
@@ -38,8 +38,8 @@
 	<select id="getCategoryList" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
 		 /**  com.easycompany.mapper.EduMapper.getCategoryList **/
 	    SELECT a.CATEGORY1_KEY, b.CATEGORY2_KEY,c.CATEGORY3_KEY, a.CATEGORY1_NAME, b.CATEGORY2_NAME,c.CATEGORY3_NAME
-		 FROM COM_CATEGORY1 AS A left OUTER JOIN  COM_CATEGORY2  AS B
-		    on a.CATEGORY1_KEY = b.CATEGORY1_KEY left OUTER JOIN  COM_CATEGORY3  AS C
+		 FROM EDU_CATEGORY1 AS A left OUTER JOIN  EDU_CATEGORY2  AS B
+		    on a.CATEGORY1_KEY = b.CATEGORY1_KEY left OUTER JOIN  EDU_CATEGORY3  AS C
 		    ON b.CATEGORY2_KEY = c.CATEGORY2_KEY
 		ORDER BY a.CATEGORY1_KEY
 	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
@@ -50,22 +50,21 @@
 		 /**  com.easycompany.mapper.EduMapper.getCategoryClassList1 **/
 	    SELECT   CATEGORY1_KEY
 		  	   , CATEGORY1_NAME
-	     FROM  COM_CLASS_CATEGORY1 
+	     FROM  EDU_CLASS_CATEGORY1 
 	    WHERE SITE = #{site}   
 	    ORDER BY CATEGORY1_KEY 
-	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}
-		
+	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
 	</select>
 	
 	<select id="getCategoryClassList2" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
 	   /**  com.easycompany.mapper.EduMapper.getCategoryClassList2 **/
 	   SELECT    a.CATEGORY1_KEY
-	           ,(SELECT b.CATEGORY1_NAME FROM COM_CLASS_CATEGORY1 b 
+	           ,(SELECT b.CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 b 
 				   WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
 				) CATEGORY1_NAME
 		  	   , a.CATEGORY2_KEY
 		  	   , a.CATEGORY2_NAME
-	     FROM  COM_CLASS_CATEGORY2 A
+	     FROM  EDU_CLASS_CATEGORY2 A
 	    WHERE SITE = #{site}   
 	      AND a.CATEGORY1_KEY = #{category1_key}   
 	    ORDER BY a.CATEGORY1_KEY 
@@ -77,16 +76,37 @@
 		 /**  com.easycompany.mapper.EduMapper.getCategoryClassList3 **/
 	    SELECT   A.CATEGORY1_KEY
 		  	   , A.CATEGORY2_KEY
-		  	   ,(SELECT b.CATEGORY1_NAME FROM COM_CATEGORY1 b 
+		  	   ,(SELECT b.CATEGORY1_NAME FROM EDU_CATEGORY1 b 
 				   WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
 				) CATEGORY1_NAME
-		      ,(SELECT b.CATEGORY2_NAME FROM COM_CATEGORY2 b 
+		      ,(SELECT b.CATEGORY2_NAME FROM EDU_CATEGORY2 b 
 				  WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
 				    AND b.CATEGORY2_KEY = a.CATEGORY2_KEY
 				  ) CATEGORY2_NAME
 		  	   , CATEGORY3_KEY
 		  	   , CATEGORY3_NAME
-	     FROM  COM_CLASS_CATEGORY3 A 
+	     FROM  EDU_CLASS_CATEGORY3 A 
+	    WHERE A.SITE = #{site}   
+	      AND A.CATEGORY1_KEY = #{category1_key}  
+	      AND A.CATEGORY2_KEY = #{category2_key}  
+	    ORDER BY A.CATEGORY1_KEY 
+	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
+	</select>	
+	
+	<select id="getEeuInfoOnlineLList" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
+		 /**  com.easycompany.mapper.EduMapper.getEeuInfoOnlineLList **/
+	    SELECT   A.CATEGORY1_KEY
+		  	   , A.CATEGORY2_KEY
+		  	   ,(SELECT b.CATEGORY1_NAME FROM EDU_CATEGORY1 b 
+				   WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
+				) CATEGORY1_NAME
+		      ,(SELECT b.CATEGORY2_NAME FROM EDU_CATEGORY2 b 
+				  WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
+				    AND b.CATEGORY2_KEY = a.CATEGORY2_KEY
+				  ) CATEGORY2_NAME
+		  	   , CATEGORY3_KEY
+		  	   , CATEGORY3_NAME
+	     FROM  EDU_CLASS_CATEGORY3 A 
 	    WHERE A.SITE = #{site}   
 	      AND A.CATEGORY1_KEY = #{category1_key}  
 	      AND A.CATEGORY2_KEY = #{category2_key}  
@@ -99,17 +119,17 @@
 	    WITH 
 		    A AS (
 				SELECT *
-				  FROM COM_CLASS_CATEGORY1
+				  FROM EDU_CLASS_CATEGORY1
 				 WHERE SITE = #{site}
 			),
 			B AS (
 				SELECT *
-				  FROM COM_CLASS_CATEGORY2
+				  FROM EDU_CLASS_CATEGORY2
 			  	 WHERE SITE = #{site}
 			),
 			C AS (
 				SELECT *
-				  FROM COM_CLASS_CATEGORY3
+				  FROM EDU_CLASS_CATEGORY3
 				 WHERE SITE = #{site}
 			),
 			D AS (
@@ -129,28 +149,28 @@
 	<select id="getCategoryCount" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
     	/**  com.easycompany.mapper.EduMapper.getCategoryList **/
 		SELECT  COUNT(*) cnt
-   		  FROM COM_CATEGORY1 AS A left OUTER JOIN  COM_CATEGORY2  AS B
-	           on a.CATEGORY1_KEY = b.CATEGORY1_KEY left OUTER JOIN  COM_CATEGORY3  AS C
+   		  FROM EDU_CATEGORY1 AS A left OUTER JOIN  EDU_CATEGORY2  AS B
+	           on a.CATEGORY1_KEY = b.CATEGORY1_KEY left OUTER JOIN  EDU_CATEGORY3  AS C
 	           ON b.CATEGORY2_KEY = c.CATEGORY2_KEY
 	</select>
 	
 	<select id="getCategoryCount1" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
     	/**  com.easycompany.mapper.EduMapper.getCategoryCount1 **/
     	SELECT COUNT(*) cnt
-		 FROM  COM_CATEGORY1
+		 FROM  EDU_CATEGORY1
 	</select>
 	
 	<select id="getCategoryCount2" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
     	/**  com.easycompany.mapper.EduMapper.getCategoryCount2 **/
     	SELECT COUNT(*) cnt
-		  FROM COM_CATEGORY2
+		  FROM EDU_CATEGORY2
 		 WHERE CATEGORY1_KEY = #{category1_key}
 	</select>
 	
 	<select id="getCategoryCount3" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
     	/**  com.easycompany.mapper.EduMapper.getCategoryCount3 **/
     	SELECT COUNT(*) cnt
-		 FROM  COM_CATEGORY3
+		 FROM  EDU_CATEGORY3
 		WHERE 1=1
 	</select>
 	
@@ -159,17 +179,17 @@
     	WITH 
 		    A AS (
 				SELECT *
-				  FROM COM_CLASS_CATEGORY1
+				  FROM EDU_CLASS_CATEGORY1
 				 WHERE SITE = #{site}
 			),
 			B AS (
 				SELECT *
-				  FROM COM_CLASS_CATEGORY2
+				  FROM EDU_CLASS_CATEGORY2
 			  	 WHERE SITE = #{site}
 			),
 			C AS (
 				SELECT *
-				  FROM COM_CLASS_CATEGORY3
+				  FROM EDU_CLASS_CATEGORY3
 				 WHERE SITE = #{site}
 			),
 			D AS (
@@ -187,14 +207,14 @@
 	<select id="getCategoryClassCount1" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
     	/**  com.easycompany.mapper.EduMapper.getCategoryClassCount1 **/
     	SELECT COUNT(*) cnt
-		 FROM  COM_CLASS_CATEGORY1 
+		 FROM  EDU_CLASS_CATEGORY1 
 	    WHERE SITE = #{site}   
 	</select>
 	
 	<select id="getCategoryClassCount2" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
     	/**  com.easycompany.mapper.EduMapper.getCategoryClassCount2 **/
     	SELECT COUNT(*) cnt
-		  FROM COM_CLASS_CATEGORY2 
+		  FROM EDU_CLASS_CATEGORY2 
 	    WHERE SITE = #{site}   
 	      AND CATEGORY1_KEY = #{category1_key}  
 	</select>
@@ -202,24 +222,32 @@
 	<select id="getCategoryClassCount3" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
     	/**  com.easycompany.mapper.EduMapper.getCategoryClassCount3 **/
     	SELECT COUNT(*) cnt
-		 FROM  COM_CLASS_CATEGORY3 
+		 FROM  EDU_CLASS_CATEGORY3 
 	    WHERE SITE = #{site}   
 	      AND CATEGORY1_KEY = #{category1_key}  
 	      AND CATEGORY2_KEY = #{category2_key}  
 	</select>
 	
+	<select id="getEeuInfoOnlineCount" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
+    	/**  com.easycompany.mapper.EduMapper.getEeuInfoOnlineCount **/
+    	SELECT COUNT(*) cnt
+		 FROM  EDU_CLASS_CATEGORY3 
+	    WHERE SITE = #{site}   
+	      AND CATEGORY1_KEY = #{category1_key}  
+	      AND CATEGORY2_KEY = #{category2_key}  
+	</select>
 	
 	<select id="getCategoryExist1" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
 	    /**  com.easycompany.mapper.EduMapper.getCategoryExist1 **/
     	SELECT COUNT(*) cnt
-		  FROM COM_CATEGORY1
+		  FROM EDU_CATEGORY1
 		 WHERE CATEGORY1_NAME = #{categoryName}
 	</select>
 	
 	<select id="getCategoryExist2" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
 	    /**  com.easycompany.mapper.EduMapper.getCategoryExist2 **/
     	SELECT COUNT(*) cnt
-		  FROM COM_CATEGORY2
+		  FROM EDU_CATEGORY2
 		 WHERE CATEGORY1_KEY  = #{category1_key}
 		   AND CATEGORY2_NAME = #{categoryName}
 	</select>
@@ -227,14 +255,14 @@
 	<select id="getCategoryExist3" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
 	    /**  com.easycompany.mapper.EduMapper.getCategoryExist3 **/
     	SELECT COUNT(*) cnt
-		  FROM COM_CATEGORY3
+		  FROM EDU_CATEGORY3
 		 WHERE CATEGORY1_NAME = #{categoryName}
 	</select>
 	
 	<select id="getClassCategoryExist1" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
 	    /**  com.easycompany.mapper.EduMapper.getClassCategoryExist1 **/
     	SELECT COUNT(*) cnt
-		  FROM COM_CLASS_CATEGORY1
+		  FROM EDU_CLASS_CATEGORY1
 		 WHERE SITE = #{site}  
 		   AND CATEGORY1_NAME = #{categoryName}
 	</select>
@@ -242,7 +270,7 @@
 	<select id="getClassCategoryExist2" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
 	    /**  com.easycompany.mapper.EduMapper.getClassCategoryExist2 **/
     	SELECT COUNT(*) cnt
-		  FROM COM_CLASS_CATEGORY2
+		  FROM EDU_CLASS_CATEGORY2
 		 WHERE SITE = #{site}  
 		   AND CATEGORY1_KEY  = #{category1_key}
 		   AND CATEGORY2_NAME = #{categoryName}
@@ -251,7 +279,7 @@
 	<select id="getClassCategoryExist3" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
 	    /**  com.easycompany.mapper.EduMapper.getClassCategoryExist3 **/
     	SELECT COUNT(*) cnt
-		  FROM COM_CLASS_CATEGORY3
+		  FROM EDU_CLASS_CATEGORY3
 		 WHERE SITE = #{site}  
 		   AND CATEGORY1_KEY  = #{category1_key}
 		   AND CATEGORY2_KEY  = #{category2_key}
@@ -262,11 +290,11 @@
 		/**  com.easycompany.mapper.EduMapper.insertCategory1 **/	
 		<selectKey resultType="int" keyProperty="category1_key" order="BEFORE">			
 			SELECT IFNULL(MAX(CATEGORY1_KEY), 0) + 1 
-			FROM COM_CATEGORY1			  
+			FROM EDU_CATEGORY1			  
 		</selectKey>
 		
 		INSERT 
-		INTO COM_CATEGORY1 
+		INTO EDU_CATEGORY1 
 		(
 		  	  CATEGORY1_KEY
 		  	, CATEGORY1_NAME
@@ -284,11 +312,11 @@
 		/**  com.easycompany.mapper.EduMapper.insertCategory2 **/	
 		<selectKey resultType="int" keyProperty="category2_key" order="BEFORE">			
 			SELECT IFNULL(MAX(CATEGORY2_KEY), 0) + 1 
-			FROM COM_CATEGORY2			  
+			FROM EDU_CATEGORY2			  
 		</selectKey>
 		
 		INSERT 
-		INTO COM_CATEGORY2 
+		INTO EDU_CATEGORY2 
 		(
 		  	  CATEGORY1_KEY
 		  	, CATEGORY2_KEY
@@ -308,11 +336,11 @@
 		/**  com.easycompany.mapper.EduMapper.insertCategory3 **/	
 		<selectKey resultType="int" keyProperty="category3_key" order="BEFORE">			
 			SELECT IFNULL(MAX(CATEGORY3_KEY), 0) + 1 
-			FROM COM_CATEGORY3			  
+			FROM EDU_CATEGORY3			  
 		</selectKey>
 		
 		INSERT 
-		INTO COM_CATEGORY3 
+		INTO EDU_CATEGORY3 
 		(
 		  	  CATEGORY1_KEY
 		  	, CATEGORY2_KEY
@@ -338,11 +366,11 @@
 		/**  com.easycompany.mapper.EduMapper.insertClassCategory1 **/	
 		<selectKey resultType="int" keyProperty="category1_key" order="BEFORE">			
 			SELECT IFNULL(MAX(CATEGORY1_KEY), 0) + 1 
-			  FROM COM_CLASS_CATEGORY1		
+			  FROM EDU_CLASS_CATEGORY1		
 		</selectKey>
 		
 		INSERT 
-		INTO COM_CLASS_CATEGORY1 
+		INTO EDU_CLASS_CATEGORY1 
 		(
 		  	  CATEGORY1_KEY
 		  	, CATEGORY1_NAME
@@ -362,11 +390,11 @@
 		/**  com.easycompany.mapper.EduMapper.insertClassCategory2 **/	
 		<selectKey resultType="int" keyProperty="category2_key" order="BEFORE">			
 			SELECT IFNULL(MAX(CATEGORY2_KEY), 0) + 1 
-			 FROM COM_CLASS_CATEGORY2		
+			 FROM EDU_CLASS_CATEGORY2		
 		</selectKey>
 		
 		INSERT 
-		INTO COM_CLASS_CATEGORY2 
+		INTO EDU_CLASS_CATEGORY2 
 		(
 		  	  CATEGORY1_KEY
 		  	, CATEGORY2_KEY
@@ -388,11 +416,11 @@
 		/**  com.easycompany.mapper.EduMapper.insertClassCategory3 **/	
 		<selectKey resultType="int" keyProperty="category3_key" order="BEFORE">			
 			SELECT IFNULL(MAX(CATEGORY3_KEY), 0) + 1 
-			FROM COM_CLASS_CATEGORY3	
+			FROM EDU_CLASS_CATEGORY3	
 		</selectKey>
 		
 		INSERT 
-		INTO COM_CLASS_CATEGORY3 
+		INTO EDU_CLASS_CATEGORY3 
 		(
 		  	  CATEGORY1_KEY
 		  	, CATEGORY2_KEY
@@ -412,15 +440,219 @@
 		)	
 	</insert>
 	
+	<select id="getEduInfoOnlineNo" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
+    	/**  com.easycompany.mapper.EduMapper.getEduInfoOnlineNo **/
+    	SELECT IFNULL(MAX(EDU_NO), 0) + 1 
+		  FROM EDU_REGISTRATION 
+	</select>
+	
+	<insert id="insertEduInfoOnline" parameterType="com.easycompany.service.vo.CategoryVo">
+		/**  com.easycompany.mapper.EduMapper.insertEduInfoOnline **/	
+		INSERT 
+		INTO EDU_REGISTRATION 
+		(
+		  	  EDU_NO
+		  	, EDU_SITE
+		  	, CATEGORY1_KEY 
+		  	, CATEGORY2_KEY
+		  	, CATEGORY3_KEY
+		  	
+		  	, INST_NM
+		  	, SET_USE_YN 
+		  	, TRAIN_S_DATE
+		  	, TRAIN_E_DATE
+		  	
+		  	, EDU_CONT
+		  	, EDU_METHOD
+		  	, EDU_TIME 
+		  	, EDU_TARGET
+		  	, EDU_GARDEN
+		  	
+	
+		  	, EDU_STATUS 
+		  	, EXP_USE_YN
+		  	, EDU_NOTICE
+		  	
+		  	, EDU_INTRO
+		  	, EDU_GOALS
+		  	
+		  	
+		  	, REG_ID
+		) 
+		VALUES 
+		(
+			  #{edu_no}
+			, #{edu_site}
+			, #{category1_key}
+			, #{category2_key}
+			, #{category3_key}
+			
+			, #{inst_nm}
+			, #{set_use_yn}
+			, #{train_s_date}
+			, #{train_e_date}
+			
+			, #{edu_cont}
+			, #{edu_method}
+			, #{edu_time}
+			, #{edu_target}
+			, #{edu_garden}
+			
+			, #{edu_status}
+			, #{exp_use_yn}
+			, #{edu_notice}
+			
+			, #{edu_intro}
+			, #{edu_goals}
+			
+			, IFNULL(#{reg_id},'SYSTEM')
+		)	
+	</insert>
+	
+	<insert id="insertEduInfoOnlineSub" parameterType="com.easycompany.service.vo.CategoryVo">
+		/**  com.easycompany.mapper.EduMapper.insertEduInfoOnlineSub **/	
+		<selectKey resultType="int" keyProperty="edu_sub_no" order="BEFORE">			
+			SELECT IFNULL(MAX(EDU_SUB_NO), 0) + 1 
+			  FROM EDU_REGISTRATION_DETAIL	
+		</selectKey>
+		INSERT 
+		INTO EDU_REGISTRATION_DETAIL 
+		(
+		  	  EDU_NO
+		  	, EDU_SUB_NO
+		  	, EDU_CURR1 
+		  	, EDU_CURR2
+		  	, EDU_CURR3
+		  	, REG_ID
+		) 
+		VALUES 
+		(
+			  #{edu_no}
+			, #{edu_sub_no}
+			, #{edu_curr1}
+			, #{edu_curr2}
+			, #{edu_curr3}
+			, IFNULL(#{reg_id},'SYSTEM')
+		)	
+	</insert>
+	
+	<select id="getEduCationDetail" parameterType="com.easycompany.service.vo.CategoryVo" resultType="com.easycompany.service.vo.CategoryVo">
+		/**  com.easycompany.mapper.EduMapper.getEduCationDetail **/	
+		SELECT A.EDU_NO, A.EDU_SITE, A.CATEGORY1_KEY, A.CATEGORY2_KEY, A.CATEGORY3_KEY, A.EDU_VER, A.INST_NM, A.SET_USE_YN
+		      , A.COPER_NM 	
+		      , A.TRAIN_S_DATE   , A.TRAIN_E_DATE, A.EDU_CONT, A.EDU_METHOD	,A.EDU_TIME, A.EDU_TARGET, A.EDU_GARDEN
+		  	  , A.EDU_STATUS  	, A.EXP_USE_YN, A.EDU_NOTICE, A.EDU_INTRO, A.EDU_GOALS
+		  	  , (SELECT FILE_NAME FROM EDU_FILE WHERE FILE_ID = A.EDU_NOTICE) AS FILE_NAME
+		  	  , (
+					SELECT CATEGORY1_NAME
+					  FROM EDU_CLASS_CATEGORY1
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY
+					   AND SITE = #{edu_site}
+				) AS CATEGORY1_NAME
+			  , (
+					SELECT CATEGORY2_NAME
+					  FROM EDU_CLASS_CATEGORY2
+				  	 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+				  	   AND CATEGORY2_KEY= A.CATEGORY2_KEY
+				  	   AND SITE = #{edu_site}
+				 ) AS CATEGORY2_NAME
+			  , (
+					SELECT CATEGORY3_NAME
+					  FROM EDU_CLASS_CATEGORY3
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+					   AND CATEGORY2_KEY= A.CATEGORY2_KEY 
+					   AND CATEGORY3_KEY= A.CATEGORY3_KEY
+					   AND SITE = #{edu_site}
+				  ) AS CATEGORY3_NAME
+	  	 FROM EDU_REGISTRATION A
+        WHERE EDU_NO   = #{edu_no}
+	      AND EDU_SITE = #{edu_site}	    
+	</select>
+	
+	<select id="getEduCationDetailSub" parameterType="com.easycompany.service.vo.CategoryVo" resultType="com.easycompany.service.vo.CategoryVo">
+		/**  com.easycompany.mapper.EduMapper.getEduCationDetailSub **/	
+		SELECT A.EDU_NO, A.EDU_SUB_NO, A.EDU_CURR1, A.EDU_CURR2, A.EDU_CURR3
+	  	 FROM EDU_REGISTRATION_DETAIL A
+        WHERE EDU_NO   = #{edu_no}	    
+	</select>
+	
+	<select id="getEduInfoOnlineList" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
+	   /**  com.easycompany.mapper.EduMapper.getEduInfoOnlineList **/
+	   WITH TEMP 
+		AS (
+			SELECT A.EDU_NO,  A.CATEGORY1_KEY, A.CATEGORY2_KEY, A.CATEGORY3_KEY, A.INST_NM, A.TRAIN_S_DATE, A.TRAIN_E_DATE, A.EDU_TARGET,A.EDU_TIME
+			       , A.EDU_GARDEN, A.EDU_STATUS,A.EDU_CONT,A.EDU_METHOD, A.EXP_USE_YN
+		       , (
+					SELECT CATEGORY1_NAME
+					  FROM EDU_CLASS_CATEGORY1
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY
+					   AND SITE = #{edu_site}
+				) AS CATEGORY1_NAME
+			  , (
+					SELECT CATEGORY2_NAME
+					  FROM EDU_CLASS_CATEGORY2
+				  	 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+				  	   AND CATEGORY2_KEY= A.CATEGORY2_KEY
+				  	   AND SITE = #{edu_site}
+				 ) AS CATEGORY2_NAME
+			  , (
+					SELECT CATEGORY3_NAME
+					  FROM EDU_CLASS_CATEGORY3
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+					   AND CATEGORY2_KEY= A.CATEGORY2_KEY 
+					   AND CATEGORY3_KEY= A.CATEGORY3_KEY
+					   AND SITE = #{edu_site}
+				  ) AS CATEGORY3_NAME
+		   FROM EDU_REGISTRATION A
+	    WHERE A.EDU_SITE = #{edu_site}
+			)
+		SELECT *
+		 FROM TEMP
+		WHERE 1= 1 
+		 <if test=" inst_nm !=null and inst_nm !=''">
+		  AND INST_NM  LIKE CONCAT('%', #{inst_nm} ,'%')
+		 </if>	
+		 <if test=" category1_key !=null and category1_key !=''">
+		  AND CATEGORY1_KEY  LIKE CONCAT('%', #{category1_key} ,'%')
+		 </if>	
+		 <if test=" category2_key !=null and category2_key !=''">
+		  AND CATEGORY2_KEY  LIKE CONCAT('%', #{inst_nm} ,'%')
+		 </if>	
+		 <if test=" category3_key !=null and category3_key !=''">
+		  AND CATEGORY3_KEY  LIKE CONCAT('%', #{inst_nm} ,'%')
+		 </if>	
+		<choose>
+		  <when test ="checkdate !=null and checkdate !='' and checkdate =='ALL' ">
+		  </when>
+		  <when test ="checkdate !=null and checkdate !='' and checkdate =='TODAY' ">
+		   AND  TRAIN_S_DATE = DATE_FORMAT(NOW(),'%x-%m-%d')
+		  </when>
+		  <when test ="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
+		   <![CDATA[
+		     AND  TRAIN_S_DATE >= #{train_s_date} AND TRAIN_E_DATE <= #{train_e_date} 
+		    ]]>
+		  </when>
+	     </choose>
+	    ORDER BY EDU_NO DESC 
+	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
+	</select>
+	
+	<select id="getEduInfoOnlineCount" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
+    	/**  com.easycompany.mapper.EduMapper.getEduInfoOnlineCount **/
+		SELECT COUNT(*) cnt
+   		  FROM EDU_REGISTRATION
+   		 WHERE EDU_SITE = #{edu_site}
+	</select>
+	
 	<select id="getCategoryDetail" parameterType="com.easycompany.service.vo.CategoryVo" resultType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.getCategoryDetail **/	
 		WITH TEMP AS(
 				SELECT a.CATEGORY1_KEY, b.CATEGORY2_KEY,c.CATEGORY3_KEY, a.CATEGORY1_NAME, b.CATEGORY2_NAME,c.CATEGORY3_NAME, C.CATEGORY3_CONT
-				FROM COM_CATEGORY1 AS A
+				FROM EDU_CATEGORY1 AS A
 				LEFT OUTER
-				JOIN COM_CATEGORY2 AS B ON a.CATEGORY1_KEY = b.CATEGORY1_KEY
+				JOIN EDU_CATEGORY2 AS B ON a.CATEGORY1_KEY = b.CATEGORY1_KEY
 				LEFT OUTER
-				JOIN COM_CATEGORY3 AS C ON b.CATEGORY2_KEY = c.CATEGORY2_KEY
+				JOIN EDU_CATEGORY3 AS C ON b.CATEGORY2_KEY = c.CATEGORY2_KEY
 				)
 		SELECT CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME, CATEGORY3_CONT
 	      FROM TEMP
@@ -431,37 +663,79 @@
 	
 	<select id="getEduInfoDetail" parameterType="com.easycompany.service.vo.CategoryVo" resultType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.getEduInfoDetail **/	
-		SELECT   CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME
-		       , EDU_NAME,EDU_START_DATE,EDU_END_DATE,EDU_ORG_NAME, EDU_TARGET, EDU_NUMBER, EDU_TEAC_NAME, EDU_KEY
-	      FROM COM_EDU_SCHEDULE
-		 WHERE EDU_KEY = #{edu_key}
+		SELECT   A.CATEGORY1_KEY, A.CATEGORY2_KEY, A.CATEGORY3_KEY, A.EDU_NAME, A.EDU_START_DATE, A.EDU_END_DATE, A.EDU_ORG_NAME, A.EDU_TARGET, A.EDU_NUMBER, A.EDU_TEAC_NAME, A.EDU_KEY
+		       , (
+					SELECT CATEGORY1_NAME
+					  FROM EDU_CATEGORY1
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY
+				) AS CATEGORY1_NAME
+			  , (
+					SELECT CATEGORY2_NAME
+					  FROM EDU_CATEGORY2
+				  	 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+				  	   AND CATEGORY2_KEY= A.CATEGORY2_KEY
+				 ) AS CATEGORY2_NAME
+			  , (
+					SELECT CATEGORY3_NAME
+					  FROM EDU_CATEGORY3
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+					   AND CATEGORY2_KEY= A.CATEGORY2_KEY 
+					   AND CATEGORY3_KEY= A.CATEGORY3_KEY
+				  ) AS CATEGORY3_NAME
+		   FROM EDU_SCHEDULE A
+		  WHERE A.EDU_KEY = #{edu_key}
+	</select>
+	
+	<select id="getEeuInfoOnlineDetail" parameterType="com.easycompany.service.vo.CategoryVo" resultType="com.easycompany.service.vo.CategoryVo">
+		/**  com.easycompany.mapper.EduMapper.getEeuInfoOnlineDetail **/	
+		SELECT   A.CATEGORY1_KEY, A.CATEGORY2_KEY, A.CATEGORY3_KEY, A.EDU_NAME, A.EDU_START_DATE, A.EDU_END_DATE, A.EDU_ORG_NAME, A.EDU_TARGET, A.EDU_NUMBER, A.EDU_TEAC_NAME, A.EDU_KEY
+		       , (
+					SELECT CATEGORY1_NAME
+					  FROM EDU_CATEGORY1
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY
+				) AS CATEGORY1_NAME
+			  , (
+					SELECT CATEGORY2_NAME
+					  FROM EDU_CATEGORY2
+				  	 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+				  	   AND CATEGORY2_KEY= A.CATEGORY2_KEY
+				 ) AS CATEGORY2_NAME
+			  , (
+					SELECT CATEGORY3_NAME
+					  FROM EDU_CATEGORY3
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+					   AND CATEGORY2_KEY= A.CATEGORY2_KEY 
+					   AND CATEGORY3_KEY= A.CATEGORY3_KEY
+				  ) AS CATEGORY3_NAME
+		   FROM EDU_SCHEDULE A
+		  WHERE A.EDU_KEY = #{edu_key}
 	</select>
 	
 	<delete id="deleteCategory1" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteCategory1 **/	
 	   DELETE 
-		 FROM COM_CATEGORY1 
+		 FROM EDU_CATEGORY1 
 	    WHERE CATEGORY1_KEY = #{category1_key}
 	</delete>
 	
 	<delete id="deleteCategory1Sub2" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteCategory1Sub2 **/	
 	   DELETE 
-		 FROM COM_CATEGORY2 
+		 FROM EDU_CATEGORY2 
 	    WHERE CATEGORY1_KEY = #{category1_key}
 	</delete>
 	
 	<delete id="deleteCategory1Sub3" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteCategory1Sub2 **/	
 	   DELETE 
-		 FROM COM_CATEGORY3 
+		 FROM EDU_CATEGORY3 
 	    WHERE CATEGORY1_KEY = #{category1_key}
 	</delete>
 	
 	<delete id="deleteCategory2" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteCategory2 **/	
 	   DELETE 
-		 FROM  COM_CATEGORY2 
+		 FROM  EDU_CATEGORY2 
 	    WHERE CATEGORY1_KEY = #{category1_key}
 	      AND CATEGORY2_KEY = #{category2_key}
 	</delete>
@@ -469,7 +743,7 @@
 	<delete id="deleteCategory2Sub3" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteCategory2Sub3 **/	
 	   DELETE 
-		 FROM  COM_CATEGORY3 
+		 FROM  EDU_CATEGORY3 
 	    WHERE CATEGORY1_KEY = #{category1_key}
 	      AND CATEGORY2_KEY = #{category2_key}
 	</delete>
@@ -477,7 +751,7 @@
 	<delete id="deleteCategory3" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteCategory3 **/	
 	   DELETE 
-		 FROM COM_CATEGORY3 
+		 FROM EDU_CATEGORY3 
 	    WHERE CATEGORY3_KEY = #{category1_key}
 	      AND CATEGORY2_KEY = #{category2_key}
 	      AND CATEGORY3_KEY = #{category3_key}
@@ -486,7 +760,7 @@
 	<delete id="deleteClassCategory1" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteClassCategory1 **/	
 	   DELETE 
-		 FROM COM_CLASS_CATEGORY1 
+		 FROM EDU_CLASS_CATEGORY1 
 	   WHERE CATEGORY1_KEY = #{category1_key}
 	      AND SITE = #{site}  
 	</delete>
@@ -494,7 +768,7 @@
 	<delete id="deleteClassCategory1Sub2" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteClassCategory1Sub2 **/	
 	   DELETE 
-		 FROM COM_CLASS_CATEGORY2 
+		 FROM EDU_CLASS_CATEGORY2 
 	    WHERE CATEGORY1_KEY = #{category1_key}
 	     AND SITE = #{site}  
 	</delete>
@@ -502,7 +776,7 @@
 	<delete id="deleteClassCategory1Sub3" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteClassCategory1Sub3 **/	
 	   DELETE 
-		 FROM COM_CLASS_CATEGORY3 
+		 FROM EDU_CLASS_CATEGORY3 
 	   WHERE CATEGORY1_KEY = #{category1_key}
 	      AND SITE = #{site}  
 	</delete>
@@ -510,7 +784,7 @@
 	<delete id="deleteClassCategory2" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteClassCategory2 **/	
 	   DELETE 
-		 FROM  COM_CLASS_CATEGORY2 
+		 FROM  EDU_CLASS_CATEGORY2 
 	    WHERE CATEGORY1_KEY = #{category1_key}
 	      AND CATEGORY2_KEY = #{category2_key}
 	      AND SITE = #{site}  
@@ -519,7 +793,7 @@
 	<delete id="deleteClassCategory2Sub3" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteClassCategory2Sub3 **/	
 	   DELETE 
-		 FROM  COM_CLASS_CATEGORY3 
+		 FROM  EDU_CLASS_CATEGORY3 
 	    WHERE CATEGORY1_KEY = #{category1_key}
 	      AND CATEGORY2_KEY = #{category2_key}
 	      AND SITE = #{site}  
@@ -528,16 +802,53 @@
 	<delete id="deleteClassCategory3" parameterType="com.easycompany.service.vo.CategoryVo">
 	/**  com.easycompany.mapper.EduMapper.deleteClassCategory3 **/	
 	   DELETE 
-		 FROM COM_CLASS_CATEGORY3 
+		 FROM EDU_CLASS_CATEGORY3 
 	    WHERE CATEGORY1_KEY = #{category1_key}
 	      AND CATEGORY2_KEY = #{category2_key}
 	      AND CATEGORY3_KEY = #{category3_key}
 	      AND SITE = #{site}  
 	</delete>
 	
+	<delete id="deleteEduCationFile" parameterType="com.easycompany.service.vo.CategoryVo">
+	/**  com.easycompany.mapper.EduMapper.deleteEduCationFile **/	
+	   DELETE 
+		 FROM EDU_FILE 
+	    WHERE FILE_ID = (SELECT EDU_NOTICE 
+	                       FROM EDU_REGISTRATION 
+	                      WHERE EDU_NO   = #{edu_no}
+	                        AND EDU_SITE = #{edu_site}
+	                      )
+	</delete>
+	
+	<select id="getEduCationFile" parameterType="com.easycompany.service.vo.CategoryVo" resultType="string">
+    	/**  com.easycompany.mapper.EduMapper.getEduCationFile **/
+        SELECT FILE_FULL_PATH
+		  FROM EDU_FILE 
+	     WHERE FILE_ID = (SELECT EDU_NOTICE 
+	                       FROM EDU_REGISTRATION 
+	                      WHERE EDU_NO   = #{edu_no}
+	                        AND EDU_SITE = #{edu_site}
+	                      )
+	</select>
+	
+	<delete id="deleteEduCationDetail" parameterType="com.easycompany.service.vo.CategoryVo">
+	/**  com.easycompany.mapper.EduMapper.deleteEduCationDetail **/	
+	   DELETE 
+		 FROM EDU_REGISTRATION_DETAIL 
+	    WHERE EDU_NO   = #{edu_no}
+	</delete>
+	
+	<delete id="deleteEduCation" parameterType="com.easycompany.service.vo.CategoryVo">
+	/**  com.easycompany.mapper.EduMapper.deleteEduCation **/	
+	   DELETE 
+		 FROM EDU_REGISTRATION 
+	    WHERE EDU_NO   = #{edu_no}
+	      AND EDU_SITE = #{edu_site}
+	</delete>
+	
 	<update id="updateCategory1" parameterType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.updateCategory1 **/	
-		UPDATE COM_CATEGORY1 
+		UPDATE EDU_CATEGORY1 
 		   SET CATEGORY1_NAME = #{category1_name}
 		     , CHG_ID = IFNULL(#{reg_id},'SYSTEM')
 		     , CHG_DT = NOW()
@@ -546,7 +857,7 @@
 	
 	<update id="updateCategory2" parameterType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.updateCategory2 **/	
-		UPDATE COM_CATEGORY2 
+		UPDATE EDU_CATEGORY2 
 		   SET CATEGORY2_NAME = #{category2_name}
 		     , CHG_ID = IFNULL(#{reg_id},'SYSTEM')
 		     , CHG_DT = NOW()
@@ -557,7 +868,7 @@
 
 	<update id="updateCategory3" parameterType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.updateCategory3 **/	
-		UPDATE COM_CATEGORY3
+		UPDATE EDU_CATEGORY3
 		   SET CATEGORY3_NAME = #{category3_name}
 		     , CATEGORY3_CONT = #{category3_cont}
 		     , CHG_ID = IFNULL(#{reg_id},'SYSTEM')
@@ -569,7 +880,7 @@
 	
 	<update id="updateClassCategory1" parameterType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.updateClassCategory1 **/	
-		UPDATE COM_CLASS_CATEGORY1 
+		UPDATE EDU_CLASS_CATEGORY1 
 		   SET CATEGORY1_NAME = #{category1_name}
 		     , CHG_ID = IFNULL(#{reg_id},'SYSTEM')
 		     , CHG_DT = NOW()
@@ -579,7 +890,7 @@
 	
 	<update id="updateClassCategory2" parameterType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.updateClassCategory2 **/	
-		UPDATE COM_CLASS_CATEGORY2 
+		UPDATE EDU_CLASS_CATEGORY2 
 		   SET CATEGORY2_NAME = #{category2_name}
 		     , CHG_ID = IFNULL(#{reg_id},'SYSTEM')
 		     , CHG_DT = NOW()
@@ -591,7 +902,7 @@
 
 	<update id="updateClassCategory3" parameterType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.updateClassCategory3 **/	
-		UPDATE COM_CLASS_CATEGORY3
+		UPDATE EDU_CLASS_CATEGORY3
 		   SET CATEGORY3_NAME = #{category3_name}
 		     , CHG_ID = IFNULL(#{reg_id},'SYSTEM')
 		     , CHG_DT = NOW()
@@ -605,11 +916,11 @@
 		 /**  com.easycompany.mapper.EduMapper.getCategoryCodeList **/
 	    WITH TEMP AS(
 					SELECT a.CATEGORY1_KEY, b.CATEGORY2_KEY,c.CATEGORY3_KEY, a.CATEGORY1_NAME, b.CATEGORY2_NAME,c.CATEGORY3_NAME, C.CATEGORY3_CONT
-					FROM COM_CATEGORY1 AS A
+					FROM EDU_CATEGORY1 AS A
 					LEFT OUTER
-					JOIN COM_CATEGORY2 AS B ON a.CATEGORY1_KEY = b.CATEGORY1_KEY
+					JOIN EDU_CATEGORY2 AS B ON a.CATEGORY1_KEY = b.CATEGORY1_KEY
 					LEFT OUTER
-					JOIN COM_CATEGORY3 AS C ON b.CATEGORY2_KEY = c.CATEGORY2_KEY
+					JOIN EDU_CATEGORY3 AS C ON b.CATEGORY2_KEY = c.CATEGORY2_KEY
 		)
 		 <choose>
 		<when test ="gubun3 !=null and gubun3 !='' and gubun3 =='categorycode1' ">
@@ -634,6 +945,44 @@
            GROUP BY  CATEGORY3_KEY, CATEGORY3_NAME
 		</when>
 	  </choose>
+	  </select>	
+	  
+	  <select id="getOnlineCategoryCodeList" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
+		 /**  com.easycompany.mapper.EduMapper.getOnlineCategoryCodeList **/
+	    WITH TEMP AS(
+					SELECT a.CATEGORY1_KEY, b.CATEGORY2_KEY,c.CATEGORY3_KEY, a.CATEGORY1_NAME, b.CATEGORY2_NAME,c.CATEGORY3_NAME,a.SITE
+					FROM EDU_CLASS_CATEGORY1 AS A
+					LEFT OUTER
+					JOIN EDU_CLASS_CATEGORY2 AS B ON a.CATEGORY1_KEY = b.CATEGORY1_KEY
+					LEFT OUTER
+					JOIN EDU_CLASS_CATEGORY3 AS C ON b.CATEGORY2_KEY = c.CATEGORY2_KEY
+		)
+		 <choose>
+		<when test ="gubun3 !=null and gubun3 !='' and gubun3 =='categorycode1' ">
+		   SELECT CATEGORY1_KEY AS CODE_CD, CATEGORY1_NAME AS CODE_NAME
+			FROM TEMP
+			WHERE CATEGORY3_KEY IS NOT NULL
+			  AND SITE= #{site}
+			GROUP BY  CATEGORY1_KEY, CATEGORY1_NAME
+		</when>
+		<when test ="gubun3 !=null and gubun3 !='' and gubun3 =='categorycode2' ">
+		  SELECT CATEGORY2_KEY AS CODE_CD, CATEGORY2_NAME AS CODE_NAME
+			FROM TEMP
+		   WHERE CATEGORY3_KEY IS NOT NULL
+		     AND SITE= #{site}
+ 			 AND CATEGORY1_KEY = #{category1_key}
+           GROUP BY  CATEGORY2_KEY, CATEGORY2_NAME
+		</when>
+		<when test ="gubun3 !=null and gubun3 !='' and gubun3 =='categorycode3' ">
+		  SELECT CATEGORY3_KEY AS CODE_CD, CATEGORY3_NAME AS CODE_NAME
+			FROM TEMP
+		   WHERE CATEGORY3_KEY IS NOT NULL
+		     AND SITE= #{site}
+ 			 AND CATEGORY1_KEY = #{category1_key}
+ 			 AND CATEGORY2_KEY = #{category2_key}
+           GROUP BY  CATEGORY3_KEY, CATEGORY3_NAME
+		</when>
+	  </choose>
 	</select>	
 	
 
@@ -641,11 +990,11 @@
 		/**  com.easycompany.mapper.EduMapper.insertSchedule **/	
 		<selectKey resultType="int" keyProperty="edu_key" order="BEFORE">			
 			SELECT IFNULL(MAX(EDU_KEY), 0) + 1 
-			FROM COM_EDU_SCHEDULE			  
+			FROM EDU_SCHEDULE			  
 		</selectKey>
 		
 		INSERT 
-		INTO COM_EDU_SCHEDULE 
+		INTO EDU_SCHEDULE 
 		(     EDU_KEY
 		  	, CATEGORY1_KEY
 		  	, CATEGORY2_KEY
@@ -684,7 +1033,7 @@
 	
 	<update id="updateSchedule" parameterType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.updateSchedule **/	
-		UPDATE  COM_EDU_SCHEDULE 
+		UPDATE  EDU_SCHEDULE 
 		   SET  CATEGORY1_KEY   = #{category1_key}       
 			  , CATEGORY2_KEY   = #{category2_key} 
 			  , CATEGORY3_KEY   = #{category3_key} 
@@ -706,54 +1055,66 @@
 	<delete id="deleteSchedule" parameterType="com.easycompany.service.vo.CategoryVo">
 	 /**  com.easycompany.mapper.EduMapper.deleteSchedule **/	
 	   DELETE 
-		 FROM COM_EDU_SCHEDULE 
+		 FROM EDU_SCHEDULE 
 	    WHERE EDU_KEY = #{edu_key}
 	</delete>
 	
 	<select id="eduInfoScheduleList" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
-		 /**  com.easycompany.mapper.EduMapper.eduInfoScheduleList **/
-		SELECT a.CATEGORY1_KEY
-		      ,(SELECT b.CATEGORY1_NAME FROM COM_CATEGORY1 b 
-				   WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
-				) CATEGORY1_NAME
-		      ,a.CATEGORY2_KEY
-		      ,(SELECT b.CATEGORY2_NAME FROM COM_CATEGORY2 b 
-				  WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
-				    AND b.CATEGORY2_KEY = a.CATEGORY2_KEY
-				  ) CATEGORY2_NAME
-				 , a.CATEGORY3_KEY
-		      ,(SELECT b.CATEGORY3_NAME FROM COM_CATEGORY3 b 
-				  WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
-				    AND b.CATEGORY2_KEY = a.CATEGORY2_KEY
-					 AND b.CATEGORY3_KEY = a.CATEGORY3_KEY
-				  ) CATEGORY3_NAME
-		     , EDU_NAME
-		  	 , EDU_START_DATE
-		  	 , EDU_END_DATE
-		  	 , EDU_ORG_NAME
-		  	 , EDU_TARGET
-		  	 , EDU_NUMBER
-		  	 , EDU_TEAC_NAME
-		  	 , EDU_KEY
-		 FROM COM_EDU_SCHEDULE a
+		/**  com.easycompany.mapper.EduMapper.eduInfoScheduleList **/
+		WITH TEMP 
+		AS (
+			SELECT a.CATEGORY1_KEY
+			      ,(SELECT b.CATEGORY1_NAME FROM EDU_CATEGORY1 b 
+					   WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
+					) CATEGORY1_NAME
+			      ,a.CATEGORY2_KEY
+			      ,(SELECT b.CATEGORY2_NAME FROM EDU_CATEGORY2 b 
+					  WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
+					    AND b.CATEGORY2_KEY = a.CATEGORY2_KEY
+					  ) CATEGORY2_NAME
+					 , a.CATEGORY3_KEY
+			      ,(SELECT b.CATEGORY3_NAME FROM EDU_CATEGORY3 b 
+					  WHERE b.CATEGORY1_KEY = a.CATEGORY1_KEY
+					    AND b.CATEGORY2_KEY = a.CATEGORY2_KEY
+						 AND b.CATEGORY3_KEY = a.CATEGORY3_KEY
+					  ) CATEGORY3_NAME
+			     , EDU_NAME
+			  	 , EDU_START_DATE
+			  	 , EDU_END_DATE
+			  	 , EDU_ORG_NAME
+			  	 , EDU_TARGET
+			  	 , EDU_NUMBER
+			  	 , EDU_TEAC_NAME
+			  	 , EDU_KEY
+			 FROM EDU_SCHEDULE A
+			)
+		SELECT *
+		 FROM TEMP
+		WHERE 1= 1 
+		  <if test=" category3_name !=null and category3_name !=''">
+		      AND CATEGORY3_NAME  LIKE CONCAT('%', #{category3_name} ,'%')
+		  </if>	
 		 <choose>
-			<when test ="checkdate !=null and checkdate !='' and checkdate =='A' ">
-			</when>
-			<when test ="checkdate !=null and checkdate !='' and checkdate =='T' ">
-			</when>
-			<when test ="checkdate !=null and checkdate !='' and checkdate =='S' ">
-			</when>
-		 </choose>
-		ORDER BY a.CATEGORY1_KEY
-		LIMIT #{recordCountPerPage}  OFFSET  #{offset}
-		
+		  <when test ="checkdate !=null and checkdate !='' and checkdate =='ALL' ">
+		  </when>
+		  <when test ="checkdate !=null and checkdate !='' and checkdate =='TODAY' ">
+		       AND  EDU_START_DATE = DATE_FORMAT(NOW(),'%x-%m-%d')
+		  </when>
+		  <when test ="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
+		      <![CDATA[
+		       AND  EDU_START_DATE >= #{edu_start_date} AND EDU_END_DATE <= #{edu_end_date} 
+		       ]]>
+		  </when>
+	     </choose>
+		ORDER BY EDU_KEY DESC
+		LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
 	</select>		
 	
 	
 	<select id="eduInfoScheduleCount" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
     	/**  com.easycompany.mapper.EduMapper.eduInfoScheduleCount **/
     	SELECT COUNT(*) cnt
-		 FROM COM_EDU_SCHEDULE a
+		 FROM EDU_SCHEDULE a
 	</select>
 	
 </mapper>

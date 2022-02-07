@@ -61,7 +61,7 @@
                 </div>
                 
                 <div class="btn-cont mb20">
-                    <button class="mid-btn blue-btn" onclick="location.href = '/adBoard/noticeReq.do'; ">등록</button>
+                    <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/adBoard/noticeReq.do' />'; ">등록</button>
                     <button class="mid-btn white-btn">선택삭제</button>
                 </div>
                 

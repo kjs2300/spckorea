@@ -25,12 +25,22 @@
       	frm.action = "<c:url value='/edu/eduInfoClassList.do'/>";
      	frm.submit();
       }
+     
+     /* pagination 페이지 링크 function */
+     function fn_egov_link_page(pageNo){
+    	var frm = document.commonForm;
+    	frm.pageIndex.value = pageNo;
+     	frm.action = "<c:url value='/edu/eduInfoClassList.do'/>";
+        frm.submit();
+     }
      //-->
  </script>
 			   <form  id="commonForm" name="commonForm"  method="post"  action="">
+			        <input type="hidden" id="pageIndex"         name="pageIndex"   value='1'                      class="input-box" />
 					<input type="hidden" id="gubun1"         name="gubun1"   value='I'                      class="input-box" />
  				    <input type="hidden" id="gubun2"         name="gubun2"   value='category4'              class="input-box" />		
  				    <input type="hidden" id="site"           name="site" class="input-box"/>
+ 				    <input type="hidden" id="pageIndex"      name="pageIndex"      class="input-box" value=1 />	
  				  
 	           </form>
  

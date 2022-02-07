@@ -220,7 +220,7 @@
 	                          <td>
 	                          	<input type="text" id='categoryname' name='categoryname' class="input-box" value="${result.category1_name}"/>
 	                          </td>
-	                          <td><button class="sm-btn blue-btn"   onClick="javascript:fn_edit('${result.category1_key}',0,'${status.index}','E','category1');">저장</button></td>
+	                          <td><button class="sm-btn blue-btn"   onClick="javascript:fn_edit('${result.category1_key}',0,'${status.index}','E','category1');">수정</button></td>
 	                          <td><button class="sm-btn white-btn"  onClick="javascript:fn_edit('${result.category1_key}',0,'${status.index}','D','category1');">삭제</button></td>
 	                          <td><button  type="button" class="link" onClick="javascript:fn_regt('${result.category1_key}',0,'${status.index}','R','category2');" >카테고리02 등록/관리 </button></td>
 	                	  </c:if>

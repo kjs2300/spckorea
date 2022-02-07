@@ -183,5 +183,5 @@
                 	<button type="button"  onClick="javascript:fn_save('E');" class="mid-btn blue-btn">수정</button>
 	            </c:if>
                     <!--  <button type="button" class="mid-btn white-btn">취소</button> -->
-                    <button type="button" onClick="javascript:history.back();" class="mid-btn black-btn">취소</button>
+                    <button type="button" onClick="javascript:history.back();" class="mid-btn black-btn">목록</button>
                 </div>
