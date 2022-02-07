@@ -94,5 +94,33 @@ public class AdminBoardController {
 
 		return "referenceList";
 	}
+	
+	@RequestMapping(value = "/referenceReq.do")
+	public String referenceReq(@ModelAttribute("searchVO") DefaultVO searchVo, ModelMap model) throws Exception {
+
+//		/** EgovPropertyService.sample */
+//		searchVo.setPageUnit(propertiesService.getInt("pageUnit"));
+//		searchVo.setPageSize(propertiesService.getInt("pageSize"));
+//		
+//		/** pageing setting */
+//		PaginationInfo paginationInfo = new PaginationInfo();
+//		paginationInfo.setCurrentPageNo(searchVo.getPageIndex());
+//		paginationInfo.setRecordCountPerPage(searchVo.getPageUnit());
+//		paginationInfo.setPageSize(searchVo.getPageSize());
+//		
+//		/***  offSet 설정  ***/
+//		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
+//		searchVo.setOffset(offset);
+//		
+//		List<BoardVo> list = boardService.getBoardList(searchVo);
+//		model.addAttribute("resultList", list);
+//			
+//		
+//		int totCnt = boardService.getBoardCount(searchVo);
+//		paginationInfo.setTotalRecordCount(totCnt);
+//		model.addAttribute("paginationInfo", paginationInfo);
+
+		return "referenceReq";
+	}
 
 }
