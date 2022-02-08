@@ -108,9 +108,87 @@ $(document).ready(function(){
 	});
 	/*  팝업 end */
 	
-	
-	
 });
+
+var editImgUpLoad = function(){
+	$.confirm({
+		boxWidth: '400px',
+		useBootstrap: false,
+		title: '이미지 업로드',
+		content: '' +
+		'<div class="table-type2">' +
+			'<form id="editImgForm" method="post">' +
+				'<table>' +
+					'<colgroup>' +
+						'<col style="width:80px;">' +
+						'<col style="width:auto">' +
+					'</colgroup>' +
+					'<tbody>' +
+						'<tr>' +
+							'<th scope="row">파일첨부</th>' +
+							'<td><input type="file" id="imgFile" name="imgFile" value=""></td>' +
+						'</tr>' +
+					'</tbody>' +
+				'</table>' +
+			'</form>' +
+		'</div>',
+		buttons: {
+				취소: function () {
+						//close
+				},
+				formSubmit: {
+					text: '업로드',
+					btnClass: 'btn-blue',
+					action: function () {
+
+						var form = $("#editImgForm")[0];
+						var formData = new FormData(form);
+						var urlStr = "/common/ajax/setEditImgUpLoad";
+						formData.append("imgFile", $("#imgFile")[0].files[0]);
+						
+					    $.ajax({
+					        url: urlStr,
+							mimeType:"multipart/form-data",
+					        method: "POST",
+					        data: formData,
+							processData:false,
+							contentType:false,
+					        success: function(result) {
+					        	console.log(JSON.stringify(result));
+					        	var imgPath = result.data.wonlabUrl + result.data.wonlabEditImg + result.data.newFileName;
+					        	
+							    $.confirm({
+							        title: '등록',
+							        content: '등록 완료하였습니다.<br/><img style="100%" src="' + imgPath+ '">',
+							        useBootstrap: false,
+								    boxWidth:'210px',
+							        buttons: {
+							            "예": function (data) {
+							            	setEditImg(imgPath);
+							            }
+							        }
+							    });
+//					        	setTimeout(lazyStart, 3000);
+					        },
+					        error: function(data) {
+					        	console.log(JSON.stringify(data));
+								$Util.dialog("오류", "등록 처리중 오류가 발생했습니다.", "red");
+					        }
+					    });
+					}
+				},
+		},
+		onContentReady: function () {
+				// bind to events
+				var jc = this;
+				this.$content.find('form').on('submit', function (e) {
+						// if the user submits the form by pressing enter in the field.
+						e.preventDefault();
+						jc.$$formSubmit.trigger('click'); // reference the button and click it
+				});
+		}
+	});
+};
 		
 		
 
