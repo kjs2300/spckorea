@@ -19,6 +19,14 @@ public class AdBoardVo extends DefaultVO {
 	String searchDate;
 	String board_start_date;
 	String board_end_date;
+	String gubun1;
+	String category1_name;
+	String category2_name;
+	String category3_name;
+	int category1_key;
+	int category2_key;
+	int category3_key;
+	String notice_yn;
 	
 	public Long getBoard_idx() {
 		return board_idx;
@@ -107,6 +115,56 @@ public class AdBoardVo extends DefaultVO {
 	}
 	public void setBoard_end_date(String board_end_date) {
 		this.board_end_date = board_end_date;
+	}
+	
+	public String getGubun1() {
+		return gubun1;
+	}
+	public void setGubun1(String gubun1) {
+		this.gubun1 = gubun1;
+	}
+	
+	public String getCategory1_name() {
+		return category1_name;
+	}
+	public void setCategory1_name(String category1_name) {
+		this.category1_name = category1_name;
+	}
+	public String getCategory2_name() {
+		return category2_name;
+	}
+	public void setCategory2_name(String category2_name) {
+		this.category2_name = category2_name;
+	}
+	public String getCategory3_name() {
+		return category3_name;
+	}
+	public void setCategory3_name(String category3_name) {
+		this.category3_name = category3_name;
+	}
+	public int getCategory1_key() {
+		return category1_key;
+	}
+	public void setCategory1_key(int category1_key) {
+		this.category1_key = category1_key;
+	}
+	public int getCategory2_key() {
+		return category2_key;
+	}
+	public void setCategory2_key(int category2_key) {
+		this.category2_key = category2_key;
+	}
+	public int getCategory3_key() {
+		return category3_key;
+	}
+	public void setCategory3_key(int category3_key) {
+		this.category3_key = category3_key;
+	}
+	public String getNotice_yn() {
+		return notice_yn;
+	}
+	public void setNotice_yn(String notice_yn) {
+		this.notice_yn = notice_yn;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.easycompany.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,21 @@ public class AdBoardServiceImpl extends EgovAbstractServiceImpl implements AdBoa
 	@Override
 	public AdBoardVo selectDetailBoard(AdBoardVo adBoardVo) {
 		return adBoardMapper.selectDetailBoard(adBoardVo);
+	}
+
+	@Override
+	public int insertBoard(AdBoardVo adBoardVo) {
+		return adBoardMapper.insertBoard(adBoardVo);
+	}
+
+	@Override
+	public int updateBoard(AdBoardVo adBoardVo) {
+		return adBoardMapper.updateBoard(adBoardVo);
+	}
+
+	@Override
+	public int delBoard(HashMap<String, Object> map) {
+		return adBoardMapper.delBoard(map);
 	}
 
 }

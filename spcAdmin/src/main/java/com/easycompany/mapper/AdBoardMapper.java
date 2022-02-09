@@ -1,5 +1,6 @@
 package com.easycompany.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -23,6 +24,18 @@ public class AdBoardMapper extends EgovAbstractMapper {
 
 	public AdBoardVo selectDetailBoard(AdBoardVo adBoardVo) {
 		return selectOne(nameSpace + ".selectDetailBoard", adBoardVo);
+	}
+
+	public int insertBoard(AdBoardVo adBoardVo) {
+		return (Integer) insert(nameSpace + ".insertBoard", adBoardVo);
+	}
+
+	public int updateBoard(AdBoardVo adBoardVo) {
+		return (Integer) update(nameSpace + ".updateBoard", adBoardVo);
+	}
+
+	public int delBoard(HashMap<String, Object> map) {
+		return (Integer) update(nameSpace + ".delBoard", map);
 	}
 	
 

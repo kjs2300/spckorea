@@ -12,8 +12,10 @@
 
 <h1 class="h1-tit">공지사항 ${ not empty detailData.board_idx ? "수정" : "등록"}</h1>
 
-<form id="form" name="form" >
+<form id="commonForm" name="commonForm" method="post">
 <input type="hidden" name="board_idx" id="board_idx" value="${ not empty detailData.board_idx ? detailData.board_idx : '0'}">
+<input type="hidden" name="board_type" id="board_type" value="01">
+<input type="hidden" id="gubun1"  name="gubun1"  />
 <div class="table-wrap">
     <table class="detail-tb">
         <caption>제목, 작성자, 패스워드, 내용, 첨부파일 정보가 있는 테이블</caption>
@@ -27,12 +29,12 @@
             <tr>
                 <th>제목</th>
                 <td colspan="3">
-                    <input type="text" class="input-box w768" value="${detailData.title}"/>
+                    <input type="text" class="input-box w768" id="title" name="title" value="${detailData.title}"/>
                 </td>
             </tr>
             <tr>
                 <th>작성자</th>
-                <td><input type="text" class="input-box" value="${detailData.reg_id}"/></td>
+                <td><input type="text" class="input-box" id="reg_id" name="reg_id" value="${detailData.reg_id}"/></td>
                 <th>패스워드</th>
                 <td><input type="text" class="input-box" value=""/></td>
             </tr>
@@ -62,13 +64,19 @@
 </form>
 
 <div class="btn-cont">
-    <button class="mid-btn blue-btn">저장</button>
+	<c:if test="${empty detailData.board_idx }">
+     		<button type="button" class="mid-btn blue-btn"   onClick="javascript:fn_save('I');">저장</button>
+     </c:if>
+     <c:if test="${not empty detailData.board_idx }">
+     		<button type="button" class="mid-btn blue-btn"   onClick="javascript:fn_save('E');">저장</button>
+     </c:if>
     <button class="mid-btn white-btn" onClick="javascript:history.back();">취소</button>
     <button class="mid-btn black-btn" onClick="javascript:history.back();">목록</button>
 </div>
                 
 <script type="text/javascript">
-
+$(document).ready(function() {
+});
 var oEditors = [];
 
 var sLang = "ko_KR"; // 언어 (ko_KR/ en_US/ ja_JP/ zh_CN/ zh_TW), default = ko_KR
@@ -101,4 +109,68 @@ nhn.husky.EZCreator.createInIFrame({
 	},
 	fCreator : "createSEditor2"
 });
+
+function fn_save(gubun1){
+	oEditors.getById["contents"].exec("UPDATE_CONTENTS_FIELD", []);
+	var content = document.getElementById("contents").value;;
+
+	$("#gubun1").val(gubun1); 
+	
+	var title       = $("#title").val();
+	var reg_id = $("#reg_id").val();
+	   
+    if (title == ""){			
+		alert("제목을 입력해주세요");
+		return;
+	}
+    if(content == "" || content == null || content == '&nbsp;' || content == '<br>' || content == '<br/>' || content == '<p>&nbsp;</p>'){ 
+    	return alert("본문을 작성해주세요."); oEditors.getById["contents"].exec("FOCUS"); //포커싱 return; 
+   	}
+
+	var msg = "공지사항 등록 하시겠습니까?";
+	if (gubun1 == "E"){
+		msg = "공지사항 수정 하시겠습니까?";
+	}
+		
+		var yn = confirm(msg);	
+		if(yn){
+				
+			$.ajax({	
+				data     : $("#commonForm").serialize(),
+			    url		 : "<c:url value='/adBoard/noticeSave.do'/>",
+		        dataType : "JSON",
+		        cache    : false,
+		        async    : false,
+				type	 : "POST",	
+		        success  : function(obj) {
+		        	commonCallBack(obj);				
+		        },	       
+		        error 	: function(xhr, status, error) {} 		        
+		    });
+		}
+	}
+function commonCallBack(obj){
+	if(obj != null){		
+		
+		var result = obj.result;
+		
+		if(result == "SUCCESS"){				
+			alert("성공하였습니다.");				
+			fn_load('R');				 
+		} else if(result == "EXIST"){				
+			alert("이미 등록 되었습니다.");	
+			return false;
+		}else {				
+			alert("등록이 실패 했습니다.");	
+			return false;
+		}
+	}
+}
+
+function fn_load(str) {
+	var frm = document.commonForm;
+	frm.action = "<c:url value='/adBoard/noticeList.do'/>";    
+	frm.submit();
+ }
+
 </script>

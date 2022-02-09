@@ -5,10 +5,19 @@
 
 	<select id="getBoardList" parameterType="com.easycompany.service.vo.AdBoardVo"	resultType="com.easycompany.service.vo.AdBoardVo">
 		 /**  com.easycompany.mapper.AdBoardMapper.getBoardList **/
-	    SELECT BOARD_IDX, BOARD_TYPE, TITLE, LINK_URL, FILE_ID, VIEW_CNT, REG_DT, REG_ID
+	    SELECT BOARD_IDX,
+	    CASE BOARD_TYPE
+	 		WHEN 01 THEN '공지'
+	 		WHEN 02 THEN '자료실'
+	 		WHEN 03 THEN 'FAQ'
+		 END AS BOARD_TYPE,
+	    TITLE, LINK_URL, FILE_ID, VIEW_CNT, CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS REG_DT, REG_ID
+	    <if test="board_type !=null and board_type == '02'">
+	      	, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME
+	     </if>
 	      FROM edu_board
 	      <include refid="search"/>
-	     ORDER BY BOARD_IDX
+	     ORDER BY BOARD_IDX DESC
 	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
 	</select>
 
@@ -23,12 +32,87 @@
 	<select id="selectDetailBoard" parameterType="com.easycompany.service.vo.AdBoardVo" resultType="com.easycompany.service.vo.AdBoardVo">
 		/**  com.easycompany.mapper.AdBoardMapper.selectDetailBoard **/	
 		SELECT BOARD_IDX, BOARD_TYPE, TITLE, CONTENTS, LINK_URL, FILE_ID, VIEW_CNT, REG_DT, REG_ID, CHG_DT, CHG_ID
+		<if test="board_type !=null and board_type == '02'">
+	      	, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME, NOTICE_YN
+	     </if>
 	      FROM edu_board
 	    <where>
 	    	BOARD_IDX = #{board_idx}
 	    	AND USE_YN = 'Y'
+	    	<if test="board_type !=null and board_type != ''">
+	      	AND BOARD_TYPE = #{board_type}
+	      </if>
 	    </where>
 	</select>
+	
+	<insert id="insertBoard" parameterType="com.easycompany.service.vo.AdBoardVo" useGeneratedKeys="true" keyProperty="BOARD_IDX">
+		/**  com.easycompany.mapper.AdBoardMapper.insertBoard **/	
+		INSERT 
+		INTO edu_board
+		(
+		  	  BOARD_TYPE
+		  	, TITLE
+		  	, CONTENTS
+		  	, REG_ID
+		  	<if test="board_type !=null and board_type == '02'">
+	      	, CATEGORY1_KEY
+	      	, CATEGORY2_KEY
+	      	, CATEGORY3_KEY
+	      	, CATEGORY1_NAME
+	      	, CATEGORY2_NAME
+	      	, CATEGORY3_NAME
+	      	, NOTICE_YN
+	      </if>
+		) 
+		VALUES 
+		(
+			  #{board_type}
+			, #{title}
+			, #{contents}
+			, IFNULL(#{reg_id},'SYSTEM')
+			<if test="board_type !=null and board_type == '02'">
+			, #{category1_key}
+			, #{category2_key}
+			, #{category3_key}
+			, #{category1_name}
+			, #{category2_name}
+			, #{category3_name}
+			, #{notice_yn}
+			</if>
+		)	
+	</insert>
+	
+	<update id="updateBoard" parameterType="com.easycompany.service.vo.MainVo">
+		/**  com.easycompany.mapper.AdBoardMapper.updateBoard **/	
+		UPDATE edu_board 
+		   SET BOARD_TYPE = #{board_type}
+		      , TITLE  = #{title}
+		      , CONTENTS  = #{contents}
+		      , CHG_DT = date_format(current_timestamp(),'%Y%m%d%H%i%s')
+		      , CHG_ID = IFNULL(#{chg_id},'SYSTEM')
+		      , REG_ID = IFNULL(#{reg_id},'SYSTEM')
+		      <if test="board_type !=null and board_type == '02'">
+		      	, CATEGORY1_KEY =  #{category1_key}
+		      	, CATEGORY2_KEY =  #{category2_key}
+		      	, CATEGORY3_KEY =  #{category3_key}
+		      	, CATEGORY1_NAME = #{category1_name}
+		      	, CATEGORY2_NAME = #{category2_name}
+		      	, CATEGORY3_NAME = #{category3_name}
+		      	, NOTICE_YN = #{notice_yn}
+		     </if>
+ 		 WHERE BOARD_IDX = #{board_idx}
+	</update>
+	
+	<update id="delBoard">
+		/**  com.easycompany.mapper.AdBoardMapper.delBoard **/	
+		UPDATE edu_board 
+		   SET CHG_DT = date_format(current_timestamp(),'%Y%m%d%H%i%s'),
+		   USE_YN = 'N'
+ 		 WHERE BOARD_IDX IN (
+				<foreach collection="boardIdxList" item="item" separator=",">
+					#{item}
+				</foreach>)
+	</update>
                   
 	<insert id="insertCommonFile" parameterType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.insertCommonFile **/	
@@ -374,6 +458,23 @@
       		USE_YN = 'Y'
 	      <if test="searchCondition !=null and searchCondition = 'ALL'">
 	      	AND (TITLE LIKE CONCAT('%', #{searchKeyword}, '%') OR REG_ID LIKE CONCAT('%', #{searchKeyword}, '%') OR CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%'))
+	      </if>
+	      <if test="searchCondition !=null and searchCondition = 'TITLE'">
+	      	AND TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+	      </if>
+	      <if test="searchCondition !=null and searchCondition = 'REG_NM'">
+	      	AND REG_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+	      </if>
+	      <if test="searchCondition !=null and searchCondition = 'CONTENTS'">
+	      	AND CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%')
+	      </if>
+	      <if test="searchDate !=null and searchDate != 'ALL'">
+	      	<![CDATA[
+		       AND  REG_DT >= #{board_start_date} AND REG_DT <= #{board_end_date} 
+	        ]]>
+	      </if>
+	      <if test="board_type !=null and board_type != ''">
+	      	AND BOARD_TYPE = #{board_type}
 	      </if>
       </where>
 	</sql>

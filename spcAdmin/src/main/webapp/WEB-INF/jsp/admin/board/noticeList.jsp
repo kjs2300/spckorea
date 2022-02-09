@@ -16,6 +16,7 @@
  <div class="search-wrap">
      <form id="listForm" name="listForm" target="_self" action="/adBoard/noticeList.do" method="post" onsubmit="">
      <input type="hidden" id="board_idx"   name="board_idx"  value="${adBoardVo.board_idx}"/>
+     <input type="hidden" id="gubun1"      name="gubun1"     value='I'   />
 	     <div class="search-cont">
 	         <div class="radio-cont">
 	             <input type="radio" class="radio-box" id="radio" name="radio" value="ALL" <c:if test="${adBoardVo.searchCondition =='ALL'  || (empty adBoardVo.searchCondition) }">checked </c:if>>
@@ -62,7 +63,7 @@
  
  <div class="btn-cont mb20">
      <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/adBoard/noticeReq.do' />'; ">등록</button>
-     <button class="mid-btn white-btn">선택삭제</button>
+     <button class="mid-btn white-btn" onClick="javascript:btnDel();">선택삭제</button>
  </div>
  
  <div class="table-wrap">
@@ -105,9 +106,14 @@
                   <td>${result.reg_id}</td>
                   <td>${result.view_cnt}</td>
                   <td><button type="button" class="sm-btn blue-btn"  onClick="javascript:fn_edit('${result.board_idx}',  'E', 'noticeList');" >수정</button></td>
-                  <td><button type="button" class="sm-btn white-btn" onClick="javascript:fn_delete('${result.board_idx}','D', 'noticeList');">삭제</button></td>
+                  <td><button type="button" class="sm-btn white-btn" onClick="javascript:fn_delete('${result.board_idx}');">삭제</button></td>
               </tr>
              </c:forEach>
+             <c:if test="${empty resultList }">
+	             <tr>
+	                 <td colspan='9'/>Data 없습니다.</td>
+	             </tr>
+          	 </c:if>
           </tbody>
      </table>
  </div>
@@ -118,7 +124,7 @@
      </ul>
  </div>
  
- <script type="text/javascript">
+<script type="text/javascript">
  
  $(document).ready(function(){
 		 $("#board_start_date, #board_end_date").datepicker({
@@ -140,10 +146,59 @@
            ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
      });
  });
- function fn_edit(str,key1) {
+ 
+function fn_edit(key1, str) {
  	var frm = document.listForm;
- 	$("#board_idx").val(str); 
+ 	$("#board_idx").val(key1);
   	frm.action = "<c:url value='/adBoard/noticeReq.do'/>";
  	frm.submit();
- }
+}
+
+function fn_delete(idx) {
+	var idxArray = new Array();
+
+	idxArray.push(idx);
+	if(confirm('삭제 처리하시겠습니까?')) {
+		setDel(idxArray);
+	}
+
+}
+
+var btnDel = function() {
+
+	var idxArray = new Array();
+
+	$("input[name=checkNo]:checked").each(function() {
+		idxArray.push($(this).val());
+	});
+
+	if(idxArray.length < 1){
+		alert("선택한 내역이 없습니다.");
+		return false;
+	}
+	
+	if(confirm('삭제 처리하시겠습니까?')) {
+		setDel(idxArray);
+	}
+	
+};
+
+var setDel = function(idxArray){
+    $.ajax({
+        url: "/adBoard/noticeDel.do",
+        type: "POST",
+        data: { "boardIdxArray" : idxArray },
+        success: function(data) {
+        	if(data == 'SUCCESS'){
+        		alert("처리 완료하였습니다.");
+        		location.reload();
+        	}
+        },
+        error: function(data) {
+        	console.log(JSON.stringify(data));
+        	alert("처리중 오류가 발생했습니다.");
+        }
+    });
+};
+
  </script>
