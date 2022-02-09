@@ -31,4 +31,5 @@ public interface EduService {
 	public String getEduCationFile(CategoryVo categoryVo);
 	public CategoryVo getEduCationDetail(CategoryVo categoryVo);
 	public List<CategoryVo>  getEduCationDetailSub(CategoryVo categoryVo);
+	public int updateEduCation(CategoryVo        categoryVo);
 }

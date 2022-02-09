@@ -151,7 +151,7 @@
 				           </c:if>    
 			               <c:if test="${not empty result.file_name }">
 				           	<c:set var="ppx" value="${fn:split(result.file_name,'.')}" />
-				            <td><img class="img-box" src="/editor/${mainVo.gubun2}/${result.file_id}.${ppx[1]}" /></td>
+				            <td><img class="img-box" src="/${mainVo.webPath}/${mainVo.gubun2}/${result.file_id}.${ppx[1]}" /></td>
 				           </c:if>				            
                            <td>${result.img_pos}</td>
                            <td>${result.link_url}</td>

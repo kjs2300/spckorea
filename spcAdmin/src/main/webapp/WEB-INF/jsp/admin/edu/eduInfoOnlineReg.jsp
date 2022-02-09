@@ -180,7 +180,7 @@
 	   
 	   var edu_status    = $("#edu_status").val();  //교육상태(신청중:I,신청취소:C, 신청마감:F, 사용중지:P, 결과보고:R)*
 	   var exp_use_yn    = $("#exp_use_yn").val();         //교육 노출여부
-	   //var edu_notice    = $("#edu_notice").val();       //안내문
+	   var edu_notice    = $("#edu_notice").val();       //안내문
 	   
 	   var edu_intro      = $("#edu_intro").val();         //교육소개
 	   var edu_goals      = $("#edu_goals").val();         //교육목표
@@ -247,6 +247,8 @@
 		
 		formData.append("edu_status",   edu_status);
 		formData.append("exp_use_yn",   exp_use_yn);
+		formData.append("edu_notice",   edu_notice);
+		
 			
 		formData.append("edu_intro",     edu_intro);
 		formData.append("edu_goals",     edu_goals);
@@ -327,16 +329,22 @@
 
      //-->
  </script>
- 
-           <c:set var="addNum" value="${fn:length(categoryFormSubList)}" />
- 
+ 		   
            <form  id="commonForm" name="commonForm"  method="post"  >
 			<input type="hidden" id="gubun1"   name="gubun1"   class="input-box" />
 			<input type="hidden" id="gubun2"   name="gubun2"   class="input-box" value='eduInfoOnline'/>
 			<input type="hidden" id="gubun3"   name="gubun3"   class="input-box" />
-			<input type="hidden" id="addNum"   name="addNum"   value='${addNum + 1}' />
 			<input type="hidden" id="edu_no"   name="edu_no"   class="input-box" value='${categoryVo.edu_no}'/>
 			<input type="hidden" id="edu_site" name="edu_site" class="input-box" value='on'/>
+			<input type="hidden" id="edu_notice" name="edu_notice" class="input-box" value='${categoryForm.edu_notice}'/>
+
+			<c:if test="${not empty categoryFormSubList }">
+          		<c:set var="addNum" value="" />
+          		<input type="hidden" id="addNum"   name="addNum"   value='${fn:length(categoryFormSubList)}' />
+          	</c:if>
+          	<c:if test="${empty categoryFormSubList }">
+          	 	<input type="hidden" id="addNum"   name="addNum"   value='1' />
+          	</c:if>
 
             <h1 class="h1-tit">온라인 교육 등록</h1>
 
@@ -416,7 +424,7 @@
                             <tr>
                                 <th colspan="2">학습시간</th>
                                 <td>
-                                    <input type="text" id="edu_time"  name="edu_time" class="input-box" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  value="${categoryForm.edu_time}""/>분
+                                    <input type="text" id="edu_time"  name="edu_time" class="input-box" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  value="${categoryForm.edu_time}"  maxlength="5"/>분
                                 </td>
                             </tr>
                             <tr>
@@ -430,7 +438,7 @@
                             <tr>
                                 <th colspan="2">교육정원</th>
                                 <td>
-                                    <input type="text" id="edu_garden"  name="edu_garden" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  maxlength="5" class="input-box" value="${categoryForm.edu_garden}""/>
+                                    <input type="text" id="edu_garden"  name="edu_garden" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  maxlength="5" class="input-box" value="${categoryForm.edu_garden}"/>
                                     <span class="point">ex. 기입하지 않으면 무한대, 신청인원과 연동</span>
                                 </td>
                             </tr>
@@ -487,7 +495,10 @@
                                         <input  id="files"  type="file"   name="files" accept=".jpg, .jpeg, .png"/>
                                         <button id="btn-delete" type='button' class="sm-btn black-btn">삭제</button>
                                         <div id="preview"></div>
-                                        <span class="point">권장사이즈 : 600px * 600px</span>
+                          				<c:if test="${not empty categoryForm.file_name }">
+								           	<c:set var="ppx" value="${fn:split(categoryForm.file_name,'.')}" />
+								           <img heigth="200px" width="120px" src="/${categoryVo.webPath}/${categoryVo.gubun2}/${categoryForm.edu_notice}.${ppx[1]}" />
+							        	</c:if>
                                     </div>
                                 </td>
                             </tr>
@@ -528,10 +539,14 @@
                         </tbody>
                     </table>
                 </div>
-
                 <div class="btn-cont">
-                    
-                    <button type="button"  onClick="javascript:fn_save('I');"  id="btnSave" class="mid-btn blue-btn ">저장</button>  
+                    <c:if test="${not empty categoryForm }">
+                   		 <button type="button"  onClick="javascript:fn_save('E');"  id="btnSave" class="mid-btn blue-btn ">수정</button>
+                    </c:if>
+                    <c:if test="${empty categoryForm }">
+                   		 <button type="button"  onClick="javascript:fn_save('I');"  id="btnSave" class="mid-btn blue-btn ">저장</button>
+                    </c:if>
+                      
                     <button type="button"  onClick="javascript:history.back();" class="mid-btn white-btn btncan">목록</button>
                 </div>
 

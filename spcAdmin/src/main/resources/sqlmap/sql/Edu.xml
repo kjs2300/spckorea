@@ -2,6 +2,46 @@
 <!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.easycompany.mapper.EduMapper">
+    
+  
+    
+    
+    
+    <sql id="eduInfoOnlineListSearch">
+          <if test=" inst_nm !=null and inst_nm !=''">
+		  AND INST_NM  LIKE CONCAT('%', #{inst_nm} ,'%')
+		 </if>	
+		 <if test=" edu_target !=null and edu_target !=''">
+		  AND EDU_TARGET  LIKE CONCAT('%', #{edu_target} ,'%')
+		 </if>	
+		 <if test=" category3_name !=null and category3_name !=''">
+		  AND CATEGORY3_NAME  LIKE CONCAT('%', #{category3_name} ,'%')
+		 </if>	
+		 <if test=" category1_key !=null and category1_key !=0">
+		  AND CATEGORY1_KEY  LIKE CONCAT('%', #{category1_key} ,'%')
+		 </if>	
+		 <if test=" category2_key !=null and category2_key !=0 ">
+		  AND CATEGORY2_KEY  LIKE CONCAT('%', #{category2_key} ,'%')
+		 </if>	
+		 <if test=" category3_key !=null and category3_key !=0">
+		  AND CATEGORY3_KEY  LIKE CONCAT('%', #{category3_key} ,'%')
+		 </if>	
+		<choose>
+		  <when test ="checkdate !=null and checkdate !='' and checkdate =='ALL' ">
+		  </when>
+		  <when test ="checkdate !=null and checkdate !='' and checkdate =='TODAY' ">
+		   AND  TRAIN_S_DATE = DATE_FORMAT(NOW(),'%x-%m-%d')
+		  </when>
+		  <when test ="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
+		   <![CDATA[
+		     AND  TRAIN_S_DATE >= #{train_s_date} AND TRAIN_E_DATE <= #{train_e_date} 
+		    ]]>
+		  </when>
+	     </choose>
+    </sql>
+
+
+
                   
 	<select id="getCategoryList1" parameterType="com.easycompany.service.vo.CategoryVo"	resultType="com.easycompany.service.vo.CategoryVo">
 		 /**  com.easycompany.mapper.EduMapper.getCategoryList1 **/
@@ -478,6 +518,19 @@
 		  	
 		  	
 		  	, REG_ID
+		  	
+		  	<if test=" coper_nm !=null and coper_nm !=''">
+		  	    , COPER_NM
+		  	</if>
+		  	<if test=" coper_nm_auto !=null and coper_nm_auto !=''">
+		  	    , COPER_NM_AUTO
+		  	</if>
+		  	<if test=" coper_id !=null and coper_id !=''">
+		  	    , COPER_ID
+		  	</if>
+		  	<if test=" coper_check !=null and coper_check !=''">
+		  	    , COPER_CHECK
+		  	</if>
 		) 
 		VALUES 
 		(
@@ -506,8 +559,23 @@
 			, #{edu_goals}
 			
 			, IFNULL(#{reg_id},'SYSTEM')
+			
+			<if test=" coper_nm !=null and coper_nm !=''">
+		  	    , #{coper_nm}
+		  	</if>
+		  	<if test=" coper_nm_auto !=null and coper_nm_auto !=''">
+		  	    , #{coper_nm_auto}
+		  	</if>
+		  	<if test=" coper_id !=null and coper_id !=''">
+		  	    , #{coper_id}
+		  	</if>
+		  	<if test=" coper_check !=null and coper_check !=''">
+		  	    , #{coper_check}
+		  	</if>
 		)	
 	</insert>
+	
+
 	
 	<insert id="insertEduInfoOnlineSub" parameterType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.insertEduInfoOnlineSub **/	
@@ -536,10 +604,87 @@
 		)	
 	</insert>
 	
+		<update id="updateEduInfoOnline" parameterType="com.easycompany.service.vo.CategoryVo">
+		/**  com.easycompany.mapper.EduMapper.updateEduInfoOnline **/	
+		UPDATE EDU_REGISTRATION 
+		  SET  CATEGORY1_KEY  = #{category1_key}      
+			 , CATEGORY2_KEY  = #{category2_key}      
+			 , CATEGORY3_KEY  = #{category3_key}      
+			 , INST_NM        = #{inst_nm}            
+			 , SET_USE_YN     = #{set_use_yn}         
+			 , TRAIN_S_DATE   = #{train_s_date}       
+			 , TRAIN_E_DATE   = #{train_e_date}       
+			 , EDU_CONT       = #{edu_cont}           
+			 , EDU_METHOD     = #{edu_method}         
+			 , EDU_TIME       = #{edu_time}           
+			 , EDU_TARGET     = #{edu_target}         
+			 , EDU_GARDEN     = #{edu_garden}         
+			 , EDU_STATUS     = #{edu_status}         
+			 , EXP_USE_YN     = #{exp_use_yn}         
+			 , EDU_NOTICE     = #{edu_notice}         
+			 , EDU_INTRO      = #{edu_intro}          
+			 , EDU_GOALS      = #{edu_goals}		
+		     , CHG_ID = IFNULL(#{reg_id},'SYSTEM')
+		     , CHG_DT = NOW()
+		     
+		     <if test=" coper_nm !=null and coper_nm !=''">
+		  	    , COPER_NM     = #{coper_nm}	
+		  	</if>
+		  	<if test=" coper_nm_auto !=null and coper_nm_auto !=''">
+		  	    , COPER_NM_AUTO = #{coper_nm_auto}	
+		  	</if>
+		  	<if test=" coper_id !=null and coper_id !=''">
+		  	    , COPER_ID     = #{coper_id}	
+		  	</if>
+		  	<if test=" coper_check !=null and coper_check !=''">
+		  	    , COPER_CHECK = #{coper_check}	
+		  	</if>
+		  	
+ 	   WHERE EDU_NO = #{edu_no}
+	</update>	
+	
+	<insert id="insertCommonFile" parameterType="com.easycompany.service.vo.CategoryVo">
+		/**  com.easycompany.mapper.EduMapper.insertCommonFile **/	
+		<selectKey resultType="int" keyProperty="file_seq" order="BEFORE">			
+			SELECT IFNULL(MAX(FILE_SEQ), 0) + 1 
+			  FROM EDU_FILE			  
+		</selectKey>		
+		INSERT 
+		INTO EDU_FILE
+		(
+		  	  FILE_GUBUN
+		  	, FILE_ID
+		  	, FILE_NAME
+		  	, FILE_FULL_PATH
+		  	, FILE_SEQ
+		  	, FILE_SIZE
+		) 
+		VALUES 
+		(
+			  #{gubun2}
+			, #{edu_notice}
+			, #{file_name}
+			, #{file_full_path}
+			, #{file_seq}
+			, #{file_size}
+		)	
+	</insert>
+	
+	<update id="updateCommonFile" parameterType="com.easycompany.service.vo.CategoryVo">
+		/**  com.easycompany.mapper.EduMapper.updateCommonFile **/	
+		UPDATE EDU_FILE 
+		   SET  FILE_NAME       = #{file_name}
+		      , FILE_FULL_PATH  = #{file_full_path}
+		  	  , FILE_SIZE       = #{file_size}
+		  	  , FILE_ID         = #{file_uuid}
+ 		 WHERE FILE_GUBUN       = #{gubun2}  
+ 		   AND FILE_ID          = #{edu_notice}
+	</update>	
+		
 	<select id="getEduCationDetail" parameterType="com.easycompany.service.vo.CategoryVo" resultType="com.easycompany.service.vo.CategoryVo">
 		/**  com.easycompany.mapper.EduMapper.getEduCationDetail **/	
 		SELECT A.EDU_NO, A.EDU_SITE, A.CATEGORY1_KEY, A.CATEGORY2_KEY, A.CATEGORY3_KEY, A.EDU_VER, A.INST_NM, A.SET_USE_YN
-		      , A.COPER_NM 	
+		      , A.COPER_NM 	, A.COPER_NM_AUTO, A.COPER_ID, A.COPER_CHECK
 		      , A.TRAIN_S_DATE   , A.TRAIN_E_DATE, A.EDU_CONT, A.EDU_METHOD	,A.EDU_TIME, A.EDU_TARGET, A.EDU_GARDEN
 		  	  , A.EDU_STATUS  	, A.EXP_USE_YN, A.EDU_NOTICE, A.EDU_INTRO, A.EDU_GOALS
 		  	  , (SELECT FILE_NAME FROM EDU_FILE WHERE FILE_ID = A.EDU_NOTICE) AS FILE_NAME
@@ -547,14 +692,14 @@
 					SELECT CATEGORY1_NAME
 					  FROM EDU_CLASS_CATEGORY1
 					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY
-					   AND SITE = #{edu_site}
+					   AND SITE = #{site}
 				) AS CATEGORY1_NAME
 			  , (
 					SELECT CATEGORY2_NAME
 					  FROM EDU_CLASS_CATEGORY2
 				  	 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
 				  	   AND CATEGORY2_KEY= A.CATEGORY2_KEY
-				  	   AND SITE = #{edu_site}
+				  	   AND SITE = #{site}
 				 ) AS CATEGORY2_NAME
 			  , (
 					SELECT CATEGORY3_NAME
@@ -562,7 +707,7 @@
 					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
 					   AND CATEGORY2_KEY= A.CATEGORY2_KEY 
 					   AND CATEGORY3_KEY= A.CATEGORY3_KEY
-					   AND SITE = #{edu_site}
+					   AND SITE = #{site}
 				  ) AS CATEGORY3_NAME
 	  	 FROM EDU_REGISTRATION A
         WHERE EDU_NO   = #{edu_no}
@@ -582,18 +727,19 @@
 		AS (
 			SELECT A.EDU_NO,  A.CATEGORY1_KEY, A.CATEGORY2_KEY, A.CATEGORY3_KEY, A.INST_NM, A.TRAIN_S_DATE, A.TRAIN_E_DATE, A.EDU_TARGET,A.EDU_TIME
 			       , A.EDU_GARDEN, A.EDU_STATUS,A.EDU_CONT,A.EDU_METHOD, A.EXP_USE_YN
+			       , A.COPER_NM 	, A.COPER_NM_AUTO, A.COPER_ID, A.COPER_CHECK
 		       , (
 					SELECT CATEGORY1_NAME
 					  FROM EDU_CLASS_CATEGORY1
 					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY
-					   AND SITE = #{edu_site}
+					   AND SITE = #{site}
 				) AS CATEGORY1_NAME
 			  , (
 					SELECT CATEGORY2_NAME
 					  FROM EDU_CLASS_CATEGORY2
 				  	 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
 				  	   AND CATEGORY2_KEY= A.CATEGORY2_KEY
-				  	   AND SITE = #{edu_site}
+				  	   AND SITE = #{site}
 				 ) AS CATEGORY2_NAME
 			  , (
 					SELECT CATEGORY3_NAME
@@ -601,7 +747,7 @@
 					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
 					   AND CATEGORY2_KEY= A.CATEGORY2_KEY 
 					   AND CATEGORY3_KEY= A.CATEGORY3_KEY
-					   AND SITE = #{edu_site}
+					   AND SITE = #{site}
 				  ) AS CATEGORY3_NAME
 		   FROM EDU_REGISTRATION A
 	    WHERE A.EDU_SITE = #{edu_site}
@@ -609,39 +755,46 @@
 		SELECT *
 		 FROM TEMP
 		WHERE 1= 1 
-		 <if test=" inst_nm !=null and inst_nm !=''">
-		  AND INST_NM  LIKE CONCAT('%', #{inst_nm} ,'%')
-		 </if>	
-		 <if test=" category1_key !=null and category1_key !=''">
-		  AND CATEGORY1_KEY  LIKE CONCAT('%', #{category1_key} ,'%')
-		 </if>	
-		 <if test=" category2_key !=null and category2_key !=''">
-		  AND CATEGORY2_KEY  LIKE CONCAT('%', #{inst_nm} ,'%')
-		 </if>	
-		 <if test=" category3_key !=null and category3_key !=''">
-		  AND CATEGORY3_KEY  LIKE CONCAT('%', #{inst_nm} ,'%')
-		 </if>	
-		<choose>
-		  <when test ="checkdate !=null and checkdate !='' and checkdate =='ALL' ">
-		  </when>
-		  <when test ="checkdate !=null and checkdate !='' and checkdate =='TODAY' ">
-		   AND  TRAIN_S_DATE = DATE_FORMAT(NOW(),'%x-%m-%d')
-		  </when>
-		  <when test ="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
-		   <![CDATA[
-		     AND  TRAIN_S_DATE >= #{train_s_date} AND TRAIN_E_DATE <= #{train_e_date} 
-		    ]]>
-		  </when>
-	     </choose>
+		 <include refid="eduInfoOnlineListSearch" /> 		
 	    ORDER BY EDU_NO DESC 
 	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
 	</select>
-	
+		
 	<select id="getEduInfoOnlineCount" parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
     	/**  com.easycompany.mapper.EduMapper.getEduInfoOnlineCount **/
-		SELECT COUNT(*) cnt
-   		  FROM EDU_REGISTRATION
-   		 WHERE EDU_SITE = #{edu_site}
+		WITH TEMP 
+		AS (
+			SELECT A.EDU_NO,  A.CATEGORY1_KEY, A.CATEGORY2_KEY, A.CATEGORY3_KEY, A.INST_NM, A.TRAIN_S_DATE, A.TRAIN_E_DATE, A.EDU_TARGET,A.EDU_TIME
+			       , A.EDU_GARDEN, A.EDU_STATUS,A.EDU_CONT,A.EDU_METHOD, A.EXP_USE_YN
+			       , A.COPER_NM 	, A.COPER_NM_AUTO, A.COPER_ID, A.COPER_CHECK
+		       , (
+					SELECT CATEGORY1_NAME
+					  FROM EDU_CLASS_CATEGORY1
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY
+					   AND SITE = #{site}
+				) AS CATEGORY1_NAME
+			  , (
+					SELECT CATEGORY2_NAME
+					  FROM EDU_CLASS_CATEGORY2
+				  	 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+				  	   AND CATEGORY2_KEY= A.CATEGORY2_KEY
+				  	   AND SITE = #{site}
+				 ) AS CATEGORY2_NAME
+			  , (
+					SELECT CATEGORY3_NAME
+					  FROM EDU_CLASS_CATEGORY3
+					 WHERE CATEGORY1_KEY= A.CATEGORY1_KEY 
+					   AND CATEGORY2_KEY= A.CATEGORY2_KEY 
+					   AND CATEGORY3_KEY= A.CATEGORY3_KEY
+					   AND SITE = #{site}
+				  ) AS CATEGORY3_NAME
+		   FROM EDU_REGISTRATION A
+	    WHERE A.EDU_SITE = #{edu_site}
+			)
+		SELECT count(*) cnt
+		 FROM TEMP
+		WHERE 1= 1 
+   		  <include refid="eduInfoOnlineListSearch" /> 
 	</select>
 	
 	<select id="getCategoryDetail" parameterType="com.easycompany.service.vo.CategoryVo" resultType="com.easycompany.service.vo.CategoryVo">

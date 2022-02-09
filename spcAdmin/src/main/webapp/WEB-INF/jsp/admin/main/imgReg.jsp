@@ -139,7 +139,7 @@
                                     </div>
                                     <c:if test="${not empty mainForm.file_name }">
 							           	<c:set var="ppx" value="${fn:split(mainForm.file_name,'.')}" />
-							           <img heigth="200px" width="120px" src="/editor/${mainVo.gubun2}/${mainForm.file_id}.${ppx[1]}" />
+							           <img heigth="200px" width="120px" src="/${mainVo.webPath}/${mainVo.gubun2}/${mainForm.file_id}.${ppx[1]}" />
 							        </c:if>
                                     <p class="point">업로드 이미지 사이즈 : 1920px * 520px</p>
                                 </td>

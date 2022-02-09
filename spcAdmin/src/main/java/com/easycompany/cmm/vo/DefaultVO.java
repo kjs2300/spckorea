@@ -1,190 +1,151 @@
-/*
- * Copyright 2008-2009 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.easycompany.cmm.vo;
 
 import java.io.Serializable;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-/**
- * @Class Name : SampleDefaultVO.java
- * @Description : SampleDefaultVO Class
- * @Modification Information
- * @
- * @  수정일      수정자              수정내용
- * @ ---------   ---------   -------------------------------
- * @ 2009.03.16           최초생성
- *
- * @author 개발프레임웍크 실행환경 개발팀
- * @since 2009. 03.16
- * @version 1.0
- * @see
- *
- *  Copyright (C) by MOPAS All right reserved.
- */
-public class DefaultVO implements Serializable {
+public class DefaultVO
+  implements Serializable
+{
+  private static final long serialVersionUID = -858838578081269359L;
+  private String searchCondition = "";
 
-	/**
-	 *  serialVersion UID
-	 */
-	private static final long serialVersionUID = -858838578081269359L;
+  private String searchKeyword = "";
 
-	/** 검색조건 */
-	private String searchCondition = "";
+  private String searchUseYn = "";
 
-	/** 검색Keyword */
-	private String searchKeyword = "";
+  private int pageIndex = 1;
 
-	/** 검색사용여부 */
-	private String searchUseYn = "";
+  private int pageUnit = 10;
 
-	/** 현재페이지 */
-	private int pageIndex = 1;
+  private int pageSize = 10;
 
-	/** 페이지갯수 */
-	private int pageUnit = 10;
+  private int firstIndex = 1;
 
-	/** 페이지사이즈 */
-	private int pageSize = 10;
+  private int lastIndex = 1;
 
-	/** firstIndex */
-	private int firstIndex = 1;
+  private int recordCountPerPage = 10;
 
-	/** lastIndex */
-	private int lastIndex = 1;
+  private int offset = 0;
+  private String excelFileName;
+  private String mode;
+  String result;
+  String webPath;
 
-	/** recordCountPerPage */
-	private int recordCountPerPage = 10;
-	
-	private int offset = 0;
-	
-	private String excelFileName;
-	
-	private String mode;
-	
+  public String getWebPath()
+  {
+    return this.webPath;
+  }
 
-	String result;
-	
-	public int getFirstIndex() {
-		return firstIndex;
-	}
+  public void setWebPath(String webPath) {
+    this.webPath = webPath;
+  }
 
-	public void setFirstIndex(int firstIndex) {
-		this.firstIndex = firstIndex;
-	}
+  public int getFirstIndex() {
+    return this.firstIndex;
+  }
 
-	public int getLastIndex() {
-		return lastIndex;
-	}
+  public void setFirstIndex(int firstIndex) {
+    this.firstIndex = firstIndex;
+  }
 
-	public void setLastIndex(int lastIndex) {
-		this.lastIndex = lastIndex;
-	}
+  public int getLastIndex() {
+    return this.lastIndex;
+  }
 
-	public int getRecordCountPerPage() {
-		return recordCountPerPage;
-	}
+  public void setLastIndex(int lastIndex) {
+    this.lastIndex = lastIndex;
+  }
 
-	public void setRecordCountPerPage(int recordCountPerPage) {
-		this.recordCountPerPage = recordCountPerPage;
-	}
+  public int getRecordCountPerPage() {
+    return this.recordCountPerPage;
+  }
 
-	public String getSearchCondition() {
-		return searchCondition;
-	}
+  public void setRecordCountPerPage(int recordCountPerPage) {
+    this.recordCountPerPage = recordCountPerPage;
+  }
 
-	public void setSearchCondition(String searchCondition) {
-		this.searchCondition = searchCondition;
-	}
+  public String getSearchCondition() {
+    return this.searchCondition;
+  }
 
-	public String getSearchKeyword() {
-		return searchKeyword;
-	}
+  public void setSearchCondition(String searchCondition) {
+    this.searchCondition = searchCondition;
+  }
 
-	public void setSearchKeyword(String searchKeyword) {
-		this.searchKeyword = searchKeyword;
-	}
+  public String getSearchKeyword() {
+    return this.searchKeyword;
+  }
 
-	public String getSearchUseYn() {
-		return searchUseYn;
-	}
+  public void setSearchKeyword(String searchKeyword) {
+    this.searchKeyword = searchKeyword;
+  }
 
-	public void setSearchUseYn(String searchUseYn) {
-		this.searchUseYn = searchUseYn;
-	}
+  public String getSearchUseYn() {
+    return this.searchUseYn;
+  }
 
-	public int getPageIndex() {
-		return pageIndex;
-	}
+  public void setSearchUseYn(String searchUseYn) {
+    this.searchUseYn = searchUseYn;
+  }
 
-	public void setPageIndex(int pageIndex) {
-		this.pageIndex = pageIndex;
-	}
+  public int getPageIndex() {
+    return this.pageIndex;
+  }
 
-	public int getPageUnit() {
-		return pageUnit;
-	}
+  public void setPageIndex(int pageIndex) {
+    this.pageIndex = pageIndex;
+  }
 
-	public void setPageUnit(int pageUnit) {
-		this.pageUnit = pageUnit;
-	}
+  public int getPageUnit() {
+    return this.pageUnit;
+  }
 
-	public int getPageSize() {
-		return pageSize;
-	}
+  public void setPageUnit(int pageUnit) {
+    this.pageUnit = pageUnit;
+  }
 
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
+  public int getPageSize() {
+    return this.pageSize;
+  }
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+  public void setPageSize(int pageSize) {
+    this.pageSize = pageSize;
+  }
 
-	public int getOffset() {
-		return offset;
-	}
+  public String toString()
+  {
+    return ToStringBuilder.reflectionToString(this);
+  }
 
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
+  public int getOffset() {
+    return this.offset;
+  }
 
-	public String getExcelFileName() {
-		return excelFileName;
-	}
+  public void setOffset(int offset) {
+    this.offset = offset;
+  }
 
-	public void setExcelFileName(String excelFileName) {
-		this.excelFileName = excelFileName;
-	}
+  public String getExcelFileName() {
+    return this.excelFileName;
+  }
 
-	public String getResult() {
-		return result;
-	}
+  public void setExcelFileName(String excelFileName) {
+    this.excelFileName = excelFileName;
+  }
 
-	public void setResult(String result) {
-		this.result = result;
-	}
+  public String getResult() {
+    return this.result;
+  }
 
-	public String getMode() {
-		return mode;
-	}
+  public void setResult(String result) {
+    this.result = result;
+  }
 
-	public void setMode(String mode) {
-		this.mode = mode;
-	}
+  public String getMode() {
+    return this.mode;
+  }
 
+  public void setMode(String mode) {
+    this.mode = mode;
+  }
 }

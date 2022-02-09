@@ -114,7 +114,7 @@
 							 			 <c:if test="${not empty mainForm.file_name }">
 								           	<c:set var="ppx" value="${fn:split(mainForm.file_name,'.')}" />
 									          <a onclick='javascript:fileDownload();'>  
-									          	<img heigth="200px" width="120px" src="/editor/${mainVo.gubun2}/${mainForm.file_id}.${ppx[1]}"  alt="${mainForm.file_name}"/>
+									          	<img heigth="200px" width="120px" src="/${mainVo.webPath}/${mainVo.gubun2}/${mainForm.file_id}.${ppx[1]}"  alt="${mainForm.file_name}"/>
 									         </a>
 									        </c:if>
 						                     
