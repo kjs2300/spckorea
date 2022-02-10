@@ -9,75 +9,73 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
-<h1 class="h1-tit">참여마당</h1>
+
+<h1 class="h1-tit">강사 공지사항</h1>
 
 <div class="search-wrap">
-	<form id="listForm" name="listForm" target="_self" action="/adBoard/partiList.do" method="post" onsubmit="">
+	<form id="listForm" name="listForm" target="_self" action="/adBoard/instructList.do" method="post" onsubmit="">
      <input type="hidden" id="board_idx"   name="board_idx"  value="${adBoardVo.board_idx}"/>
      <input type="hidden" id="gubun1"      name="gubun1"     value='I'   />
     
-    <div class="search-cont">
-
-        <div class="radio-cont">
-            <input type="radio" class="radio-box" id="radio" name="radio" value="ALL" <c:if test="${adBoardVo.searchCondition =='ALL'  || (empty adBoardVo.searchCondition) }">checked </c:if>>
-            <label for="">전체</label>
-        </div>
-        <div class="radio-cont">
-            <input type="radio" class="radio-box" id="radio" name="radio" value="TITLE" <c:if test="${adBoardVo.searchCondition =='TITLE'}">checked </c:if>>
-            <label for="">제목</label>
-        </div>
-        <div class="radio-cont">
-            <input type="radio" class="radio-box" id="radio" name="radio" value="REG_NM" <c:if test="${adBoardVo.searchCondition =='REG_NM'}">checked </c:if>>
-            <label for="">작성자명</label>
-        </div>
-        <div class="radio-cont">
-            <input type="radio" class="radio-box" id="radio" name="radio" value="CONTENTS" <c:if test="${adBoardVo.searchCondition =='CONTENTS'}">checked </c:if>>
-            <label for="">내용</label>
-        </div>
-        <input type="text" id='searchKeyword' name='searchKeyword' value="${adBoardVo.searchKeyword}" class="input-box" placeholder="직접입력"/>
-    </div>
-
-    <div class="search-cont">
-
-        <div class="radio-cont">
-            <input type="radio" class="radio-box" id="dateAll" name="radioGroupDate" value="ALL" <c:if test="${adBoardVo.searchDate == 'ALL' || (empty adBoardVo.searchCondition)}">checked </c:if>>
-            <label for="dateAll">전체</label>
-        </div>
-          
-        <div class="radio-cont mr10">
-            <input type="radio" class="radio-box" id="dateTerm" name="radioGroupDate" value="CHECK" <c:if test="${adBoardVo.searchDate == 'CHECK'}">checked </c:if>>
-            <label for="dateTerm">기간선택</label>
-        </div>
-        <div class="picker-wrap">
-            <input type="text" id="board_start_date" name="board_start_date" class="input-box" readonly value="${adBoardVo.board_start_date}"/>
-            <span class="next-ico">-</span>
-            <input type="text" id="board_end_date" name="board_end_date" class="input-box" readonly value="${adBoardVo.board_end_date}"/>
-        </div>
-        
-        <button type="submit" class="search-btn">검색</button>
-        <button class="search-btn white-btn ml20">초기화</button>
-    </div>
-    </form>
-
+    	<div class="search-cont">
+	         <div class="radio-cont">
+	             <input type="radio" class="radio-box" id="radio" name="radio" value="ALL" <c:if test="${adBoardVo.searchCondition =='ALL'  || (empty adBoardVo.searchCondition) }">checked </c:if>>
+	             <label for="">전체</label>
+	         </div>
+	         <div class="radio-cont">
+	             <input type="radio" class="radio-box" id="radio" name="radio" value="TITLE" <c:if test="${adBoardVo.searchCondition =='TITLE'}">checked </c:if>>
+	             <label for="">제목</label>
+	         </div>
+	         <div class="radio-cont">
+	             <input type="radio" class="radio-box" id="radio" name="radio" value="REG_NM" <c:if test="${adBoardVo.searchCondition =='REG_NM'}">checked </c:if>>
+	             <label for="">작성자명</label>
+	         </div>
+	         <div class="radio-cont">
+	             <input type="radio" class="radio-box" id="radio" name="radio" value="CONTENTS" <c:if test="${adBoardVo.searchCondition =='CONTENTS'}">checked </c:if>>
+	             <label for="">내용</label>
+	         </div>
+	         <input type="text" id='searchKeyword' name='searchKeyword' value="${adBoardVo.searchKeyword}" class="input-box" placeholder="직접입력"/>
+	     </div>
+	
+	     <div class="search-cont">
+	
+	         <div class="radio-cont">
+	             <input type="radio" class="radio-box" id="dateAll" name="radioGroupDate" value="ALL" <c:if test="${adBoardVo.searchDate == 'ALL' || (empty adBoardVo.searchCondition)}">checked </c:if>>
+	             <label for="dateAll">전체</label>
+	         </div>
+	           
+	         <div class="radio-cont mr10">
+	             <input type="radio" class="radio-box" id="dateTerm" name="radioGroupDate" value="CHECK" <c:if test="${adBoardVo.searchDate == 'CHECK'}">checked </c:if>>
+	             <label for="dateTerm">기간선택</label>
+	         </div>
+	         <div class="picker-wrap">
+	             <input type="text" id="board_start_date" name="board_start_date" class="input-box" readonly value="${adBoardVo.board_start_date}"/>
+	             <span class="next-ico">-</span>
+	             <input type="text" id="board_end_date" name="board_end_date" class="input-box" readonly value="${adBoardVo.board_end_date}"/>
+	         </div>
+	         
+	         <button type="submit" class="search-btn">검색</button>
+	         <button class="search-btn white-btn ml20">초기화</button>
+	     </div>
+	</form>
 </div>
 
 <div class="btn-cont mb20">
-    <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/adBoard/partiReq.do' />'; ">등록</button>
+    <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/adBoard/instructReq.do' />'; ">등록</button>
     <button class="mid-btn white-btn" onClick="javascript:btnDel();">선택삭제</button>
 </div>
 
 <div class="table-wrap">
     <table class="list-tb">
-        <caption>선택, 카테고리, 제목, 첨부파일, 작성일, 작성자, 조회수, 관리 정보가 있는 테이블</caption>
+        <caption>선택, 제목, 첨부파일, 작성일, 작성자, 조회수, 관리 정보가 있는 테이블</caption>
         <colgroup>
-            <col width="5%"/>
-            <col width="7%"/>
-            <col width="9%"/>
+            <col width="6%"/>
+            <col width="8%"/>
             <col width="*"/>
-            <col width="10%"/>
-            <col width="10%"/>
-            <col width="8%"/>
-            <col width="8%"/>
+            <col width="12%"/>
+            <col width="12%"/>
+            <col width="9%"/>
+            <col width="9%"/>
             <col width="7%"/>
             <col width="7%"/>
         </colgroup>
@@ -85,7 +83,6 @@
             <tr>
                 <th><input type="checkbox" class="check-box"/></th>
                 <th>No.</th>
-                <th>카테고리</th>
                 <th>제목</th>
                 <th>첨부파일</th>
                 <th>작성일</th>
@@ -95,25 +92,24 @@
             </tr>
         </thead>
         <tbody>
-	        <c:forEach var="result" items="${resultList}" varStatus="status">
+        	<c:forEach var="result" items="${resultList}" varStatus="status">
 	            <tr>
-	                <td><input type="checkbox" class="check-box" id='checkNo' name='checkNo' value="${result.board_idx}" /></td>
+	                <td><input type="checkbox" class="check-box" name='checkNo' value="${result.board_idx}" class="check-box"/></td>
 	                <td>${status.index + 1}</td>
-	                <td>${result.board_type}</td>
 	                <td class="tl">${result.title}</td>
 	                <td><button class="sm-btn white-btn">다운로드</button></td>
 	                <td>${result.reg_dt}</td>
 	                <td>${result.reg_id}</td>
-                  	<td>${result.view_cnt}</td>
-	                <td><button type="button" class="sm-btn blue-btn"  onClick="javascript:fn_edit('${result.board_idx}',  'E', 'noticeList');" >수정</button></td>
-                  <td><button type="button" class="sm-btn white-btn" onClick="javascript:fn_delete('${result.board_idx}');">삭제</button></td>
+	                <td>${result.view_cnt}</td>
+	                <td><button type="button" class="sm-btn blue-btn"  onClick="javascript:fn_edit('${result.board_idx}',  'E', 'instructList');" >수정</button></td>
+	                <td><button type="button" class="sm-btn white-btn" onClick="javascript:fn_delete('${result.board_idx}');">삭제</button></td>
 	            </tr>
-	         </c:forEach>
-	         <c:if test="${empty resultList }">
-	             <tr>
-	                 <td colspan='9'/>Data 없습니다.</td>
-	             </tr>
-          	 </c:if>
+            </c:forEach>
+            <c:if test="${empty resultList }">
+             <tr>
+                 <td colspan='8'/>Data 없습니다.</td>
+             </tr>
+         	 </c:if>
         </tbody>
     </table>
 </div>
@@ -150,7 +146,7 @@
 function fn_edit(key1, str) {
  	var frm = document.listForm;
  	$("#board_idx").val(key1);
-  	frm.action = "<c:url value='/adBoard/partiReq.do'/>";
+  	frm.action = "<c:url value='/adBoard/instructReq.do'/>";
  	frm.submit();
 }
 
