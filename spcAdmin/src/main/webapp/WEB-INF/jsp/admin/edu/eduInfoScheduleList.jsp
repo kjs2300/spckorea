@@ -203,7 +203,7 @@
      function fn_excel(){
     	 var frm = document.commonForm;
     	 frm.action = "<c:url value='/edu/excelDownload.do'/>";
-    	 $("#excelFileName").val('ScheduleList'); 
+    	 $("#excelFileName").val('교육일정'); 
     	 frm.submit();
     }
      /* pagination 페이지 링크 function */

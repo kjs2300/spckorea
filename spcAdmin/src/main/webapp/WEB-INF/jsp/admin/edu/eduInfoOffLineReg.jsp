@@ -200,18 +200,11 @@
 			<input type="hidden" id="edu_site" name="edu_site" class="input-box" value='${categoryVo.edu_site}'/>
 			<input type="hidden" id="coper_id" name="coper_id" class="input-box" value='${categoryVo.coper_id}'/>
 		
-            <h1 class="h1-tit">온오프라인 교육 등록</h1>
+            <h1 class="h1-tit">오프라인 교육 등록</h1>
  				<div class="tab-cont">
                     <ul>
-                    <c:if test="${categoryVo.edu_site =='off'}">
-                     <li class="on"><a href="">기관</a></li>
-                      <li><a href="">기관 이외</a></li>
-                    </c:if>
-                    <c:if test="${categoryVo.edu_site =='noneoff'}">
-                     <li><a href="">기관</a></li>
-                      <li class="on"><a href="">기관 이외</a></li>
-                    </c:if>    
-                       
+                    <li>기관</li>
+                      <li class="on"><a href="<c:url value='/edu/eduInfoNoOrglineReg.do'/>">기관 이외</a></li>
                     </ul>
                 </div>
                 <div class="table-wrap">

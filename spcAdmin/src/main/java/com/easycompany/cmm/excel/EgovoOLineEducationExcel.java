@@ -23,7 +23,7 @@ public class EgovoOLineEducationExcel extends AbstractExcelView
     String sheetName = "온라인교육";
     String[] cellNameArr = { "No.", "분류1", "분류2", "분류3", "강사명", "교육기간", "학습시간", "교육대상", "신청인원", "교육상태", "노출여부" };
     if ("eduInfoOffline".equals(categoryVo.getGubun2())) {
-      sheetName = "온오프라인 교육(기관)";
+      sheetName = "오프라인 교육(기관)";
       cellNameArr = new String[] { "No.", "기관명", "교육명", "교육대상", "교육시간", "교육신청 인원", "교육상태", "노출여부" };
     }
 

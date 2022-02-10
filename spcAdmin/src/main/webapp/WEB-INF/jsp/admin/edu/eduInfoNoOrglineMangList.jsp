@@ -158,7 +158,7 @@
 					
 				$.ajax({	
 					data     : $("#commonForm").serialize(),
-				    url		 : "<c:url value='/edu/eduInfoOnlineSave.do'/>",
+				    url		 : "<c:url value='/edu/eduInfoNoOrglineSave.do'/>",
 			        dataType : "JSON",
 			        cache    : false,
 			        async    : false,
@@ -195,7 +195,7 @@
  			$("#category3_key").val(0);
  		}	
  		
- 		frm.action = "<c:url value='/edu/eduInfoOnlineReg.do'/>";
+ 		frm.action = "<c:url value='/edu/eduInfoNoOrglineReg.do'/>";
  		frm.submit();
 	}	
 	 
@@ -213,7 +213,7 @@
 					
 				$.ajax({	
 					data     : $("#commonForm").serialize(),
-				    url		 : "<c:url value='/edu/eduInfoOnlineSave.do'/>",
+				    url		 : "<c:url value='/edu/eduInfoNoOrglineSave.do'/>",
 			        dataType : "JSON",
 			        cache    : false,
 			        async    : false,
@@ -261,7 +261,7 @@
 			$("#category3_key").val(0);
 		}	
 		$("#gubun1").val('R'); 
-		frm.action = "<c:url value='/edu/eduInfoOnlineList.do'/>";
+		frm.action = "<c:url value='/edu/eduInfoNoOrglineList.do'/>";
 		frm.submit();
 	}
 	
@@ -286,13 +286,20 @@
 		if(checkdate =="ALL"){
 			$("#train_s_date").val(''); 
 			$("#train_e_date").val('');
-			$("#inst_nm").val(''); 
-		}
+     	}
 		
 	   var category1_key = $("select[name=category1_key] option:selected").val();  //교육분류1
        var category2_key = $("select[name=category2_key] option:selected").val();  //교육분류2
 	   var category3_key = $("select[name=category3_key] option:selected").val();  //교육명		   
-	   	   
+	   
+	   var category1_name = $("select[name=category1_key] option:selected").text();  //교육분류1
+	   var category2_name = $("select[name=category2_key] option:selected").text();  //교육분류1
+	   var category3_name = $("select[name=category3_key] option:selected").text();  //교육분류1
+	  	
+	   $("#category1_name").val(category1_name);
+	   $("#category2_name").val(category2_name);
+	   $("#category3_name").val(category3_name);
+	   
 	   if (category1_key == ""){			
 		   $("#category1_key").val(0);
 		}
@@ -304,7 +311,7 @@
 			$("#category3_key").val(0);
 		}	
 		
-		frm.action = "<c:url value='/edu/eduInfoOnlineList.do'/>";
+		frm.action = "<c:url value='/edu/eduInfoNoOrglineList.do'/>";
 		frm.submit();
 	}
     
@@ -316,7 +323,7 @@
 		$("#category2_key").val(0);				
 		$("#category3_key").val(0);
 			
-     	frm.action = "<c:url value='/edu/eduInfoOnlineReg.do'/>";
+     	frm.action = "<c:url value='/edu/eduInfoNoOrglineReg.do'/>";
     	frm.submit();
      }
      
@@ -336,8 +343,9 @@
 		 if (category3_key == ""){			
 			$("#category3_key").val(0);
 		 }	
+
     	 frm.action = "<c:url value='/edu/excelDownloadOnLine.do'/>";
-    	 $("#excelFileName").val('온라인 교육'); 
+    	 $("#excelFileName").val('요프라인 교육 [기관이외]'); 
     	 //$("#excelFileName").val('OnlineEducationList'); 
     	 frm.submit();
     }
@@ -348,6 +356,14 @@
     	 var category1_key = $("select[name=category1_key] option:selected").val();  //교육분류1
 	     var category2_key = $("select[name=category2_key] option:selected").val();  //교육분류2
 	  	 var category3_key = $("select[name=category3_key] option:selected").val();  //교육명		   
+	  	 
+	  	var category1_name = $("select[name=category1_key] option:selected").text();  //교육분류1
+	    var category2_name = $("select[name=category2_key] option:selected").text();  //교육분류1
+	    var category3_name = $("select[name=category3_key] option:selected").text();  //교육분류1
+	  	
+	    $("#category1_name").val(category1_name);
+	    $("#category2_name").val(category2_name);
+	    $("#category3_name").val(category3_name);
 	  	   
 	  	 if (category1_key == ""){			
 		   $("#category1_key").val(0);
@@ -360,37 +376,70 @@
 			$("#category3_key").val(0);
 		 }	
     	 frm.pageIndex.value = pageNo;
-     	 frm.action = "<c:url value='/edu/eduInfoOnlineList.do'/>";
+     	 frm.action = "<c:url value='/edu/eduInfoNoOrglineList.do'/>";
        	 frm.submit();
      }
+     
+  	function fileDownload(key1,key2){	
+		var frm = document.commonForm;
+		$("#gubun1").val('F'); 
+		$("#edu_no").val(key1);
+		if(key2 ==null ||  key2 == "" || key2.length == 0){
+			alert('저장된 안내문이 없습니다.');
+			return false;
+		}
+		$("#category1_key").val(0);
+     	$("#category2_key").val(0);
+		$("#category3_key").val(0);	
+		
+		frm.action = "<c:url value='/edu/fileDownload.do'/>";
+		frm.submit();
+	}
      //-->
  </script>
 
-        <h1 class="h1-tit">온라인 교육</h1>
-		<form  id="commonForm" name="commonForm"  method="post"  action="">
-			<input type="hidden" id="gubun1"         name="gubun1"         value='I'               class="input-box" />
-		    <input type="hidden" id="gubun2"         name="gubun2"         value='eduInfoOnline'   class="input-box" />	
-		    <input type="hidden" id="gubun3"         name="gubun3"         value=''                class="input-box" />
-		    <input type="hidden" id="excelFileName"  name="excelFileName"  value=''                class="input-box" />
-		    <input type="hidden" id="edu_no"         name="edu_no"         value='0'               class="input-box" />		
-		    <input type="hidden" id="checkdstr"      name="checkdstr"      value=''                class="input-box" />	
-		    <input type="hidden" id="edu_site"       name="edu_site"       value='on'/>
+        <form  id="commonForm" name="commonForm"  method="post"  action="">
+			<input type="hidden" id="gubun1"         name="gubun1"         value='I'                 class="input-box" />
+		    <input type="hidden" id="gubun2"         name="gubun2"         value='eduInfoNoOrgline'  class="input-box" />	
+		    <input type="hidden" id="gubun3"         name="gubun3"         value=''                  class="input-box" />
+		    <input type="hidden" id="excelFileName"  name="excelFileName"  value=''                  class="input-box" />
+		    <input type="hidden" id="edu_no"         name="edu_no"         value='0'                 class="input-box" />		
+		    <input type="hidden" id="checkdstr"      name="checkdstr"      value=''                  class="input-box" />	
+		    <input type="hidden" id="edu_site"       name="edu_site"       value='nooff'/>
+		    <input type="hidden" id="edu_site"       name="site"           value='off'/>
 		    <input type="hidden" id="pageIndex"      name="pageIndex"      class="input-box" value=1 />	
+		    
 		    <input type="hidden" id="category1_name"  name="category1_name"  value=''                  class="input-box" />
 		    <input type="hidden" id="category2_name"  name="category2_name"  value=''                  class="input-box" />
 		    <input type="hidden" id="category3_name"  name="category3_name"  value=''                  class="input-box" />
-		   
+		    
+		   <h1 class="h1-tit">오프라인 교육</h1>
+           <div class="tab-cont">
+               <ul>
+                   <li ><a href="<c:url value='/edu/eduInfoOfflineList.do'/>">기관</a></li>
+                   <li class="on">기관 이외</li>
+               </ul>
+           </div>
            <div class="search-wrap">
                <div class="search-cont">
                     <select class="select mr30"  id="category1_key" name="category1_key">
+                    	<c:if test="${not empty categoryVo.category1_name }">
+                       		<option value='${categoryVo.category1_key}'>${categoryVo.category1_name}</option>
+                       	</c:if>
                         <option value=''>선택 하세요</option>
                     	<c:forEach var="result" items="${category1list}" varStatus="status">
                         	<option value='${result.code_cd}'>${result.code_name}</option>
                         </c:forEach>
                     </select>
                     <select class="select"  id="category2_key" name="category2_key">
+                       <c:if test="${not empty categoryVo.category2_name }">
+                       		<option value='${categoryVo.category2_key}'>${categoryVo.category2_name}</option>
+                       	</c:if>
                     </select>
                     <select class="select lg-width"  id="category3_key" name="category3_key">
+                    	<c:if test="${not empty categoryVo.category3_name }">
+                       		<option value='${categoryVo.category3_key}'>${categoryVo.category3_name}</option>
+                       	</c:if>
                     </select>
                 </div>
                <div class="search-cont">
@@ -412,7 +461,7 @@
                        <span class="next-ico">-</span>
                        <input type="text" id="train_e_date"   name="train_e_date"   readonly class="input-box" value="${categoryVo.train_e_date}"/>
                    </div>
-                   <input type="text" class="input-box" id="inst_nm" name="inst_nm" value="${categoryVo.inst_nm}" placeholder="강사명"/>
+                   <input   type="text"   class="input-box" id="coper_nm" name="coper_nm" value="${categoryVo.coper_nm}" placeholder="기관명"/>
                    <button  type="button" class="search-btn" onClick="fn_search();">검색</button>
                </div>
            </div>
@@ -429,14 +478,13 @@
                         <caption>카테고리1, 수정, 삭제, 카테고리2 정보가 있는 테이블</caption>
                         <colgroup>
                             <col width="3%"/>
-                            <col width="5%"/>
-                            <col width="9%"/>
-                            <col width="12%"/>
+                            <col width="4%"/>
+                            <col width="8%"/>
                             <col width="*"/>
+                            <col width="12%"/>
                             <col width="6%"/>
-                            <col width="9%"/>
-                            <col width="6%"/>
-                            <col width="6%"/>
+                            <col width="8%"/>
+                            <col width="8%"/>
                             <col width="7%"/>
                             <col width="7%"/>
                             <col width="6%"/>
@@ -445,16 +493,15 @@
                         <thead>
                             <tr>
                                 <th><input type="checkbox" id="checkAll" name='checkAll' class="check-box"/></th>
-                                <th>No.</th>
-                                <th>분류1</th>
-                                <th>분류2</th>
-                                <th>분류3</th>
-                                <th>강사명</th>
-                                <th>교육기간</th>
-                                <th>학습시간</th>
-                                <th>교육대상</th>
-                                <th>신청인원</th>
+                               <th>No.</th>
+                                <th>기관명</th>
+                                <th>교육명</th>
+                                <th>교육내용</th>
+                                <th>교육방식</th>
+                                <th>교육기간/일시</th>
+                                <th>신청기간</th>
                                 <th>교육상태</th>
+                                <th>안내문</th>
                                 <th>노출여부</th>
                                 <th>관리</th>
                             </tr>
@@ -464,15 +511,14 @@
 	                        <tr>
 	                            <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.edu_no}" class="check-box"/></td>
 	                            <td>${status.index + 1}</td>
-                                <td class="tl">${result.category1_name}</td>
-                                <td class="tl">${result.category2_name}</td>
+                                <td class="tl">${result.coper_nm}</td>
                                 <td class="tl">${result.category3_name}</td>
-                                <td>${result.inst_nm}</td>
+                                <td>${result.edu_cont}</td>
+                                <td>${result.edu_method}</td>
                                 <td><span class="block">${result.train_s_date}</span> ~ <span class="block">${result.train_e_date}</span></td>
-                                <td>${result.edu_time}분</td>
-                                <td>${result.edu_target}</td>
-                                <td>${result.edu_garden}</td>
+                                <td><span class="block">${result.app_s_date}</span>   ~ <span class="block">${result.app_e_date}  </span></td>
                                 <td>${result.edu_status}</td>
+                                <td><button  type="button" class="sm-btn black-btn"  onclick="javascript:fileDownload('${result.edu_no}','${result.edu_notice}');">다운로드</button></td>
                                 <td>${result.exp_use_yn}</td>
                                 <td>
                                     <button type="button" class="sm-btn blue-btn"  onClick="javascript:fn_edit('${result.edu_no}',  'E');" >수정</button>

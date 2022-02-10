@@ -229,11 +229,11 @@
 		    <input type="hidden" id="checkdstr"      name="checkdstr"      value=''                class="input-box" />	
 		    <input type="hidden" id="edu_site"       name="edu_site"       value='off'/>
 		    <input type="hidden" id="pageIndex"      name="pageIndex"      class="input-box" value=1 />	
-		   <h1 class="h1-tit">오프라인 교육</h1>
+		   <h1 class="h1-tit">온오프라인 교육</h1>
            <div class="tab-cont">
                <ul>
                    <li class="on"><a href="">기관</a></li>
-                   <li><a href="<c:url value='/edu/eduInfoNOrglineList.do'/>">기관 이외</a></li>
+                   <li><a href="">기관 이외</a></li>
                </ul>
            </div>
            <div class="search-wrap">

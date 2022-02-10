@@ -3,8 +3,6 @@
 
 <mapper namespace="com.easycompany.mapper.EduMapper">
     
-  
-    
     
     
     <sql id="eduInfoOnlineListSearch">

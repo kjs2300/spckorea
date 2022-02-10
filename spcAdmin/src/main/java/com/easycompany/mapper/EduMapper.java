@@ -163,14 +163,14 @@ public class EduMapper extends EgovAbstractMapper
     return ((Integer)selectOne(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
 
-  public String getEduCationFile(CategoryVo categoryVo)
+  public CategoryVo getEduCationFile(CategoryVo categoryVo)
   {
     String sqlName = "getEduCationFile";
 
     if ("eduInfoOnline".equals(categoryVo.getGubun2())) {
       sqlName = "getEduCationFile";
     }
-    return (String)selectOne(this.nameSpace + "." + sqlName, categoryVo);
+    return (CategoryVo)selectOne(this.nameSpace + "." + sqlName, categoryVo);
   }
 
   public int getCategoryCount(CategoryVo categoryVo)
@@ -371,7 +371,7 @@ public class EduMapper extends EgovAbstractMapper
   }
 
   public List<CategoryVo> getCategoryCodeList(CategoryVo categoryVo) throws DataAccessException {
-    String sqlName = "getCategoryCodeList";
+    String sqlName = "getOnlineCategoryCodeList";
 
     if ("eduInfoOnline".equals(categoryVo.getGubun2())) {
       sqlName = "getOnlineCategoryCodeList";

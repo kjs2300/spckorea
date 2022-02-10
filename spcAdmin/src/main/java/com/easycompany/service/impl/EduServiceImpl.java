@@ -47,16 +47,23 @@ public class EduServiceImpl extends EgovAbstractServiceImpl
       cnt = this.eduMapper.insertCommonFile(categoryVo);
     }
 
-    if ((cnt > 0) && 
-      (categoryVo.getEdu_curr1_arr() != null) && (categoryVo.getEdu_curr1_arr().length > 0))
-    {
-      for (int i = 0; i < categoryVo.getEdu_curr1_arr().length; i++) {
-        categoryVo.setEdu_curr1(categoryVo.getEdu_curr1_arr() != null ? categoryVo.getEdu_curr1_arr()[i] : "");
-        categoryVo.setEdu_curr2(categoryVo.getEdu_curr2_arr() != null ? categoryVo.getEdu_curr2_arr()[i] : "");
-        categoryVo.setEdu_curr3(categoryVo.getEdu_curr3_arr() != null ? categoryVo.getEdu_curr3_arr()[i] : "");
-        cnt = this.eduMapper.insertEducationSub(categoryVo);
-      }
+    if (!"eduInfoOffline".equals(categoryVo.getGubun2())) {
+    	
+    	if ((cnt > 0) &&   (categoryVo.getEdu_curr1_arr() != null) && (categoryVo.getEdu_curr1_arr().length > 0))    {
+    	      for (int i = 0; i < categoryVo.getEdu_curr1_arr().length; i++) {
+    	        categoryVo.setEdu_curr1(categoryVo.getEdu_curr1_arr() != null ? categoryVo.getEdu_curr1_arr()[i] : "");
+    	        categoryVo.setEdu_curr2(categoryVo.getEdu_curr2_arr() != null ? categoryVo.getEdu_curr2_arr()[i] : "");
+    	        categoryVo.setEdu_curr3(categoryVo.getEdu_curr3_arr() != null ? categoryVo.getEdu_curr3_arr()[i] : "");
+    	        if ((categoryVo.getEdu_curr1_arr()[i] != null) && (categoryVo.getEdu_curr1_arr()[i].trim().length() > 1) && 
+    	            (categoryVo.getEdu_curr2_arr()[i] != null) && (categoryVo.getEdu_curr2_arr()[i].trim().length() > 1) && 
+    	            (categoryVo.getEdu_curr3_arr()[i] != null) && (categoryVo.getEdu_curr3_arr()[i].trim().length() > 1))   	
+    	        	{
+    	                cnt = this.eduMapper.insertEducationSub(categoryVo);
+    	              }
+    	      }
+    	    }	
     }
+    
 
     if (cnt > 0) {
       return this.eduMapper.insertEducation(categoryVo);
@@ -118,7 +125,7 @@ public class EduServiceImpl extends EgovAbstractServiceImpl
     return this.eduMapper.getEducationNo(categoryVo);
   }
 
-  public String getEduCationFile(CategoryVo categoryVo) {
+  public CategoryVo getEduCationFile(CategoryVo categoryVo) {
     return this.eduMapper.getEduCationFile(categoryVo);
   }
 

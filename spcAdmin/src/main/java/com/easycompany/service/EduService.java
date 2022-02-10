@@ -1,35 +1,54 @@
 package com.easycompany.service;
 
+import com.easycompany.service.vo.CategoryVo;
 import java.util.List;
 
-import com.easycompany.service.vo.CategoryVo;;
+public abstract interface EduService
+{
+  public abstract List<CategoryVo> getCategoryList(CategoryVo paramCategoryVo)
+    throws Exception;
 
+  public abstract int getCategoryExist(CategoryVo paramCategoryVo);
 
-public interface EduService {
-	
-	
-	public List<CategoryVo> getCategoryList(CategoryVo categoryVo) throws Exception;
-	public int getCategoryExist(CategoryVo categoryVo);
-	public int insertCatgegory(CategoryVo categoryVo);
-	
-	public int getCategoryCount(CategoryVo      categoryVo);
-	public CategoryVo getCategoryDetail(CategoryVo categoryVo);
-	public int deleteCategory(CategoryVo        categoryVo);	
-	public int updateCategory(CategoryVo        categoryVo);
-	public int insertCatgegory3(CategoryVo categoryVo);
-	public List<CategoryVo> getCategoryCodeList(CategoryVo categoryVo) throws Exception;
-	public int deleteSchedule(CategoryVo        categoryVo);	
-	public int updateSchedule(CategoryVo        categoryVo);
-	public int insertSchedule(CategoryVo categoryVo);
-	
-	public List<CategoryVo> getEducationList(CategoryVo categoryVo) throws Exception;
-	public int getEducationCount(CategoryVo      categoryVo);	
-	public int insertEducation(CategoryVo categoryVo);
-	public int getEducationNo(CategoryVo categoryVo);
-	public int insertEducationSub(CategoryVo categoryVo);
-	public int deleteEduCation(CategoryVo        categoryVo);	
-	public String getEduCationFile(CategoryVo categoryVo);
-	public CategoryVo getEduCationDetail(CategoryVo categoryVo);
-	public List<CategoryVo>  getEduCationDetailSub(CategoryVo categoryVo);
-	public int updateEduCation(CategoryVo        categoryVo);
+  public abstract int insertCatgegory(CategoryVo paramCategoryVo);
+
+  public abstract int getCategoryCount(CategoryVo paramCategoryVo);
+
+  public abstract CategoryVo getCategoryDetail(CategoryVo paramCategoryVo);
+
+  public abstract int deleteCategory(CategoryVo paramCategoryVo);
+
+  public abstract int updateCategory(CategoryVo paramCategoryVo);
+
+  public abstract int insertCatgegory3(CategoryVo paramCategoryVo);
+
+  public abstract List<CategoryVo> getCategoryCodeList(CategoryVo paramCategoryVo)
+    throws Exception;
+
+  public abstract int deleteSchedule(CategoryVo paramCategoryVo);
+
+  public abstract int updateSchedule(CategoryVo paramCategoryVo);
+
+  public abstract int insertSchedule(CategoryVo paramCategoryVo);
+
+  public abstract List<CategoryVo> getEducationList(CategoryVo paramCategoryVo)
+    throws Exception;
+
+  public abstract int getEducationCount(CategoryVo paramCategoryVo);
+
+  public abstract int insertEducation(CategoryVo paramCategoryVo);
+
+  public abstract int getEducationNo(CategoryVo paramCategoryVo);
+
+  public abstract int insertEducationSub(CategoryVo paramCategoryVo);
+
+  public abstract int deleteEduCation(CategoryVo paramCategoryVo);
+
+  public abstract String getEduCationFile(CategoryVo paramCategoryVo);
+
+  public abstract CategoryVo getEduCationDetail(CategoryVo paramCategoryVo);
+
+  public abstract List<CategoryVo> getEduCationDetailSub(CategoryVo paramCategoryVo);
+
+  public abstract int updateEduCation(CategoryVo paramCategoryVo);
 }

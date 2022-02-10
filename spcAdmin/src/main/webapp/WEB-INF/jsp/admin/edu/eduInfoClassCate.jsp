@@ -42,7 +42,7 @@
      
  	function goOkPage(){	
 		var frm = document.commonForm;
-		frm.action = "/admin/edu/eduInfoClassCate.do";
+		frm.action = "<c:url value='/edu/eduInfoClassCate.do'/>";
 		frm.submit();
 	}
 	
@@ -67,7 +67,7 @@
  				
  			$.ajax({	
  				data     : $("#commonForm").serialize(),
- 			    url		 : "/admin/edu/eduInfoClassCateSave.do",
+ 			    url		 : "<c:url value='/edu/eduInfoClassCateSave.do'/>";
  		        dataType : "JSON",
  		        cache    : false,
  		        async    : false,

@@ -144,9 +144,6 @@
 		$("#inst_nm").val('');      //강사명
 		$("#train_s_date").val(''); //교육기간
 		$("#train_e_date").val(''); //교육기간
-		$("#category1_key").val(0); //교육분류
-		$("#category2_key").val(0); //교육분류
-		$("#category3_key").val(0); //교육명
 		frm.action = "<c:url value='/edu/eduInfoOnlineList.do'/>";
 		frm.submit();
    }

@@ -513,6 +513,9 @@ public class EduController
     return category1list;
   }
 
+  /*
+   * 온라인 교육 List
+   */
   @RequestMapping({"/eduInfoOnlineList.do"})
   public String eduInfoOnlineList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
     throws Exception
@@ -537,12 +540,13 @@ public class EduController
     }
 
     if (StringUtil.isEmpty(categoryVo.getEdu_site())) {
-      categoryVo.setEdu_site("on");
+        categoryVo.setEdu_site("on");
     }
 
     if (StringUtil.isEmpty(categoryVo.getSite())) {
-      categoryVo.setSite(categoryVo.getEdu_site());
+        categoryVo.setSite("on");
     }
+    
     categoryVo.setWebPath(this.webPath);
 
     categoryVo.setGubun3("categorycode1");
@@ -560,6 +564,9 @@ public class EduController
     return "eduInfoOnlineList";
   }
 
+  /*
+   * 온라인 교육 등록/수정
+   */
   @RequestMapping({"/eduInfoOnlineReg.do"})
   public String eduInfoOnlineReg(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model) throws Exception
   {
@@ -572,11 +579,11 @@ public class EduController
     }
 
     if (StringUtil.isEmpty(categoryVo.getEdu_site())) {
-      categoryVo.setEdu_site("on");
+        categoryVo.setEdu_site("on");
     }
 
     if (StringUtil.isEmpty(categoryVo.getSite())) {
-      categoryVo.setSite(categoryVo.getEdu_site());
+        categoryVo.setSite("on");
     }
 
     categoryVo.setWebPath(this.webPath);
@@ -596,6 +603,9 @@ public class EduController
     return "eduInfoOnlineReg";
   }
 
+  /*
+   * 온라인 교육 저장
+   */
   @RequestMapping({"/eduInfoOnlineSave.do"})
   @ResponseBody
   public CategoryVo eduInfoOnlineSave(HttpServletRequest request, CategoryVo categoryVo) throws Exception {
@@ -611,11 +621,11 @@ public class EduController
       }
 
       if (StringUtil.isEmpty(categoryVo.getEdu_site())) {
-        categoryVo.setEdu_site("on");
+          categoryVo.setEdu_site("on");
       }
 
       if (StringUtil.isEmpty(categoryVo.getSite())) {
-        categoryVo.setSite(categoryVo.getEdu_site());
+          categoryVo.setSite("on");
       }
 
       if (StringUtil.isEmpty(categoryVo.getFileExit())) {
@@ -836,6 +846,199 @@ public class EduController
     return categoryVo;
   }
 
+  /*
+   * 오프라인 교육[기관외] List
+   */
+  @RequestMapping({"/eduInfoNoOrglineList.do"})
+  public String eduInfoNoOrglineList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+    throws Exception
+  {
+    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
+    categoryVo.setPageSize(this.propertiesService.getInt("pageSize"));
+
+    PaginationInfo paginationInfo = new PaginationInfo();
+    paginationInfo.setCurrentPageNo(categoryVo.getPageIndex());
+    paginationInfo.setRecordCountPerPage(categoryVo.getPageUnit());
+    paginationInfo.setPageSize(categoryVo.getPageSize());
+
+    int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+    categoryVo.setOffset(offset);
+
+    if (StringUtil.isEmpty(categoryVo.getGubun1())) {
+      categoryVo.setGubun1("R");
+    }
+
+    if (StringUtil.isEmpty(categoryVo.getGubun2())) {
+      categoryVo.setGubun2("eduInfoNoOrgline");
+    }
+
+    if (StringUtil.isEmpty(categoryVo.getEdu_site())) {
+	    categoryVo.setEdu_site("off");
+    }
+	
+	if (StringUtil.isEmpty(categoryVo.getSite())) {
+	   categoryVo.setSite("on");
+	}
+    
+	categoryVo.setWebPath(this.webPath);
+
+    categoryVo.setGubun3("categorycode1");
+    List category1list = this.eduService.getCategoryCodeList(categoryVo);
+    model.addAttribute("category1list", category1list);
+
+    List list = this.eduService.getEducationList(categoryVo);
+    model.addAttribute("resultList", list);
+
+    int totCnt = this.eduService.getEducationCount(categoryVo);
+    paginationInfo.setTotalRecordCount(totCnt);
+    model.addAttribute("paginationInfo", paginationInfo);
+    model.addAttribute("categoryVo", categoryVo);
+
+    return "eduInfoNoOrglineList";
+  }
+
+  /*
+   * 오프라인 교육[기관외] 등록/수정
+   */
+  @RequestMapping({"/eduInfoNoOrglineReg.do"})
+  public String eduInfoNoOrglineeReg(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model) throws Exception
+  {
+    if (StringUtil.isEmpty(categoryVo.getGubun1())) {
+      categoryVo.setGubun1("R");
+    }
+
+    if (StringUtil.isEmpty(categoryVo.getGubun2())) {
+      categoryVo.setGubun2("eduInfoNoOrgline");
+    }
+
+    if (StringUtil.isEmpty(categoryVo.getEdu_site())) {
+        categoryVo.setEdu_site("off");
+    }
+
+    if (StringUtil.isEmpty(categoryVo.getSite())) {
+        categoryVo.setSite("on");
+    }
+
+    categoryVo.setWebPath(this.webPath);
+
+    categoryVo.setGubun3("categorycode1");
+    List category1list = this.eduService.getCategoryCodeList(categoryVo);
+    model.addAttribute("category1list", category1list);
+
+    CategoryVo categoryForm = this.eduService.getEduCationDetail(categoryVo);
+    model.addAttribute("categoryForm", categoryForm);
+
+    List categoryFormSubList = this.eduService.getEduCationDetailSub(categoryVo);
+    model.addAttribute("categoryFormSubList", categoryFormSubList);
+
+    model.addAttribute("categoryVo", categoryVo);
+
+    return "eduInfoNoOrglineReg";
+  }
+
+  /*
+   * 오프라인 교육[기관외] 교육 저장
+   */
+  @RequestMapping({"/eduInfoNoOrglineSave.do"})
+  @ResponseBody
+  public CategoryVo eduInfoNoOrglineSave(HttpServletRequest request, CategoryVo categoryVo) throws Exception {
+    int resultCnt = 0;
+    try
+    {
+      LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+
+      categoryVo.setReg_id(loginvo.getId());
+
+      if (StringUtil.isEmpty(categoryVo.getGubun2())) {
+        categoryVo.setGubun2("eduInfoNoOrgline");
+      }
+
+      if (StringUtil.isEmpty(categoryVo.getEdu_site())) {
+          categoryVo.setEdu_site("off");
+      }
+
+      if (StringUtil.isEmpty(categoryVo.getSite())) {
+          categoryVo.setSite("on");
+      }
+
+      if (StringUtil.isEmpty(categoryVo.getFileExit())) {
+        categoryVo.setFileExit("NO");
+      }
+
+      String fileAddpath = this.filePath + File.separator + categoryVo.getGubun2();
+
+      if ("I".equals(categoryVo.getGubun1()))
+      {
+        if ("YES".equals(categoryVo.getFileExit())) {
+          BoardVo fileVo = FileUtil.uploadFile(request, fileAddpath);
+          categoryVo.setFile_uuid(fileVo.getFile_uuid());
+          categoryVo.setFile_name(fileVo.getFile_name());
+          categoryVo.setFile_full_path(fileVo.getFile_full_path());
+          categoryVo.setFile_size(fileVo.getFile_size());
+          categoryVo.setEdu_notice(fileVo.getFile_uuid());
+        }
+
+        resultCnt = this.eduService.insertEducation(categoryVo);
+        categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
+      }
+
+      if ("E".equals(categoryVo.getGubun1()))
+      {
+        String fileFullPath = this.eduService.getEduCationFile(categoryVo);
+
+        if ("YES".equals(categoryVo.getFileExit())) {
+          BoardVo fileVo = FileUtil.uploadFile(request, fileAddpath);
+          categoryVo.setFile_uuid(fileVo.getFile_uuid());
+          categoryVo.setFile_name(fileVo.getFile_name());
+          categoryVo.setFile_full_path(fileVo.getFile_full_path());
+          categoryVo.setFile_size(fileVo.getFile_size());
+        }
+
+        resultCnt = this.eduService.updateEduCation(categoryVo);
+        categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
+
+        if ((resultCnt > 0) && ("YES".equals(categoryVo.getFileExit())))
+        {
+          if ((fileFullPath != null) && (fileFullPath.length() > 3))
+          {
+            FileUtil.deleteFile(request, fileFullPath);
+          }
+
+        }
+
+      }
+
+      if ("D".equals(categoryVo.getGubun1()))
+      {
+        String fileFullPath = this.eduService.getEduCationFile(categoryVo);
+        resultCnt = this.eduService.deleteEduCation(categoryVo);
+        if ((fileFullPath != null) && (fileFullPath.length() > 3)) {
+          FileUtil.deleteFile(request, fileFullPath);
+        }
+        categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
+      }
+
+      if ("A".equals(categoryVo.getGubun1())) {
+        String[] ArraysStr = categoryVo.getCheckdstr().split(",");
+        for (String s : ArraysStr) {
+          categoryVo.setEdu_no(Integer.parseInt(s));
+          String fileFullPath = this.eduService.getEduCationFile(categoryVo);
+          resultCnt = this.eduService.deleteEduCation(categoryVo);
+          if ((fileFullPath != null) && (fileFullPath.length() > 3)) {
+            FileUtil.deleteFile(request, fileFullPath);
+          }
+        }
+        categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
+      }
+    }
+    catch (Exception e)
+    {
+      categoryVo.setResult("FAIL");
+    }
+
+    return categoryVo;
+  }
+  
   @RequestMapping({"/excelDownloadOnLine.do"})
   public ModelAndView excelDownloadOnLine(@ModelAttribute("categoryVo") CategoryVo categoryVo)
     throws Exception
