@@ -227,7 +227,7 @@ public class AdminBoardController {
 		/***  offSet 설정  ***/
 		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
 		adBoardVo.setOffset(offset);
-		adBoardVo.setBoard_type("03");
+		adBoardVo.setBoard_type("04");
 		List<AdBoardVo> list = adBoardService.getBoardList(adBoardVo);
 		model.addAttribute("resultList", list);
 			
@@ -246,12 +246,100 @@ public class AdminBoardController {
 	public String partiReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model) throws Exception {
 
 		if(adBoardVo.getBoard_idx() != null) {
-			adBoardVo.setBoard_type("03");
+			adBoardVo.setBoard_type("04");
 			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
 			model.addAttribute("detailData",  detailData);
 		}
 
 		return "partiReq";
+	}
+	
+	@RequestMapping(value = "/instructList.do")
+	public String instructList(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
+
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		/** EgovPropertyService.sample */
+		adBoardVo.setPageUnit(propertiesService.getInt("pageUnit"));
+		adBoardVo.setPageSize(propertiesService.getInt("pageSize"));
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(adBoardVo.getPageIndex());
+		paginationInfo.setRecordCountPerPage(adBoardVo.getPageUnit());
+		paginationInfo.setPageSize(adBoardVo.getPageSize());
+		
+		/***  offSet 설정  ***/
+		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
+		adBoardVo.setOffset(offset);
+		adBoardVo.setBoard_type("05");
+		List<AdBoardVo> list = adBoardService.getBoardList(adBoardVo);
+		model.addAttribute("resultList", list);
+			
+		
+		int totCnt = adBoardService.getBoardCount(adBoardVo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+		
+		adBoardVo.setReg_id(loginvo.getId());		
+		model.addAttribute("adBoardVo",   adBoardVo);
+
+		return "instructList";
+	}
+	
+	@RequestMapping(value = "/instructReq.do")
+	public String instructReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model) throws Exception {
+
+		if(adBoardVo.getBoard_idx() != null) {
+			adBoardVo.setBoard_type("05");
+			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
+			model.addAttribute("detailData",  detailData);
+		}
+
+		return "instructReq";
+	}
+	
+	@RequestMapping(value = "/instructReferList.do")
+	public String instructReferList(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
+
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		/** EgovPropertyService.sample */
+		adBoardVo.setPageUnit(propertiesService.getInt("pageUnit"));
+		adBoardVo.setPageSize(propertiesService.getInt("pageSize"));
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(adBoardVo.getPageIndex());
+		paginationInfo.setRecordCountPerPage(adBoardVo.getPageUnit());
+		paginationInfo.setPageSize(adBoardVo.getPageSize());
+		
+		/***  offSet 설정  ***/
+		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
+		adBoardVo.setOffset(offset);
+		adBoardVo.setBoard_type("06");
+		List<AdBoardVo> list = adBoardService.getBoardList(adBoardVo);
+		model.addAttribute("resultList", list);
+			
+		
+		int totCnt = adBoardService.getBoardCount(adBoardVo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+		
+		adBoardVo.setReg_id(loginvo.getId());		
+		model.addAttribute("adBoardVo",   adBoardVo);
+
+		return "instructReferList";
+	}
+	
+	@RequestMapping(value = "/instructReferReq.do")
+	public String instructReferReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model) throws Exception {
+
+		if(adBoardVo.getBoard_idx() != null) {
+			adBoardVo.setBoard_type("06");
+			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
+			model.addAttribute("detailData",  detailData);
+		}
+
+		return "instructReferReq";
 	}
 
 }

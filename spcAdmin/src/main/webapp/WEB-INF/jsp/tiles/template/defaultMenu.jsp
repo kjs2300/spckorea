@@ -70,9 +70,9 @@
             <li><a href="<c:url value='/adBoard/noticeList.do' />">공지사항</a></li>
             <li><a href="<c:url value='/adBoard/referenceList.do' />">자료실</a></li>
             <li><a href="<c:url value='/adBoard/faqList.do' />">FAQ</a></li>
-            <li><a href="#">참여마당</a></li>
-            <li><a href="#">강사 공지사항</a></li>
-            <li><a href="#">강사 자료실</a></li>
+            <li><a href="<c:url value='/adBoard/partiList.do' />">참여마당</a></li>
+            <li><a href="<c:url value='/adBoard/instructList.do' />">강사 공지사항</a></li>
+            <li><a href="<c:url value='/adBoard/instructReferList.do' />">강사 자료실</a></li>
         </ul>
     </li>
     <li>
