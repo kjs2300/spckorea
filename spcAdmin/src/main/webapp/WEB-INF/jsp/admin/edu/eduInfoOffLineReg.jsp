@@ -84,6 +84,8 @@
 		$("#category1_key").val(0);
 		$("#category2_key").val(0);
 		$("#category3_key").val(0);
+		$("#edu_target").val('');
+		$("#coper_nm").val('');
 		frm.action = "<c:url value='/edu/eduInfoOfflineList.do'/>";
 		frm.submit();
    }
@@ -108,9 +110,9 @@
 			return;
 		}	
 		
-		var msg = "온오프라인  교육(기관)을  등록 하시겠습니까?";
+		var msg = "오프라인[기관]을  등록 하시겠습니까?";
 		if (gubun1 == "E"){
-			msg = "온오프라인  교육(기관)을  수정 하시겠습니까?"
+			msg = "오프라인[기관]을  수정 하시겠습니까?"
 		}
 		
 		$("#gubun1").val(gubun1);
@@ -193,18 +195,19 @@
  </script>
  		   
            <form  id="commonForm" name="commonForm"  method="post"  >
-			<input type="hidden" id="gubun1"   name="gubun1"   class="input-box" />
-			<input type="hidden" id="gubun2"   name="gubun2"   class="input-box" value='eduInfoOffline'/>
-			<input type="hidden" id="gubun3"   name="gubun3"   class="input-box" />
-			<input type="hidden" id="edu_no"   name="edu_no"   class="input-box" value='${categoryVo.edu_no}'/>
-			<input type="hidden" id="edu_site" name="edu_site" class="input-box" value='${categoryVo.edu_site}'/>
-			<input type="hidden" id="coper_id" name="coper_id" class="input-box" value='${categoryVo.coper_id}'/>
+			<input type="hidden" id="gubun1"   name="gubun1"   />
+			<input type="hidden" id="gubun2"   name="gubun2"   value='eduInfoOffline'/>
+			<input type="hidden" id="gubun3"   name="gubun3"   />
+			<input type="hidden" id="edu_no"   name="edu_no"   value='${categoryVo.edu_no}'/>
+			<input type="hidden" id="edu_site" name="edu_site" value='${categoryVo.edu_site}'/>
+			<input type="hidden" id="coper_id" name="coper_id" value='${categoryVo.coper_id}'/>
+			<input type="hidden" id="edu_site" name="site"     value='off'/>
 		
             <h1 class="h1-tit">오프라인 교육 등록</h1>
  				<div class="tab-cont">
                     <ul>
-                    <li>기관</li>
-                      <li class="on"><a href="<c:url value='/edu/eduInfoNoOrglineReg.do'/>">기관 이외</a></li>
+                      <li class="on">기관</li>
+                      <li><a href="<c:url value='/edu/eduInfoNoOrglineReg.do'/>">기관 이외</a></li>
                     </ul>
                 </div>
                 <div class="table-wrap">

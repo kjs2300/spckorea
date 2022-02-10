@@ -32,7 +32,7 @@
 	           ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
 	           ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
          });
- 		 
+ 		  
  		$('#checkAll').click(function(){
  		    var isChecked = this.checked;
  			$('input:checkbox[name="checkNo"]').each(function() {

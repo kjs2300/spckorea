@@ -46,26 +46,68 @@
      
      <!-- admin > 교육등록 > 온라인 교육 리스트   -->
    <definition name="eduInfoOnlineList" extends="base-definition">  
-       <put-attribute name="title" value="교육 분류 등록" />  
+       <put-attribute name="title" value="온라인 교육" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoOnlineList.jsp" />  
    </definition> 
    
     <!-- admin > 교육등록 > 온라인 교육 등록   -->
    <definition name="eduInfoOnlineReg" extends="base-definition">  
-       <put-attribute name="title" value="교육 분류 등록" />  
+       <put-attribute name="title" value="온라인 교육" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoOnlineReg.jsp" />  
    </definition> 
    
-        <!-- admin > 교육등록 > 온오프라인 교육 리스트   -->
+    <!-- admin > 교육등록 > 오프라인 기관 리스트   -->
    <definition name="eduInfoOfflineList" extends="base-definition">  
-       <put-attribute name="title" value="교육 분류 등록" />  
+       <put-attribute name="title" value="온오프라인 교육 기관" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoOffLineList.jsp" />  
    </definition> 
    
-    <!-- admin > 교육등록 > 온오프라인 교육 등록   -->
+    <!-- admin > 교육등록 > 온오프라인 기관 등록   -->
    <definition name="eduInfoOfflineReg" extends="base-definition">  
-       <put-attribute name="title" value="교육 분류 등록" />  
+       <put-attribute name="title" value="온오프라인 교육 기관" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoOffLineReg.jsp" />  
+   </definition> 
+   
+    <!-- admin > 교육등록 > 온오프라인 기관 외 리스트   -->
+   <definition name="eduInfoNoOrglineList" extends="base-definition">  
+       <put-attribute name="title" value="온오프라인 교육 기관 이외" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoNoOrglineList.jsp" />  
+   </definition> 
+   
+    <!-- admin > 교육등록 > 온오프라인 기관 외 등록   -->
+   <definition name="eduInfoNoOrglineReg" extends="base-definition">  
+       <put-attribute name="title" value="온오프라인 교육 기관 이외" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoNoOrglineReg.jsp" />  
+   </definition> 
+   
+   <!-- admin > 교육신청 > 온라인 관리   -->
+   <definition name="eduInfoOnlineMangList" extends="base-definition">  
+       <put-attribute name="title" value="교육신청관리" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoOnlineMangList.jsp" />  
+   </definition> 
+   
+   <!-- admin > 교육신청 > 오프라인 관리   -->
+   <definition name="eduInfoNoOrglineMangList" extends="base-definition">  
+       <put-attribute name="title" value="교육신청관리" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoNoOrglineMangList.jsp" />  
+   </definition> 
+   
+   <!-- admin > 기관(결과보고) > 교육신청 현황   -->
+   <definition name="eduStatustList" extends="base-definition">  
+       <put-attribute name="title" value="교육신청 현황" />  
+       <put-attribute name="body"  value="/WEB-INF/jsp/admin/edu/eduStatustList.jsp" />  
+   </definition> 
+   
+   <!-- admin > 기관(결과보고) > 교육명 별 신청자   -->
+   <definition name="eduTitleList" extends="base-definition">  
+       <put-attribute name="title" value="교육명 별 신청자" />  
+       <put-attribute name="body"  value="/WEB-INF/jsp/admin/edu/eduTitleList.jsp" />  
+   </definition>
+   
+   <!-- admin > 기관(결과보고) > 교육결과 보고   -->
+   <definition name="eduReportList" extends="base-definition">  
+       <put-attribute name="title" value="교육결과 보고" />  
+       <put-attribute name="body"  value="/WEB-INF/jsp/admin/edu/eduReportList.jsp" />  
    </definition> 
    
   </tiles-definitions>

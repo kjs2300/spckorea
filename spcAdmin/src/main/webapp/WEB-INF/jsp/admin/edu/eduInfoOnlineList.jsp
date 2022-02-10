@@ -292,7 +292,15 @@
 	   var category1_key = $("select[name=category1_key] option:selected").val();  //교육분류1
        var category2_key = $("select[name=category2_key] option:selected").val();  //교육분류2
 	   var category3_key = $("select[name=category3_key] option:selected").val();  //교육명		   
-	   	   
+	   
+	   var category1_name = $("select[name=category1_key] option:selected").text();  //교육분류1
+	   var category2_name = $("select[name=category2_key] option:selected").text();  //교육분류1
+	   var category3_name = $("select[name=category3_key] option:selected").text();  //교육분류1
+	  	
+	   $("#category1_name").val(category1_name);
+	   $("#category2_name").val(category2_name);
+	   $("#category3_name").val(category3_name);
+	    
 	   if (category1_key == ""){			
 		   $("#category1_key").val(0);
 		}
@@ -348,6 +356,14 @@
     	 var category1_key = $("select[name=category1_key] option:selected").val();  //교육분류1
 	     var category2_key = $("select[name=category2_key] option:selected").val();  //교육분류2
 	  	 var category3_key = $("select[name=category3_key] option:selected").val();  //교육명		   
+	  	 
+	  	var category1_name = $("select[name=category1_key] option:selected").text();  //교육분류1
+	    var category2_name = $("select[name=category2_key] option:selected").text();  //교육분류1
+	    var category3_name = $("select[name=category3_key] option:selected").text();  //교육분류1
+	  	
+	    $("#category1_name").val(category1_name);
+	    $("#category2_name").val(category2_name);
+	    $("#category3_name").val(category3_name);
 	  	   
 	  	 if (category1_key == ""){			
 		   $("#category1_key").val(0);
@@ -383,14 +399,23 @@
            <div class="search-wrap">
                <div class="search-cont">
                     <select class="select mr30"  id="category1_key" name="category1_key">
+                    	<c:if test="${not empty categoryVo.category1_name }">
+                       		<option value='${categoryVo.category1_key}'>${categoryVo.category1_name}</option>
+                       	</c:if>
                         <option value=''>선택 하세요</option>
                     	<c:forEach var="result" items="${category1list}" varStatus="status">
                         	<option value='${result.code_cd}'>${result.code_name}</option>
                         </c:forEach>
                     </select>
                     <select class="select"  id="category2_key" name="category2_key">
+                       <c:if test="${not empty categoryVo.category2_name }">
+                       		<option value='${categoryVo.category2_key}'>${categoryVo.category2_name}</option>
+                       	</c:if>
                     </select>
                     <select class="select lg-width"  id="category3_key" name="category3_key">
+                    	<c:if test="${not empty categoryVo.category3_name }">
+                       		<option value='${categoryVo.category3_key}'>${categoryVo.category3_name}</option>
+                       	</c:if>
                     </select>
                 </div>
                <div class="search-cont">

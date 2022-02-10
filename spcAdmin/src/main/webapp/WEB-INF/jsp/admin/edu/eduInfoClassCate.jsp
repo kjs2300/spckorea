@@ -42,7 +42,7 @@
      
  	function goOkPage(){	
 		var frm = document.commonForm;
-		frm.action = "<c:url value='/edu/eduInfoClassCate.do'/>";
+		frm.action = "<c:url value='/edu/eduInfoClassCate.do'/>";  
 		frm.submit();
 	}
 	
@@ -67,7 +67,7 @@
  				
  			$.ajax({	
  				data     : $("#commonForm").serialize(),
- 			    url		 : "<c:url value='/edu/eduInfoClassCateSave.do'/>";
+ 			    url		 : "<c:url value='/edu/eduInfoClassCateSave.do'/>", 
  		        dataType : "JSON",
  		        cache    : false,
  		        async    : false,
@@ -257,7 +257,7 @@
 					     <th>카테고리03 (서브분류)</th>
 						</c:if>      
 						<c:if test="${categoryVo.gubun2 eq 'category6'}">
-					     <th>카테고리02</th>
+					     <th>카테고리03</th>
 					     <th>수정</th>
 					     <th>삭제</th>
 					     <th></th>

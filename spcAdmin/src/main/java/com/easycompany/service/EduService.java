@@ -44,7 +44,7 @@ public abstract interface EduService
 
   public abstract int deleteEduCation(CategoryVo paramCategoryVo);
 
-  public abstract String getEduCationFile(CategoryVo paramCategoryVo);
+  public abstract CategoryVo getEduCationFile(CategoryVo paramCategoryVo);
 
   public abstract CategoryVo getEduCationDetail(CategoryVo paramCategoryVo);
 

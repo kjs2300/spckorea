@@ -1,5 +1,6 @@
 package com.easycompany.service.impl;
 
+import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.mapper.EduMapper;
 import com.easycompany.service.EduService;
 import com.easycompany.service.vo.CategoryVo;
@@ -51,15 +52,17 @@ public class EduServiceImpl extends EgovAbstractServiceImpl
     	
     	if ((cnt > 0) &&   (categoryVo.getEdu_curr1_arr() != null) && (categoryVo.getEdu_curr1_arr().length > 0))    {
     	      for (int i = 0; i < categoryVo.getEdu_curr1_arr().length; i++) {
-    	        categoryVo.setEdu_curr1(categoryVo.getEdu_curr1_arr() != null ? categoryVo.getEdu_curr1_arr()[i] : "");
+    	        
+    	    	  categoryVo.setEdu_curr1(categoryVo.getEdu_curr1_arr() != null ? categoryVo.getEdu_curr1_arr()[i] : "");
     	        categoryVo.setEdu_curr2(categoryVo.getEdu_curr2_arr() != null ? categoryVo.getEdu_curr2_arr()[i] : "");
     	        categoryVo.setEdu_curr3(categoryVo.getEdu_curr3_arr() != null ? categoryVo.getEdu_curr3_arr()[i] : "");
-    	        if ((categoryVo.getEdu_curr1_arr()[i] != null) && (categoryVo.getEdu_curr1_arr()[i].trim().length() > 1) && 
-    	            (categoryVo.getEdu_curr2_arr()[i] != null) && (categoryVo.getEdu_curr2_arr()[i].trim().length() > 1) && 
-    	            (categoryVo.getEdu_curr3_arr()[i] != null) && (categoryVo.getEdu_curr3_arr()[i].trim().length() > 1))   	
-    	        	{
-    	                cnt = this.eduMapper.insertEducationSub(categoryVo);
-    	              }
+    	        
+    	        if (  !(StringUtil.isEmpty(categoryVo.getEdu_curr1_arr()[i]) 
+    	                && StringUtil.isEmpty(categoryVo.getEdu_curr2_arr()[i]) 
+    	                && StringUtil.isEmpty(categoryVo.getEdu_curr3_arr()[i]))
+    	                ){
+    	               cnt = this.eduMapper.insertEducationSub(categoryVo);
+    	             }
     	      }
     	    }	
     }
@@ -75,9 +78,17 @@ public class EduServiceImpl extends EgovAbstractServiceImpl
     int cnt = 1;
 
     if ("YES".equals(categoryVo.getFileExit())) {
-      cnt = this.eduMapper.updateCommonFile(categoryVo);
-      categoryVo.setEdu_notice(categoryVo.getFile_uuid());
+    	
+    	if( StringUtil.isEmpty(categoryVo.getEdu_notice())) {
+    		categoryVo.setEdu_notice(categoryVo.getFile_uuid());
+    		cnt = this.eduMapper.insertCommonFile(categoryVo);
+    	}else {
+    		cnt = this.eduMapper.updateCommonFile(categoryVo);
+        }
+      
+        categoryVo.setEdu_notice(categoryVo.getFile_uuid());
     }
+    
 
     if (!"eduInfoOffline".equals(categoryVo.getGubun2()))
     {
@@ -91,10 +102,10 @@ public class EduServiceImpl extends EgovAbstractServiceImpl
             categoryVo.setEdu_curr1(categoryVo.getEdu_curr1_arr() != null ? categoryVo.getEdu_curr1_arr()[i] : "");
             categoryVo.setEdu_curr2(categoryVo.getEdu_curr2_arr() != null ? categoryVo.getEdu_curr2_arr()[i] : "");
             categoryVo.setEdu_curr3(categoryVo.getEdu_curr3_arr() != null ? categoryVo.getEdu_curr3_arr()[i] : "");
-            if ((categoryVo.getEdu_curr1_arr()[i] != null) && (categoryVo.getEdu_curr1_arr()[i].trim().length() > 1) && 
-              (categoryVo.getEdu_curr2_arr()[i] != null) && (categoryVo.getEdu_curr2_arr()[i].trim().length() > 1) && 
-              (categoryVo.getEdu_curr3_arr()[i] != null) && (categoryVo.getEdu_curr3_arr()[i].trim().length() > 1))
-            {
+            if (  !(StringUtil.isEmpty(categoryVo.getEdu_curr1_arr()[i]) 
+               && StringUtil.isEmpty(categoryVo.getEdu_curr2_arr()[i]) 
+               && StringUtil.isEmpty(categoryVo.getEdu_curr3_arr()[i]))
+               ){
               cnt = this.eduMapper.insertEducationSub(categoryVo);
             }
           }

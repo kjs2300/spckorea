@@ -120,7 +120,7 @@
 		var row = "<div class='grid-box'>";
 			row += "<input type='text' id='edu_curr1_arr'  name='edu_curr1_arr' class='input-box' />";
 			row += "<input type='text' id='edu_curr2_arr'  name='edu_curr2_arr' class='input-box' />";
-			row += "<input type='text' id='edu_curr3_arr'  name='edu_curr3_arr' class='input-box' />";
+			row += "<input type='text' id='edu_curr3_arr'  onKeyup=this.value=this.value.replace(/[^0-9]/g,'') name='edu_curr3_arr' class='input-box' />";
 			//row += "<span>삭제</span>";
 			row += "<button type='button' class='sm-btn black-btn'>삭제</button>";
 			
@@ -171,19 +171,19 @@
 	   var gubun2       = $("#gubun2").val();
 	   
 	   var inst_nm      = $("#inst_nm").val();      //강사명
-	   var set_use_yn   = $("#set_use_yn").val();   //교육기간설정여부
+	   var set_use_yn   = $('input:radio[name="set_use_yn"]:checked').val();    //교육기간설정여부
 	   var train_s_date = $("#train_s_date").val(); //교육기간
 	   var train_e_date = $("#train_e_date").val(); //교육기간
 	   
-	   var edu_cont    = $("#edu_cont").val();      //교육내용
-	   var edu_method  = $("#edu_method").val();    //교육방식
-	   var edu_target  = $("#edu_target").val();    //교육대상
-	   var edu_time    = $("#edu_time").val();      //학습시간
-	   var edu_garden  = $("#edu_garden").val();    //교육정원
+	   var edu_cont     = $("#edu_cont").val();      //교육내용
+	   var edu_method   = $("#edu_method").val();    //교육방식
+	   var edu_target   = $("#edu_target").val();    //교육대상
+	   var edu_time     = $("#edu_time").val();      //학습시간
+	   var edu_garden   = $("#edu_garden").val();    //교육정원
 	   
-	   var edu_status    = $("#edu_status").val();  //교육상태(신청중:I,신청취소:C, 신청마감:F, 사용중지:P, 결과보고:R)*
-	   var exp_use_yn    = $("#exp_use_yn").val();         //교육 노출여부
-	   var edu_notice    = $("#edu_notice").val();       //안내문
+	   var edu_status   = $('input:radio[name="edu_status"]:checked').val();    //교육상태(신청중:I,신청취소:C, 신청마감:F, 사용중지:P, 결과보고:R)*
+	   var exp_use_yn   = $('input:radio[name="exp_use_yn"]:checked').val();    //교육 노출여부
+	   var edu_notice   = $("#edu_notice").val();       //안내문
 	   
 	   var edu_intro      = $("#edu_intro").val();         //교육소개
 	   var edu_goals      = $("#edu_goals").val();         //교육목표
@@ -522,14 +522,14 @@
                                     <div class="grid-box">
                                         <input type="text" id="edu_curr1_arr"  name="edu_curr1_arr" class="input-box" value=""/>
                                         <input type="text" id="edu_curr2_arr"  name="edu_curr2_arr" class="input-box" value=""/>
-                                        <input type="text" id="edu_curr3_arr"  name="edu_curr3_arr" class="input-box" value=""/>
+                                        <input type="text" id="edu_curr3_arr"  name="edu_curr3_arr" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" class="input-box" value=""/>
                                     </div>
                                     </c:if>
                                      <c:forEach var="result" items="${categoryFormSubList}" varStatus="status">
                                      <div class="grid-box">
-                                        <input type="text" id="edu_curr1_arr" placeholder="회차"   name="edu_curr1_arr" class="input-box" value="${result.edu_curr1}"/>
-                                        <input type="text" id="edu_curr2_arr" placeholder="단원명"  name="edu_curr2_arr" class="input-box" value="${result.edu_curr3}"/>
-                                        <input type="text" id="edu_curr3_arr" placeholder="강의시간" name="edu_curr3_arr"  onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  class="input-box" value="${result.edu_curr2}"/>
+                                        <input type="text" id="edu_curr1_arr" placeholder="회차"    name="edu_curr1_arr"  class="input-box" value="${result.edu_curr1}"/>
+                                        <input type="text" id="edu_curr2_arr" placeholder="단원명"   name="edu_curr2_arr"  class="input-box" value="${result.edu_curr2}"/>
+                                        <input type="text" id="edu_curr3_arr" placeholder="강의시간"  name="edu_curr3_arr"  class="input-box" value="${result.edu_cur3}" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
                                         <c:if test="${status.index !=0 }">
                                         	<button type='button' class='sm-btn black-btn'>삭제</button>
                                 		</c:if>

@@ -10,7 +10,7 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-
+ 
  <script type="text/javaScript" language="javascript" defer="defer">
  <!--
  	$(document).ready(function(){
@@ -412,14 +412,13 @@
 		    <input type="hidden" id="category1_name"  name="category1_name"  value=''                  class="input-box" />
 		    <input type="hidden" id="category2_name"  name="category2_name"  value=''                  class="input-box" />
 		    <input type="hidden" id="category3_name"  name="category3_name"  value=''                  class="input-box" />
-		    
-		   <h1 class="h1-tit">오프라인 교육</h1>
+
            <div class="tab-cont">
                <ul>
-                   <li ><a href="<c:url value='/edu/eduInfoOfflineList.do'/>">기관</a></li>
-                   <li class="on">기관 이외</li>
+                   <li ><a href="<c:url value='/edu/eduInfoOnlineMangList.do'/>">온라인교육</a></li>
+                   <li class="on">오프라인 교육</li>
                </ul>
-           </div>
+           </div> 
            <div class="search-wrap">
                <div class="search-cont">
                     <select class="select mr30"  id="category1_key" name="category1_key">

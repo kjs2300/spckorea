@@ -389,7 +389,7 @@
                          <td><button class="sm-btn white-btn">보기</td>
                          <td><button class="sm-btn blue-btn">수정</button></td>
                      </tr>
-                     <tr>
+                     <tr> 
                          <td><input type="checkbox" class="check-box"/></td>
                          <td>3</td>
                          <td class="tl">교육명</td>

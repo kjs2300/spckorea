@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+ 
 
  <script type="text/javaScript" language="javascript" defer="defer">
  <!--
@@ -382,7 +382,12 @@
      //-->
  </script>
 
-        <h1 class="h1-tit">온라인 교육</h1>
+        <div class="tab-cont">
+               <ul>
+                   <li class="on">온라인교육</li>
+                   <li ><a href="<c:url value='/edu/eduInfoNoOrglineMangList.do'/>">오프라인 교육</a></li>
+               </ul>
+         </div>
 		<form  id="commonForm" name="commonForm"  method="post"  action="">
 			<input type="hidden" id="gubun1"         name="gubun1"         value='I'               class="input-box" />
 		    <input type="hidden" id="gubun2"         name="gubun2"         value='eduInfoOnline'   class="input-box" />	

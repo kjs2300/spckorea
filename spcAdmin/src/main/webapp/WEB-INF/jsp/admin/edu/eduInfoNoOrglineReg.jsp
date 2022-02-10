@@ -1,5 +1,4 @@
 
-
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
@@ -17,7 +16,7 @@
  <!-- 
  $(document).ready(function(){
    
-	 $("#train_s_date, #train_e_date").datepicker({
+	 $("#train_s_date, #train_e_date, #app_s_date, #app_e_date").datepicker({
 		 dateFormat: 'yy-mm-dd' //달력 날짜 형태
 	    ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
         ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
@@ -116,11 +115,11 @@
 	$("#addTR").click(function () {
 		var addNum = parseInt($("#addNum").val()) + 1;
 		$("#addNum").val(addNum);
-
+		
 		var row = "<div class='grid-box'>";
 			row += "<input type='text' id='edu_curr1_arr'  name='edu_curr1_arr' class='input-box' />";
 			row += "<input type='text' id='edu_curr2_arr'  name='edu_curr2_arr' class='input-box' />";
-			row += "<input type='text' id='edu_curr3_arr'  name='edu_curr3_arr' class='input-box' />";
+			row += "<input type='text' id='edu_curr3_arr'  name='edu_curr3_arr' onKeyup=this.value=this.value.replace(/[^0-9]/g,'') class='input-box' />";
 			//row += "<span>삭제</span>";
 			row += "<button type='button' class='sm-btn black-btn'>삭제</button>";
 			
@@ -131,7 +130,7 @@
 	$("#insertCurr").on("click", "button", function() {
 		var addNum = parseInt($("#addNum").val()) - 1;
 		$("#addNum").val(addNum);
-	 	$(this).closest("div").remove();
+		$(this).closest("div").remove();
 	});
 	
 
@@ -141,10 +140,13 @@
   function goOkPage(){	
 		var frm = document.commonForm;
 		$("#gubun1").val('R'); 
-		$("#inst_nm").val('');      //강사명
+		$("#coper_nm").val('');      //강사명
 		$("#train_s_date").val(''); //교육기간
 		$("#train_e_date").val(''); //교육기간
-		frm.action = "<c:url value='/edu/eduInfoOnlineList.do'/>";
+		$("#category1_key").val(0); //교육분류
+		$("#category2_key").val(0); //교육분류
+		$("#category3_key").val(0); //교육명
+		frm.action = "<c:url value='/edu/eduInfoNoOrglineList.do'/>";
 		frm.submit();
    }
 	    
@@ -167,10 +169,13 @@
 	   var edu_site     = $("#edu_site").val();
 	   var gubun2       = $("#gubun2").val();
 	   
-	   var inst_nm      = $("#inst_nm").val();      //강사명
-	   var set_use_yn   = $("#set_use_yn").val();   //교육기간설정여부
+	   var coper_nm      = $("#coper_nm").val();      //강사명
+	   var set_use_yn   = $('input:radio[name="set_use_yn"]:checked').val();    //교육기간설정여부
 	   var train_s_date = $("#train_s_date").val(); //교육기간
 	   var train_e_date = $("#train_e_date").val(); //교육기간
+	   
+	   var app_s_date = $("#app_s_date").val(); //신청기간
+	   var app_e_date = $("#app_e_date").val(); //신청기간
 	   
 	   var edu_cont    = $("#edu_cont").val();      //교육내용
 	   var edu_method  = $("#edu_method").val();    //교육방식
@@ -178,9 +183,9 @@
 	   var edu_time    = $("#edu_time").val();      //학습시간
 	   var edu_garden  = $("#edu_garden").val();    //교육정원
 	   
-	   var edu_status    = $("#edu_status").val();  //교육상태(신청중:I,신청취소:C, 신청마감:F, 사용중지:P, 결과보고:R)*
-	   var exp_use_yn    = $("#exp_use_yn").val();         //교육 노출여부
-	   var edu_notice    = $("#edu_notice").val();       //안내문
+	   var edu_status   = $('input:radio[name="edu_status"]:checked').val();    //교육상태(신청중:I,신청취소:C, 신청마감:F, 사용중지:P, 결과보고:R)*
+	   var exp_use_yn   = $('input:radio[name="exp_use_yn"]:checked').val();    //교육 노출여부
+	   var edu_notice   = $("#edu_notice").val();       //안내문
 	   
 	   var edu_intro      = $("#edu_intro").val();         //교육소개
 	   var edu_goals      = $("#edu_goals").val();         //교육목표
@@ -207,15 +212,15 @@
 			return;
 		}	
 		
-	   if (inst_nm == ""){			
-			alert("강사명을 입력하세요.");
-			$("#inst_nm").focus();
+	   if (coper_nm == ""){			
+			alert("기관명을 입력하세요.");
+			$("#coper_nm").focus();
 			return;
 		}		
 		
-		var msg = "온라인 교육을  등록 하시겠습니까?";
+		var msg = "오프라인[기관 이외] 교육을  등록 하시겠습니까?";
 		if (gubun1 == "E"){
-			msg = "온라인 교육을  수정 하시겠습니까?"
+			msg = "오프라인[기관 이외]을  수정 하시겠습니까?"
 		}
 		
 		var fileExit = "YES";
@@ -234,10 +239,12 @@
 		formData.append("category2_key",   category2_key);
 		formData.append("category3_key",   category3_key);
 		
-	    formData.append("inst_nm",      inst_nm);
+	    formData.append("coper_nm",      coper_nm);
 		formData.append("set_use_yn",   set_use_yn);
 		formData.append("train_s_date", train_s_date);
 		formData.append("train_e_date", train_e_date);
+		formData.append("app_s_date",   app_s_date);
+		formData.append("app_e_date",   app_e_date);
 		
 		formData.append("edu_cont",    edu_cont);
 		formData.append("edu_method",  edu_method);
@@ -263,7 +270,7 @@
 		if(yn){
 			$.ajax({	
 				data       : formData,
-			    url		   : "<c:url value='/edu/eduInfoOnlineSave.do'/>",
+			    url		   : "<c:url value='/edu/eduInfoNoOrglineSave.do'/>",
 			    dataType   : "JSON",
 		        processData: false, 
 		        contentType: false,
@@ -292,13 +299,6 @@
 			}
 		}
 	}	
-	
-	function fn_load(){	
-		var frm = document.commonForm;
-		$("#gubun1").val('I'); 
-		frm.action = "<c:url value='/main/popupReg.do'/>";
-		frm.submit();
-	}
 	
 	// 등록 이미지 등록 미리보기
 	function readInputFile(input) {
@@ -332,21 +332,28 @@
  		   
            <form  id="commonForm" name="commonForm"  method="post"  >
 			<input type="hidden" id="gubun1"   name="gubun1"   class="input-box" />
-			<input type="hidden" id="gubun2"   name="gubun2"   class="input-box" value='eduInfoOnline'/>
+			<input type="hidden" id="gubun2"   name="gubun2"   class="input-box" value='eduInfoNoOrgline'/>
 			<input type="hidden" id="gubun3"   name="gubun3"   class="input-box" />
 			<input type="hidden" id="edu_no"   name="edu_no"   class="input-box" value='${categoryVo.edu_no}'/>
-			<input type="hidden" id="edu_site" name="edu_site" class="input-box" value='on'/>
+			<input type="hidden" id="edu_site" name="edu_site" class="input-box" value='nooff'/>
+			<input type="hidden" id="site"     name="site"     class="input-box" value='off'/>
 			<input type="hidden" id="edu_notice" name="edu_notice" class="input-box" value='${categoryForm.edu_notice}'/>
 
 			<c:if test="${not empty categoryFormSubList }">
-          		<c:set var="addNum" value="" />
           		<input type="hidden" id="addNum"   name="addNum"   value='${fn:length(categoryFormSubList)}' />
           	</c:if>
           	<c:if test="${empty categoryFormSubList }">
           	 	<input type="hidden" id="addNum"   name="addNum"   value='1' />
           	</c:if>
 
-            <h1 class="h1-tit">온라인 교육 등록</h1>
+            <h1 class="h1-tit">오프라인 교육 등록</h1>
+           
+ 				<div class="tab-cont">
+                    <ul>
+                      <li><a href="<c:url value='/edu/eduInfoOfflineReg.do'/>">기관</a></li>
+                      <li class="on">기관 이외</li>
+                    </ul>
+                </div>
 
                 <div class="table-wrap">
                     <table class="detail-tb">
@@ -389,8 +396,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th colspan="2"><span class="red-txt">*</span>강사명</th>
-                                <td><input type="text"  id="inst_nm" name="inst_nm" class="input-box" value="${categoryForm.inst_nm}"/></td>
+                                <th colspan="2"><span class="red-txt">*</span>기관명</th>
+                                <td><input type="text"  id="coper_nm" name="coper_nm" class="input-box" value="${categoryForm.coper_nm}"/></td>
                             </tr>
                             <tr>
                                 <th colspan="2">교육기간</th>
@@ -409,6 +416,18 @@
                                             <input type="text" id="train_s_date"  name="train_s_date" readonly value="${categoryForm.train_s_date}" class="input-box"/>
                                             <span class="next-ico">-</span>
                                             <input type="text" id="train_e_date"  name="train_e_date" readonly value="${categoryForm.train_e_date}" class="input-box"/>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">신청기간</th>
+                                <td>
+                                    <div class="tb-cont">
+                                        <div class="picker-wrap">
+                                            <input type="text" id="app_s_date"  name="app_s_date" value="${categoryForm.app_s_date}" readonly class="input-box"/>
+                                            <span class="next-ico">-</span>
+                                            <input type="text" id="app_e_date"  name="app_e_date" value="${categoryForm.app_e_date}" readonly class="input-box"/>
                                         </div>
                                     </div>
                                 </td>
@@ -519,14 +538,14 @@
                                     <div class="grid-box">
                                         <input type="text" id="edu_curr1_arr"  name="edu_curr1_arr" class="input-box" value=""/>
                                         <input type="text" id="edu_curr2_arr"  name="edu_curr2_arr" class="input-box" value=""/>
-                                        <input type="text" id="edu_curr3_arr"  name="edu_curr3_arr" class="input-box" value=""/>
+                                        <input type="text" id="edu_curr3_arr"  name="edu_curr3_arr" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  class="input-box" value=""/>
                                     </div>
                                     </c:if>
                                      <c:forEach var="result" items="${categoryFormSubList}" varStatus="status">
                                      <div class="grid-box">
                                         <input type="text" id="edu_curr1_arr" placeholder="회차"   name="edu_curr1_arr" class="input-box" value="${result.edu_curr1}"/>
-                                        <input type="text" id="edu_curr2_arr" placeholder="단원명"  name="edu_curr2_arr" class="input-box" value="${result.edu_curr3}"/>
-                                        <input type="text" id="edu_curr3_arr" placeholder="강의시간" name="edu_curr3_arr"  onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  class="input-box" value="${result.edu_curr2}"/>
+                                        <input type="text" id="edu_curr2_arr" placeholder="단원명"  name="edu_curr2_arr" class="input-box" value="${result.edu_curr2}"/>
+                                        <input type="text" id="edu_curr3_arr" placeholder="강의시간" name="edu_curr3_arr"  onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  class="input-box" value="${result.edu_curr3}"/>
                                         <c:if test="${status.index !=0 }">
                                         	<button type='button' class='sm-btn black-btn'>삭제</button>
                                 		</c:if>

@@ -20,12 +20,16 @@ public class EgovoOLineEducationExcel extends AbstractExcelView
 
     response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(categoryVo.getExcelFileName(), "UTF-8").replaceAll("\\+", "\\ ") + ".xls\"");
 
-    String sheetName = "온라인교육";
+    String sheetName    = "온라인교육";
     String[] cellNameArr = { "No.", "분류1", "분류2", "분류3", "강사명", "교육기간", "학습시간", "교육대상", "신청인원", "교육상태", "노출여부" };
     if ("eduInfoOffline".equals(categoryVo.getGubun2())) {
       sheetName = "오프라인 교육(기관)";
       cellNameArr = new String[] { "No.", "기관명", "교육명", "교육대상", "교육시간", "교육신청 인원", "교육상태", "노출여부" };
     }
+    if ("eduInfoNoOrgline".equals(categoryVo.getGubun2())) {
+        sheetName = "오프라인 교육(기관이외)";
+        cellNameArr = new String[] { "No.", "기관명", "교육명", "교육내용", "교육방식", "교육기간/일시", "신청기간", "교육상태", "노출여부" };
+      }
 
     HSSFCell cell = null;
 
@@ -45,6 +49,7 @@ public class EgovoOLineEducationExcel extends AbstractExcelView
     {
       CategoryVo categVo = (CategoryVo)list.get(i);
 
+      //기관
       if ("eduInfoOnline".equals(categoryVo.getGubun2()))
       {
         cell = getCell(sheet, 3 + i, 0);
@@ -81,6 +86,7 @@ public class EgovoOLineEducationExcel extends AbstractExcelView
         setText(cell, categVo.getExp_use_yn());
       }
 
+      //기관
       if ("eduInfoOffline".equals(categoryVo.getGubun2()))
       {
         cell = getCell(sheet, 3 + i, 0);
@@ -107,6 +113,38 @@ public class EgovoOLineEducationExcel extends AbstractExcelView
         cell = getCell(sheet, 3 + i, 7);
         setText(cell, categVo.getExp_use_yn());
       }
+      
+      //기관이외
+      if ("eduInfoNoOrgline".equals(categoryVo.getGubun2()))
+      {
+        cell = getCell(sheet, 3 + i, 0);
+        setText(cell, Integer.toString(i + 1));
+
+        cell = getCell(sheet, 3 + i, 1);
+        setText(cell, categVo.getCoper_nm());
+
+        cell = getCell(sheet, 3 + i, 2);
+        setText(cell, categVo.getCategory3_name());
+
+        cell = getCell(sheet, 3 + i, 3);
+        setText(cell, categVo.getEdu_cont());
+
+        cell = getCell(sheet, 3 + i, 4);
+        setText(cell, categVo.getEdu_method());
+        
+        cell = getCell(sheet, 3 + i, 5);
+        setText(cell, categVo.getTrain_s_date() + "~" + categVo.getTrain_e_date());
+        
+        cell = getCell(sheet, 3 + i, 6);
+        setText(cell, categVo.getApp_s_date() + "~" + categVo.getApp_e_date());
+
+        cell = getCell(sheet, 3 + i, 7);
+        setText(cell, categVo.getEdu_status());
+
+        cell = getCell(sheet, 3 + i, 8);
+        setText(cell, categVo.getExp_use_yn());
+      }
+      
     }
   }
 }

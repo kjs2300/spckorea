@@ -186,248 +186,92 @@
 			<input type="hidden" id="gubun2"         name="gubun2"         class="input-box" value=''/>
 			<input type="hidden" id="site"           name="site"           class="input-box" value="${categoryVo.site}"  />
 			
-         	<h1 class="h1-tit">교육 신청 현황</h1>
+         	<h1 class="h1-tit">교육명 별 신청자</h1>
+            <div class="search-wrap">
 
+                 <div class="search-cont search-sub">
+                     <h3 class="h3-tit">교육명</h3>
 
-         <div class="search-wrap">
-             
-             <div class="search-cont">
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="" checked>
-                     <label for="">전체</label>
-                 </div>
-                 
-                 <div class="radio-cont mr10">
-                     <input type="radio" class="radio-box" id="" name="" value="">
-                     <label for="">신청완료</label>
+                     <div class="radio-cont">
+                         <input type="radio" class="radio-box" id="" name="" value="" checked>
+                         <label for="">전체</label>
+                     </div>
+                     <div class="radio-cont">
+                         <input type="radio" class="radio-box" id="" name="" value="">
+                         <input type="text" class="input-box" placeholder="직접입력"/>
+                     </div>
                  </div>
 
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="">
-                     <label for="">신청취소</label>
+                 <div class="search-cont">
+                     <div class="radio-cont">
+                         <input type="radio" class="radio-box" id="dateAll" name="radioGroupDate" value="" checked>
+                         <label for="dateAll">전체</label>
+                     </div>
+                       
+                     <div class="radio-cont">
+                         <input type="radio" class="radio-box" id="dateToday" name="radioGroupDate" value="">
+                         <label for="dateToday">오늘</label>
+                     </div>
+                     
+                     <div class="radio-cont mr10">
+                         <input type="radio" class="radio-box" id="dateTerm" name="radioGroupDate" value="">
+                         <label for="dateTerm">기간선택</label>
+                     </div>
+                     <div class="picker-wrap">
+                         <input type="text" id="datepickerFrom" class="input-box"/>
+                         <span class="next-ico">-</span>
+                         <input type="text" id="datepickerTo" class="input-box"/>
+                     </div>
+                     
+                     <button class="search-btn">검색</button>
+                     <button class="search-btn white-btn ml20">초기화</button>
                  </div>
-                 
-                 
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="">
-                     <label for="">교육완료/결과보고</label>
-                 </div>
-                 
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="">
-                     <label for="">보고완료</label>
-                 </div>
-             </div>
 
-             <div class="search-cont search-sub">
-                 <h3 class="h3-tit">기관명</h3>
-
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="" checked>
-                     <label for="">전체</label>
-                 </div>
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="">
-                     <input type="text" class="input-box" placeholder="직접입력"/>
-                 </div>
-             </div>
-
-             <div class="search-cont search-sub">
-                 <h3 class="h3-tit">강사명</h3>
-
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="" checked>
-                     <label for="">전체</label>
-                 </div>
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="">
-                     <input type="text" class="input-box" placeholder="직접입력"/>
-                 </div>
-             </div>
-
-             <div class="search-cont search-sub">
-                 <h3 class="h3-tit">교육명</h3>
-
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="" checked>
-                     <label for="">전체</label>
-                 </div>
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="">
-                     <input type="text" class="input-box" placeholder="직접입력"/>
-                 </div>
-             </div>
-
-             <div class="search-cont search-sub">
-                 <h3 class="h3-tit">지역</h3>
-
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="" checked>
-                     <label for="">전체</label>
-                 </div>
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="" name="" value="">
-                     <input type="text" class="input-box" placeholder="직접입력"/>
-                 </div>
-             </div>
-
-             <div class="search-cont">
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="dateAll" name="radioGroupDate" value="" checked>
-                     <label for="dateAll">전체</label>
-                 </div>
-                   
-                 <div class="radio-cont">
-                     <input type="radio" class="radio-box" id="dateToday" name="radioGroupDate" value="">
-                     <label for="dateToday">오늘</label>
-                 </div>
-                 
-                 <div class="radio-cont mr10">
-                     <input type="radio" class="radio-box" id="dateTerm" name="radioGroupDate" value="">
-                     <label for="dateTerm">기간선택</label>
-                 </div>
-                 <div class="picker-wrap">
-                     <input type="text" id="datepickerFrom" class="input-box"/>
-                     <span class="next-ico">-</span>
-                     <input type="text" id="datepickerTo" class="input-box"/>
-                 </div>
-                 
-                 <button class="search-btn">검색</button>
-                 <button class="search-btn white-btn ml20">초기화</button>
              </div>
              
-         </div>
-         
-         <div class="btn-cont mb20">
-             <dl class="count-txt">
-                 <dt>전체 <span>115</span></dt>
-                 <dt class="blue-txt">신청완료 <span>115</span></dt>
-                 <dt class="red-txt">신청취소 <span>115</span></dt>
-                 <dt class="green-txt">교육완료(결과보고) <span>115</span></dt>
-                 <dt class="gray-txt">보고완료 <span>115</span></dt>
-             </dl>
-
-             <button class="mid-btn black-btn">엑셀다운</button>
-             <button class="mid-btn white-btn">선택삭제</button>
-         </div>
-         
-         <div class="table-wrap scroll-wrap">
-             <table class="list-tb">
-                 <caption>선택, 교육명, 교육일, 교육시간, 지역, 기관명, 교육개설 신청자, 교육대상, 교육장소, 교육인원, 강사(ID), 강사섭외 유무, 진행현황, 취소사유, 수정 정보가 있는 테이블</caption>
-                 <colgroup>
-                     <col width="3%"/>
-                     <col width="4%"/>
-                     <col width="8%"/>
-                     <col width="6%"/>
-                     <col width="6%"/>
-                     <col width="6%"/>
-                     <col width="8%"/>
-                     <col width="6%"/>
-                     <col width="6%"/>
-                     <col width="6%"/>
-                     <col width="6%"/>
-                     <col width="*"/>
-                     <col width="6%"/>
-                     <col width="6%"/>
-                     <col width="6%"/>
-                     <col width="6%"/>
-                 </colgroup>
-                 <thead>
-                     <tr>
-                         <th><input type="checkbox" class="check-box"/></th>
-                         <th>No.</th>
-                         <th>교육명</th>
-                         <th>교육일</th>
-                         <th>교육시간(분)</th>
-                         <th>지역</th>
-                         <th>기관명</th>
-                         <th>교육개설<br/>신청자</th>
-                         <th>교육대상</th>
-                         <th>교육장소</th>
-                         <th>교육인원</th>
-                         <th>강사(ID)</th>
-                         <th>강사 섭외<br/>유무</th>
-                         <th>진행현황</th>
-                         <th>취소사유</th>
-                         <th>수정</th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                     <tr>
-                         <td><input type="checkbox" class="check-box"/></td>
-                         <td>1</td>
-                         <td class="tl">교육명</td>
-                         <td>2021.10.05</td>
-                         <td>120</td>
-                         <td>서울</td>
-                         <td></td>
-                         <td>이진운</td>
-                         <td>교사</td>
-                         <td>회의실</td>
-                         <td><span>89</span>/<span>100</span></td>
-                         <td><span class="block">이보람</span><span  class="block">fgfdfdgfdgg</span></td>
-                         <td><span>완료</span></td>
-                         <td><span class="blue-txt">신청완료</span></td>
-                         <td></td>
-                         <td><button class="sm-btn blue-btn">수정</button></tr>td>
-                     </tr>
-                     <tr>
-                         <td><input type="checkbox" class="check-box"/></td>
-                         <td>2</td>
-                         <td class="tl">교육명</td>
-                         <td>2021.10.05</td>
-                         <td>120</td>
-                         <td>서울</td>
-                         <td></td>
-                         <td>이진운</td>
-                         <td>교사</td>
-                         <td>회의실</td>
-                         <td><span>89</span>/<span>100</span></td>
-                         <td><span class="block">이보람</span><span  class="block">fgfdfdgfdgg</span></td>
-                         <td><span>완료</span></td>
-                         <td><span class="red-txt">신청취소</span></td>
-                         <td><button class="sm-btn white-btn">보기</td>
-                         <td><button class="sm-btn blue-btn">수정</button></td>
-                     </tr>
-                     <tr>
-                         <td><input type="checkbox" class="check-box"/></td>
-                         <td>3</td>
-                         <td class="tl">교육명</td>
-                         <td>2021.10.05</td>
-                         <td>120</td>
-                         <td>서울</td>
-                         <td></td>
-                         <td>이진운</td>
-                         <td>교사</td>
-                         <td>회의실</td>
-                         <td><span>89</span>/<span>100</span></td>
-                         <td><span class="block">이보람</span><span  class="block">fgfdfdgfdgg</span></td>
-                         <td><span>완료</span></td>
-                         <td><span class="green-txt">교육완료(결과보고)</span></td>
-                         <td></td>
-                         <td><button class="sm-btn blue-btn">수정</button></td>
-                     </tr>
-                     <tr>
-                         <td><input type="checkbox" class="check-box"/></td>
-                         <td>4</td>
-                         <td class="tl">교육명</td>
-                         <td>2021.10.05</td>
-                         <td>120</td>
-                         <td>서울</td>
-                         <td></td>
-                         <td>이진운</td>
-                         <td>교사</td>
-                         <td>회의실</td>
-                         <td><span>89</span>/<span>100</span></td>
-                         <td><span class="block">이보람</span><span  class="block">fgfdfdgfdgg</span></td>
-                         <td><span class="link">섭외중</span></td>
-                         <td><span class="gray-txt">보고완료</span></td>
-                         <td></td>
-                         <td><button class="sm-btn blue-btn">수정</button></td>
-                     </tr>
-                 </tbody>
-             </table>
-         </div>
+             <div class="btn-cont mb20">
+                 <button class="mid-btn white-btn">선택삭제</button>
+             </div>
+             
+             <div class="table-wrap">
+                 <table class="list-tb">
+                     <caption>선택, 교육명, 교육대상, 교육일시, 교육장소, 교육시간(분), 신청자 정보가 있는 테이블</caption>
+                     <colgroup>
+                         <col width="7%"/>
+                         <col width="9%"/>
+                         <col width="*"/>
+                         <col width="10%"/>
+                         <col width="10%"/>
+                         <col width="12%"/>
+                         <col width="10%"/>
+                         <col width="10%"/>
+                     </colgroup>
+                     <thead>
+                         <tr>
+                             <th><input type="checkbox" class="check-box"/></th>
+                             <th>No.</th>
+                             <th>교육명</th>
+                             <th>교육대상</th>
+                             <th>교육일시</th>
+                             <th>교육장소</th>
+                             <th>교육시간(분)</th>
+                             <th>신청자</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         <tr>
+                             <td><input type="checkbox" class="check-box"/></td>
+                             <td>1</td>
+                             <td class="tl">보고듣고말하기2.0 기본형(120분)</td>
+                             <td>교사</td>
+                             <td>2021.10.05</td>
+                             <td>회의실</td>
+                             <td>120</td>
+                             <td><a class="link">109</a></td>
+                         </tr>
+                     </tbody>
+                 </table>
+             </div>
 
           <div class="page-wrap">
               <ul class="paging">
