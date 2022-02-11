@@ -12,6 +12,7 @@
 	 		WHEN 03 THEN 'FAQ'
 	 		WHEN 04 THEN '참여마당'
 	 		WHEN 05 THEN '강사공지'
+	 		WHEN 06 THEN '강사자료실'
 		 END AS BOARD_TYPE,
 	    TITLE, LINK_URL, FILE_ID, VIEW_CNT, CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS REG_DT, REG_ID
 	    <if test="board_type !=null and board_type == '02'">
@@ -37,7 +38,7 @@
 		<if test="board_type !=null and board_type == '02'">
 	      	, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME, NOTICE_YN
 	     </if>
-	     <if test="board_type !=null and board_type == '04'">
+	     <if test="board_type !=null and (board_type == '04' or board_type == '06')">
 		    , NOTICE_YN
         </if>
 	      FROM edu_board
@@ -68,7 +69,7 @@
 	      	, CATEGORY3_NAME
 	      	, NOTICE_YN
 	      </if>
-	      <if test="board_type !=null and board_type == '04'">
+	      <if test="board_type !=null and (board_type == '04' or board_type == '06')">
 	      , NOTICE_YN
 	      </if>
 		) 
@@ -87,7 +88,7 @@
 			, #{category3_name}
 			, #{notice_yn}
 			</if>
-			<if test="board_type !=null and board_type == '04'">
+			<if test="board_type !=null and (board_type == '04' or board_type == '06')">
 		    , #{notice_yn}
 	        </if>
 		)	
@@ -111,7 +112,7 @@
 		      	, CATEGORY3_NAME = #{category3_name}
 		      	, NOTICE_YN = #{notice_yn}
 		     </if>
-		     <if test="board_type !=null and board_type == '04'">
+		     <if test="board_type !=null and (board_type == '04' or board_type == '06')">
 		     	, NOTICE_YN = #{notice_yn}
 		     </if>
  		 WHERE BOARD_IDX = #{board_idx}
@@ -470,21 +471,21 @@
 	<sql id="search">
 	<where>
       		USE_YN = 'Y'
-	      <if test="searchCondition !=null and searchCondition = 'ALL'">
+	      <if test="searchCondition !=null and searchCondition == 'ALL'">
 	      	AND (TITLE LIKE CONCAT('%', #{searchKeyword}, '%') OR REG_ID LIKE CONCAT('%', #{searchKeyword}, '%') OR CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%'))
 	      </if>
-	      <if test="searchCondition !=null and searchCondition = 'TITLE'">
+	      <if test="searchCondition !=null and searchCondition == 'TITLE'">
 	      	AND TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
 	      </if>
-	      <if test="searchCondition !=null and searchCondition = 'REG_NM'">
+	      <if test="searchCondition !=null and searchCondition == 'REG_NM'">
 	      	AND REG_ID LIKE CONCAT('%', #{searchKeyword}, '%')
 	      </if>
-	      <if test="searchCondition !=null and searchCondition = 'CONTENTS'">
+	      <if test="searchCondition !=null and searchCondition == 'CONTENTS'">
 	      	AND CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%')
 	      </if>
 	      <if test="searchDate !=null and searchDate != 'ALL'">
 	      	<![CDATA[
-		       AND  REG_DT >= #{board_start_date} AND REG_DT <= #{board_end_date} 
+		       AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) >= #{board_start_date} AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) <= #{board_end_date} 
 	        ]]>
 	      </if>
 	      <if test="board_type !=null and board_type != ''">

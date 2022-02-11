@@ -62,8 +62,8 @@
                   <td><input type="checkbox" class="check-box" id="notice_yn" name="notice_yn" value="Y" <c:if test="${detailData.notice_yn == 'Y' }">checked </c:if>/></td>
                   <th>작성자</th>
                   <td><input type="text" class="input-box" id="reg_id" name="reg_id" value="${detailData.reg_id}"/></td>
-                  <th>패스워드</th>
-                  <td><input type="text" class="input-box" value=""/></td>
+                 <!--  <th>패스워드</th>
+                  <td><input type="text" class="input-box" value=""/></td> -->
               </tr>
               <tr>
                   <th>내용</th>
