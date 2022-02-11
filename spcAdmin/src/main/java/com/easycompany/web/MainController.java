@@ -57,6 +57,7 @@ public class MainController
     mainVo.setReg_id(loginvo.getId());
     model.addAttribute("mainVo", mainVo);
     model.addAttribute("mainForm", mainForm);
+    model.addAttribute("path", request.getServletPath());
 
     return "logoList";
   }
@@ -111,6 +112,7 @@ public class MainController
       }
 
       mainVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
+      
     }
     catch (Exception e)
     {
@@ -171,6 +173,7 @@ public class MainController
 
     mainVo.setReg_id(loginvo.getId());
     model.addAttribute("mainVo", mainVo);
+    model.addAttribute("path", request.getServletPath());
 
     return "imgList";
   }
@@ -194,6 +197,7 @@ public class MainController
     mainVo.setReg_id(loginvo.getId());
     model.addAttribute("mainVo", mainVo);
     model.addAttribute("mainForm", mainForm);
+    model.addAttribute("path", request.getServletPath());
 
     return "imgReg";
   }
@@ -310,6 +314,7 @@ public class MainController
 
     mainVo.setReg_id(loginvo.getId());
     model.addAttribute("mainVo", mainVo);
+    model.addAttribute("path", request.getServletPath());
 
     return "bannerList";
   }
@@ -333,6 +338,7 @@ public class MainController
     mainVo.setReg_id(loginvo.getId());
     model.addAttribute("mainVo", mainVo);
     model.addAttribute("mainForm", mainForm);
+    model.addAttribute("path", request.getServletPath());
 
     return "bannerReg";
   }
@@ -448,6 +454,7 @@ public class MainController
 
     mainVo.setReg_id(loginvo.getId());
     model.addAttribute("mainVo", mainVo);
+    model.addAttribute("path", request.getServletPath());
 
     return "popupList";
   }
@@ -471,6 +478,7 @@ public class MainController
     mainVo.setReg_id(loginvo.getId());
     model.addAttribute("mainVo", mainVo);
     model.addAttribute("mainForm", mainForm);
+    model.addAttribute("path", request.getServletPath());
 
     return "popupReg";
   }

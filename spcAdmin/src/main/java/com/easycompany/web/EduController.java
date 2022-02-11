@@ -46,7 +46,7 @@ public class EduController
   private String webPath;
 
   @RequestMapping({"/eduInfoRegList.do"})
-  public String getEduInfoRegList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+  public String getEduInfoRegList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model,HttpServletRequest request)
     throws Exception
   {
     categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
@@ -74,12 +74,13 @@ public class EduController
     int totCnt = this.eduService.getCategoryCount(categoryVo);
     paginationInfo.setTotalRecordCount(totCnt);
     model.addAttribute("paginationInfo", paginationInfo);
+    model.addAttribute("path", request.getServletPath());
 
     return "eduInfoRegList";
   }
 
   @RequestMapping({"/eduInfoRegCate.do"})
-  public String getEduInfoRegCate(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+  public String getEduInfoRegCate(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model,HttpServletRequest request)
     throws Exception
   {
     if (StringUtil.isEmpty(categoryVo.getGubun1())) {
@@ -108,6 +109,7 @@ public class EduController
     paginationInfo.setTotalRecordCount(totCnt);
     model.addAttribute("paginationInfo", paginationInfo);
     model.addAttribute("categoryVo", categoryVo);
+    model.addAttribute("path", request.getServletPath());
 
     return "eduInfoRegCate";
   }
@@ -155,7 +157,7 @@ public class EduController
   }
 
   @RequestMapping({"/eduInfoRegCate3.do"})
-  public String getEduInfoRegCate3(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+  public String getEduInfoRegCate3(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
     throws Exception
   {
     if (StringUtil.isEmpty(categoryVo.getGubun1())) {
@@ -170,6 +172,7 @@ public class EduController
 
     model.addAttribute("categoryVo", categoryVo);
     model.addAttribute("categoryForm", categoryForm);
+    model.addAttribute("path", request.getServletPath());
 
     return "eduInfoRegCate3";
   }
@@ -251,12 +254,13 @@ public class EduController
     int totCnt = this.eduService.getCategoryCount(categoryVo);
     paginationInfo.setTotalRecordCount(totCnt);
     model.addAttribute("paginationInfo", paginationInfo);
+    model.addAttribute("path", request.getServletPath());
 
     return "eduInfoScheduleList";
   }
 
   @RequestMapping({"/eduInfoScheduleCate.do"})
-  public String eduInfoScheduleCate(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+  public String eduInfoScheduleCate(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
     throws Exception
   {
     if (StringUtil.isEmpty(categoryVo.getGubun1())) {
@@ -276,6 +280,7 @@ public class EduController
     model.addAttribute("categoryVo", categoryVo);
     model.addAttribute("category1list", category1list);
     model.addAttribute("categoryForm", categoryForm);
+    model.addAttribute("path", request.getServletPath());
 
     return "eduInfoScheduleCate";
   }
@@ -383,7 +388,7 @@ public class EduController
   }
 
   @RequestMapping({"/eduInfoClassList.do"})
-  public String eduInfoClassList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+  public String eduInfoClassList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
     throws Exception
   {
 	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
@@ -416,12 +421,13 @@ public class EduController
 	    paginationInfo.setTotalRecordCount(totCnt);
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduInfoClassList";
   }
 
   @RequestMapping({"/eduInfoClassCate.do"})
-  public String eduInfoClassCate(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model) throws Exception
+  public String eduInfoClassCate(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request) throws Exception
   {
 	    if (StringUtil.isEmpty(categoryVo.getGubun1())) {
 	      categoryVo.setGubun1("R");
@@ -453,6 +459,7 @@ public class EduController
 	    paginationInfo.setTotalRecordCount(totCnt);
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduInfoClassCate";
   }
@@ -522,7 +529,7 @@ public class EduController
    * 온라인 교육 List
    */
   @RequestMapping({"/eduInfoOnlineList.do"})
-  public String eduInfoOnlineList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+  public String eduInfoOnlineList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
     throws Exception
   {
 	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
@@ -565,6 +572,7 @@ public class EduController
 	    paginationInfo.setTotalRecordCount(totCnt);
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduInfoOnlineList";
   }
@@ -573,7 +581,7 @@ public class EduController
    * 온라인 교육 등록/수정
    */
   @RequestMapping({"/eduInfoOnlineReg.do"})
-  public String eduInfoOnlineReg(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model) throws Exception
+  public String eduInfoOnlineReg(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request) throws Exception
   {
 	    if (StringUtil.isEmpty(categoryVo.getGubun1())) {
 	      categoryVo.setGubun1("R");
@@ -604,6 +612,7 @@ public class EduController
 	    model.addAttribute("categoryFormSubList", categoryFormSubList);
 	
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduInfoOnlineReg";
   }
@@ -727,7 +736,7 @@ public class EduController
   }
 
   @RequestMapping({"/eduInfoOfflineList.do"})
-  public String eduInfoOfflineList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+  public String eduInfoOfflineList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
     throws Exception
   {
 	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
@@ -766,12 +775,13 @@ public class EduController
 	    paginationInfo.setTotalRecordCount(totCnt);
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduInfoOfflineList";
   }
 
   @RequestMapping({"/eduInfoOfflineReg.do"})
-  public String eduInfoOfflineReg(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model) throws Exception
+  public String eduInfoOfflineReg(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request) throws Exception
   {
 	    if (StringUtil.isEmpty(categoryVo.getGubun1())) {
 	      categoryVo.setGubun1("R");
@@ -802,6 +812,7 @@ public class EduController
 	    model.addAttribute("categoryFormSubList", categoryFormSubList);
 	
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduInfoOfflineReg";
   }
@@ -870,7 +881,7 @@ public class EduController
    * 오프라인 교육[기관외] List
    */
   @RequestMapping({"/eduInfoNoOrglineList.do"})
-  public String eduInfoNoOrglineList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+  public String eduInfoNoOrglineList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
     throws Exception
   {
 	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
@@ -913,6 +924,7 @@ public class EduController
 	    paginationInfo.setTotalRecordCount(totCnt);
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduInfoNoOrglineList";
   }
@@ -921,7 +933,7 @@ public class EduController
    * 오프라인 교육[기관외] 등록/수정
    */
   @RequestMapping({"/eduInfoNoOrglineReg.do"})
-  public String eduInfoNoOrglineeReg(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model) throws Exception
+  public String eduInfoNoOrglineeReg(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request) throws Exception
   {
 	    if (StringUtil.isEmpty(categoryVo.getGubun1())) {
 	      categoryVo.setGubun1("R");
@@ -952,6 +964,7 @@ public class EduController
 	    model.addAttribute("categoryFormSubList", categoryFormSubList);
 	
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduInfoNoOrglineReg";
   }
@@ -1124,7 +1137,7 @@ public class EduController
   * 온라인 교육 관리 List
   */
  @RequestMapping({"/eduInfoOnlineMangList.do"})
- public String eduInfoOnlineMangList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+ public String eduInfoOnlineMangList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
    throws Exception
  {
 	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
@@ -1167,6 +1180,7 @@ public class EduController
 	    paginationInfo.setTotalRecordCount(totCnt);
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduInfoOnlineMangList";
  }
@@ -1175,7 +1189,7 @@ public class EduController
    * 오프라인 교육 관리 List
    */
   @RequestMapping({"/eduInfoNoOrglineMangList.do"})
-  public String eduInfoNoOrglineMangList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+  public String eduInfoNoOrglineMangList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
     throws Exception
   {
 	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
@@ -1218,6 +1232,7 @@ public class EduController
 	    paginationInfo.setTotalRecordCount(totCnt);
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduInfoNoOrglineMangList";
   }
@@ -1226,7 +1241,7 @@ public class EduController
    * 기관(결과보고) > 교육신청현황  List
    */
   @RequestMapping({"/eduStatustList.do"})
-  public String eduStatustList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+  public String eduStatustList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
     throws Exception
   {
 	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
@@ -1269,6 +1284,7 @@ public class EduController
 	    paginationInfo.setTotalRecordCount(totCnt);
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduStatustList";
   }
@@ -1277,7 +1293,7 @@ public class EduController
    * 기관(결과보고) > 교육명 별 신청자  List
    */
   @RequestMapping({"/eduTitleList.do"})
-  public String eduTitleList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)
+  public String eduTitleList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
     throws Exception
   {
 	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
@@ -1320,6 +1336,7 @@ public class EduController
 	    paginationInfo.setTotalRecordCount(totCnt);
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduTitleList";
   }
@@ -1328,7 +1345,7 @@ public class EduController
    * 기관(결과보고) > 교육 결과 보고  List
    */
   @RequestMapping({"/eduReportList.do"})
-  public String eduReportList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model)  throws Exception
+  public String eduReportList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)  throws Exception
   {
 	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
 	    categoryVo.setPageSize(this.propertiesService.getInt("pageSize"));
@@ -1370,6 +1387,7 @@ public class EduController
 	    paginationInfo.setTotalRecordCount(totCnt);
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduReportList";
   }
