@@ -19,19 +19,19 @@
      <input type="hidden" id="gubun1"      name="gubun1"     value='I'   />
 	     <div class="search-cont">
 	         <div class="radio-cont">
-	             <input type="radio" class="radio-box" id="radio" name="radio" value="ALL" <c:if test="${adBoardVo.searchCondition =='ALL'  || (empty adBoardVo.searchCondition) }">checked </c:if>>
+	             <input type="radio" class="radio-box" id="searchCondition" name="searchCondition" value="ALL" <c:if test="${adBoardVo.searchCondition =='ALL'  || (empty adBoardVo.searchCondition) }">checked </c:if>>
 	             <label for="">전체</label>
 	         </div>
 	         <div class="radio-cont">
-	             <input type="radio" class="radio-box" id="radio" name="radio" value="TITLE" <c:if test="${adBoardVo.searchCondition =='TITLE'}">checked </c:if>>
+	             <input type="radio" class="radio-box" id="searchCondition" name="searchCondition" value="TITLE" <c:if test="${adBoardVo.searchCondition =='TITLE'}">checked </c:if>>
 	             <label for="">제목</label>
 	         </div>
 	         <div class="radio-cont">
-	             <input type="radio" class="radio-box" id="radio" name="radio" value="REG_NM" <c:if test="${adBoardVo.searchCondition =='REG_NM'}">checked </c:if>>
+	             <input type="radio" class="radio-box" id="searchCondition" name="searchCondition" value="REG_NM" <c:if test="${adBoardVo.searchCondition =='REG_NM'}">checked </c:if>>
 	             <label for="">작성자명</label>
 	         </div>
 	         <div class="radio-cont">
-	             <input type="radio" class="radio-box" id="radio" name="radio" value="CONTENTS" <c:if test="${adBoardVo.searchCondition =='CONTENTS'}">checked </c:if>>
+	             <input type="radio" class="radio-box" id="searchCondition" name="searchCondition" value="CONTENTS" <c:if test="${adBoardVo.searchCondition =='CONTENTS'}">checked </c:if>>
 	             <label for="">내용</label>
 	         </div>
 	         <input type="text" id='searchKeyword' name='searchKeyword' value="${adBoardVo.searchKeyword}" class="input-box" placeholder="직접입력"/>
@@ -40,12 +40,12 @@
 	     <div class="search-cont">
 	
 	         <div class="radio-cont">
-	             <input type="radio" class="radio-box" id="dateAll" name="radioGroupDate" value="ALL" <c:if test="${adBoardVo.searchDate == 'ALL' || (empty adBoardVo.searchCondition)}">checked </c:if>>
+	             <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="ALL" <c:if test="${adBoardVo.searchDate == 'ALL' || (empty adBoardVo.searchDate)}">checked </c:if>>
 	             <label for="dateAll">전체</label>
 	         </div>
 	           
 	         <div class="radio-cont mr10">
-	             <input type="radio" class="radio-box" id="dateTerm" name="radioGroupDate" value="CHECK" <c:if test="${adBoardVo.searchDate == 'CHECK'}">checked </c:if>>
+	             <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="CHECK" <c:if test="${adBoardVo.searchDate == 'CHECK'}">checked </c:if>>
 	             <label for="dateTerm">기간선택</label>
 	         </div>
 	         <div class="picker-wrap">

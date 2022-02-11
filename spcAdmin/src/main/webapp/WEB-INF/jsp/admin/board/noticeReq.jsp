@@ -35,8 +35,8 @@
             <tr>
                 <th>작성자</th>
                 <td><input type="text" class="input-box" id="reg_id" name="reg_id" value="${detailData.reg_id}"/></td>
-                <th>패스워드</th>
-                <td><input type="text" class="input-box" value=""/></td>
+                <!-- <th>패스워드</th>
+                <td><input type="text" class="input-box" value=""/></td> -->
             </tr>
             <tr>
                 <th>내용</th>
