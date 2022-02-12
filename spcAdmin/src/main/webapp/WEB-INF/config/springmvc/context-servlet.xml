@@ -33,7 +33,7 @@
 	<!-- 홈페이지 -->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/web/**"/>
+            <mvc:mapping path="/user/**"/>
             <bean class="com.easycompany.cmm.interceptor.WebAuthenticInterceptor" />
         </mvc:interceptor>
    </mvc:interceptors>

@@ -1,4 +1,4 @@
-package com.easycompany.web;
+package com.easycompany.web.admin;
 
 import java.io.File;
 import java.util.HashMap;

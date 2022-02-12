@@ -1,4 +1,4 @@
-package com.easycompany.web;
+package com.easycompany.web.admin;
 
 import com.easycompany.cmm.util.FileUtil;
 import com.easycompany.cmm.util.StringUtil;

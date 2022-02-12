@@ -4,8 +4,7 @@
 <tiles-definitions>  
   
    <!-- admin base-definition -->
-   <definition name="base-definition"
-       template="/WEB-INF/jsp/tiles/layouts/defaultLayout.jsp">  
+   <definition name="base-definition"       template="/WEB-INF/jsp/tiles/layouts/defaultLayout.jsp">  
        <put-attribute name="title" value="" />  
        <put-attribute name="header" value="/WEB-INF/jsp/tiles/template/defaultHeader.jsp" />  
        <put-attribute name="menu" value="/WEB-INF/jsp/tiles/template/defaultMenu.jsp" />  
@@ -13,24 +12,34 @@
        <put-attribute name="footer" value="/WEB-INF/jsp/tiles/template/defaultFooter.jsp" />  
    </definition>  
   
+   <!-- web  main-definition -->
+   <!-- web definition -->
+   <definition name="commonmain-definition"      template="/WEB-INF/jsp/tiles/layouts/webMainLLayout.jsp">  
+       <put-attribute name="title"  value="" />  
+       <put-attribute name="header"     value="/WEB-INF/jsp/tiles/template/webDefaultHeader.jsp" />   
+       <put-attribute name="headermenu" value="/WEB-INF/jsp/tiles/template/webDefaultHeaderMenu.jsp" />   
+       <put-attribute name="menu"   value="" />  
+       <put-attribute name="body"   value="" />  
+       <put-attribute name="footer" value="/WEB-INF/jsp/tiles/template/webDefaultFooter.jsp" />  
+   </definition>   
    
-    <!-- web  base-definition -->
-   <definition name="web-definition"
-       template="/WEB-INF/jsp/tiles/layouts/webDefaultLayout.jsp">  
-       <put-attribute name="title" value="" />  
-       <put-attribute name="header" value="/WEB-INF/jsp/tiles/template/webDefaultHeader.jsp" />  
-       <put-attribute name="menu" value="/WEB-INF/jsp/tiles/template/webDefaultMenu.jsp" />  
-       <put-attribute name="body" value="" />  
+   <!-- web definition -->
+   <definition name="common-definition"      template="/WEB-INF/jsp/tiles/layouts/webDefaultLayout.jsp">  
+       <put-attribute name="title"  value="" />  
+       <put-attribute name="header" value="/WEB-INF/jsp/tiles/template/webDefaultHeader.jsp" />   
+        <put-attribute name="headermenu" value="/WEB-INF/jsp/tiles/template/webDefaultHeaderMenu.jsp" />
+       <put-attribute name="menu"   value="/WEB-INF/jsp/tiles/template/webDefaultMenu.jsp" />  
+       <put-attribute name="body"   value="" />  
        <put-attribute name="footer" value="/WEB-INF/jsp/tiles/template/webDefaultFooter.jsp" />  
    </definition>  
    
-   <!-- base-definition -->
+   <!-- noHeader-definition -->
    <definition name="noHeader-definition"      template="/WEB-INF/jsp/tiles/layouts/defaultLayout.jsp">  
        <put-attribute name="title" value="" />  
        <put-attribute name="header" value="" />  
        <put-attribute name="menu" value="" />  
        <put-attribute name="body" value="" />  
-       <put-attribute name="footer" value="/WEB-INF/jsp/tiles/template/defaultFooter.jsp" />  
+       <put-attribute name="footer" value="" />  
    </definition>  
    
    <!-- Home Page -->

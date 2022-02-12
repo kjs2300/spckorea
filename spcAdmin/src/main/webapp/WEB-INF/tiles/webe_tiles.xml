@@ -2,18 +2,19 @@
 <!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
  
 <tiles-definitions>  
-  
-   <!-- List Page -->
-   <definition name="fareList" extends="base-definition">  
-       <put-attribute name="title" value="Fare List" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/fare/fareList.jsp" />  
-   </definition>     
    
-   <!-- vendorEdit Page -->
-   <definition name="fareEdit" extends="base-definition">  
-       <put-attribute name="title" value="Fare  정보" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/fare/fareEdit.jsp" />  
-   </definition>     
+   <!-- 사용자 페이지 -->
+   <!-- web main Page -->
+   <definition name="webMain" extends="commonmain-definition">  
+       <put-attribute name="title" value="생명존중희망재단 " /> 
+       <put-attribute name="body" value="/WEB-INF/jsp/web/main/webMain.jsp" /> 
+   </definition> 
+   
+   <!--개요 > 생명지킴이 -->
+   <definition name="summaryList" extends="common-definition">  
+       <put-attribute name="title" value="생명존중희망재단" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/summary/summaryList.jsp" />  
+   </definition> 
    
    
    
