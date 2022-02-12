@@ -18,17 +18,26 @@
 	</context:component-scan>
 	
 	<mvc:annotation-driven/>
-
+       
+    <!-- 관리자 -->
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<mvc:exclude-mapping path="/login/**" />
-						
+			<mvc:mapping path="/edu/*" />
+			<mvc:mapping path="/main/*" />
+			<mvc:mapping path="/adBoard/*" />
+			<mvc:exclude-mapping path="/login/**" />						
 			<bean class="com.easycompany.cmm.interceptor.AuthenticInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
-
 	
+	<!-- 홈페이지 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/web/**"/>
+            <bean class="com.easycompany.cmm.interceptor.WebAuthenticInterceptor" />
+        </mvc:interceptor>
+   </mvc:interceptors>
+    
 
 	
 
@@ -69,6 +78,8 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 		 	  
+	
+
 	<!-- TilesViewResolver 빈 등록 -->
 	<beans:bean id="tilesViewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
         <beans:property name="order" value="1"/>

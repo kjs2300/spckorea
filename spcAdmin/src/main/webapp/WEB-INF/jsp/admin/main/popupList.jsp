@@ -161,7 +161,7 @@
 		    
           </form>
           		   
-		   <h1 class="h1-tit">팝업 관리  </h1>
+		   <h1 class="h1-tit">팝업창 관리  </h1>
 		   <div class="btn-cont mb20">
                 <button type="button" class="mid-btn black-btn" onClick="javascript:fn_load();">등록</button>
                 <button type="button" class="mid-btn white-btn btnOneApr">선택삭제</button>
