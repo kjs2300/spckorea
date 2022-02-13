@@ -28,9 +28,12 @@
 	   var popup_hg     = $("#popup_hg").val();
 	   var otpt_xaxs_lc = $("#otpt_xaxs_lc").val();
 	   var otpt_yaxs_lc = $("#otpt_yaxs_lc").val();
-	   var popup_cn     = $("#popup_cn").val();
 	   var popup_no     = $("#popup_no").val();
 	   var gubun2       = $("#gubun2").val();
+	   
+	   oEditors.getById["popup_cn"].exec("UPDATE_CONTENTS_FIELD", []);
+	   var popup_cn = document.getElementById("popup_cn").value;;
+	   $("#popup_cn").val(popup_cn);
 	   
 	   $("#gubun1").val(gubun1);
 	     
@@ -234,3 +237,39 @@
 		        </c:if>
 	             <button type="button" onClick="javascript:history.back();" class="mid-btn black-btn">목록</button>
             </div>
+<script type="text/javascript">
+
+var oEditors = [];
+
+var sLang = "ko_KR"; // 언어 (ko_KR/ en_US/ ja_JP/ zh_CN/ zh_TW), default = ko_KR
+
+// 추가 글꼴 목록
+//var aAdditionalFontSet = [["MS UI Gothic", "MS UI Gothic"], ["Comic Sans MS", "Comic Sans MS"],["TEST","TEST"]];
+
+nhn.husky.EZCreator.createInIFrame({
+	oAppRef : oEditors,
+	elPlaceHolder : "popup_cn",
+	sSkinURI : "${pageContext.request.contextPath}/js/SE2/SmartEditor2Skin.html",
+	htParams : {
+		bUseToolbar : true, // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+		bUseVerticalResizer : false, // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+		bUseModeChanger : true, // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+		//bSkipXssFilter : true,		// client-side xss filter 무시 여부 (true:사용하지 않음 / 그외:사용)
+		//aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
+		fOnBeforeUnload : function() {
+			//alert("완료!");
+		},
+		I18N_LOCALE : sLang
+	}, //boolean
+	fOnAppLoad : function() {
+		//예제 코드
+		//oEditors.getById["ir1"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
+		$('iframe').popup_cn().find('.se2_multy').show();
+		$('iframe').popup_cn().find('.se2_multy').on("click", function(event) {
+			editImgUpLoad();
+		});
+	},
+	fCreator : "createSEditor2"
+});
+
+</script>

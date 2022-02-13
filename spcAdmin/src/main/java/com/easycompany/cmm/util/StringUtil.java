@@ -1,11 +1,17 @@
 package com.easycompany.cmm.util;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+
+import org.springframework.beans.factory.annotation.Value;
 
 
 public class StringUtil {
@@ -1131,5 +1137,14 @@ public class StringUtil {
 			return true;
 		}
 		return false;
+	}
+	
+	public static String getSaveFilePath(HttpServletRequest request, String fileUpload, String gubun)
+	{
+		String returnVal = ""; 
+		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
+		returnVal = contextRoot + File.separator +  fileUpload + File.separator + gubun;
+	      
+		return returnVal;
 	}
 }

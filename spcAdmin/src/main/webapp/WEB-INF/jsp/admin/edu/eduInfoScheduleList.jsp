@@ -218,11 +218,11 @@
 
         <h1 class="h1-tit">교육일정</h1>
 		<form  id="commonForm" name="commonForm"  method="post"  action="">
-			<input type="hidden" id="gubun1"         name="gubun1"         value='I'               class="input-box" />
-		    <input type="hidden" id="gubun2"         name="gubun2"         value='eduInfoSchedule' class="input-box" />	
-		    <input type="hidden" id="excelFileName"  name="excelFileName"  value=''                class="input-box" />
-		    <input type="hidden" id="edu_key"        name="edu_key"        value='0'               class="input-box" />		
-		    <input type="hidden" id="checkdstr"      name="checkdstr"      value=''                class="input-box" />	
+			<input type="hidden" id="gubun1"         name="gubun1"         value='I'                   class="input-box" />
+		    <input type="hidden" id="gubun2"         name="gubun2"         value='eduInfoScheduleList' class="input-box" />	
+		    <input type="hidden" id="excelFileName"  name="excelFileName"  value=''                    class="input-box" />
+		    <input type="hidden" id="edu_key"        name="edu_key"        value='0'                   class="input-box" />		
+		    <input type="hidden" id="checkdstr"      name="checkdstr"      value=''                    class="input-box" />	
 		    <input type="hidden" id="pageIndex"      name="pageIndex"      class="input-box" value=1 />	
 		  
            <div class="search-wrap">

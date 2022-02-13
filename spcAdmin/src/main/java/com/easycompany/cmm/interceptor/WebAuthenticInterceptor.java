@@ -23,7 +23,7 @@ public class WebAuthenticInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {		
 		
-		System.out.println("");
+		System.out.println("System User Info");
 		/*
 		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
 		if(loginvo!=null){

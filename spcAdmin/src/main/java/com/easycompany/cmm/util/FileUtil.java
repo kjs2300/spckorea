@@ -6,24 +6,30 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.easycompany.service.vo.BoardVo;
+import com.easycompany.service.vo.CategoryVo;
 
 
 public class FileUtil {
 
 
- public static BoardVo uploadFile (HttpServletRequest request,String filePath) {
+	public static BoardVo uploadFile (HttpServletRequest request,String filePath) {
 	 
 	 BoardVo boardVo = new BoardVo();
 	 
@@ -81,7 +87,7 @@ public class FileUtil {
 			e.printStackTrace();
 		}
 	 return boardVo;
- 	}
+ 	}															
  
  	/**
  	 * FileDownLoad
@@ -171,4 +177,58 @@ public class FileUtil {
 			}
 			return dispositionPrefix + encodedFilename;
 	}
+	 
+	public static List<Map<String, Object>> uploadFileMulti (@RequestParam("article_file") List<MultipartFile> multipartFile,
+			  HttpServletRequest request,String filePath) {
+			 
+		List<Map<String,Object>> fileList = new ArrayList<Map<String,Object>>();
+		Map<String,Object> fileMap = null;
+		 
+		 try {
+						
+			// 디레토리가 없다면 생성 
+			File dir = new File(filePath); 
+			if (!dir.isDirectory()) {
+				dir.mkdirs(); 
+			}
+	
+			String file_uuid      = "";
+			String file_name      = ""; 
+			String file_full_path = "";
+			long   file_size      = 0L;
+	
+			
+		   for(MultipartFile mfile : multipartFile) {
+			       
+	        file_size = mfile.getSize();
+			//file_name = new String(mfile.getOriginalFilename().getBytes("8859_1"), "UTF-8"); //한글꺠짐 방지 
+			file_name = mfile.getOriginalFilename();
+			// 파일명이 없다면 
+			if ("".equals(file_name)) { continue; } 
+			// 파일 명 변경(uuid로 암호화) 
+			String ext = file_name.substring(file_name.lastIndexOf('.')); // 확장자
+			file_uuid = StringUtil.getUuid();
+			file_full_path = filePath + File.separator + file_uuid + ext;
+			
+	        File serverFile = new File(file_full_path);
+	        mfile.transferTo(serverFile);
+	       
+	        fileMap = new HashMap<String,Object>();
+            fileMap.put("file_size", file_size);
+            fileMap.put("file_uuid", file_uuid);
+            fileMap.put("file_name", file_name);
+            fileMap.put("file_full_path", file_full_path);
+            fileList.add(fileMap);	            
+		   }
+			  	
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return fileList;
+    }															
+
 }

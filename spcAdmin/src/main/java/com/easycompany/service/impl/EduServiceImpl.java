@@ -1,19 +1,21 @@
 package com.easycompany.service.impl;
 
+import com.easycompany.cmm.util.FileUtil;
 import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.mapper.EduMapper;
 import com.easycompany.service.EduService;
 import com.easycompany.service.vo.CategoryVo;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("eduService")
 @Transactional
-public class EduServiceImpl extends EgovAbstractServiceImpl
-  implements EduService
+public class EduServiceImpl extends EgovAbstractServiceImpl  implements EduService
 {
 
   @Autowired
@@ -78,14 +80,12 @@ public class EduServiceImpl extends EgovAbstractServiceImpl
     int cnt = 1;
 
     if ("YES".equals(categoryVo.getFileExit())) {
-    	
     	if( StringUtil.isEmpty(categoryVo.getEdu_notice())) {
     		categoryVo.setEdu_notice(categoryVo.getFile_uuid());
     		cnt = this.eduMapper.insertCommonFile(categoryVo);
     	}else {
     		cnt = this.eduMapper.updateCommonFile(categoryVo);
-        }
-      
+        }      
         categoryVo.setEdu_notice(categoryVo.getFile_uuid());
     }
     
@@ -163,12 +163,14 @@ public class EduServiceImpl extends EgovAbstractServiceImpl
 
   public int deleteCategory(CategoryVo categoryVo)
   {
-    if ("category1".equals(categoryVo.getGubun2())) {
-      this.eduMapper.deleteCategory1Sub2(categoryVo);
-      this.eduMapper.deleteCategory1Sub3(categoryVo);
+     if ("category1".equals(categoryVo.getGubun2())) {
+    	 this.eduMapper.deleteCommonMutilFile(categoryVo);
+    	 this.eduMapper.deleteCategory1Sub3(categoryVo);
+    	 this.eduMapper.deleteCategory1Sub2(categoryVo);
     }
     if ("category2".equals(categoryVo.getGubun2())) {
-      this.eduMapper.deleteCategory2Sub3(categoryVo);
+    	this.eduMapper.deleteCommonMutilFile(categoryVo);
+    	this.eduMapper.deleteCategory2Sub3(categoryVo);      
     }
     if ("category4".equals(categoryVo.getGubun2())) {
       this.eduMapper.deleteClassCategory1Sub2(categoryVo);
@@ -178,15 +180,82 @@ public class EduServiceImpl extends EgovAbstractServiceImpl
     if ("category5".equals(categoryVo.getGubun2())) {
       this.eduMapper.deleteClassCategory2Sub3(categoryVo);
     }
+    
+    if ("category3".equals(categoryVo.getGubun2())) {
+        this.eduMapper.deleteCommonMutilFile(categoryVo);
+     }
+    
     return this.eduMapper.deleteCategory(categoryVo);
   }
 
   public int updateCategory(CategoryVo categoryVo) {
     return this.eduMapper.updateCategory(categoryVo);
   }
+  
+  
+ public int updateCategory3(CategoryVo categoryVo, List<Map<String, Object>> fileSavelist) {
+	  
+	  int cnt = 1;
+	  
+	  //선택된 파일 삭제
+	  String[] ArraysStr = categoryVo.getCheckdstr().split(",");
+	  if(ArraysStr.length > 0 ){
+		  for (String s : ArraysStr) {
+	        	if(!StringUtil.isEmpty(s)) {
+	        		categoryVo.setFile_seq(Integer.parseInt(s));
+	        		cnt = this.eduMapper.deleteEduCationFile(categoryVo);
+	        	}        	
+	      }   
+	  }
+	  if (fileSavelist !=null && fileSavelist.size() > 0) {
+		  
+	 	Map<String,Object> tempMap = null;
+  	    for(int i = 0; i<fileSavelist.size();i++) {
+  	        tempMap = fileSavelist.get(i);
+  	        categoryVo.setEdu_notice((String)tempMap.get("file_uuid"));
+            categoryVo.setFile_name((String)tempMap.get("file_name"));
+            categoryVo.setFile_full_path((String)tempMap.get("file_full_path"));
+            categoryVo.setFile_size((Long)tempMap.get("file_size"));
+            cnt = this.eduMapper.insertCommonFile(categoryVo);
+         }		 
+	  }
+	  
+	  if (cnt > 0) {
+		  return this.eduMapper.updateCategory(categoryVo);
+	  }
+	  
+	  return cnt;
+  }
 
-  public int insertCatgegory3(CategoryVo categoryVo) {
-    return this.eduMapper.insertCatgegory3(categoryVo);
+  public int insertCatgegory3(CategoryVo categoryVo, List<Map<String, Object>> fileSavelist) {
+
+	  //key 가져오기 
+	  categoryVo.setCategory3_key(this.eduMapper.getEducationNo(categoryVo));
+
+	  int cnt = 0;
+	  if (fileSavelist.size() > 0) {
+		  
+	 	Map<String,Object> tempMap = null;
+  	    for(int i = 0; i<fileSavelist.size();i++) {
+  	        tempMap = fileSavelist.get(i);
+  	        categoryVo.setEdu_notice((String)tempMap.get("file_uuid"));
+            categoryVo.setFile_name((String)tempMap.get("file_name"));
+            categoryVo.setFile_full_path((String)tempMap.get("file_full_path"));
+            categoryVo.setFile_size((Long)tempMap.get("file_size"));
+            cnt = this.eduMapper.insertCommonFile(categoryVo);
+         }
+		 
+	  }
+	  if (cnt > 0) {
+	        return this.eduMapper.insertCatgegory3(categoryVo);
+	  }
+	    
+    return cnt;
+  }
+  
+  public List<CategoryVo> getCommonFileList(CategoryVo categoryVo) throws Exception
+  {
+    return this.eduMapper.getCommonFileList(categoryVo);
   }
 
   public List<CategoryVo> getCategoryCodeList(CategoryVo categoryVo) throws Exception {

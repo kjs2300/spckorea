@@ -13,7 +13,7 @@ model.addAttribute("path", request.getServletPath());
  	<div class="menu-wrap">
 	     <div class="menu-cont">
 	         <ul class="depth2">
-	             <li><a href="${pageContext.request.contextPath}/web/summaryList.do">생명지킴이</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/summaryList.do">생명지킴이</a></li>
 	             <li><a href="#">생명지킴이 교육 강사</a></li>
 	             <li><a href="#">자살 유족 서비스 전문가</a></li>
 	             <li><a href="#">심리부검 주면담원</a></li>

@@ -1,11 +1,14 @@
 package com.easycompany.web.admin;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
@@ -42,8 +47,15 @@ public class EduController
   @Value("#{dbinfo['file.path']}")
   private String filePath;
 
+  @Value("#{dbinfo['file.resources']}")
+  private String filleResources;
+
+  @Value("#{dbinfo['file.upload']}")
+  private String fileUpload;
+
   @Value("#{dbinfo['web.path']}")
   private String webPath;
+  
 
   @RequestMapping({"/eduInfoRegList.do"})
   public String getEduInfoRegList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model,HttpServletRequest request)
@@ -144,7 +156,26 @@ public class EduController
       }
 
       if ("D".equals(categoryVo.getGubun1())) {
+        
+        ArrayList<String> fileList = new ArrayList<>();
+        List list = this.eduService.getCommonFileList(categoryVo);
+    	if (list !=null && list.size() > 0) {
+    		for (int i = 0; i < list.size(); i++) {
+    			CategoryVo fileCategoryVo  = (CategoryVo) list.get(i);
+    			fileList.add(fileCategoryVo.getFile_full_path());
+    		}
+    	}
+    	  
         resultCnt = this.eduService.deleteCategory(categoryVo);
+        
+        //성공 시 파일 삭제
+        if(resultCnt > 0) {
+	       	   if (fileList !=null && fileList.size() > 0) {
+	       		for (String fileFullPath : fileList) {
+	       			FileUtil.deleteFile(request, fileFullPath);
+	            }
+	       	  }
+	     }
         categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
       }
     }
@@ -169,17 +200,24 @@ public class EduController
     }
 
     CategoryVo categoryForm = this.eduService.getCategoryDetail(categoryVo);
-
-    model.addAttribute("categoryVo", categoryVo);
-    model.addAttribute("categoryForm", categoryForm);
-    model.addAttribute("path", request.getServletPath());
+    
+    if (categoryForm != null){
+    	categoryVo.setCategory3_key(categoryForm.getCategory3_key());    	
+    }
+    
+    List fileList = this.eduService.getCommonFileList(categoryVo);
+    
+    model.addAttribute("resultFileList", fileList);
+    model.addAttribute("categoryVo",     categoryVo);
+    model.addAttribute("categoryForm",   categoryForm);
+    model.addAttribute("path",           request.getServletPath());
 
     return "eduInfoRegCate3";
   }
 
   @RequestMapping({"/eduInfoRegCate3Save.do"})
   @ResponseBody
-  public CategoryVo eduInfoRegCate3Save(HttpServletRequest request, CategoryVo categoryVo) throws Exception
+  public CategoryVo eduInfoRegCate3Save(@RequestParam("article_file") List<MultipartFile> multipartFile, HttpServletRequest request, CategoryVo categoryVo) throws Exception
   {
     int resultCnt = 0;
     try
@@ -189,23 +227,72 @@ public class EduController
       categoryVo.setReg_id(loginvo.getId());
       categoryVo.setGubun2("category3");
 
-      if ("I".equals(categoryVo.getGubun1()))
-      {
-        BoardVo fileVo = FileUtil.uploadFile(request, this.filePath);
-
-        categoryVo.setFile_uuid(fileVo.getFile_uuid());
-        categoryVo.setFile_name(fileVo.getFile_name());
-        categoryVo.setFile_full_path(fileVo.getFile_full_path());
-        categoryVo.setFile_size(fileVo.getFile_size());
-        resultCnt = this.eduService.insertCatgegory3(categoryVo);
+      String fileAddpath  = this.filePath + File.separator + categoryVo.getGubun2();
+      String fileAddpath1 = StringUtil.getSaveFilePath(request, fileUpload, categoryVo.getGubun2());
+      
+      List<Map<String, Object>> fileSavelist = null;
+      ArrayList<String> fileList = new ArrayList<>();
+      
+      if ("I".equals(categoryVo.getGubun1())) {
+    	  
+    	if (multipartFile.size() > 0) {
+    		fileSavelist = FileUtil.uploadFileMulti(multipartFile, request, fileAddpath); 
+    	}     
+        resultCnt = this.eduService.insertCatgegory3(categoryVo, fileSavelist);
       }
 
       if ("E".equals(categoryVo.getGubun1())) {
-        resultCnt = this.eduService.updateCategory(categoryVo);
+    	  
+    	  //삭제할 리스트 가져오기 why? 파일을 삭제 후는 못 가져옴.
+    	  String[] ArraysStr = categoryVo.getCheckdstr().split(",");
+    	  if(ArraysStr.length >0){
+    		  for (String s : ArraysStr) {
+    	        	if(!StringUtil.isEmpty(s)) {
+    	        		categoryVo.setFile_seq(Integer.parseInt(s));
+    	                CategoryVo fileCategoryVo = this.eduService.getEduCationFile(categoryVo);
+    	                fileList.add(fileCategoryVo.getFile_full_path());
+    	        	}        	
+    	      }   
+    	  }
+               	 
+          
+          //파일업로드
+    	  if (multipartFile !=null && multipartFile.size() > 0) {
+      		fileSavelist = FileUtil.uploadFileMulti(multipartFile, request, fileAddpath); 
+      	  }     
+    	  //파일 추가, 카테고리 추가
+          resultCnt = this.eduService.updateCategory3(categoryVo, fileSavelist);
+          
+          //성공 시 파일 삭제
+          if(resultCnt > 0) {
+	       	   if (fileList !=null && fileList.size() > 0) {
+	       		for (String fileFullPath : fileList) {
+	       			FileUtil.deleteFile(request, fileFullPath);
+	            }
+	       	  }
+	      }
       }
 
       if ("D".equals(categoryVo.getGubun1())) {
+    	  
+    	List list = this.eduService.getCommonFileList(categoryVo);
+    	if (list !=null && list.size() > 0) {
+    		for (int i = 0; i < list.size(); i++) {
+    			CategoryVo fileCategoryVo  = (CategoryVo) list.get(i);
+    			fileList.add(fileCategoryVo.getFile_full_path());
+    		}
+    	}
+    	  
         resultCnt = this.eduService.deleteCategory(categoryVo);
+        
+        //성공 시 파일 삭제
+        if(resultCnt > 0) {
+	       	   if (fileList !=null && fileList.size() > 0) {
+	       		for (String fileFullPath : fileList) {
+	       			FileUtil.deleteFile(request, fileFullPath);
+	            }
+	       	  }
+	      }
       }
 
       categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
@@ -304,7 +391,7 @@ public class EduController
         categoryVo.setFile_name(fileVo.getFile_name());
         categoryVo.setFile_full_path(fileVo.getFile_full_path());
         categoryVo.setFile_size(fileVo.getFile_size());
-        resultCnt = this.eduService.insertCatgegory3(categoryVo);
+      //  resultCnt = this.eduService.insertCatgegory3(categoryVo);
       }
 
       if ("E".equals(categoryVo.getGubun1())) {

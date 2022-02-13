@@ -67,6 +67,7 @@ public class CategoryVo extends DefaultVO
   String coper_nm_auto;
   String coper_id;
   String coper_check;
+  int    file_key;
 
   public String getCoper_nm_auto()
   {
@@ -109,7 +110,15 @@ public class CategoryVo extends DefaultVO
     this.inst_nm = inst_nm;
   }
 
-  public String getSite() {
+  public int getFile_key() {
+	return file_key;
+}
+
+public void setFile_key(int file_key) {
+	this.file_key = file_key;
+}
+
+public String getSite() {
     return this.site;
   }
 

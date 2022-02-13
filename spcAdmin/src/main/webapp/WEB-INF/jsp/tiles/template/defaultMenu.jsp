@@ -9,7 +9,6 @@ path 사용하기 위해
 Controller에 추가하면 사용 가능.
 model.addAttribute("path", request.getServletPath());
  -->
-
  <ul class="depth01-menu">
     <li <c:if test="${path =='/main/logoList.do' || path =='/main/imgList.do'  || path =='/main/bannerList.do' || path =='/main/popupList.do' }">  class="on" </c:if> >
         <a href="#">메인화면</a>
@@ -68,15 +67,16 @@ model.addAttribute("path", request.getServletPath());
             <li><a href="#">수강생/수료생 현황</a></li>
         </ul>
     </li>
-	 <li>
+ 
+	<li <c:if test="${path =='/adBoard/noticeList.do' || path =='/adBoard/referenceList.do' || adBoard =='/adBoard/faqList.do' || adBoard =='/adBoard/partiList.do'|| adBoard =='/adBoard/instructList.do'|| adBoard =='/adBoard/instructReferList.do'}">  class="on" </c:if> >
         <a href="#">게시판</a>
         <ul class="depth02-menu">
-            <li><a href="<c:url value='/adBoard/noticeList.do' />">공지사항</a></li>
-            <li><a href="<c:url value='/adBoard/referenceList.do' />">자료실</a></li>
-            <li><a href="<c:url value='/adBoard/faqList.do' />">FAQ</a></li>
-            <li><a href="<c:url value='/adBoard/partiList.do' />">참여마당</a></li>
-            <li><a href="<c:url value='/adBoard/instructList.do' />">강사 공지사항</a></li>
-            <li><a href="<c:url value='/adBoard/instructReferList.do' />">강사 자료실</a></li>
+            <li <c:if test="${path =='/adBoard/noticeList.do'}" >        class="active" </c:if>><a href="<c:url value='/adBoard/noticeList.do' />">공지사항</a></li>
+            <li <c:if test="${path =='/adBoard/referenceList.do'}" >     class="active" </c:if>><a href="<c:url value='/adBoard/referenceList.do' />">자료실</a></li>
+            <li <c:if test="${path =='/adBoard/faqList.do'}" >           class="active" </c:if>><a href="<c:url value='/adBoard/faqList.do' />">FAQ</a></li>
+            <li <c:if test="${path =='/adBoard/partiList.do'}" >         class="active" </c:if>><a href="<c:url value='/adBoard/partiList.do' />">참여마당</a></li>
+            <li <c:if test="${path =='/adBoard/instructList.do'}" >      class="active" </c:if>><a href="<c:url value='/adBoard/instructList.do' />">강사 공지사항</a></li>
+            <li <c:if test="${path =='/adBoard/instructReferList.do'}" > class="active" </c:if>><a href="<c:url value='/adBoard/instructReferList.do' />">강사 자료실</a></li>
         </ul>
     </li>
     <li>

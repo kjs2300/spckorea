@@ -160,6 +160,9 @@ public class EduMapper extends EgovAbstractMapper
     if ("eduInfoOnline".equals(categoryVo.getGubun2())) {
       sqlName = "getEduInfoOnlineNo";
     }
+    if ("category3".equals(categoryVo.getGubun2())) {
+        sqlName = "getCategory3No";
+     }
     return ((Integer)selectOne(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
 
@@ -170,6 +173,7 @@ public class EduMapper extends EgovAbstractMapper
     if ("eduInfoOnline".equals(categoryVo.getGubun2())) {
       sqlName = "getEduCationFile";
     }
+
     return (CategoryVo)selectOne(this.nameSpace + "." + sqlName, categoryVo);
   }
 
@@ -309,9 +313,17 @@ public class EduMapper extends EgovAbstractMapper
     return Integer.valueOf(delete(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
 
-  public int deleteEduCationFile(CategoryVo categoryVo) {
-    String sqlName = "deleteEduCationFile";
+  public int deleteCommonMutilFile(CategoryVo categoryVo) {
+    String sqlName = "deleteCommonMutilFile";
+    if ("category3".equals(categoryVo.getGubun2())) {
+        sqlName = "deleteCommonMutilFile";
+    }
     return Integer.valueOf(delete(this.nameSpace + "." + sqlName, categoryVo)).intValue();
+  }
+  
+  public int deleteEduCationFile(CategoryVo categoryVo) {
+	    String sqlName = "deleteEduCationFile";
+	    return Integer.valueOf(delete(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
 
   public int deleteEduCationDetail(CategoryVo categoryVo)
@@ -369,6 +381,23 @@ public class EduMapper extends EgovAbstractMapper
 
     return Integer.valueOf(insert(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
+  
+  
+  public List<CategoryVo> getCommonFileList(CategoryVo categoryVo) throws DataAccessException {
+	String sqlName = "getCommonFileList";
+	
+	if ("category1".equals(categoryVo.getGubun2())) {
+	  sqlName = "getCommonFileList";
+	}
+	if ("category2".equals(categoryVo.getGubun2())) {
+	  sqlName = "getCommonFileList";
+	}
+	if ("category3".equals(categoryVo.getGubun2())) {
+	  sqlName = "getCommonFileList";
+	}
+	
+	return selectList(this.nameSpace + "." + sqlName, categoryVo);
+  }
 
   public List<CategoryVo> getCategoryCodeList(CategoryVo categoryVo) throws DataAccessException {
     String sqlName = "getOnlineCategoryCodeList";
@@ -376,7 +405,9 @@ public class EduMapper extends EgovAbstractMapper
     if ("eduInfoOnline".equals(categoryVo.getGubun2())) {
       sqlName = "getOnlineCategoryCodeList";
     }
-
+    if ("eduInfoScheduleList".equals(categoryVo.getGubun2())) {
+        sqlName = "getCategoryCodeList";
+    }
     return selectList(this.nameSpace + "." + sqlName, categoryVo);
   }
 
