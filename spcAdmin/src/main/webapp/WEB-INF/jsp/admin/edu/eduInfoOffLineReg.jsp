@@ -191,6 +191,11 @@
 		}
 	}	
 	
+	function openWindowPop(url, name){
+	    var options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no';
+	    window.open(url, name, options);
+	}
+	
     //-->
  </script>
  		   
@@ -257,7 +262,7 @@
                                         <div class="radio-cont">
                                             <input type="radio" class="radio-box" id="coper_check"   name="coper_check"    value="AUTO" <c:if test="${categoryForm.coper_check =='AUTO'   }">checked </c:if>>
                                             <input type="text" class="input-box"  id="coper_nm_auto" name="coper_nm_auto"  readonly value="${categoryForm.coper_nm_auto}"/>
-                                            <button class="sm-btn blue-btn">검색</button>
+                                            <button type="button" onClick="javascript:openWindowPop('<c:url value='/edu/orgPopSearch.do'/>','popup');" class="sm-btn blue-btn">검색</button>
                                         </div>
                                           
                                         <div class="radio-cont">

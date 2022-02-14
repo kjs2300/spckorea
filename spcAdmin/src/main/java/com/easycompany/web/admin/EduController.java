@@ -3,12 +3,10 @@ package com.easycompany.web.admin;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1477,5 +1475,56 @@ public class EduController
 	    model.addAttribute("path", request.getServletPath());
 	
 	    return "eduReportList";
+  }
+  
+  /*
+   * 오프라인 교육 등록 > 기관명 검색 팝업
+   */
+  @RequestMapping({"/orgPopSearch.do"})
+  public String orgPopSearch(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)  throws Exception
+  {
+	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
+	    categoryVo.setPageSize(this.propertiesService.getInt("pageSize"));
+	
+	    PaginationInfo paginationInfo = new PaginationInfo();
+	    paginationInfo.setCurrentPageNo(categoryVo.getPageIndex());
+	    paginationInfo.setRecordCountPerPage(categoryVo.getPageUnit());
+	    paginationInfo.setPageSize(categoryVo.getPageSize());
+	
+	    int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+	    categoryVo.setOffset(offset);
+	
+	    if (StringUtil.isEmpty(categoryVo.getGubun1())) {
+	      categoryVo.setGubun1("R");
+	    }
+	
+	    if (StringUtil.isEmpty(categoryVo.getGubun2())) {
+	      categoryVo.setGubun2("eduInfoNoOrgline");
+	    }
+	
+	    if (StringUtil.isEmpty(categoryVo.getEdu_site())) {
+		    categoryVo.setEdu_site("nooff");
+	    }
+		
+		if (StringUtil.isEmpty(categoryVo.getSite())) {
+		   categoryVo.setSite("off");
+		}
+	    
+		categoryVo.setWebPath(this.webPath);
+	
+	    categoryVo.setGubun3("categorycode1");
+	    List category1list = this.eduService.getCategoryCodeList(categoryVo);
+	    model.addAttribute("category1list", category1list);
+	
+	    List list = this.eduService.getEducationList(categoryVo);
+	    model.addAttribute("resultList", list);
+	
+	    int totCnt = this.eduService.getEducationCount(categoryVo);
+	    paginationInfo.setTotalRecordCount(totCnt);
+	    model.addAttribute("paginationInfo", paginationInfo);
+	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
+	
+	    return "orgPopSearch";
   }
 }

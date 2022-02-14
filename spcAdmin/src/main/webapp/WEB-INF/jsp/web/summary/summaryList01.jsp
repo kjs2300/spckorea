@@ -11,14 +11,14 @@
      <div id="container">
 
          <div class="tit-wrap">
-             <h1 class="h1-tit">생명지킴이란?</h1>
+             <h1 class="h1-tit">생명지킴이</h1>
 
              <div class="side-cont">
                  <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
                  <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                  <span>개요</span>
                  <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                 <span>생명지킴이란?</span>
+                 <span>생명지킴이</span>
              </div>
          </div>
 

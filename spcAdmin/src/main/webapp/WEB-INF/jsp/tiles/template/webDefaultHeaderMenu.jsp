@@ -13,19 +13,19 @@ model.addAttribute("path", request.getServletPath());
  	<div class="menu-wrap">
 	     <div class="menu-cont">
 	         <ul class="depth2">
-	             <li><a href="${pageContext.request.contextPath}/user/summaryList.do">생명지킴이</a></li>
-	             <li><a href="#">생명지킴이 교육 강사</a></li>
-	             <li><a href="#">자살 유족 서비스 전문가</a></li>
-	             <li><a href="#">심리부검 주면담원</a></li>
-	             <li><a href="#">자살 사후대응 전문가</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/summaryList01.do">생명지킴이</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/summaryList02.do">생명지킴이 교육 강사</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/summaryList03.do">자살 유족 서비스 전문가</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/summaryList04.do">심리부검 주면담원</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/summaryList05.do">자살 사후대응 전문가</a></li>
 	         </ul>
 	         <ul class="depth2">
-	             <li><a href="#">생명지킴이 교육</a></li>
-	             <li><a href="#">생명지킴이 강사<br/>양성 교육</a></li>
-	             <li><a href="#">실무자 역량 강화 교육</a></li>
-	             <li><a href="#">자살 유족 서비스제공<br/>인력교육</a></li>
-	             <li><a href="#">광역주도형 심리부검면담원 양성교육</a></li>
-	             <li><a href="#">자살사후대응 전문가 양성교육</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/info01.do">생명지킴이 교육</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/info02.do">생명지킴이 강사<br/>양성 교육</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/info03.do">실무자 역량 강화 교육</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/info04.do">자살 유족 서비스제공<br/>인력교육</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/info05.do">광역주도형 심리부검면담원 양성교육</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/info06.do">자살사후대응 전문가 양성교육</a></li>
 	         </ul>
 	         <ul class="depth2">
 	             <li>

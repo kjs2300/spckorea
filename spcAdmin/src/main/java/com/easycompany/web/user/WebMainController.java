@@ -58,30 +58,128 @@ public class WebMainController
   }
 
   /*
-   * 사용자 페이지 > 개요
+   * 사용자 페이지 > 개요 > 생명지킴이
    */
-  @RequestMapping({"/summaryList.do"})
-  public String summaryList(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+  @RequestMapping({"/summaryList01.do"})
+  public String summaryList01(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
     throws Exception
   {
-   
-    if (StringUtil.isEmpty(mainVo.getGubun1())) {
-      mainVo.setGubun1("R");
-    }
-    if (StringUtil.isEmpty(mainVo.getGubun2())) {
-      mainVo.setGubun2("logo");
-    }
-    mainVo.setWebPath(this.webPath);
-
-    MainVo mainForm = this.mainService.getCommonDetail(mainVo);
-
-    model.addAttribute("mainVo",    mainVo);
-    model.addAttribute("mainForm",  mainForm);
     model.addAttribute("path",      request.getServletPath());
-
-    return "summaryList";
+    return "summaryList01";
   }
   
+  /*
+   * 사용자 페이지 > 개요 > 생명지킴이 교육 강사
+   */
+  @RequestMapping({"/summaryList02.do"})
+  public String summaryList02(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+    model.addAttribute("path",      request.getServletPath());
+    return "summaryList02";
+  }
+  
+  /*
+   * 사용자 페이지 > 개요 > 자살 유족 서비스 전문가
+   */
+  @RequestMapping({"/summaryList03.do"})
+  public String summaryList03(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+    model.addAttribute("path",      request.getServletPath());
+    return "summaryList03";
+  }
+  
+  /*
+   * 사용자 페이지 > 개요 > 심리부검 주면담원
+   */
+  @RequestMapping({"/summaryList04.do"})
+  public String summaryList04(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+    model.addAttribute("path",      request.getServletPath());
+    return "summaryList04";
+  }
+  
+  /*
+   * 사용자 페이지 > 개요 > 자살 사후대응 전문가
+   */
+  @RequestMapping({"/summaryList05.do"})
+  public String summaryList05(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+    model.addAttribute("path",      request.getServletPath());
+    return "summaryList05";
+  }
+  
+  /*
+   * 교육안내  > 생명지킴이 강사양성 교육
+   */
+  @RequestMapping({"/info01.do"})
+  public String info01(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+    model.addAttribute("path",      request.getServletPath());
+    return "info01";
+  }
+  
+  /*
+   * 교육안내 > 생명지킴이 강사양성 교육
+   */
+  @RequestMapping({"/info02.do"})
+  public String info02(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+    model.addAttribute("path",      request.getServletPath());
+    return "info02";
+  }
+  
+  
+  /*
+   * 교육안내 > 실무자 역량 강화 교육
+   */
+  @RequestMapping({"/info03.do"})
+  public String info03(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+    model.addAttribute("path",      request.getServletPath());
+    return "info03";
+  }
+  
+  /*
+   * 교육안내 > 자살 유족 서비스제공 인력교육
+   */
+  @RequestMapping({"/info04.do"})
+  public String info04(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+    model.addAttribute("path",      request.getServletPath());
+    return "info04";
+  }
+  
+  /*
+   * 교육안내 > 광역주도형 심리부검면담원 양성교육
+   */
+  @RequestMapping({"/info05.do"})
+  public String info05(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+    model.addAttribute("path",      request.getServletPath());
+    return "info05";
+  }
+  
+  /*
+   * 교육안내 > 자살사후대응 전문가 양성교육
+   */
+  @RequestMapping({"/info06.do"})
+  public String info06(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+    model.addAttribute("path",      request.getServletPath());
+    return "info06";
+  }
+  
+
   /*
    * 사용자 페이지 > 교육안내 > 일반 교육안내
    */

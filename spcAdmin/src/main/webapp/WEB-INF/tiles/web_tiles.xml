@@ -11,11 +11,70 @@
    </definition> 
    
    <!--개요 > 생명지킴이 -->
-   <definition name="summaryList" extends="common-definition">  
-       <put-attribute name="title" value="생명존중희망재단" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/web/summary/summaryList.jsp" />  
+   <definition name="summaryList01" extends="common-definition">  
+       <put-attribute name="title" value="생명지킴이" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/summary/summaryList01.jsp" />  
    </definition> 
    
+   <!--개요 > 생명지킴이 교육 강사 -->
+   <definition name="summaryList02" extends="common-definition">  
+       <put-attribute name="title" value="생명지킴이 교육 강사" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/summary/summaryList02.jsp" />  
+   </definition> 
    
+   <!--개요 > 자살 유족 서비스 전문가 -->
+   <definition name="summaryList03" extends="common-definition">  
+       <put-attribute name="title" value="자살 유족 서비스 전문가" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/summary/summaryList03.jsp" />  
+   </definition> 
    
+   <!--개요 > 심리부검 주면담원 -->
+   <definition name="summaryList04" extends="common-definition">  
+       <put-attribute name="title" value="심리부검 주면담원" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/summary/summaryList04.jsp" />  
+   </definition> 
+   
+   <!--개요 > 자살 사후대응 전문가 -->
+   <definition name="summaryList05" extends="common-definition">  
+       <put-attribute name="title" value="자살 사후대응 전문가" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/summary/summaryList05.jsp" />  
+   </definition> 
+   
+      <!--교육안내  > 생명지킴이 교육 -->
+   <definition name="info01" extends="common-definition">  
+       <put-attribute name="title" value="생명지킴이 교육" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/info/info01.jsp" />  
+   </definition> 
+   
+   <!--교육안내 > 생명지킴이 강사양성 교육 -->
+   <definition name="info02" extends="common-definition">  
+       <put-attribute name="title" value="생명지킴이 강사양성 교육" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/info/info02.jsp" />  
+   </definition> 
+   
+   <!--교육안내 > 실무자 역량 강화 교육 -->
+   <definition name="info03" extends="common-definition">  
+       <put-attribute name="title" value="실무자 역량 강화 교육" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/info/info03.jsp" />  
+   </definition> 
+   
+   <!--교육안내 > 자살 유족 서비스제공 인력교육 -->
+   <definition name="info04" extends="common-definition">  
+       <put-attribute name="title" value="자살 유족 서비스제공 인력교육" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/info/info04.jsp" />  
+   </definition> 
+   
+   <!--교육안내 > 광역주도형 심리부검면담원 양성교육 -->
+   <definition name="info05" extends="common-definition">  
+       <put-attribute name="title" value="광역주도형 심리부검면담원 양성교육" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/info/info05.jsp" />  
+   </definition> 
+   
+    <!--교육안내 > 자살사후대응 전문가 양성교육 -->
+   <definition name="info06" extends="common-definition">  
+       <put-attribute name="title" value="자살사후대응 전문가 양성교육" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/info/info06.jsp" />  
+   </definition> 
+
+
 </tiles-definitions>
