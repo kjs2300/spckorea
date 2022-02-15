@@ -42,6 +42,21 @@
        <put-attribute name="footer" value="" />  
    </definition>  
    
+   <!-- noHeader-definition -->
+   <definition name="noHeader-definition"      template="/WEB-INF/jsp/tiles/layouts/defaultLayout.jsp">  
+       <put-attribute name="title" value="" />  
+       <put-attribute name="header" value="" />  
+       <put-attribute name="menu" value="" />  
+       <put-attribute name="body" value="" />  
+       <put-attribute name="footer" value="" />  
+   </definition>  
+   
+   <!-- PopUp Page -->
+   <definition name="popUp-definition"      template="/WEB-INF/jsp/tiles/layouts/popUpLayout.jsp">  
+       <put-attribute name="title" value="" />  
+       <put-attribute name="body"  value="" /> 
+   </definition>  
+   
    <!-- Home Page -->
    <definition name="home" extends="base-definition">  
        <put-attribute name="title" value="Welcome" />  

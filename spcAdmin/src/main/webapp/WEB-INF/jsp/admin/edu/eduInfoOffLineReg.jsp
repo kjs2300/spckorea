@@ -15,8 +15,16 @@
 
  <script type="text/javaScript" language="javascript" defer="defer">
  <!-- 
- $(document).ready(function(){
-   
+	$(document).ready(function(){
+	 	$('.cdate').bind('click', function(){
+	 		var coper_check = $("input[name='coper_check']:checked").val();
+			if(coper_check =="HAND"){
+				$("#coper_nm_auto").val(''); 
+			}
+			if(coper_check =="AUTO"){
+				$("#coper_nm").val(''); 
+			}
+ 		});
 	 $('#category1_key').change(function(){
 		var val  = $(this).val();
 
@@ -192,7 +200,7 @@
 	}	
 	
 	function openWindowPop(url, name){
-	    var options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no';
+	    var options = 'top=10, left=10, width=720px, height=680px, status=no, menubar=no, toolbar=no, resizable=no';
 	    window.open(url, name, options);
 	}
 	
@@ -260,13 +268,13 @@
                                 <td>
                                     <div class="tb-cont">
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="coper_check"   name="coper_check"    value="AUTO" <c:if test="${categoryForm.coper_check =='AUTO'   }">checked </c:if>>
-                                            <input type="text" class="input-box"  id="coper_nm_auto" name="coper_nm_auto"  readonly value="${categoryForm.coper_nm_auto}"/>
+                                            <input type="radio" class="radio-box cdate" id="coper_check"   name="coper_check"    value="AUTO" <c:if test="${categoryForm.coper_check =='AUTO'   }">checked </c:if>>
+                                            <input type="text"  class="input-box"  id="coper_nm_auto" name="coper_nm_auto"  readonly value="${categoryForm.coper_nm_auto}"/>
                                             <button type="button" onClick="javascript:openWindowPop('<c:url value='/edu/orgPopSearch.do'/>','popup');" class="sm-btn blue-btn">검색</button>
                                         </div>
                                           
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="coper_check" name="coper_check" value="HAND" <c:if test="${categoryForm.coper_check =='HAND' || (empty categoryForm.coper_check) }">checked </c:if>>
+                                            <input type="radio" class="radio-box cdate" id="coper_check" name="coper_check" value="HAND" <c:if test="${categoryForm.coper_check =='HAND' || (empty categoryForm.coper_check) }">checked </c:if>>
                                             <label for="">직접입력</label>
                                             <input type="text" class="input-box" id="coper_nm" name="coper_nm"  value="${categoryForm.coper_nm}"/>
                                         </div>

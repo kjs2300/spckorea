@@ -11,45 +11,33 @@
      <div id="container">
 
          <div class="tit-wrap">
-             <h1 class="h1-tit">생명지킴이</h1>
+             <h1 class="h1-tit">생명지킴이란?</h1>
 
              <div class="side-cont">
                  <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
                  <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                  <span>개요</span>
                  <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                 <span>생명지킴이</span>
+                 <span>생명지킴이란?</span>
              </div>
          </div>
 
-         <div class="contents-wrap">
-             
+         <div class="contents-wrap">             
              <img class="img-box" src="${pageContext.request.contextPath}/user/images/contents/contents01.png" alt="생명지킴이란?"/>
-             <p class="txt">자살 위험에 처한 주변인의 ‘신호‘를 인식하여 지속적 관심을 가지고, 그들이 적절한 도움을 받을 수 있는 자원(기관, 전문가)에 연계하는 사람</p>
              
-             
-             <div class="comp">
-                 <h2 class="h2-tit">자살예방 생명지킴이의 목적</h2>
-                 <ul class="dot-list">
-                     <li>자살위기자를 식별하는 지식, 태도와 기술을 습득하여 자살에 대한 위험 수준을 판단하고, 자살의 위험에 처한 주변 사람을 적절한 서비스에 연결해주는 역량을 강화하는 것을 목적(WHO, 2014)</li>
-                     <li>훈련을 통한 지식 향상과 인식의 변화가 실제 행동 변화에 영향을 미쳐, 자살 고위험군에 대한 직접적인 개입을 할 수 있도록 함</li>
-                 </ul>
-             </div>
+              <div class="comp">
+                  <h2 class="h2-tit">생명지킴이란?</h2>
+                  <ul class="dot-list">
+                      <li>자살 위험에 처한 주변인의 ‘신호‘를 인식하여 지속적 관심을 가지고, 그들이 적절한 도움을 받을 수 있는 자원(기관, 전문가)에 연계하는 사람</li>
+                  </ul>
+              </div>
 
-             <div class="comp">
-                 <h2 class="h2-tit">주요내용</h2>
-                 <ul class="dot-list">
-                     <li>자살에 대한 올바른 지식</li>
-                     <li>자살예방 생명지킴이의 개념</li>
-                     <li>자살예방 생명지킴이의 역할</li>
-                     <li>자살예방 생명지킴이의 역할 수행 시 알아야 할 정보</li>
-                     <li>자살위기자가 도움 받을 수 있는 기관 등의 자원</li>
-                 </ul>
-             </div>
-
-             <div class="comp">
-                 <h2 class="h2-tit">자살예방 생명지킴이 역할</h2>
-                 <p class="txt">주변에 자살 위험이 있는 사람을 파악해 도움을 줄 수 있는 자원(기관, 전문가 등)에 연계</p>
-             </div>
+              <div class="comp">
+                  <h2 class="h2-tit">자살예방 생명지킴이의 목적</h2>
+                  <ul class="dot-list">
+                      <li>자살위기자를 식별하는 지식, 태도와 기술을 습득하여 자살에 대한 위험 수준을 판단하고, 자살의 위험에 처한 주변 사람을 적절한 서비스에 연결해주는 역량을 강화하는 것을 목적(WHO, 2014)</li>
+                      <li>훈련을 통한 지식 향상과 인식의 변화가 실제 행동 변화에 영향을 미쳐, 자살 고위험군에 대한 직접적인 개입을 할 수 있도록 함</li>
+                  </ul>
+              </div>
          </div>
      </div>

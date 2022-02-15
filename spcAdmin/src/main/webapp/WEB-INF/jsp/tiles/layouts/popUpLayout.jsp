@@ -20,32 +20,22 @@ if (request.getProtocol().equals("HTTP/1.1"))
 %>
 <title><tiles:getAsString name="title" /></title>
 <head>        
-    <link href="<c:url value='/user/css/reset.css'        />" rel="stylesheet" type="text/css">
-    <link href="<c:url value='/user/css/user.css'         />" rel="stylesheet" type="text/css"> 
-    <link href="<c:url value='/user/slick/slick.css'      />" rel="stylesheet" type="text/css">
-    <link href="<c:url value='/user/slick/slick-theme.css'/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value='/css/reset.css' />" rel="stylesheet" type="text/css">
+    <link href="<c:url value='/css/admin.css' />" rel="stylesheet" type="text/css">
+    <link href="<c:url value='/css/common.css' />" rel="stylesheet" type="text/css">
+        
+	<script src="<c:url value='/resources/js/jquery-3.4.1.min.js' />"></script>	
+	<script src="<c:url value='/resources/js/jquery-ui.js' />"></script>
+	<script src="<c:url value='/resources/js/jquery.bpopup.min.js' />"></script>
+	<script src="<c:url value='/resources/js/commonUtil.js' />"></script>
     
-    <script src="<c:url value='/user/js/jquery-2.2.0.min.js' />"></script>	
-    <script src="<c:url value='/user/js/commonUtil.js'       />"></script>
-    <script src="<c:url value='/user/slick/slick.js'         />"></script>	
-    
-    <script src="<c:url value='/resources/js/common.js' />"></script>
+    <script src="<c:url value='/js/jquery-2.2.0.min.js' />"></script>	
+    <script src="<c:url value='/js/commonUtil.js' />"></script>	
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/SE2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
         
 </head>
   
 <body>
-   	<header>
-       	<tiles:insertAttribute  name="header" />
-       	<tiles:insertAttribute  name="headermenu" />
-    </header>
-    <article id="sub-layer">
-        <div class="sub-cont">
-        	<tiles:insertAttribute name="menu" />
-			<tiles:insertAttribute name="body" />
-    	</div>
-     </article>
-	 <tiles:insertAttribute name="footer" />
-
+   <tiles:insertAttribute name="body" />
 </body>
 </html>

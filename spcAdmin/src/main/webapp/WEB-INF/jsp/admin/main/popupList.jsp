@@ -176,13 +176,14 @@
                          <col width="*"/>
                          <col width="25%"/>
                          <col width="25%"/>
+                          <col width="25%"/>
                      </colgroup>
-                   <thead>
-                    	
+                   <thead>                    	
                        <tr>
                            <th><input type="checkbox"  id="checkAll" name='checkAll' class="check-box"/></th>
                            <th>제목</th>
                            <th>팝업사이즈</th>
+                           <th>사용여부</th>
                            <th>관리</th>
                        </tr>
                    </thead>
@@ -190,9 +191,10 @@
                    	<c:forEach var="result" items="${resultList}" varStatus="status">
                    	   
                        <tr>
-                            <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.popup_no}" class="check-box"/></td>
-                            <td class="tl">${result.popup_nm}</td>
-                            <td>가로: <span class="mr10">${result.popup_ar}</span>세로: <span>${result.popup_hg}</span></td>
+                           <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.popup_no}" class="check-box"/></td>
+                           <td class="tl">${result.popup_nm}</td>
+                           <td>가로: <span class="mr10">${result.popup_ar}</span>세로: <span>${result.popup_hg}</span></td>
+                           <td>${result.use_yn}</td>
                            <td>
 	                           <button type="button" class="sm-btn blue-btn"  onClick="javascript:fn_edit  ('E','${result.popup_no}');">수정</button>
 	                           <button type="button" class="sm-btn white-btn" onClick="javascript:fn_delete('D','${result.popup_no}');">삭제</button>

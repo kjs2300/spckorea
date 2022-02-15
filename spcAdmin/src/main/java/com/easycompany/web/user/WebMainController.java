@@ -1,5 +1,7 @@
 package com.easycompany.web.user;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.service.MainService;
+import com.easycompany.service.AdBoardService;
+import com.easycompany.service.vo.AdBoardVo;
 import com.easycompany.service.vo.MainVo;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
@@ -22,6 +26,9 @@ public class WebMainController
 
   @Autowired
   private MainService mainService;
+  
+  @Autowired
+  private AdBoardService adBoardService;
 
   @Autowired
   protected EgovPropertyService propertiesService;
@@ -47,12 +54,35 @@ public class WebMainController
       mainVo.setGubun2("logo");
     }
     mainVo.setWebPath(this.webPath);
-
-    MainVo mainForm = this.mainService.getCommonDetail(mainVo);
-
-    model.addAttribute("mainVo",    mainVo);
-    model.addAttribute("mainForm",  mainForm);
-    model.addAttribute("path",      request.getServletPath());
+    
+    //logo  가져오기
+    mainVo.setGubun2("logo");
+    MainVo logoForm = this.mainService.getCommonDetail(mainVo);
+    logoForm.setWebPath(this.webPath);
+    logoForm.setGubun2("logo");
+    model.addAttribute("logoForm",  logoForm);
+    
+    //popup list 가져오기
+    mainVo.setGubun2("popup");
+    List popupList = this.mainService.getCommonList(mainVo);
+    model.addAttribute("popupList", popupList);
+    
+    //image 가져오기
+    mainVo.setGubun2("img");
+    List imgList = this.mainService.getCommonList(mainVo);
+    model.addAttribute("imgList", imgList);
+    model.addAttribute("mainVo",  mainVo);
+    
+    //공지사항 가져오기
+    AdBoardVo adBoardVo = new AdBoardVo();
+    adBoardVo.setBoard_type("01");
+    adBoardVo.setRecordCountPerPage(5);
+    adBoardVo.setOffset(0);
+	List<AdBoardVo> notiList = adBoardService.getBoardList(adBoardVo);
+	model.addAttribute("notiList", notiList);
+	
+    
+    model.addAttribute("path",    request.getServletPath());
 
     return "webMain";
   }

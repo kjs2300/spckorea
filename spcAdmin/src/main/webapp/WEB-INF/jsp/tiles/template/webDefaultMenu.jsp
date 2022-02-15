@@ -10,7 +10,7 @@
 	      <div class="lnb-menu">
 	          <ul>
 	                 <li <c:if test="${path =='/user/summaryList01.do'}">   class="on" </c:if>>
-	                 	<a href="${pageContext.request.contextPath}/user/summaryList01.do">생명지킴이</a>
+	                 	<a href="${pageContext.request.contextPath}/user/summaryList01.do">생명지킴이란?</a>
 	                 </li>
 		             <li <c:if test="${path =='/user/summaryList02.do'}">   class="on" </c:if>>
 		             	<a href="${pageContext.request.contextPath}/user/summaryList02.do">생명지킴이 교육 강사</a>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+ 
+<tiles-definitions>  
+   
+   <!-- 기관명 검색 -->
+   <definition name="orgPopSearch" extends="popUp-definition">  
+       <put-attribute name="title" value="기관명 검색" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/org_pop_search.jsp" />  
+   </definition>  
+  
+    <!-- 메인 팝업 창  -->
+   <definition name="mainPop" extends="popUp-definition">  
+       <put-attribute name="title" value="기관명 검색" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/main_popup.jsp" />  
+   </definition> 
+   
+</tiles-definitions>

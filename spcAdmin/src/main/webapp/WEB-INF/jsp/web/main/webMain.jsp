@@ -1,25 +1,35 @@
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="ui"     uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<link href="<c:url value='/user/slick/slick.css'      />" rel="stylesheet" type="text/css">
+<link href="<c:url value='/user/slick/slick-theme.css'/>" rel="stylesheet" type="text/css">
 
-
-    <link href="<c:url value='/user/slick/slick.css'      />" rel="stylesheet" type="text/css">
-    <link href="<c:url value='/user/slick/slick-theme.css'/>" rel="stylesheet" type="text/css">
-    
+<script>
+<%--필수  --%>
+$(function(){
+	//팝업 관련 - 
+	//alert('popup');
+});
+<%--필수  --%>
+</script>	
+    popupList
+    <c:forEach var="result" items="${popupList}" varStatus="status">
+    	${result.popup_nm} ${result.use_yn} </br>
+    </c:forEach>
 
  <!--  main-layer begin -->
         <article id="main-layer">
             <section class="main-slider"><!--  main-slider begin -->
                 <div class="lazy slider">
-                    <div><img src="${pageContext.request.contextPath}/user/images/contents/main/main_img01.png" alt=""/></div>
-                    <div><img src="${pageContext.request.contextPath}/user/images/contents/main/main_img01.png" alt=""/></div>
-                    <div><img src="${pageContext.request.contextPath}/user/images/contents/main/main_img01.png" alt=""/></div>
-                    <div><img src="${pageContext.request.contextPath}/user/images/contents/main/main_img01.png" alt=""/></div>
-                    <div><img src="${pageContext.request.contextPath}/user/images/contents/main/main_img01.png" alt=""/></div>
+	                <c:forEach var="result" items="${imgList}" varStatus="status">
+	                	<c:if test="${not empty result.file_name }">
+				           	<c:set var="ppx" value="${fn:split(result.file_name,'.')}" />
+				            <div><img class="img-box" src="/${mainVo.webPath}/${mainVo.gubun2}/${result.file_id}.${ppx[1]}" alt="${result.img_nm}" /></div>
+				        </c:if>	
+	                </c:forEach>
                 </div>
             </section>
             <!--  main-slider end -->
@@ -173,30 +183,15 @@
                     <h1>공지사항</h1>
                     <a href="" class="more-btn white-btn">더보기 +</a>
                     <ul class="main-list">
+                        <c:forEach var="result" items="${notiList}" varStatus="status">
                         <li>
-                            <h2 class="h3-tit">2021년 자살예방사업 종사자 대상 교육 안내(12월)</h2>
-                            <p class="date">2021.11.22</p>
-                            <p class="txt">사회적 거리두기 단계 격상으로 인하여 8월에 계획된 2차, 3차 생명지킴이 강사양성교육이 취소되었음을 알립니다.또한, 7월 30일 예정이었던 참여자 발표가 8월 3일(화)로 연기되었으</p>
+                            <h2 class="h3-tit">${result.title}</h2>
+                            <p class="date">${fn:substring(result.reg_dt,0,10)}</p>
+                            <p class="txt">${result.contents}사회적 거리두기 단계 격상으로 인하여 8월에 계획된 2차, 3차 생명지킴이 강사양성교육이 취소되었음을 알립니다.또한, 7월 30일 예정이었던 참여자 발표가 8월 3일(화)로 연기되었으</p>
                         </li>
-                        <li>
-                            <h2 class="h3-tit">2021년 자살예방사업 종사자 대상 교육 안내(12월)</h2>
-                            <p class="date">2021.11.22</p>
-                            <p class="txt">사회적 거리두기 단계 격상으로 인하여 8월에 계획된 2차, 3차 생명지킴이 강사양성교육이 취소되었음을 알립니다.또한, 7월 30일 예정이었던 참여자 발표가 8월 3일(화)로 연기되었으</p>
-                        </li>
-                        <li>
-                            <h2 class="h3-tit">2021년 자살예방사업 종사자 대상 교육 안내(12월)</h2>
-                            <p class="date">2021.11.22</p>
-                            <p class="txt">사회적 거리두기 단계 격상으로 인하여 8월에 계획된 2차, 3차 생명지킴이 강사양성교육이 취소되었음을 알립니다.또한, 7월 30일 예정이었던 참여자 발표가 8월 3일(화)로 연기되었으</p>
-                        </li>
-                        <li>
-                            <h2 class="h3-tit">2021년 자살예방사업 종사자 대상 교육 안내(12월)</h2>
-                            <p class="date">2021.11.22</p>
-                            <p class="txt">사회적 거리두기 단계 격상으로 인하여 8월에 계획된 2차, 3차 생명지킴이 강사양성교육이 취소되었음을 알립니다.또한, 7월 30일 예정이었던 참여자 발표가 8월 3일(화)로 연기되었으</p>
-                        </li>
-                    </ul>
-                     
+                        </c:forEach>                        
+                    </ul>                     
             </section>
-
 
             <section class="footer-slider"><!--  footer-slider begin -->
                
