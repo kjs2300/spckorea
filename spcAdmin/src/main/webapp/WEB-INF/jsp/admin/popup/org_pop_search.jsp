@@ -10,7 +10,7 @@
  <script type="text/javaScript" language="javascript" defer="defer">
  <!--
  
-	 
+
  	function goOkPage(){	
 		var frm = document.commonForm;
 		$("#gubun1").val('R'); 
@@ -125,100 +125,68 @@
 			}
 		}
 	}	
-	
-
+	function fn_submit(){
+		window.opener.document.getElementById("coper_nm_auto").value = "기관명 전달";
+	    self.close();
+	}
      //-->
  </script>
- 
-           <form  id="commonForm" name="commonForm"  method="post"  >
-			<div class="dim-layer"></div>
-			    <div class="pop-wrap">
-			        <div class="pop-header">
-			            <h1 class="h1-tit">기관명 검색</h1>
-			            <button type="button"  onClick="javascript:fn_save('I');" class="close-btn"><img src="${pageContext.request.contextPath}/images/common/close.png" alt="닫기"/></button>
-			        </div>
-			        <div class="pop-cont">
-			
-			            <div class="search-wrap">
-			                <div class="search-cont">
-			                    <select class="select">
-			                        <option>지역선택</option>
-			                    </select>
-			                    <input type="text" class="input-box"/>
-			                    <button class="search-btn">검색</button>
-			                </div>
-			            </div>
-			
-			            <div class="table-wrap">
-			                <table class="list-tb">
-			                    <caption>선택, 지역, 소속기관 정보가 있는 테이블</caption>
-			                    <colgroup>
-			                        <col width="10%"/>
-			                        <col width="10%"/>
-			                        <col width="*"/>
-			                        <col width="30%"/>
-			                    </colgroup>
-			                    <thead>
-			                        <tr>
-			                            <th>선택</th>
-			                            <th>No.</th>
-			                            <th>지역</th>
-			                            <th>소속기관</th>
-			                        </tr>
-			                    </thead>
-			                    <tbody>
-			                        <tr>
-			                            <td><input type="radio" class="radio-box" id="" name="" value=""></td>
-			                            <td>1</td>
-			                            <td></td>
-			                            <td></td>
-			                        </tr>
-			                        <tr>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                        </tr>
-			                        <tr>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                        </tr>
-			                        <tr>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                        </tr>
-			                        <tr>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                        </tr>
-			                        <tr>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                        </tr>
-			                        <tr>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                        </tr>
-			                    </tbody>
-			                </table>
-			            </div>
-			
-			        </div>
-			        <div class="pop-footer">
-			            <button type="button"  onClick="javascript:fn_save('I');" class="mid-btn blue-btn">확인</button>
-			            <button type="button"  onClick="javascript:fn_save('I');" class="mid-btn white-btn">취소</button>
-			        </div>
-			    </div>
-			</form>
-            
+ 	<form  id="commonForm" name="commonForm"  method="post"  >
+           
+	<div class="dim-layer"> </div>
+	    <div class="pop-wrap">
+	        <div class="pop-header">
+	            <h1 class="h1-tit">기관명 검색</h1>
+	            <button type="button"  onClick="javascript:self.close();"  class="close-btn"><img src="${pageContext.request.contextPath}/images/common/close.png" alt="닫기"/></button>
+	        </div>
+	        <div class="pop-cont">
+	
+	            <div class="search-wrap">
+	                <div class="search-cont">
+	                    <select class="select">
+	                        <option>지역선택</option>
+	                    </select>
+	                    <input type="text" class="input-box"/>
+	                    <button class="search-btn">검색</button>
+	                </div>
+	            </div>
+	
+	            <div class="table-wrap">
+	                <table class="list-tb">
+	                    <caption>선택, 지역, 소속기관 정보가 있는 테이블</caption>
+	                    <colgroup>
+	                        <col width="10%"/>
+	                        <col width="10%"/>
+	                        <col width="*"/>
+	                        <col width="30%"/>
+	                    </colgroup>
+	                    <thead>
+	                        <tr>
+	                            <th>선택</th>
+	                            <th>No.</th>
+	                            <th>지역</th>
+	                            <th>소속기관</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody>
+	                        <tr>
+	                            <td><input type="radio" class="radio-box" id="" name="" value=""></td>
+	                            <td>1</td>
+	                            <td></td>
+	                            <td></td>
+	                        </tr>
+	                    </tbody>
+	                </table>
+	            </div>
+	
+	        </div>
+	        <div class="pop-footer">
+	            <button type="button"  onClick="javascript:fn_submit();" class="mid-btn blue-btn">확인</button>
+	            <button type="button"  onClick="javascript:self.close();" class="mid-btn white-btn">취소</button>
+	        </div>
+	    </div>
+	 
+	
+	</form>
+						            
 

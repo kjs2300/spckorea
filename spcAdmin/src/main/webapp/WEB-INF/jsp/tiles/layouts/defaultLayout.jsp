@@ -28,6 +28,7 @@ if (request.getProtocol().equals("HTTP/1.1"))
 	<script src="<c:url value='/resources/js/jquery-ui.js' />"></script>
 	<script src="<c:url value='/resources/js/jquery.bpopup.min.js' />"></script>
 	<script src="<c:url value='/resources/js/commonUtil.js' />"></script>
+	<script src="<c:url value='/resources/js/common.js' />"></script>
     
     <script src="<c:url value='/js/jquery-2.2.0.min.js' />"></script>	
     <script src="<c:url value='/js/commonUtil.js' />"></script>	

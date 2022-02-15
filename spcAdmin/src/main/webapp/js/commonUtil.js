@@ -102,12 +102,11 @@ $(document).ready(function(){
 	
 	
 	/*   팝업 begin  */
-	$('.pop-wrap').css({
+	$('.pop-wrapBAK').css({
 		"top": (($(window).height()-$('.pop-wrap').outerHeight())/2+$(window).scrollTop())+'px',
 		"left": (($(window).width()-$('.pop-wrap').outerWidth())/2+$(window).scrollLeft())+'px'
 	});
 	/*  팝업 end */
-	
 });
 
 var editImgUpLoad = function(){
