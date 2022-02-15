@@ -2,10 +2,12 @@ package com.easycompany.mapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
 import com.easycompany.service.vo.AdBoardVo;
+import com.easycompany.service.vo.BoardVo;
 
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 
@@ -37,6 +39,30 @@ public class AdBoardMapper extends EgovAbstractMapper {
 	public int delBoard(HashMap<String, Object> map) {
 		return (Integer) update(nameSpace + ".delBoard", map);
 	}
-	
+
+	public void insertFile(Map<String, Object> fileSavelist) {
+		insert(nameSpace + ".insertFile", fileSavelist);
+		
+	}
+
+	public List<BoardVo> selectFileList(AdBoardVo adBoardVo) {
+		return selectList(nameSpace + ".selectFileList", adBoardVo);
+	}
+
+	public BoardVo selectFile(BoardVo boardVo) {
+		return selectOne(nameSpace + ".selectFile", boardVo);
+	}
+
+	public int deleteBoardFile(BoardVo boardVo) {
+		return Integer.valueOf(delete(this.nameSpace + ".deleteBoardFile", boardVo)).intValue();
+	}
+
+	public int deleteBoardMapFile(HashMap<String, Object> map) {
+		return Integer.valueOf(delete(this.nameSpace + ".deleteBoardMapFile", map)).intValue();
+	}
+
+	public List<Map<String, Object>> delFileSelect(HashMap<String, Object> map) {
+		return selectList(nameSpace + ".delFileSelect", map);
+	}
 
 }

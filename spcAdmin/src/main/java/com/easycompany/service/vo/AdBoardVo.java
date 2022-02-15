@@ -27,6 +27,8 @@ public class AdBoardVo extends DefaultVO {
 	int category2_key;
 	int category3_key;
 	String notice_yn;
+	String checkdstr;
+	int file_cnt;
 	
 	public Long getBoard_idx() {
 		return board_idx;
@@ -165,6 +167,20 @@ public class AdBoardVo extends DefaultVO {
 	}
 	public void setNotice_yn(String notice_yn) {
 		this.notice_yn = notice_yn;
+	}
+	
+	public String getCheckdstr() {
+		return checkdstr;
+	}
+	public void setCheckdstr(String checkdstr) {
+		this.checkdstr = checkdstr;
+	}
+	
+	public int getFile_cnt() {
+		return file_cnt;
+	}
+	public void setFile_cnt(int file_cnt) {
+		this.file_cnt = file_cnt;
 	}
 
 }
