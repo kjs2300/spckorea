@@ -101,7 +101,7 @@
                   <td>${status.index + 1}</td>
                   <td>${result.board_type}</td>
                   <td>${result.title}</td>
-                  <td><button class="sm-btn white-btn">다운로드</button></td>
+                  <td><button class="sm-btn white-btn" onClick="javascript:fileDownload('${result.board_idx}');">다운로드</button></td>
                   <td>${result.reg_dt}</td>
                   <td>${result.reg_id}</td>
                   <td>${result.view_cnt}</td>

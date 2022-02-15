@@ -14,7 +14,8 @@
 	 		WHEN 05 THEN '강사공지'
 	 		WHEN 06 THEN '강사자료실'
 		 END AS BOARD_TYPE,
-	    TITLE, LINK_URL, FILE_ID, VIEW_CNT, CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS REG_DT, REG_ID
+	    TITLE, LINK_URL, FILE_ID, VIEW_CNT, CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS REG_DT, REG_ID,
+	    (SELECT COUNT(*) FROM edu_file WHERE FILE_KEY = BOARD_IDX AND FILE_GUBUN = 'board') AS FIEL_CNT
 	    <if test="board_type !=null and board_type == '02'">
 	      	, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME
 	    </if>
@@ -51,7 +52,7 @@
 	    </where>
 	</select>
 	
-	<insert id="insertBoard" parameterType="com.easycompany.service.vo.AdBoardVo" useGeneratedKeys="true" keyProperty="BOARD_IDX">
+	<insert id="insertBoard" parameterType="com.easycompany.service.vo.AdBoardVo" useGeneratedKeys="true" keyProperty="board_idx">
 		/**  com.easycompany.mapper.AdBoardMapper.insertBoard **/	
 		INSERT 
 		INTO edu_board
@@ -94,7 +95,7 @@
 		)	
 	</insert>
 	
-	<update id="updateBoard" parameterType="com.easycompany.service.vo.MainVo">
+	<update id="updateBoard" parameterType="com.easycompany.service.vo.AdBoardVo">
 		/**  com.easycompany.mapper.AdBoardMapper.updateBoard **/	
 		UPDATE edu_board 
 		   SET BOARD_TYPE = #{board_type}
@@ -129,8 +130,8 @@
 				</foreach>)
 	</update>
                   
-	<insert id="insertCommonFile" parameterType="com.easycompany.service.vo.MainVo">
-		/**  com.easycompany.mapper.MainMapper.insertCommonFile **/	
+	<insert id="insertFile">
+		/**  com.easycompany.mapper.AdBoardMapper.insertFile **/	
 		<selectKey resultType="int" keyProperty="file_seq" order="BEFORE">			
 			SELECT IFNULL(MAX(FILE_SEQ), 0) + 1 
 			  FROM EDU_FILE			  
@@ -144,17 +145,76 @@
 		  	, FILE_FULL_PATH
 		  	, FILE_SEQ
 		  	, FILE_SIZE
+		  	, FILE_KEY
+		  	, FILE_OREDER_BY
 		) 
 		VALUES 
 		(
-			  #{gubun2}
-			, #{file_id}
+			  #{file_gubun}
+			, #{file_uuid}
 			, #{file_name}
 			, #{file_full_path}
 			, #{file_seq}
 			, #{file_size}
+			, #{file_key}
+			, #{file_oreder_by}
+			
 		)	
 	</insert>
+	
+	<select id="selectFileList" parameterType="com.easycompany.service.vo.AdBoardVo" resultType="com.easycompany.service.vo.BoardVo">
+		/**  com.easycompany.mapper.AdBoardMapper.selectFileList **/	
+		SELECT FILE_GUBUN, FILE_ID, FILE_NAME, FILE_FULL_PATH, FILE_SEQ, FILE_ID, FILE_SIZE, FILE_KEY, FILE_OREDER_BY
+	      FROM edu_file
+	    <where>
+	    	FILE_KEY = #{board_idx}
+	    	AND FILE_GUBUN = 'board'
+	    </where>
+	</select>
+	
+	<select id="selectFile" parameterType="com.easycompany.service.vo.BoardVo" resultType="com.easycompany.service.vo.BoardVo">
+		/**  com.easycompany.mapper.AdBoardMapper.selectFile **/	
+		SELECT FILE_GUBUN, FILE_ID, FILE_NAME, FILE_FULL_PATH, FILE_SEQ, FILE_ID, FILE_SIZE, FILE_KEY, FILE_OREDER_BY
+	      FROM edu_file
+	    <where>
+	    	FILE_SEQ = #{file_seq}
+	    </where>
+	</select>
+	
+	<delete id="deleteBoardFile"		parameterType="com.easycompany.service.vo.BoardVo">
+	    /** com.easycompany.mapper.AdBoardMapper.deleteBoardFile **/
+		DELETE
+		  FROM EDU_FILE
+		  <where>
+		  	FILE_SEQ   = #{file_seq}
+		  </where>
+	</delete>
+	
+	<delete id="deleteBoardMapFile">
+	    /** com.easycompany.mapper.AdBoardMapper.deleteBoardFile **/
+		DELETE
+		  FROM EDU_FILE
+		  <where>
+		  	FILE_KEY IN (
+				<foreach collection="boardIdxList" item="item" separator=",">
+					#{item}
+				</foreach>)
+			AND FILE_GUBUN = 'board'
+		  </where>
+	</delete>
+	
+	<select id="delFileSelect" resultType="java.util.HashMap">
+		/**  com.easycompany.mapper.AdBoardMapper.delFileSelect **/	
+		SELECT FILE_GUBUN, FILE_ID, FILE_NAME, FILE_FULL_PATH, FILE_SEQ, FILE_ID, FILE_SIZE, FILE_KEY, FILE_OREDER_BY
+	      FROM edu_file
+	    <where>
+	    	FILE_KEY IN (
+				<foreach collection="boardIdxList" item="item" separator=",">
+					#{item}
+				</foreach>)
+			AND FILE_GUBUN = 'board'
+	    </where>
+	</select>
 	
 	<insert id="insertLogo" parameterType="com.easycompany.service.vo.MainVo">
 		/**  com.easycompany.mapper.MainMapper.insertLogo **/	

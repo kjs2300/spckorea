@@ -1,24 +1,31 @@
 package com.easycompany.web;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.WebUtils;
 
-import com.easycompany.cmm.vo.DefaultVO;
+import com.easycompany.cmm.util.FileUtil;
+import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.cmm.vo.LoginVo;
 import com.easycompany.service.AdBoardService;
 import com.easycompany.service.vo.AdBoardVo;
+import com.easycompany.service.vo.BoardVo;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -33,6 +40,9 @@ public class AdminBoardController {
 	/** EgovPropertyService */
 	@Autowired
 	protected EgovPropertyService propertiesService;
+	
+	@Value("#{dbinfo['file.path']}")
+	private String filePath;
 	
 	@RequestMapping(value = "/noticeList.do")
 	public String getNoticeList(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
@@ -71,6 +81,10 @@ public class AdminBoardController {
 	public String noticeReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model) throws Exception {
 		if(adBoardVo.getBoard_idx() != null) {
 			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
+			if(detailData != null ) {
+				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
+				model.addAttribute("resultFileList", files);
+			}
 			model.addAttribute("detailData",  detailData);
 		}
 		return "noticeReq";
@@ -78,15 +92,50 @@ public class AdminBoardController {
 	
 	@RequestMapping(value = "/noticeSave.do")
 	@ResponseBody
-	public AdBoardVo noticeSave(HttpServletRequest request, AdBoardVo adBoardVo) throws Exception {
+	public AdBoardVo noticeSave(@RequestParam("article_file") List<MultipartFile> multipartFile, HttpServletRequest request, AdBoardVo adBoardVo) throws Exception {
 		int resultCnt = 0;
 		try {
+			
 			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+			
+			String fileAddpath = this.filePath + File.separator + "board";
+			List<Map<String, Object>> fileSavelist = null;
+			ArrayList<String> fileList = new ArrayList<>();
+			
 			if ("I".equals(adBoardVo.getGubun1())) { // 저장
-				resultCnt = adBoardService.insertBoard(adBoardVo);
+				fileSavelist = FileUtil.uploadFileMulti(multipartFile, request, fileAddpath); 
+				resultCnt = adBoardService.insertBoard(adBoardVo, fileSavelist);
 				adBoardVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
 			} else if("E".equals(adBoardVo.getGubun1())) { // 수정
-				resultCnt = adBoardService.updateBoard(adBoardVo);
+//				resultCnt = adBoardService.updateBoard(adBoardVo);
+				String[] ArraysStr = adBoardVo.getCheckdstr().split(",");
+		    	  if(ArraysStr.length >0){
+		    		  BoardVo boardVo = new BoardVo();
+		    		  for (String s : ArraysStr) {
+		    	        	if(!StringUtil.isEmpty(s)) {
+		    	        		boardVo.setFile_seq(Integer.parseInt(s));
+		    	        		BoardVo fileCategoryVo = adBoardService.selectFile(boardVo);
+		    	                fileList.add(fileCategoryVo.getFile_full_path());
+		    	        	}        	
+		    	      }   
+		    	  }
+		          
+		          //파일업로드
+		    	  if (multipartFile !=null && multipartFile.size() > 0) {
+		      		fileSavelist = FileUtil.uploadFileMulti(multipartFile, request, fileAddpath); 
+		      	  }
+		    	  
+		    	  //파일 추가, 정보업데이트
+		          resultCnt = adBoardService.updateBoard(adBoardVo, fileSavelist);
+		          
+		          //성공 시 파일 삭제
+		          if(resultCnt > 0) {
+			       	   if (fileList !=null && fileList.size() > 0) {
+			       		for (String fileFullPath : fileList) {
+			       			FileUtil.deleteFile(request, fileFullPath);
+			            }
+			       	  }
+			      }
 				adBoardVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
 			}
 			
@@ -160,6 +209,10 @@ public class AdminBoardController {
 	if(adBoardVo.getBoard_idx() != null) {
 		adBoardVo.setBoard_type("02");
 		AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
+		if(detailData != null ) {
+			List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
+			model.addAttribute("resultFileList", files);
+		}
 		model.addAttribute("detailData",  detailData);
 	}
 
@@ -204,6 +257,10 @@ public class AdminBoardController {
 		if(adBoardVo.getBoard_idx() != null) {
 			adBoardVo.setBoard_type("03");
 			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
+			if(detailData != null ) {
+				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
+				model.addAttribute("resultFileList", files);
+			}
 			model.addAttribute("detailData",  detailData);
 		}
 
@@ -248,6 +305,10 @@ public class AdminBoardController {
 		if(adBoardVo.getBoard_idx() != null) {
 			adBoardVo.setBoard_type("04");
 			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
+			if(detailData != null ) {
+				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
+				model.addAttribute("resultFileList", files);
+			}
 			model.addAttribute("detailData",  detailData);
 		}
 
@@ -292,6 +353,10 @@ public class AdminBoardController {
 		if(adBoardVo.getBoard_idx() != null) {
 			adBoardVo.setBoard_type("05");
 			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
+			if(detailData != null ) {
+				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
+				model.addAttribute("resultFileList", files);
+			}
 			model.addAttribute("detailData",  detailData);
 		}
 
@@ -336,10 +401,28 @@ public class AdminBoardController {
 		if(adBoardVo.getBoard_idx() != null) {
 			adBoardVo.setBoard_type("06");
 			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
+			if(detailData != null ) {
+				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
+				model.addAttribute("resultFileList", files);
+			}
 			model.addAttribute("detailData",  detailData);
 		}
 
 		return "instructReferReq";
+	}
+	
+	@RequestMapping({"/fileDownload.do"})
+	@ResponseBody
+	public void fileDownload(HttpServletRequest request, HttpServletResponse response, BoardVo boardVo) throws Exception {
+		boardVo = adBoardService.selectFile(boardVo);
+		
+	    BoardVo boardVoForm = new BoardVo();
+	    boardVoForm.setFile_uuid(boardVo.getFile_uuid());
+	    boardVoForm.setFile_name(boardVo.getFile_name());
+	    boardVoForm.setFile_full_path(boardVo.getFile_full_path());
+	    boardVoForm.setFile_size(boardVo.getFile_size());	 
+	
+	    FileUtil.fileDownload(request, response, boardVoForm);
 	}
 
 }

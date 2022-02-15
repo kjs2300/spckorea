@@ -139,6 +139,30 @@ public class FileUtil {
 		}
 		return "S";
 	}
+	
+	/**
+ 	 * FileDelete
+ 	 * **/
+	public static String deleteFile (String filePullPath) {
+
+		try {
+			File deleteFile = new File(filePullPath);
+			// 파일이 존재하는지 체크 존재할경우 true, 존재하지않을경우 false
+			if (deleteFile.exists()) {
+				// 파일을 삭제합니다.
+				deleteFile.delete();
+			} else {
+				return "F";
+			} 
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			return "F";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "F";
+		}
+		return "S";
+	}
 	 
 	 
 	private static String getBrowser(HttpServletRequest request) {
