@@ -73,6 +73,7 @@ public class AdminBoardController {
 		
 		adBoardVo.setReg_id(loginvo.getId());		
 		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",      request.getServletPath());
 
 		return "noticeList";
 	}
@@ -199,6 +200,7 @@ public class AdminBoardController {
 		
 		adBoardVo.setReg_id(loginvo.getId());		
 		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",      request.getServletPath());
 
 		return "referenceList";
 	}
@@ -247,6 +249,7 @@ public class AdminBoardController {
 		
 		adBoardVo.setReg_id(loginvo.getId());		
 		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",      request.getServletPath());
 
 		return "faqList";
 	}
@@ -295,6 +298,7 @@ public class AdminBoardController {
 		
 		adBoardVo.setReg_id(loginvo.getId());		
 		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",      request.getServletPath());
 
 		return "partiList";
 	}
@@ -343,6 +347,7 @@ public class AdminBoardController {
 		
 		adBoardVo.setReg_id(loginvo.getId());		
 		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",      request.getServletPath());
 
 		return "instructList";
 	}
@@ -391,6 +396,7 @@ public class AdminBoardController {
 		
 		adBoardVo.setReg_id(loginvo.getId());		
 		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",      request.getServletPath());
 
 		return "instructReferList";
 	}
