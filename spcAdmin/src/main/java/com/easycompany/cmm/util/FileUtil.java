@@ -253,6 +253,57 @@ public class FileUtil {
 			e.printStackTrace();
 		}
 		return fileList;
-    }															
+    }
+	
+	public static Map<String, Object> uploadFile (MultipartFile file, String filePath) {
+		 
+		 Map<String, Object> map = null;
+		 
+		 try {
+			 //파일이 저장될 path 설정 
+		
+			// 디레토리가 없다면 생성 
+			System.out.println("++++++++++++시작+++++++++++++");
+			File dir = new File(filePath); 
+			if (!dir.isDirectory()) {
+				dir.mkdirs(); 
+			}
+
+			String file_uuid         = "";
+			String file_name     = ""; 
+			String file_full_path = "";
+			long file_size = 0L;
+			
+			// 내용을 가져와서 
+			
+			file_size = file.getSize();
+			
+			//file_name = new String(mfile.getOriginalFilename().getBytes("8859_1"), "UTF-8"); //한글꺠짐 방지 
+			file_name = file.getOriginalFilename();
+			
+			// 파일 명 변경(uuid로 암호화) 
+			String ext = file_name.substring(file_name.lastIndexOf('.')); // 확장자
+			
+			file_uuid = StringUtil.getUuid();
+				
+			file_full_path = filePath + File.separator + file_uuid + ext;
+		
+			// 설정한 path에 파일저장 
+			File serverFile = new File( file_full_path );			
+			file.transferTo(serverFile);
+			map.put("file_size", file_size);
+			map.put("file_uuid", file_uuid);
+			map.put("file_name", file_name);
+			map.put("file_full_path", file_full_path);
+			System.out.println("++++++++++++끝+++++++++++++");
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 return map;
+	 	}
 
 }

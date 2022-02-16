@@ -60,12 +60,12 @@ model.addAttribute("path", request.getServletPath());
             <li><a href="#">강사 휴직 신청</a></li>
         </ul>
     </li>
-    <li>
+    <li <c:if test="${path =='/lms/contentsList.do' || path =='/lms/studentList.do'}">  class="on" </c:if>>
         <a href="#">LMS</a>
         <ul class="depth02-menu">
-            <li><a href="#">콘텐츠/교육자료 등록</a></li>
+            <li <c:if test="${path =='/lms/contentsList.do'}" >        class="active" </c:if>><a href="<c:url value='/lms/contentsList.do' />">콘텐츠/교육자료 등록</a></li>
             <li><a href="#">퀴즈 등록</a></li>
-            <li><a href="#">수강생/수료생 현황</a></li>
+            <li <c:if test="${path =='/lms/studentList.do'}" >        class="active" </c:if>><a href="<c:url value='/lms/studentList.do' />">수강생/수료생 현황</a></li>
         </ul>
     </li>
  

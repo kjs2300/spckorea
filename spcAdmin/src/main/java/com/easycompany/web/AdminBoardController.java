@@ -79,7 +79,7 @@ public class AdminBoardController {
 	}
 	
 	@RequestMapping(value = "/noticeReq.do")
-	public String noticeReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model) throws Exception {
+	public String noticeReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 		if(adBoardVo.getBoard_idx() != null) {
 			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
 			if(detailData != null ) {
@@ -87,6 +87,7 @@ public class AdminBoardController {
 				model.addAttribute("resultFileList", files);
 			}
 			model.addAttribute("detailData",  detailData);
+			model.addAttribute("path", request.getServletPath());
 		}
 		return "noticeReq";
 	}
@@ -206,7 +207,7 @@ public class AdminBoardController {
 	}
 	
 	@RequestMapping(value = "/referenceReq.do")
-	public String referenceReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model) throws Exception {
+	public String referenceReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 
 	if(adBoardVo.getBoard_idx() != null) {
 		adBoardVo.setBoard_type("02");
@@ -216,6 +217,7 @@ public class AdminBoardController {
 			model.addAttribute("resultFileList", files);
 		}
 		model.addAttribute("detailData",  detailData);
+		model.addAttribute("path", request.getServletPath());
 	}
 
 		return "referenceReq";
@@ -255,7 +257,7 @@ public class AdminBoardController {
 	}
 	
 	@RequestMapping(value = "/faqReq.do")
-	public String faqReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model) throws Exception {
+	public String faqReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 
 		if(adBoardVo.getBoard_idx() != null) {
 			adBoardVo.setBoard_type("03");
@@ -265,6 +267,7 @@ public class AdminBoardController {
 				model.addAttribute("resultFileList", files);
 			}
 			model.addAttribute("detailData",  detailData);
+			model.addAttribute("path", request.getServletPath());
 		}
 
 		return "faqReq";
@@ -304,7 +307,7 @@ public class AdminBoardController {
 	}
 	
 	@RequestMapping(value = "/partiReq.do")
-	public String partiReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model) throws Exception {
+	public String partiReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 
 		if(adBoardVo.getBoard_idx() != null) {
 			adBoardVo.setBoard_type("04");
@@ -314,6 +317,7 @@ public class AdminBoardController {
 				model.addAttribute("resultFileList", files);
 			}
 			model.addAttribute("detailData",  detailData);
+			model.addAttribute("path", request.getServletPath());
 		}
 
 		return "partiReq";
@@ -353,7 +357,7 @@ public class AdminBoardController {
 	}
 	
 	@RequestMapping(value = "/instructReq.do")
-	public String instructReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model) throws Exception {
+	public String instructReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 
 		if(adBoardVo.getBoard_idx() != null) {
 			adBoardVo.setBoard_type("05");
@@ -363,6 +367,7 @@ public class AdminBoardController {
 				model.addAttribute("resultFileList", files);
 			}
 			model.addAttribute("detailData",  detailData);
+			model.addAttribute("path",      request.getServletPath());
 		}
 
 		return "instructReq";
@@ -402,7 +407,7 @@ public class AdminBoardController {
 	}
 	
 	@RequestMapping(value = "/instructReferReq.do")
-	public String instructReferReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model) throws Exception {
+	public String instructReferReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 
 		if(adBoardVo.getBoard_idx() != null) {
 			adBoardVo.setBoard_type("06");
@@ -412,6 +417,7 @@ public class AdminBoardController {
 				model.addAttribute("resultFileList", files);
 			}
 			model.addAttribute("detailData",  detailData);
+			model.addAttribute("path",      request.getServletPath());
 		}
 
 		return "instructReferReq";
