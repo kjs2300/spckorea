@@ -195,7 +195,7 @@ $(document).ready(function(){
                         <li>
                             <h2 class="h3-tit">${result.title}</h2>
                             <p class="date">${fn:substring(result.reg_dt,0,10)}</p>
-                            <p class="txt">${result.contents}사회적 거리두기 단계 격상으로 인하여 8월에 계획된 2차, 3차 생명지킴이 강사양성교육이 취소되었음을 알립니다.또한, 7월 30일 예정이었던 참여자 발표가 8월 3일(화)로 연기되었으</p>
+                            <p class="txt">${result.contents}</p>
                         </li>
                         </c:forEach>                        
                     </ul>                     
