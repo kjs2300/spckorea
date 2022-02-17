@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.util.WebUtils;
 
 import com.easycompany.cmm.util.StringUtil;
+import com.easycompany.cmm.vo.LoginVo;
 import com.easycompany.service.MainService;
 import com.easycompany.service.AdBoardService;
 import com.easycompany.service.vo.AdBoardVo;
@@ -87,6 +89,30 @@ public class WebMainController
     return "webMain";
   }
 
+  
+  @RequestMapping({"/popup.do"})
+  public String popupReg(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+    LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+
+    if (StringUtil.isEmpty(mainVo.getGubun1())) {
+      mainVo.setGubun1("R");
+    }
+    if (StringUtil.isEmpty(mainVo.getGubun2())) {
+      mainVo.setGubun2("popup");
+    }
+    mainVo.setWebPath(this.webPath);
+
+    MainVo mainForm = this.mainService.getCommonDetail(mainVo);
+
+    mainVo.setReg_id(loginvo.getId());
+    model.addAttribute("mainVo", mainVo);
+    model.addAttribute("mainForm", mainForm);
+    model.addAttribute("path", request.getServletPath());
+
+    return "mainPop";
+  }
   /*
    * 사용자 페이지 > 개요 > 생명지킴이
    */

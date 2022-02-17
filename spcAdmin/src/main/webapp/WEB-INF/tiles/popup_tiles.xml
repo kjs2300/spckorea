@@ -6,13 +6,13 @@
    <!-- 기관명 검색 -->
    <definition name="orgPopSearch" extends="popUp-definition">  
        <put-attribute name="title" value="기관명 검색" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/org_pop_search.jsp" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/orgPopSearch.jsp" />  
    </definition>  
   
     <!-- 메인 팝업 창  -->
    <definition name="mainPop" extends="popUp-definition">  
        <put-attribute name="title" value="기관명 검색" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/main_popup.jsp" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/mainPopup.jsp" />  
    </definition> 
    
 </tiles-definitions>
