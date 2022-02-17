@@ -1,46 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.easycompany.mapper.LmsMapper">
+<mapper namespace="com.easycompany.mapper.WarrantMapper">
 
-	<select id="contentsList" parameterType="com.easycompany.service.vo.LmsVo"	resultType="com.easycompany.service.vo.LmsVo">
-		 /**  com.easycompany.mapper.LmsMapper.contentsList **/
-	    SELECT CONTENT_IDX, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME, LMS_CNT,
-	    LMS_TITLE, EDU_TIME, EDU_TIME_CF, CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS REG_DT, REG_ID,
-	    CASE EDU_STATUS
-	 		WHEN 'I' THEN '진행중'
-	 		WHEN 'D' THEN '대기중'
-	 		WHEN 'E' THEN '종료'
-		 END AS EDU_STATUS
-	      FROM edu_lms
+	<select id="warrantOnlineList" parameterType="com.easycompany.service.vo.WarrantVo"	resultType="com.easycompany.service.vo.WarrantVo">
+		 /**  com.easycompany.mapper.WarrantMapper.warrantOnlineList **/
+	    SELECT LICENSE_IDX, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME,
+	    	CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS REG_DT, REG_ID, LICENSE_STATUS
+	      FROM edu_license
 	      <include refid="search"/>
-	     ORDER BY CONTENT_IDX DESC
-	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}		
+	     ORDER BY LICENSE_IDX DESC
+	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}
 	</select>
 
 
-	<select id="contentsListCnt" parameterType="com.easycompany.service.vo.LmsVo" resultType="int">
-    	/**  com.easycompany.mapper.LmsMapper.contentsListCnt **/
+	<select id="warrantOnlineListCnt" parameterType="com.easycompany.service.vo.WarrantVo" resultType="int">
+    	/**  com.easycompany.mapper.WarrantMapper.warrantOnlineListCnt **/
 		 SELECT COUNT(*) cnt
-	       FROM edu_lms
+	       FROM edu_license
 	     <include refid="search"/>
 	</select>
 	
-	<select id="selectDetailLms" parameterType="com.easycompany.service.vo.LmsVo" resultType="com.easycompany.service.vo.LmsVo">
-		/**  com.easycompany.mapper.LmsMapper.selectDetailLms **/	
-		SELECT CONTENT_IDX, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME, LMS_CNT,
-	    LMS_TITLE, EDU_TIME, EDU_TIME_CF, CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS REG_DT, REG_ID, EDU_STATUS
-	      FROM edu_lms
+	<select id="selectDetailOnline" parameterType="com.easycompany.service.vo.WarrantVo" resultType="com.easycompany.service.vo.WarrantVo">
+		/**  com.easycompany.mapper.WarrantMapper.selectDetailOnline **/	
+		SELECT LICENSE_IDX, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME,
+	    	CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS REG_DT, REG_ID, LICENSE_STATUS
+	      FROM edu_license
 	    <where>
-	    	CONTENT_IDX = #{content_idx}
+	    	LICENSE_IDX = #{license_idx}
 	    	AND USE_YN = 'Y'
+	    	<if test="license_type !=null and license_type != ''">
+	      	AND LICENSE_TYPE = #{license_type}
+	      </if>
 	    </where>
 	</select>
 	
-	<insert id="insertContents" parameterType="com.easycompany.service.vo.LmsVo" useGeneratedKeys="true" keyProperty="content_idx">
-		/**  com.easycompany.mapper.LmsMapper.insertContents **/	
+	<insert id="warrantSave" parameterType="com.easycompany.service.vo.WarrantVo" useGeneratedKeys="true" keyProperty="license_idx">
+		/**  com.easycompany.mapper.WarrantMapper.warrantSave **/	
 		INSERT 
-		INTO edu_lms
+		INTO edu_license
 		(
 	      	 CATEGORY1_KEY
 	      	, CATEGORY2_KEY
@@ -48,12 +46,8 @@
 	      	, CATEGORY1_NAME
 	      	, CATEGORY2_NAME
 	      	, CATEGORY3_NAME
-	      	, LMS_CNT
-	      	, LMS_TITLE
-	      	, EDU_TIME
-	      	, EDU_TIME_CF
-	      	, EDU_STATUS
 	      	, REG_ID
+	      	, LICENSE_TYPE
 		) 
 		VALUES 
 		(
@@ -63,48 +57,41 @@
 			, #{category1_name}
 			, #{category2_name}
 			, #{category3_name}
-			, #{lms_cnt}
-			, #{lms_title}
-			, #{edu_time}
-			, #{edu_time_cf}
-			, #{edu_status}
 			, IFNULL(#{reg_id},'SYSTEM')
+			, #{license_type}
 		)	
 	</insert>
 	
-	<update id="updateContents" parameterType="com.easycompany.service.vo.LmsVo">
-		/**  com.easycompany.mapper.LmsMapper.updateContents **/	
-		UPDATE edu_lms 
-		   SET LMS_CNT = #{lms_cnt}
-	      	, CATEGORY1_KEY =  #{category1_key}
+	<update id="warrantUpdate" parameterType="com.easycompany.service.vo.WarrantVo">
+		/**  com.easycompany.mapper.WarrantMapper.warrantUpdate **/	
+		UPDATE edu_license 
+		   SET 
+	      	 CATEGORY1_KEY =  #{category1_key}
 	      	, CATEGORY2_KEY =  #{category2_key}
 	      	, CATEGORY3_KEY =  #{category3_key}
 	      	, CATEGORY1_NAME = #{category1_name}
 	      	, CATEGORY2_NAME = #{category2_name}
 	      	, CATEGORY3_NAME = #{category3_name}
-	      	, LMS_TITLE = #{lms_title}
-	      	, EDU_TIME = #{edu_time}
-	      	, EDU_TIME_CF = #{edu_time_cf}
-	      	, EDU_STATUS = #{edu_status}
+	      	, LICENSE_STATUS = #{license_status}
 	      	, CHG_DT = date_format(current_timestamp(),'%Y%m%d%H%i%s')
 		    , CHG_ID = IFNULL(#{chg_id},'SYSTEM')
 		    , REG_ID = IFNULL(#{reg_id},'SYSTEM')
- 		 WHERE CONTENT_IDX = #{content_idx}
+ 		 WHERE LICENSE_IDX = #{license_idx}
 	</update>
 	
-	<update id="delBoard">
-		/**  com.easycompany.mapper.LmsMapper.delBoard **/	
-		UPDATE edu_board 
+	<update id="warrantDel">
+		/**  com.easycompany.mapper.WarrantMapper.warrantDel **/	
+		UPDATE edu_license 
 		   SET CHG_DT = date_format(current_timestamp(),'%Y%m%d%H%i%s'),
 		   USE_YN = 'N'
- 		 WHERE BOARD_IDX IN (
+ 		 WHERE LICENSE_IDX IN (
 				<foreach collection="boardIdxList" item="item" separator=",">
 					#{item}
 				</foreach>)
 	</update>
                   
 	<insert id="insertLmsFile" parameterType="java.util.HashMap">
-		/**  com.easycompany.mapper.LmsMapper.insertLmsFile **/	
+		/**  com.easycompany.mapper.WarrantMapper.insertLmsFile **/	
 		<selectKey resultType="int" keyProperty="file_seq" order="BEFORE">			
 			SELECT IFNULL(MAX(FILE_SEQ), 0) + 1 
 			  FROM EDU_FILE			  
@@ -135,8 +122,8 @@
 		)	
 	</insert>
 	
-	<select id="selectFileList" parameterType="com.easycompany.service.vo.LmsVo" resultType="com.easycompany.service.vo.BoardVo">
-		/**  com.easycompany.mapper.LmsMapper.selectFileList **/	
+	<select id="selectFileList" parameterType="com.easycompany.service.vo.WarrantVo" resultType="com.easycompany.service.vo.BoardVo">
+		/**  com.easycompany.mapper.WarrantMapper.selectFileList **/	
 		SELECT FILE_GUBUN, FILE_ID, FILE_NAME, FILE_FULL_PATH, FILE_SEQ, FILE_ID, FILE_SIZE, FILE_KEY, FILE_OREDER_BY
 	      FROM edu_file
 	    <where>
@@ -146,7 +133,7 @@
 	</select>
 	
 	<select id="selectFile" parameterType="com.easycompany.service.vo.BoardVo" resultType="com.easycompany.service.vo.BoardVo">
-		/**  com.easycompany.mapper.LmsMapper.selectFile **/	
+		/**  com.easycompany.mapper.WarrantMapper.selectFile **/	
 		SELECT FILE_GUBUN, FILE_ID, FILE_NAME, FILE_FULL_PATH, FILE_SEQ, FILE_ID, FILE_SIZE, FILE_KEY, FILE_OREDER_BY
 	      FROM edu_file
 	    <where>
@@ -155,7 +142,7 @@
 	</select>
 	
 	<delete id="deleteBoardFile"		parameterType="com.easycompany.service.vo.BoardVo">
-	    /** com.easycompany.mapper.LmsMapper.deleteBoardFile **/
+	    /** com.easycompany.mapper.WarrantMapper.deleteBoardFile **/
 		DELETE
 		  FROM EDU_FILE
 		  <where>
@@ -164,7 +151,7 @@
 	</delete>
 	
 	<delete id="deleteBoardMapFile">
-	    /** com.easycompany.mapper.LmsMapper.deleteBoardFile **/
+	    /** com.easycompany.mapper.WarrantMapper.deleteBoardFile **/
 		DELETE
 		  FROM EDU_FILE
 		  <where>
@@ -177,7 +164,7 @@
 	</delete>
 	
 	<select id="delFileSelect" resultType="java.util.HashMap">
-		/**  com.easycompany.mapper.LmsMapper.delFileSelect **/	
+		/**  com.easycompany.mapper.WarrantMapper.delFileSelect **/	
 		SELECT FILE_GUBUN, FILE_ID, FILE_NAME, FILE_FULL_PATH, FILE_SEQ, FILE_ID, FILE_SIZE, FILE_KEY, FILE_OREDER_BY
 	      FROM edu_file
 	    <where>
@@ -516,14 +503,17 @@
 	      <if test="searchCondition !=null and searchCondition == 'CONTENTS'">
 	      	AND CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%')
 	      </if>
-	      <if test="searchDate !=null and searchDate != 'ALL'">
+	      <if test="license_type !=null and license_type != ''">
+	      	AND LICENSE_TYPE = #{license_type}
+	      </if>
+	      <!-- <if test="searchDate !=null and searchDate != 'ALL'">
 	      	<![CDATA[
 		       AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) >= #{start_date} AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) <= #{end_date} 
 	        ]]>
 	      </if>
 	      <if test="edu_status !=null and edu_status != 'ALL'">
 	      	AND EDU_STATUS = #{edu_status}
-	      </if>
+	      </if> -->
       </where>
 	</sql>
 	

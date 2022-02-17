@@ -64,7 +64,7 @@ model.addAttribute("path", request.getServletPath());
         <a href="#">LMS</a>
         <ul class="depth02-menu">
             <li <c:if test="${path =='/lms/contentsList.do'}" >        class="active" </c:if>><a href="<c:url value='/lms/contentsList.do' />">콘텐츠/교육자료 등록</a></li>
-            <li><a href="#">퀴즈 등록</a></li>
+            <li><a href='javascript:alert("준비중 입니다.");'>퀴즈 등록</a></li>
             <li <c:if test="${path =='/lms/studentList.do'}" >        class="active" </c:if>><a href="<c:url value='/lms/studentList.do' />">수강생/수료생 현황</a></li>
         </ul>
     </li>
@@ -80,7 +80,13 @@ model.addAttribute("path", request.getServletPath());
             <li <c:if test="${path =='/adBoard/instructReferList.do'}" > class="active" </c:if>><a href="<c:url value='/adBoard/instructReferList.do' />">강사 자료실</a></li>
         </ul>
     </li>
-    <li>
-        <a href="#">수료증/기타</a>    
+    <li <c:if test="${path =='/warrant/warrantGeneralDefault.do'}">  class="on" </c:if>>
+        <a href="#">수료증/기타</a>
+        <ul class="depth02-menu">
+            <li><c:if test="${path =='/warrant/warrantGeneralDefault.do'}" >        class="active" </c:if>><a href="<c:url value='/warrant/warrantGeneralDefault.do' />">일반 수료증</a></li>
+            <li><a href="#">번호 수료증</a></li>
+            <li><a href="#">수료증 발급</a></li>
+            <li><a href="#">업로드 자료</a></li>
+        </ul>
     </li>
 </ul>

@@ -1,9 +1,7 @@
 package com.easycompany.web;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,12 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.WebUtils;
 
-import com.easycompany.cmm.util.FileUtil;
-import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.cmm.vo.LoginVo;
 import com.easycompany.service.LmsService;
-import com.easycompany.service.vo.AdBoardVo;
-import com.easycompany.service.vo.BoardVo;
 import com.easycompany.service.vo.LmsVo;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
@@ -101,10 +95,11 @@ public class LmsController {
 			ArrayList<String> fileList = new ArrayList<>();
 			
 			if ("I".equals(lmsVo.getGubun1())) { // 저장
-				resultCnt = lmsService.contentsSave(lmsVo, file1, file2);
+				resultCnt = lmsService.contentsSave(lmsVo, file1, file2, request);
+				lmsVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
 				
 			} else if("E".equals(lmsVo.getGubun1())) { // 수정
-//				resultCnt = adBoardService.updateBoard(adBoardVo);
+				resultCnt = lmsService.updateContents(lmsVo);
 //				String[] ArraysStr = adBoardVo.getCheckdstr().split(",");
 //		    	  if(ArraysStr.length >0){
 //		    		  BoardVo boardVo = new BoardVo();
@@ -133,13 +128,46 @@ public class LmsController {
 //			            }
 //			       	  }
 //			      }
-//				adBoardVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
+				lmsVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
 			}
 //			
 		} catch (Exception e) {
 			lmsVo.setResult("FAIL");
 		}
 		return lmsVo;
+	}
+	
+	@RequestMapping(value = "/studentList.do")
+	public String studentList(@ModelAttribute("lmsVo") LmsVo lmsVo, ModelMap model, HttpServletRequest request) throws Exception {
+
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		/** EgovPropertyService.sample */
+		lmsVo.setPageUnit(propertiesService.getInt("pageUnit"));
+		lmsVo.setPageSize(propertiesService.getInt("pageSize"));
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(lmsVo.getPageIndex());
+		paginationInfo.setRecordCountPerPage(lmsVo.getPageUnit());
+		paginationInfo.setPageSize(lmsVo.getPageSize());
+		
+		/***  offSet 설정  ***/
+		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
+		lmsVo.setOffset(offset);
+		
+		List<LmsVo> list = lmsService.contentsList(lmsVo);
+		model.addAttribute("resultList", list);
+			
+		
+		int totCnt = lmsService.contentsListCnt(lmsVo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+		
+		lmsVo.setReg_id(loginvo.getId());		
+		model.addAttribute("lmsVo",   lmsVo);
+		model.addAttribute("path",      request.getServletPath());
+
+		return "studentList";
 	}
 
 }

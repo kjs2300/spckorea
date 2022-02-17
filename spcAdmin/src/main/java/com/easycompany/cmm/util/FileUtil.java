@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -14,7 +16,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.util.FileCopyUtils;
@@ -23,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.easycompany.service.vo.BoardVo;
-import com.easycompany.service.vo.CategoryVo;
 
 
 public class FileUtil {
@@ -255,7 +255,7 @@ public class FileUtil {
 		return fileList;
     }
 	
-	public static Map<String, Object> uploadFile (MultipartFile file, String filePath) {
+	public static Map<String, Object> uploadFile (MultipartFile file, String filePath, HttpServletRequest request) {
 		 
 		 Map<String, Object> map = null;
 		 
@@ -299,9 +299,11 @@ public class FileUtil {
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				System.out.println("++++++++++++++++++++++++"+e);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				System.out.println("++++++++++++++++++++++++"+e);
 			}
 		 return map;
 	 	}

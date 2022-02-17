@@ -163,7 +163,6 @@ nhn.husky.EZCreator.createInIFrame({
 });
 
 function fn_save(gubun1){
-	var formData = new FormData($('#commonForm')[0]);
 	
 	oEditors.getById["contents"].exec("UPDATE_CONTENTS_FIELD", []);
 	var content = document.getElementById("contents").value;;
@@ -206,8 +205,8 @@ function fn_save(gubun1){
 	if (gubun1 == "E"){
 		msg = "강사 자료실 수정 하시겠습니까?";
 	}
-		
-		var yn = confirm(msg);	
+	var formData = new FormData($('#commonForm')[0]);
+		var yn = confirm(msg);
 		if(yn){
 				
 			$.ajax({	

@@ -34,4 +34,8 @@ public class LmsMapper extends EgovAbstractMapper {
 		insert(nameSpace + ".insertLmsFile", map);
 	}
 
+	public int updateContents(LmsVo lmsVo) {
+		return (Integer) update(nameSpace + ".updateContents", lmsVo);
+	}
+
 }
