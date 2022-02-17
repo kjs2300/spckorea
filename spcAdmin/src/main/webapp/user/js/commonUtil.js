@@ -106,30 +106,7 @@ $(document).ready(function(){
 
 	
 	
-	/*   datepicker  */
-	$( function() {
-		$( "#datepickerFrom" ).datepicker({
-		  showOn: "button",
-		  buttonImage: "./images/common/ico_calendar.png",
-		  buttonImageOnly: true,
-		  buttonText: "Select date"
-		});
-		$( "#datepickerTo" ).datepicker({
-			showOn: "button",
-			buttonImage: "./images/common/ico_calendar.png",
-			buttonImageOnly: true,
-			buttonText: "Select date"
-		  });
 
-		$( "#datepickerDefault" ).datepicker({
-			showOn: "button",
-			buttonImage: "./images/common/ico_calendar.png",
-			buttonImageOnly: true,
-			buttonText: "Select date"
-		  });
-
-	  });
-	
 	
 	/*   팝업 begin  */
 	$('.pop-wrap').css({

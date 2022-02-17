@@ -9,16 +9,24 @@
 
 <script>
 <%--필수  --%>
-$(function(){
+$(document).ready(function(){
 	//팝업 관련 - 
-	//alert('popup');
+    <c:forEach var="result" items="${popupList}" varStatus="status">
+ 	    var url = '${pageContext.request.contextPath}/user/popup.do?popup_no=<c:out value="${result.popup_no}"/>';
+		var name = '<c:out value="${result.popup_no}"/>';
+		var option = 'top=<c:out value="${result.otpt_yaxs_lc}"/>px,left=<c:out value="${result.otpt_xaxs_lc}"/>px,width=<c:out value="${result.popup_ar}"/>px,height=<c:out value="${result.popup_hg}"/>px';
+		
+		if (gfnGetCookie('pop<c:out value="${result.popup_no}" />') == '') {
+		<c:if test="${result.use_yn == 'Y' }">
+		  window.open(url, 'popup' + name, option);
+		 </c:if>
+		}
+</c:forEach>
 });
 <%--필수  --%>
 </script>	
-    popupList
-    <c:forEach var="result" items="${popupList}" varStatus="status">
-    	${result.popup_nm} ${result.use_yn} </br>
-    </c:forEach>
+    
+
 
  <!--  main-layer begin -->
         <article id="main-layer">

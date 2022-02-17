@@ -30,6 +30,7 @@ if (request.getProtocol().equals("HTTP/1.1"))
     <script src="<c:url value='/user/slick/slick.js'         />"></script>	
     
     <script src="<c:url value='/resources/js/common.js' />"></script>
+    <script src="<c:url value='/js/common.js' />"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/SE2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
         
 </head>
