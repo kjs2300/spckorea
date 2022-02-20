@@ -885,7 +885,8 @@ public class EduController
 	    }
 	
 	    categoryVo.setWebPath(this.webPath);
-	
+	    	    
+	    //교육분류1
 	    categoryVo.setGubun3("categorycode1");
 	    List category1list = this.eduService.getCategoryCodeList(categoryVo);
 	    model.addAttribute("category1list", category1list);
@@ -1494,27 +1495,15 @@ public class EduController
 	    int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
 	    categoryVo.setOffset(offset);
 	
-	    if (StringUtil.isEmpty(categoryVo.getGubun1())) {
-	      categoryVo.setGubun1("R");
-	    }
 	
-	    if (StringUtil.isEmpty(categoryVo.getGubun2())) {
-	      categoryVo.setGubun2("eduInfoNoOrgline");
-	    }
-	
-	    if (StringUtil.isEmpty(categoryVo.getEdu_site())) {
-		    categoryVo.setEdu_site("nooff");
-	    }
-		
-		if (StringUtil.isEmpty(categoryVo.getSite())) {
-		   categoryVo.setSite("off");
-		}
-	    
+	    categoryVo.setGubun2("orgPopSearch");
 		categoryVo.setWebPath(this.webPath);
 	
-	    categoryVo.setGubun3("categorycode1");
-	    List category1list = this.eduService.getCategoryCodeList(categoryVo);
-	    model.addAttribute("category1list", category1list);
+		//공통 지역 코드 가져오기
+	    categoryVo.setGubun3("commonCode");
+	    categoryVo.setUp_cd_no("32");	    
+	    List arealist = this.eduService.getCategoryCodeList(categoryVo);
+	    model.addAttribute("arealist", arealist);
 	
 	    List list = this.eduService.getEducationList(categoryVo);
 	    model.addAttribute("resultList", list);

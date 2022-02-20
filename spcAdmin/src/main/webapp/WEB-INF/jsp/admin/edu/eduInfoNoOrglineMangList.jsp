@@ -375,7 +375,7 @@
 		 if (category3_key == ""){			
 			$("#category3_key").val(0);
 		 }	
-    	 frm.pageIndex.value = pageNo;
+		 $("#pageIndex").val(pageNo); 
      	 frm.action = "<c:url value='/edu/eduInfoNoOrglineList.do'/>";
        	 frm.submit();
      }

@@ -68,7 +68,17 @@ public class CategoryVo extends DefaultVO
   String coper_id;
   String coper_check;
   int    file_key;
-
+  String cd_no;
+  String up_cd_no;
+  String cd;
+  String user_id;
+  String area_cd;
+  String edu_auth_cd;
+  String sort_ordr;
+  String instructor_coper_nm;
+  String cd_nm;
+  String coper_nm1;
+  
   public String getCoper_nm_auto()
   {
     return this.coper_nm_auto;
@@ -582,4 +592,84 @@ public String getSite() {
   public void setFileExit(String fileExit) {
     this.fileExit = fileExit;
   }
+
+public String getCd_no() {
+	return cd_no;
+}
+
+public void setCd_no(String cd_no) {
+	this.cd_no = cd_no;
+}
+
+public String getUp_cd_no() {
+	return up_cd_no;
+}
+
+public void setUp_cd_no(String up_cd_no) {
+	this.up_cd_no = up_cd_no;
+}
+
+public String getCd() {
+	return cd;
+}
+
+public void setCd(String cd) {
+	this.cd = cd;
+}
+
+public String getCd_nm() {
+	return cd_nm;
+}
+
+public void setCd_nm(String cd_nm) {
+	this.cd_nm = cd_nm;
+}
+
+public String getUser_id() {
+	return user_id;
+}
+
+public void setUser_id(String user_id) {
+	this.user_id = user_id;
+}
+
+public String getArea_cd() {
+	return area_cd;
+}
+
+public void setArea_cd(String area_cd) {
+	this.area_cd = area_cd;
+}
+
+public String getEdu_auth_cd() {
+	return edu_auth_cd;
+}
+
+public void setEdu_auth_cd(String edu_auth_cd) {
+	this.edu_auth_cd = edu_auth_cd;
+}
+
+public String getSort_ordr() {
+	return sort_ordr;
+}
+
+public void setSort_ordr(String sort_ordr) {
+	this.sort_ordr = sort_ordr;
+}
+
+public String getInstructor_coper_nm() {
+	return instructor_coper_nm;
+}
+
+public void setInstructor_coper_nm(String instructor_coper_nm) {
+	this.instructor_coper_nm = instructor_coper_nm;
+}
+
+public String getCoper_nm1() {
+	return coper_nm1;
+}
+
+public void setCoper_nm1(String coper_nm1) {
+	this.coper_nm1 = coper_nm1;
+}
 }

@@ -375,7 +375,7 @@
 		 if (category3_key == ""){			
 			$("#category3_key").val(0);
 		 }	
-    	 frm.pageIndex.value = pageNo;
+		 $("#pageIndex").val(pageNo); 
      	 frm.action = "<c:url value='/edu/eduInfoOnlineList.do'/>";
        	 frm.submit();
      }
@@ -408,7 +408,7 @@
                         </c:forEach>
                     </select>
                     <select class="select"  id="category2_key" name="category2_key">
-                       <c:if test="${not empty categoryVo.category2_name }">
+                        <c:if test="${not empty categoryVo.category2_name }">
                        		<option value='${categoryVo.category2_key}'>${categoryVo.category2_name}</option>
                        	</c:if>
                     </select>

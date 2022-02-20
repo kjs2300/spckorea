@@ -353,6 +353,7 @@
      /* pagination 페이지 링크 function */
      function fn_egov_link_page(pageNo){
     	 var frm = document.commonForm;
+    	 $("#pageIndex").val(pageNo); 
     	 var category1_key = $("select[name=category1_key] option:selected").val();  //교육분류1
 	     var category2_key = $("select[name=category2_key] option:selected").val();  //교육분류2
 	  	 var category3_key = $("select[name=category3_key] option:selected").val();  //교육명		   
@@ -375,7 +376,7 @@
 		 if (category3_key == ""){			
 			$("#category3_key").val(0);
 		 }	
-    	 frm.pageIndex.value = pageNo;
+		 $("#pageIndex").val(pageNo); 
      	 frm.action = "<c:url value='/edu/eduInfoNoOrglineList.do'/>";
        	 frm.submit();
      }

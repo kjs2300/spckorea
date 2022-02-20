@@ -29,18 +29,21 @@
      /* pagination 페이지 링크 function */
      function fn_egov_link_page(pageNo){
     	var frm = document.commonForm;
-    	frm.pageIndex.value = pageNo;
+    	$("#pageIndex").val(pageNo); 
+     	$("#gubun2").val("categoryClass");
+    	$("#gubun1").val("R"); 
+     	$("#gubun2").val("categoryClass");
      	frm.action = "<c:url value='/edu/eduInfoClassList.do'/>";
         frm.submit();
      }
      //-->
  </script>
 			   <form  id="commonForm" name="commonForm"  method="post"  action="">
-			        <input type="hidden" id="pageIndex"         name="pageIndex"   value='1'                      class="input-box" />
-					<input type="hidden" id="gubun1"         name="gubun1"   value='I'                      class="input-box" />
- 				    <input type="hidden" id="gubun2"         name="gubun2"   value='category4'              class="input-box" />		
- 				    <input type="hidden" id="site"           name="site" class="input-box"/>
- 				    <input type="hidden" id="pageIndex"      name="pageIndex"      class="input-box" value=1 />	
+			        <input type="hidden" id="pageIndex"      name="pageIndex"   value='1'                    class="input-box" />
+					<input type="hidden" id="gubun1"         name="gubun1"      value='I'                    class="input-box" />
+ 				    <input type="hidden" id="gubun2"         name="gubun2"      value='category4'            class="input-box" />		
+ 				    <input type="hidden" id="site"           name="site"        value='${categoryVo.site}'   class="input-box"/>
+ 				    <input type="hidden" id="pageIndex"      name="pageIndex"   value=1                      class="input-box"  />	
  				  
 	           </form>
  
@@ -84,8 +87,8 @@
                         <c:forEach var="result" items="${resultList}" varStatus="status">
                             <tr>
                                 <td>${result.category1_name}</td>
-                                <td>${result.category2_name}</td>
-                                <td>${result.category3_name}</td>
+                                <td class="tl">${result.category2_name}</td>
+                                <td class="tl"> ${result.category3_name}</td>
                             </tr>
  						</c:forEach>
                      

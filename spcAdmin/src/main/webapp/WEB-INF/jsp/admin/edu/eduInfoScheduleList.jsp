@@ -209,7 +209,7 @@
      /* pagination 페이지 링크 function */
      function fn_egov_link_page(pageNo){
     	var frm = document.commonForm;
-    	frm.pageIndex.value = pageNo;
+    	$("#pageIndex").val(pageNo); 
      	frm.action = "<c:url value='/edu/eduInfoScheduleList.do'/>";
         frm.submit();
      }

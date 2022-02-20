@@ -11,7 +11,7 @@
      <div id="container">
 
          <div class="tit-wrap">
-             <h1 class="h1-tit">생명지킴이란?</h1>
+             <h1 class="h1-tit">생명지킴이</h1>
 
              <div class="side-cont">
                  <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
@@ -23,10 +23,10 @@
          </div>
 
          <div class="contents-wrap">             
-             <img class="img-box" src="${pageContext.request.contextPath}/user/images/contents/contents01.png" alt="생명지킴이란?"/>
+             <img class="img-box" src="${pageContext.request.contextPath}/user/images/contents/contents01.png" alt="생명지킴이"/>
              
               <div class="comp">
-                  <h2 class="h2-tit">생명지킴이란?</h2>
+                  <h2 class="h2-tit">생명지킴이</h2>
                   <ul class="dot-list">
                       <li>자살 위험에 처한 주변인의 ‘신호‘를 인식하여 지속적 관심을 가지고, 그들이 적절한 도움을 받을 수 있는 자원(기관, 전문가)에 연계하는 사람</li>
                   </ul>

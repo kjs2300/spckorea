@@ -142,11 +142,14 @@
 		var frm = document.commonForm;
 		$("#gubun1").val('R'); 
 		$("#inst_nm").val('');      //강사명
+		$("#edu_target").val('');      //교육대상
 		$("#train_s_date").val(''); //교육기간
 		$("#train_e_date").val(''); //교육기간
 		$("#category1_key").val(0); //교육분류
 		$("#category2_key").val(0); //교육분류
 		$("#category3_key").val(0); //교육명
+		$("#category3_name").val(''); //교육명
+		$("#category3_name").val(''); //교육명
 		frm.action = "<c:url value='/edu/eduInfoOnlineList.do'/>";
 		frm.submit();
    }
@@ -529,7 +532,7 @@
                                      <div class="grid-box">
                                         <input type="text" id="edu_curr1_arr" placeholder="회차"    name="edu_curr1_arr"  class="input-box" value="${result.edu_curr1}"/>
                                         <input type="text" id="edu_curr2_arr" placeholder="단원명"   name="edu_curr2_arr"  class="input-box" value="${result.edu_curr2}"/>
-                                        <input type="text" id="edu_curr3_arr" placeholder="강의시간"  name="edu_curr3_arr"  class="input-box" value="${result.edu_cur3}" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+                                        <input type="text" id="edu_curr3_arr" placeholder="강의시간"  name="edu_curr3_arr"  class="input-box" value="${result.edu_curr3}" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
                                         <c:if test="${status.index !=0 }">
                                         	<button type='button' class='sm-btn black-btn'>삭제</button>
                                 		</c:if>

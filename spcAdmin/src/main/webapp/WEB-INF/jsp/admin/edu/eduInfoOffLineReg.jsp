@@ -135,12 +135,45 @@
 		var coper_id     = $("#coper_id").val();       //기관명자동아이디
 		var coper_check  = $('input:radio[name="coper_check"]:checked').val();    //기관Check(AUTO,HAND)
 		
+		if(coper_check =='AUTO'){
+			if (coper_nm_auto == ""){			
+				alert("기관명을 입력 하세요.");
+				$("#coper_nm_auto").focus()
+				return;
+			}	
+		}
+		if(coper_check =='HAND'){
+			if (coper_nm == ""){			
+				alert("기관명을 입력 하세요.");
+				$("#coper_nm").focus()
+				return;
+			}	
+		}
+		
 		var edu_target   = $("#edu_target").val();    //교육대상
 		var edu_time     = $("#edu_time").val();      //교육시간
-		var edu_garden   = $("#edu_garden").val();    //교육정원
+		var edu_garden   = $("#edu_garden").val();    //교육인원
 		var edu_status   = $('input:radio[name="edu_status"]:checked').val();    //교육상태(신청중:I,신청취소:C, 신청마감:F, 사용중지:P, 결과보고:R)*
 		var exp_use_yn   = $('input:radio[name="exp_use_yn"]:checked').val();    //교육 노출여부
 		
+	
+		
+		if (edu_target == ""){			
+			alert("교육대상을 입력 하세요.");
+			$("#edu_target").focus()
+			return;
+		}	
+		
+		if (edu_time == ""){			
+			alert("교육시간을 입력 하세요.");
+			$("#edu_time").focus()
+			return;
+		}	
+		if (edu_garden == ""){			
+			alert("교육인원을 입력 하세요.");
+			$("#edu_garden").focus()
+			return;
+		}	
 	
 		var formData = new FormData(); 
 		
@@ -268,13 +301,13 @@
                                 <td>
                                     <div class="tb-cont">
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box cdate" id="coper_check"   name="coper_check"    value="AUTO" <c:if test="${categoryForm.coper_check =='AUTO'   }">checked </c:if>>
+                                            <input type="radio" class="radio-box cdate" id="coper_check"   name="coper_check"    value="AUTO" <c:if test="${categoryForm.coper_check =='AUTO' || (empty categoryForm.coper_check)  }">checked </c:if>>
                                             <input type="text"  class="input-box"  id="coper_nm_auto" name="coper_nm_auto"  readonly value="${categoryForm.coper_nm_auto}"/>
                                             <button type="button" onClick="javascript:openWindowPop('<c:url value='/edu/orgPopSearch.do'/>','popup');" class="sm-btn blue-btn">검색</button>
                                         </div>
                                           
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box cdate" id="coper_check" name="coper_check" value="HAND" <c:if test="${categoryForm.coper_check =='HAND' || (empty categoryForm.coper_check) }">checked </c:if>>
+                                            <input type="radio" class="radio-box cdate" id="coper_check" name="coper_check" value="HAND" <c:if test="${categoryForm.coper_check =='HAND'  }">checked </c:if>>
                                             <label for="">직접입력</label>
                                             <input type="text" class="input-box" id="coper_nm" name="coper_nm"  value="${categoryForm.coper_nm}"/>
                                         </div>

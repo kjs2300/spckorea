@@ -1,5 +1,6 @@
 package com.easycompany.mapper;
 
+import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.service.vo.CategoryVo;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import java.util.List;
@@ -139,6 +140,10 @@ public class EduMapper extends EgovAbstractMapper
     if ("eduInfoOnline".equals(categoryVo.getGubun2())) {
       sqlName = "getEduInfoOnlineList";
     }
+    if ("orgPopSearch".equals(categoryVo.getGubun2())) {
+        sqlName = "getOrgPopSearchList";
+    }
+    
     return selectList(this.nameSpace + "." + sqlName, categoryVo);
   }
 
@@ -149,6 +154,9 @@ public class EduMapper extends EgovAbstractMapper
     if ("eduInfoOnline".equals(categoryVo.getGubun2())) {
       sqlName = "getEduInfoOnlineCount";
     }
+    if ("orgPopSearch".equals(categoryVo.getGubun2())) {
+        sqlName = "getOrgPopSearchCount";
+     }
 
     return ((Integer)selectOne(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
@@ -408,6 +416,10 @@ public class EduMapper extends EgovAbstractMapper
     if ("eduInfoScheduleList".equals(categoryVo.getGubun2())) {
         sqlName = "getCategoryCodeList";
     }
+    if ( (!StringUtil.isEmpty(categoryVo.getGubun3()))  && "commonCode".equals(categoryVo.getGubun3())) {
+        sqlName = "getComnonCodeList";
+    }
+    
     return selectList(this.nameSpace + "." + sqlName, categoryVo);
   }
 

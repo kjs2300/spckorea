@@ -117,9 +117,9 @@
 		$("#addNum").val(addNum);
 		
 		var row = "<div class='grid-box'>";
-			row += "<input type='text' id='edu_curr1_arr'  name='edu_curr1_arr' class='input-box' />";
-			row += "<input type='text' id='edu_curr2_arr'  name='edu_curr2_arr' class='input-box' />";
-			row += "<input type='text' id='edu_curr3_arr'  name='edu_curr3_arr' onKeyup=this.value=this.value.replace(/[^0-9]/g,'') class='input-box' />";
+			row += "<input type='text' id='edu_curr1_arr'  placeholder='회차' name='edu_curr1_arr' class='input-box' />";
+			row += "<input type='text' id='edu_curr2_arr'  placeholder='단원명' name='edu_curr2_arr' class='input-box' />";
+			row += "<input type='text' id='edu_curr3_arr'  placeholder='강의시간' name='edu_curr3_arr' onKeyup=this.value=this.value.replace(/[^0-9]/g,'') class='input-box' />";
 			//row += "<span>삭제</span>";
 			row += "<button type='button' class='sm-btn black-btn'>삭제</button>";
 			
@@ -536,16 +536,16 @@
                                  <div id="insertCurr">
                                    <c:if test="${empty categoryFormSubList }">
                                     <div class="grid-box">
-                                        <input type="text" id="edu_curr1_arr"  name="edu_curr1_arr" class="input-box" value=""/>
-                                        <input type="text" id="edu_curr2_arr"  name="edu_curr2_arr" class="input-box" value=""/>
-                                        <input type="text" id="edu_curr3_arr"  name="edu_curr3_arr" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  class="input-box" value=""/>
+                                        <input type="text" id="edu_curr1_arr"  placeholder="회차"    nname="edu_curr1_arr" class="input-box" value=""/>
+                                        <input type="text" id="edu_curr2_arr"  placeholder="단원명"   name="edu_curr2_arr" class="input-box" value=""/>
+                                        <input type="text" id="edu_curr3_arr"  placeholder="강의시간" name="edu_curr3_arr" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  class="input-box" value=""/>
                                     </div>
                                     </c:if>
                                      <c:forEach var="result" items="${categoryFormSubList}" varStatus="status">
                                      <div class="grid-box">
-                                        <input type="text" id="edu_curr1_arr" placeholder="회차"   name="edu_curr1_arr" class="input-box" value="${result.edu_curr1}"/>
-                                        <input type="text" id="edu_curr2_arr" placeholder="단원명"  name="edu_curr2_arr" class="input-box" value="${result.edu_curr2}"/>
-                                        <input type="text" id="edu_curr3_arr" placeholder="강의시간" name="edu_curr3_arr"  onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  class="input-box" value="${result.edu_curr3}"/>
+                                        <input type="text" id="edu_curr1_arr" placeholder="회차"   name="edu_curr1_arr" class="input-box" value="${result.edu_curr1}"  placeholder="교육명"/>
+                                        <input type="text" id="edu_curr2_arr" placeholder="단원명"  name="edu_curr2_arr" class="input-box" value="${result.edu_curr2}" placeholder="교육명"/>
+                                        <input type="text" id="edu_curr3_arr" placeholder="강의시간" name="edu_curr3_arr"  onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  class="input-box" value="${result.edu_curr3}" />
                                         <c:if test="${status.index !=0 }">
                                         	<button type='button' class='sm-btn black-btn'>삭제</button>
                                 		</c:if>

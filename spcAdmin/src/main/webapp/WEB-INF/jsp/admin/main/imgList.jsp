@@ -80,9 +80,10 @@
     
 	  /* pagination 페이지 링크 function */
     function fn_egov_link_page(pageNo){
-    	document.listForm.pageIndex.value = pageNo;
-    	document.listForm.action = "<c:url value='/main/imgList.do'/>";
-       	document.listForm.submit();
+    	var frm = document.commonForm;
+    	$("#pageIndex").val(pageNo); 
+    	frm.action = "<c:url value='/main/imgList.do'/>";
+       	frm.submit();
     }	  
 	
 	  function fn_edit(str,key1) {

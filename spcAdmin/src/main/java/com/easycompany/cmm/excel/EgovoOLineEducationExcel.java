@@ -93,7 +93,7 @@ public class EgovoOLineEducationExcel extends AbstractExcelView
         setText(cell, Integer.toString(i + 1));
 
         cell = getCell(sheet, 3 + i, 1);
-        setText(cell, categVo.getCoper_nm());
+        setText(cell, categVo.getCoper_nm1());
 
         cell = getCell(sheet, 3 + i, 2);
         setText(cell, categVo.getCategory3_name());

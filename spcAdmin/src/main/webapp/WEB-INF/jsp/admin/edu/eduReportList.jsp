@@ -81,9 +81,10 @@
  	}	
  	/* pagination 페이지 링크 function */
     function fn_egov_link_page(pageNo){
-    	document.commonForm.pageIndex.value = pageNo;
-    	document.commonForm.action = "<c:url value='/edu/eduInfoClassCate.do'/>";
-       	document.commonForm.submit();
+    	var frm = document.commonForm;
+    	$("#pageIndex").val(pageNo); 
+    	frm.action = "<c:url value='/edu/eduInfoClassCate.do'/>";
+       	frm.submit();
     }
  	
     function fn_edit(key1,key2,key3, name1,name2,idx,gubun1,gubun2){
