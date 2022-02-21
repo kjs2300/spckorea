@@ -116,7 +116,7 @@ var editImgUpLoad = function(){
 		title: '이미지 업로드',
 		content: '' +
 		'<div class="table-type2">' +
-			'<form id="editImgForm" method="post">' +
+			'<form id="editImgForm" method="post" enctype="Multipart/form-data">' +
 				'<table>' +
 					'<colgroup>' +
 						'<col style="width:80px;">' +
@@ -142,19 +142,18 @@ var editImgUpLoad = function(){
 
 						var form = $("#editImgForm")[0];
 						var formData = new FormData(form);
-						var urlStr = "/common/ajax/setEditImgUpLoad";
 						formData.append("imgFile", $("#imgFile")[0].files[0]);
 						
 					    $.ajax({
-					        url: urlStr,
-							mimeType:"multipart/form-data",
-					        method: "POST",
-					        data: formData,
-							processData:false,
-							contentType:false,
+					        url: "/adBoard/setEditImgUpLoad.do",
+							dataType : "JSON",
+							type	 : "POST",
+							data: formData,
+							processData: false, 
+					        contentType: false,
 					        success: function(result) {
 					        	console.log(JSON.stringify(result));
-					        	var imgPath = result.data.wonlabUrl + result.data.wonlabEditImg + result.data.newFileName;
+					        	var imgPath = result.path;
 					        	
 							    $.confirm({
 							        title: '등록',
@@ -171,7 +170,13 @@ var editImgUpLoad = function(){
 					        },
 					        error: function(data) {
 					        	console.log(JSON.stringify(data));
-								$Util.dialog("오류", "등록 처리중 오류가 발생했습니다.", "red");
+								$.dialog({
+								    title: "오류",
+								    content: "등록 처리중 오류가 발생했습니다.",
+								    type: "red",
+							        useBootstrap: false,
+								    boxWidth:'230px'
+								});
 					        }
 					    });
 					}

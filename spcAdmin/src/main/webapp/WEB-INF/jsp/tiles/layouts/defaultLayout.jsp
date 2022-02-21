@@ -33,6 +33,9 @@ if (request.getProtocol().equals("HTTP/1.1"))
     <script src="<c:url value='/js/jquery-2.2.0.min.js' />"></script>	
     <script src="<c:url value='/js/commonUtil.js' />"></script>	
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/SE2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    
         
 </head>
   

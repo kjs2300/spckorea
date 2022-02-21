@@ -8,7 +8,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
 <h1 class="h1-tit">공지사항 ${ not empty detailData.board_idx ? "수정" : "등록"}</h1>
 
@@ -120,6 +121,11 @@ nhn.husky.EZCreator.createInIFrame({
 	},
 	fCreator : "createSEditor2"
 });
+
+var setEditImg = function(imgPath){
+	var imgTag = '<img src="' + imgPath + '">';
+	oEditors.getById["contents"].exec("PASTE_HTML", [imgTag]);
+};
 
 function fn_save(gubun1){
 	
@@ -270,5 +276,7 @@ function fileDownload(key1){
 	frm.action = "<c:url value='/adBoard/fileDownload.do'/>";
 	frm.submit();
 }
+
+
 
 </script>

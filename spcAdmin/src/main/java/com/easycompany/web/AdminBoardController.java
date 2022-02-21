@@ -9,8 +9,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -435,6 +438,58 @@ public class AdminBoardController {
 	    boardVoForm.setFile_size(boardVo.getFile_size());	 
 	
 	    FileUtil.fileDownload(request, response, boardVoForm);
+	}
+	
+	@RequestMapping(value = "/setEditImgUpLoad.do")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> setEditImgUpLoad(HttpServletRequest request, @RequestParam("imgFile") MultipartFile imgFile) {
+
+		ResponseEntity<Map<String, Object>> resContent = null;
+		Map<String, Object> resultJSON = new HashMap<String, Object>();
+
+		try {
+
+			int result = 0;
+        	
+			if ((imgFile.getSize() > 0 && imgFile.getSize() <= 5242880 ) 
+					&& ("image/jpeg".equals(imgFile.getContentType()) || "image/png".equals(imgFile.getContentType()))) {
+
+				String fileAddpath = this.filePath + File.separator + "editor";
+
+				BoardVo fileVo = FileUtil.uploadFile(request, fileAddpath);
+				// 파일 업로드
+				
+				if(fileVo != null){
+
+					String path = fileVo.getFile_full_path();
+					String fileName = fileVo.getFile_name();
+					String newFileName = fileVo.getFile_uuid();
+
+					if(StringUtils.isNotEmpty(StringUtils.trim(path))){
+						resultJSON.put("path", path);
+					}
+					
+					if(StringUtils.isNotEmpty(StringUtils.trim(newFileName))){
+						resultJSON.put("newFileName", newFileName);
+					}
+					
+					if(StringUtils.isNotEmpty(StringUtils.trim(fileName))){
+						resultJSON.put("fileName", fileName);
+					}
+
+					resContent = new ResponseEntity<Map<String, Object>>(resultJSON, HttpStatus.OK);
+				}
+			} else {
+				resContent = new ResponseEntity<Map<String, Object>>(resultJSON, HttpStatus.BAD_REQUEST);
+			}
+
+
+			
+		} catch (Exception e) {
+
+			resContent = new ResponseEntity<Map<String, Object>>(resultJSON, HttpStatus.BAD_REQUEST);
+		}
+        return resContent;
 	}
 
 }
