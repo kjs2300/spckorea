@@ -76,5 +76,28 @@
        <put-attribute name="body" value="/WEB-INF/jsp/web/info/info06.jsp" />  
    </definition> 
 
-
+    <!--생명지킴이 교육신청 > 교육신청  > 온라인교육 -->
+   <definition name="lifeEduOnLieList" extends="common-definition">  
+       <put-attribute name="title" value="생명지킴이 교육신청" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/edu/life/lifeEduOnLieList.jsp" />  
+   </definition> 
+   
+    <!--생명지킴이 교육신청 > 교육신청  > 교육 기관별 -->
+   <definition name="lifeEduOrgList" extends="common-definition">  
+       <put-attribute name="title" value="교육 기관별" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/edu/life/lifeEduOrgList.jsp" />  
+   </definition>
+   
+    <!--생명지킴이 교육신청 > 교육신청  > 교육 기관별 -->
+   <definition name="lifeEduSch" extends="common-definition">  
+       <put-attribute name="title" value="교육 기관별" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/edu/life/lifeEduSch.jsp" />  
+   </definition>
+   
+    <!--생명지킴이 교육신청 > 교육신청  > 생명지킴이 활동 수기 -->
+   <definition name="lifeEduBoard" extends="common-definition">  
+       <put-attribute name="title" value="생명지킴이 활동 수기" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/edu/life/lifeEduBoard.jsp" />  
+   </definition>
+   
 </tiles-definitions>

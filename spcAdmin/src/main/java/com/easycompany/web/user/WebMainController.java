@@ -15,11 +15,14 @@ import org.springframework.web.util.WebUtils;
 import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.cmm.vo.LoginVo;
 import com.easycompany.service.MainService;
+import com.easycompany.service.EduService;
 import com.easycompany.service.AdBoardService;
 import com.easycompany.service.vo.AdBoardVo;
 import com.easycompany.service.vo.MainVo;
+import com.easycompany.service.vo.CategoryVo;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
 @RequestMapping({"user"})
@@ -28,6 +31,9 @@ public class WebMainController
 
   @Autowired
   private MainService mainService;
+  
+  @Autowired
+  private EduService eduService;
   
   @Autowired
   private AdBoardService adBoardService;
@@ -235,61 +241,99 @@ public class WebMainController
     return "info06";
   }
   
-
+ 
   /*
-   * 사용자 페이지 > 교육안내 > 일반 교육안내
+   * 생명지킴이 교육신청 > 교육신청  > 온라인교육
    */
-  @RequestMapping({"/normalInfo.do"})
-  public String normalInfo(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+  @RequestMapping({"/lifeEduOnLieList.do"})
+  public String lifeEduOnLieList(@ModelAttribute("CategoryVo") CategoryVo categoryVo, ModelMap model, HttpServletRequest request)
     throws Exception
   {
    
-    if (StringUtil.isEmpty(mainVo.getGubun1())) {
-      mainVo.setGubun1("R");
+	LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+	  
+   	categoryVo.setGubun1("R");
+   	categoryVo.setGubun2("lifeEduOnLieList");
+    
+   	String edu_status ="신청중";
+   	String edu_site   = "on";
+    //  온라인에서 Category1_key 1: 일반, 2: 실무자  3:강사
+   	/*
+   	on	1	1	12	일반	온라인교육	일반 온라인 교육1
+	on	1	1	13	일반	온라인교육	일반 온라인 교육2
+	on	1	2	14	일반	생명지킴이 강사 양성 교육	생명지킴이 양성교육1
+	on	3	7	15	강사	강사 보수 교육	강사교육1
+	on	2	3	16	실무자	실무자 역량 강화 교육	실무자 역량 강화 교육1
+	on	2	4	17	실무자	자살유족 서비스 제공 인력 교육	자살유족 서비스 제공 인력 교육1
+	on	2	5	18	실무자	광역주도형 심리부검 주면담원 양성교육	광역주도형 심리부검 주면담원 양성교육1
+	on	2	6	19	실무자	자살사후대응 전문가 양성교육	자살사후대응 전문가 양성교육1
+	off	4	8	20	일반	생명지킴이 강사 양성 교육	생명지킴이 강사 양성 교육1
+	off	5	9	21	실무자	실무자 역량 강화 교육	실무자 역량 강화 교육1
+	off	5	10	22	실무자	자살유족 서비스 제공 인력 교육	자살유족 서비스 제공 인력 교육1
+	off	5	11	23	실무자	광역주도형 심리부검 주면담원 양성교육	광역주도형 심리부검 주면담원 양성교육1
+	off	5	12	24	실무자	자살사후대응 전문가 양성교육	자살사후대응 전문가 양성교육1
+	off	7	14	1	기관	교육개설	보고듣고말하기 2.0 기본형
+
+   	 */
+    categoryVo.setCategory1_key(1);
+    categoryVo.setCategory2_key(1);
+    categoryVo.setEdu_site(edu_site);
+    categoryVo.setEdu_status(edu_status);
+  
+    
+    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
+    categoryVo.setPageSize(this.propertiesService.getInt("pageSize"));
+
+    PaginationInfo paginationInfo = new PaginationInfo();
+    paginationInfo.setCurrentPageNo(categoryVo.getPageIndex());
+    paginationInfo.setRecordCountPerPage(categoryVo.getPageUnit());
+    paginationInfo.setPageSize(categoryVo.getPageSize());
+
+    int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+    categoryVo.setOffset(offset);
+ 
+    if (StringUtil.isEmpty(categoryVo.getSort_ordr())) {
+        categoryVo.setSort_ordr("TRAIN_S_DATE");
     }
-    if (StringUtil.isEmpty(mainVo.getGubun2())) {
-      mainVo.setGubun2("logo");
+    
+    if (StringUtil.isEmpty(categoryVo.getSearchCondition())) {
+        categoryVo.setSearchCondition("CATEGORY3_NAME");
     }
-    mainVo.setWebPath(this.webPath);
+    
+    List list = this.eduService.getEducationList(categoryVo);
+    model.addAttribute("resultList", list);
 
-    MainVo mainForm = this.mainService.getCommonDetail(mainVo);
+    int totCnt = this.eduService.getEducationCount(categoryVo);
+    paginationInfo.setTotalRecordCount(totCnt);
+    model.addAttribute("paginationInfo", paginationInfo);    
+     
+    categoryVo.setCategory3_key(0);
+    //분류1
+    categoryVo.setGubun3("categorycode1");
+    List category1list = this.eduService.getCategoryCodeList(categoryVo);
+    model.addAttribute("category1list", category1list);
+    
+    //분류2
+    categoryVo.setGubun3("categorycode2");
+    List category2list = this.eduService.getCategoryCodeList(categoryVo);
+    model.addAttribute("category2list", category2list);
+        
+    //분류3
+    categoryVo.setGubun3("categorycode3");
+    List category3list = this.eduService.getCategoryCodeList(categoryVo);
+    model.addAttribute("category3list", category3list);
+        
+    categoryVo.setWebPath(this.webPath);
+    model.addAttribute("categoryVo", categoryVo);
+    model.addAttribute("path",       request.getServletPath());
 
-    model.addAttribute("mainVo",    mainVo);
-    model.addAttribute("mainForm",  mainForm);
-    model.addAttribute("path",      request.getServletPath());
-
-    return "normalInfo";
+    return "lifeEduOnLieList";
   }
   
   /*
-   * 사용자 페이지 > 생명지킴이교육 > 교육신청  > 온라인 생명 지킴이 교육
+   * 생명지킴이 교육신청 > 교육신청  > 교육 기관별
    */
-  @RequestMapping({"/lifeReqOn.do"})
-  public String lifeReqOn(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
-    throws Exception
-  {
-   
-    if (StringUtil.isEmpty(mainVo.getGubun1())) {
-      mainVo.setGubun1("R");
-    }
-    if (StringUtil.isEmpty(mainVo.getGubun2())) {
-      mainVo.setGubun2("logo");
-    }
-    mainVo.setWebPath(this.webPath);
-
-    MainVo mainForm = this.mainService.getCommonDetail(mainVo);
-
-    model.addAttribute("mainVo",    mainVo);
-    model.addAttribute("mainForm",  mainForm);
-    model.addAttribute("path",      request.getServletPath());
-
-    return "lifeReqOn";
-  }
-  
-  /*
-   * 사용자 페이지 > 기관 회원 서비스  > 기관 회원 교육신청  >  교육소개 
-   */
-  @RequestMapping({"/userOrgInfo.do"})
+  @RequestMapping({"/lifeEduOrgList.do"})
   public String userOrgInfo(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
     throws Exception
   {
@@ -308,13 +352,13 @@ public class WebMainController
     model.addAttribute("mainForm",  mainForm);
     model.addAttribute("path",      request.getServletPath());
 
-    return "userOrgInfo";
+    return "lifeEduOrgList";
   }
   
   /*
-   * 사용자 페이지 > 생명지킴이 강사 공간   > 강사 공지사항
+   * 생명지킴이 교육신청 > 교육일정  
    */
-  @RequestMapping({"/userInstNotiList.do"})
+  @RequestMapping({"/lifeEduSch.do"})
   public String userInstNotiList(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
     throws Exception
   {
@@ -333,6 +377,31 @@ public class WebMainController
     model.addAttribute("mainForm",  mainForm);
     model.addAttribute("path",      request.getServletPath());
 
-    return "userInstNotiList";
+    return "lifeEduSch";
+  }
+  
+  /*
+   * 생명지킴이 교육신청 > 생명지킴이 활동 수기  
+   */
+  @RequestMapping({"/lifeEduBoard.do"})
+  public String lifeEduBoard(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+   
+    if (StringUtil.isEmpty(mainVo.getGubun1())) {
+      mainVo.setGubun1("R");
+    }
+    if (StringUtil.isEmpty(mainVo.getGubun2())) {
+      mainVo.setGubun2("logo");
+    }
+    mainVo.setWebPath(this.webPath);
+
+    MainVo mainForm = this.mainService.getCommonDetail(mainVo);
+
+    model.addAttribute("mainVo",    mainVo);
+    model.addAttribute("mainForm",  mainForm);
+    model.addAttribute("path",      request.getServletPath());
+
+    return "lifeEduBoard";
   }
 }

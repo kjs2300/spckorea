@@ -27,7 +27,7 @@
 		      </ul>
 	      </div>
      </c:if>
-      <c:if test="${fn:contains(path, '/user/info')}">
+     <c:if test="${fn:contains(path, '/user/info')}">
 	      <aside class="tit">개요</aside>
 	      <div class="lnb-menu">
 	          <ul>
@@ -49,6 +49,23 @@
 		            <li <c:if test="${path =='/user/info06.do'}">   class="on" </c:if>>
 		             	<a href="${pageContext.request.contextPath}/user/info06.do">자살사후대응 전문가<br/> 양성교육</a>
 		            </li>
+		      </ul>
+	      </div>
+     </c:if>
+
+     <c:if test="${fn:contains(path, '/user/lifeEdu')}">
+	      <aside class="tit">생명지킴이교육</aside>
+	      <div class="lnb-menu">
+	          <ul>
+	                 <li <c:if test="${fn:contains(path, '/user/lifeEduOnLie') || fn:contains(path, '/user/lifeEduOrg') }">  class="on" </c:if>>
+	                 	<a href="#">교육신청</a>
+	                 	<ul class="sub-lnb">
+                        	<li <c:if test="${fn:contains(path, '/user/lifeEduOnLie') }">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/lifeEduOnLieList.do">온라인교육</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/lifeEduOrgList.do">교육 기관별</a></li>
+                        </ul>
+	                 </li>
+		             <li <c:if test="${fn:contains(path, '/user/lifeEduSch') }">    class="on" </c:if>>   <a href="${pageContext.request.contextPath}/user/lifeEduSch.do">교육일정</a></li>
+	             	 <li <c:if test="${fn:contains(path, '/user/lifeEduBoard') }">  class="on" </c:if>> <a href="${pageContext.request.contextPath}/user/lifeEduBoard.do">생명지킴이 활동 수기</a></li>
 		      </ul>
 	      </div>
      </c:if>

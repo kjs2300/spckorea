@@ -32,12 +32,12 @@ model.addAttribute("path", request.getServletPath());
 	             <li>
 	                 <a href="#">교육신청</a>
 	                 <ul class="depth3">
-	                     <li><a href="#">온라인교육</a></li>
-	                     <li><a href="#">교육 기관별</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/lifeEduOnLieList.do">온라인교육</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/lifeEduOrgList.do">교육 기관별</a></li>
 	                 </ul>
 	             </li>
-	             <li><a href="#">교육일정</a></li>
-	             <li><a href="#">생명지킴이 활동 수기</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/lifeEduSch.do">교육일정</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/lifeEduBoard.do">생명지킴이 활동 수기</a></li>
 	         </ul>
 	         <ul class="depth2">
 	             <li>

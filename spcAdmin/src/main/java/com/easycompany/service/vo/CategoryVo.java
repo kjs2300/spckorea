@@ -78,6 +78,7 @@ public class CategoryVo extends DefaultVO
   String instructor_coper_nm;
   String cd_nm;
   String coper_nm1;
+  int    totCnt;
   
   public String getCoper_nm_auto()
   {
@@ -671,5 +672,13 @@ public String getCoper_nm1() {
 
 public void setCoper_nm1(String coper_nm1) {
 	this.coper_nm1 = coper_nm1;
+}
+
+public int getTotCnt() {
+	return totCnt;
+}
+
+public void setTotCnt(int totCnt) {
+	this.totCnt = totCnt;
 }
 }

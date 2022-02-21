@@ -143,6 +143,9 @@ public class EduMapper extends EgovAbstractMapper
     if ("orgPopSearch".equals(categoryVo.getGubun2())) {
         sqlName = "getOrgPopSearchList";
     }
+    if ("lifeEduOnLieList".equals(categoryVo.getGubun2())) {
+        sqlName = "getLifeEduOnLieList";
+    }
     
     return selectList(this.nameSpace + "." + sqlName, categoryVo);
   }
@@ -156,7 +159,10 @@ public class EduMapper extends EgovAbstractMapper
     }
     if ("orgPopSearch".equals(categoryVo.getGubun2())) {
         sqlName = "getOrgPopSearchCount";
-     }
+    }
+    if ("lifeEduOnLieList".equals(categoryVo.getGubun2())) {
+        sqlName = "getLifeEduOnLieCount";
+    }
 
     return ((Integer)selectOne(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
@@ -419,6 +425,11 @@ public class EduMapper extends EgovAbstractMapper
     if ( (!StringUtil.isEmpty(categoryVo.getGubun3()))  && "commonCode".equals(categoryVo.getGubun3())) {
         sqlName = "getComnonCodeList";
     }
+    
+    if ("lifeEduOnLieList".equals(categoryVo.getGubun2())) {
+        sqlName = "getEduAppCodeList";
+    }
+    
     
     return selectList(this.nameSpace + "." + sqlName, categoryVo);
   }
