@@ -143,9 +143,10 @@ var editImgUpLoad = function(){
 						var form = $("#editImgForm")[0];
 						var formData = new FormData(form);
 						formData.append("imgFile", $("#imgFile")[0].files[0]);
-						
+						var aurl = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+						aurl = aurl + "/adBoard/setEditImgUpLoad.do";
 					    $.ajax({
-					        url: "/adBoard/setEditImgUpLoad.do",
+					        url: aurl,
 							dataType : "JSON",
 							type	 : "POST",
 							data: formData,
