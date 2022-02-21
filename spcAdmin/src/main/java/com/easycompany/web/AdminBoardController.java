@@ -47,6 +47,9 @@ public class AdminBoardController {
 	@Value("#{dbinfo['file.path']}")
 	private String filePath;
 	
+    @Value("#{dbinfo['web.path']}")
+    private String webPath;
+	
 	@RequestMapping(value = "/noticeList.do")
 	public String getNoticeList(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 
@@ -465,6 +468,7 @@ public class AdminBoardController {
 					String fileName = fileVo.getFile_name();
 					String newFileName = fileVo.getFile_uuid();
 
+					path = "/" + path.replace(this.filePath, this.webPath);
 					if(StringUtils.isNotEmpty(StringUtils.trim(path))){
 						resultJSON.put("path", path);
 					}
