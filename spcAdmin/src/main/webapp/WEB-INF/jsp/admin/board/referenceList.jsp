@@ -80,7 +80,7 @@
 </div>
 
 <div class="btn-cont mb20">
-    <button class="mid-btn blue-btn" onclick="location.href = '/adBoard/referenceReq.do'; ">등록</button>
+    <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/adBoard/referenceReq.do' />'; ">등록</button>
     <button class="mid-btn white-btn" onClick="javascript:btnDel();">선택삭제</button>
 </div>
 
@@ -209,7 +209,7 @@ var btnDel = function() {
 
 var setDel = function(idxArray){
     $.ajax({
-        url: "/adBoard/noticeDel.do",
+        url: "<c:url value='/adBoard/noticeDel.do'/>",
         type: "POST",
         data: { "boardIdxArray" : idxArray },
         success: function(data) {
