@@ -7,6 +7,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <script type="text/javascript" src="<c:url value='/resources/common/jquery.js'/>"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
  <script type="text/javaScript" language="javascript" defer="defer">
  <!--
  
@@ -264,12 +270,16 @@ nhn.husky.EZCreator.createInIFrame({
 	fOnAppLoad : function() {
 		//예제 코드
 		//oEditors.getById["ir1"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
-		$('iframe').popup_cn().find('.se2_multy').show();
-		$('iframe').popup_cn().find('.se2_multy').on("click", function(event) {
+		$('iframe').contents().find('.se2_multy').show();
+		$('iframe').contents().find('.se2_multy').on("click", function(event) {
 			editImgUpLoad();
 		});
 	},
 	fCreator : "createSEditor2"
 });
 
+var setEditImg = function(imgPath){
+	var imgTag = '<img src="' + imgPath + '">';
+	oEditors.getById["popup_cn"].exec("PASTE_HTML", [imgTag]);
+};
 </script>

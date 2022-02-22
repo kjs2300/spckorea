@@ -54,4 +54,6 @@ public abstract interface EduService
   public abstract int updateEduCation(CategoryVo paramCategoryVo);
   
   public abstract List<CategoryVo> getCommonFileList(CategoryVo paramCategoryVo)    throws Exception;
+  
+  public abstract int insertLifeEdu(CategoryVo paramCategoryVo);
 }

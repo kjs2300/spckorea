@@ -1,5 +1,6 @@
 package com.easycompany.web.user;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,14 +11,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.WebUtils;
 
+import com.easycompany.cmm.util.FileUtil;
 import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.cmm.vo.LoginVo;
 import com.easycompany.service.MainService;
 import com.easycompany.service.EduService;
 import com.easycompany.service.AdBoardService;
 import com.easycompany.service.vo.AdBoardVo;
+import com.easycompany.service.vo.BoardVo;
 import com.easycompany.service.vo.MainVo;
 import com.easycompany.service.vo.CategoryVo;
 
@@ -245,15 +249,15 @@ public class WebMainController
   /*
    * 생명지킴이 교육신청 > 교육신청  > 온라인교육
    */
-  @RequestMapping({"/lifeEduOnLieList.do"})
-  public String lifeEduOnLieList(@ModelAttribute("CategoryVo") CategoryVo categoryVo, ModelMap model, HttpServletRequest request)
+  @RequestMapping({"/lifeEduOnLineList.do"})
+  public String lifeEduOnLineList(@ModelAttribute("CategoryVo") CategoryVo categoryVo, ModelMap model, HttpServletRequest request)
     throws Exception
   {
    
 	LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 	  
    	categoryVo.setGubun1("R");
-   	categoryVo.setGubun2("lifeEduOnLieList");
+   	categoryVo.setGubun2("lifeEduOnLineList");
     
    	String edu_status ="신청중";
    	String edu_site   = "on";
@@ -327,32 +331,87 @@ public class WebMainController
     model.addAttribute("categoryVo", categoryVo);
     model.addAttribute("path",       request.getServletPath());
 
-    return "lifeEduOnLieList";
+    return "lifeEduOnLineList";
   }
   
   /*
-   * 생명지킴이 교육신청 > 교육신청  > 교육 기관별
+   * 생명지킴이 교육신청 > 교육신청  > 온라인교육 상세정보
    */
-  @RequestMapping({"/lifeEduOrgList.do"})
-  public String userOrgInfo(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+  @RequestMapping({"/lifeEduOnLineInfo.do"})
+  public String lifeEduOnLineInfo(@ModelAttribute("CategoryVo") CategoryVo categoryVo, ModelMap model, HttpServletRequest request)
     throws Exception
   {
    
-    if (StringUtil.isEmpty(mainVo.getGubun1())) {
-      mainVo.setGubun1("R");
-    }
-    if (StringUtil.isEmpty(mainVo.getGubun2())) {
-      mainVo.setGubun2("logo");
-    }
-    mainVo.setWebPath(this.webPath);
+	LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+	  
+   	categoryVo.setGubun1("R");
+   	categoryVo.setGubun2("lifeEduOnLineReg");
+   
+    CategoryVo categoryForm = this.eduService.getEduCationDetail(categoryVo);
+    model.addAttribute("categoryForm", categoryForm);
+    
+    List categoryFormSubList = this.eduService.getEduCationDetailSub(categoryVo);
+    model.addAttribute("categoryFormSubList", categoryFormSubList);
+    
+    model.addAttribute("categoryVo",   categoryVo);
+    model.addAttribute("path",       request.getServletPath());
 
-    MainVo mainForm = this.mainService.getCommonDetail(mainVo);
+    return "lifeEduOnLineInfo";
+  }
+  
+  /*
+   * 생명지킴이 교육신청 > 교육신청  > 온라인교육 신청
+   */
+  @RequestMapping({"/lifeEduOnLineReg.do"})
+  public String lifeEduOnLieReg(@ModelAttribute("CategoryVo") CategoryVo categoryVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+   
+	LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+	  
+   	categoryVo.setGubun1("R");
+   	categoryVo.setGubun2("lifeEduOnLineReg");
+   
+    CategoryVo categoryForm = this.eduService.getEduCationDetail(categoryVo);
+    model.addAttribute("categoryForm", categoryForm);
+    model.addAttribute("categoryVo",   categoryVo);
+    model.addAttribute("path",       request.getServletPath());
 
-    model.addAttribute("mainVo",    mainVo);
-    model.addAttribute("mainForm",  mainForm);
-    model.addAttribute("path",      request.getServletPath());
-
-    return "lifeEduOrgList";
+    return "lifeEduOnLineReg";
+  }
+  
+  /*
+   * 생명지킴이 교육신청 > 교육신청  > 온라인교육 장바구니/수강신청
+   */
+  @RequestMapping({"/lifeEduOnLineSave.do"})
+  @ResponseBody
+  public CategoryVo eduInfoOnlineSave(HttpServletRequest request, CategoryVo categoryVo) throws Exception {
+	    int resultCnt = 0;
+	    try
+	    {
+	      LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+	
+	      categoryVo.setUser_id(loginvo.getId());
+	      categoryVo.setReg_id(loginvo.getId());
+	      categoryVo.setUser_nm(loginvo.getName());
+	      //basket course
+	      
+	      resultCnt = this.eduService.getCategoryExist(categoryVo);
+	
+	      if(resultCnt == 0) {
+	    	  resultCnt = this.eduService.insertLifeEdu(categoryVo);
+		      categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
+	      }else {
+	    	  categoryVo.setResult("EXIST");
+	      }
+	      
+	    }
+	    catch (Exception e)
+	    {
+	      categoryVo.setResult("FAIL");
+	    }
+	
+	    return categoryVo;
   }
   
   /*

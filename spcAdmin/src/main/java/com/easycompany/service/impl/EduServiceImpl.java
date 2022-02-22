@@ -274,4 +274,9 @@ public class EduServiceImpl extends EgovAbstractServiceImpl  implements EduServi
   public int insertSchedule(CategoryVo categoryVo) {
     return this.eduMapper.insertSchedule(categoryVo);
   }
+  
+  public int insertLifeEdu(CategoryVo categoryVo)
+  {
+      return this.eduMapper.insertLifeEdu(categoryVo);
+  }
 }

@@ -13,6 +13,21 @@
 
  <script type="text/javaScript" language="javascript" defer="defer">
  <!--
+ $(document).ready(function(){
+	 $('.h3-tit').bind('click', function(){
+		 var site = $(this).data('site');
+		 var no = $(this).data('no');
+		 $("#edu_site").val(site);
+	     $("#edu_no").val(no);
+		 $("#category1_key").val(0);
+ 		 $("#category2_key").val(0);
+		 $("#category3_key").val(0);
+		 
+		 var frm = document.commonForm;
+		 frm.action = "<c:url value='/user/lifeEduOnLineInfo.do'/>";
+	   	 frm.submit();	   	 
+	});
+ });
  
  function fn_search(){
 	 var frm = document.commonForm;
@@ -104,7 +119,7 @@
 			<input type="hidden" id="gubun1"     name="gubun1"    value='I'/>
 		    <input type="hidden" id="gubun2"     name="gubun2"    value='${categoryVo.gubun2}'  />	
 		    <input type="hidden" id="edu_site"   name="edu_site"  value='${categoryVo.edu_site}'/>
-		    <input type="hidden" id="edu_site"   name="site"      value='${categoryVo.edu_site}'/>
+		    <input type="hidden" id="edu_no"     name="edu_no"    value=0 />
 		    <input type="hidden" id="pageIndex"  name="pageIndex" value=1 />	
 		    <input type="hidden" id="category1_name"  name="category1_name" />	
 		    <input type="hidden" id="category2_name"  name="category2_name" />	
@@ -177,7 +192,7 @@
                    </c:if>               
                     
                     <span class="tag">${result.category2_name}</span>
-                    <h3 class="h3-tit">${result.category3_name}</h3>
+                    <h3 class="h3-tit" data-no="${result.edu_no}" data-site="${result.edu_site }"  >${result.category3_name}</h3>
                     <ul class="summary-cont">
                         <li>
                             <label>교육대상 :</label>

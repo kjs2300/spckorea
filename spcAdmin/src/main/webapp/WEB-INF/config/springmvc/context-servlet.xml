@@ -22,9 +22,11 @@
     <!-- 관리자 -->
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/edu/*" />
-			<mvc:mapping path="/main/*" />
-			<mvc:mapping path="/adBoard/*" />
+			<mvc:mapping path="/edu/**" />
+			<mvc:mapping path="/main/**" />
+			<mvc:mapping path="/adBoard/**" />
+			<mvc:mapping path="/warrant/**" />
+			<mvc:mapping path="/lms/**" />			
 			<mvc:exclude-mapping path="/login/**" />						
 			<bean class="com.easycompany.cmm.interceptor.AuthenticInterceptor" />
 		</mvc:interceptor>

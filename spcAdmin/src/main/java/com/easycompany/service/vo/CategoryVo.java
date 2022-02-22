@@ -2,7 +2,7 @@ package com.easycompany.service.vo;
 
 import com.easycompany.cmm.vo.DefaultVO;
 
-public class CategoryVo extends DefaultVO
+public class CategoryVo extends MemberVo 
 {
   int category1_key;
   String category1_name;
@@ -41,7 +41,7 @@ public class CategoryVo extends DefaultVO
   int edu_sub_no;
   String edu_site;
   String edu_ver;
-  String coper_nm;
+ // String coper_nm;
   String train_s_date;
   String train_e_date;
   String app_e_date;
@@ -75,10 +75,12 @@ public class CategoryVo extends DefaultVO
   String area_cd;
   String edu_auth_cd;
   String sort_ordr;
-  String instructor_coper_nm;
+  //String instructor_coper_nm;
   String cd_nm;
   String coper_nm1;
   int    totCnt;
+  int cour_no;
+  int basket_no;
   
   public String getCoper_nm_auto()
   {
@@ -442,13 +444,13 @@ public String getSite() {
     this.edu_ver = edu_ver;
   }
 
-  public String getCoper_nm() {
-    return this.coper_nm;
-  }
-
-  public void setCoper_nm(String coper_nm) {
-    this.coper_nm = coper_nm;
-  }
+//  public String getCoper_nm() {
+//    return this.coper_nm;
+//  }
+//
+//  public void setCoper_nm(String coper_nm) {
+//    this.coper_nm = coper_nm;
+//  }
 
   public String getTrain_s_date() {
     return this.train_s_date;
@@ -658,13 +660,13 @@ public void setSort_ordr(String sort_ordr) {
 	this.sort_ordr = sort_ordr;
 }
 
-public String getInstructor_coper_nm() {
-	return instructor_coper_nm;
-}
-
-public void setInstructor_coper_nm(String instructor_coper_nm) {
-	this.instructor_coper_nm = instructor_coper_nm;
-}
+//public String getInstructor_coper_nm() {
+//	return instructor_coper_nm;
+//}
+//
+//public void setInstructor_coper_nm(String instructor_coper_nm) {
+//	this.instructor_coper_nm = instructor_coper_nm;
+//}
 
 public String getCoper_nm1() {
 	return coper_nm1;
@@ -680,5 +682,21 @@ public int getTotCnt() {
 
 public void setTotCnt(int totCnt) {
 	this.totCnt = totCnt;
+}
+
+public int getCour_no() {
+	return cour_no;
+}
+
+public void setCour_no(int cour_no) {
+	this.cour_no = cour_no;
+}
+
+public int getBasket_no() {
+	return basket_no;
+}
+
+public void setBasket_no(int basket_no) {
+	this.basket_no = basket_no;
 }
 }

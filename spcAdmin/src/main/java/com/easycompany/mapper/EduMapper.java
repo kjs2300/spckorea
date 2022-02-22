@@ -77,6 +77,12 @@ public class EduMapper extends EgovAbstractMapper
     if ("category6".equals(categoryVo.getGubun2())) {
       sqlName = "getClassCategoryExist3";
     }
+    if ("basket".equals(categoryVo.getGubun2())) {
+        sqlName = "getBasketExist";
+    }
+    if ("course".equals(categoryVo.getGubun2())) {
+        sqlName = "getCourseExist";
+    }
     return ((Integer)selectOne(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
 
@@ -143,8 +149,8 @@ public class EduMapper extends EgovAbstractMapper
     if ("orgPopSearch".equals(categoryVo.getGubun2())) {
         sqlName = "getOrgPopSearchList";
     }
-    if ("lifeEduOnLieList".equals(categoryVo.getGubun2())) {
-        sqlName = "getLifeEduOnLieList";
+    if ("lifeEduOnLineList".equals(categoryVo.getGubun2())) {
+        sqlName = "getLifeEduOnLineList";
     }
     
     return selectList(this.nameSpace + "." + sqlName, categoryVo);
@@ -160,8 +166,8 @@ public class EduMapper extends EgovAbstractMapper
     if ("orgPopSearch".equals(categoryVo.getGubun2())) {
         sqlName = "getOrgPopSearchCount";
     }
-    if ("lifeEduOnLieList".equals(categoryVo.getGubun2())) {
-        sqlName = "getLifeEduOnLieCount";
+    if ("lifeEduOnLineList".equals(categoryVo.getGubun2())) {
+        sqlName = "getLifeEduOnLineCount";
     }
 
     return ((Integer)selectOne(this.nameSpace + "." + sqlName, categoryVo)).intValue();
@@ -253,6 +259,10 @@ public class EduMapper extends EgovAbstractMapper
     if ("eduInfoOnline".equals(categoryVo.getGubun2())) {
       sqlName = "getEduCationDetail";
     }
+    
+    if ("lifeEduOnLineReg".equals(categoryVo.getGubun2())) {
+        sqlName = "getLifeEduOnLineDetail";
+      }
 
     return (CategoryVo)selectOne(this.nameSpace + "." + sqlName, categoryVo);
   }
@@ -426,7 +436,7 @@ public class EduMapper extends EgovAbstractMapper
         sqlName = "getComnonCodeList";
     }
     
-    if ("lifeEduOnLieList".equals(categoryVo.getGubun2())) {
+    if ("lifeEduOnLineList".equals(categoryVo.getGubun2())) {
         sqlName = "getEduAppCodeList";
     }
     
@@ -459,4 +469,16 @@ public class EduMapper extends EgovAbstractMapper
     String sqlName = "updateSchedule";
     return Integer.valueOf(update(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
+  
+  public int insertLifeEdu(CategoryVo categoryVo) {
+    String sqlName = "insertBasket";
+    if ("basket".equals(categoryVo.getGubun2())) {
+        sqlName = "insertBasket";
+    }
+    if ("course".equals(categoryVo.getGubun2())) {
+        sqlName = "insertCourse";
+    }
+    return Integer.valueOf(insert(this.nameSpace + "." + sqlName, categoryVo)).intValue();
+  }
+  
 }
