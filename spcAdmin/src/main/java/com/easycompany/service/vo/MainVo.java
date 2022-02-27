@@ -2,7 +2,7 @@ package com.easycompany.service.vo;
 
 import com.easycompany.cmm.vo.DefaultVO;
 
-public class MainVo extends DefaultVO
+public class MainVo extends MemberVo
 {
   int logo_no;
   String logo_nm;

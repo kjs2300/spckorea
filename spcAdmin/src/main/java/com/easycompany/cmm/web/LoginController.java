@@ -95,12 +95,43 @@ public class LoginController {
 		return "login";
     }
     
-	/** 로그인 - 센톡 */
-	@RequestMapping(value = "/loginCheckProcess.do")
+	/** 로그인 Check */
+	@RequestMapping(value = "/loginUserCheckProcess.do")
 	@ResponseBody
-	public LoginVo loginCheckProcess(HttpServletRequest request, LoginVo loginVo) throws Exception {
+	public LoginVo loginUserCheckProcess(HttpServletRequest request, LoginVo loginVo) throws Exception {
 			
 		try {
+			
+			loginVo.setUser_id(loginVo.getUserId());
+			loginVo.setSesion_id(loginVo.getSesionId());
+			
+			String shaPassword = EgovFileScrty.encryptPassword(loginVo.getPassword(), loginVo.getId());
+			loginVo.setShaPassword(shaPassword);
+			LoginVo loginVo1 = (LoginVo)loginService.userLogin(loginVo);
+			
+			if (loginVo1 == null) {
+				loginVo.setResult( "FAIL") ;	
+			}else {
+				request.getSession().setAttribute("UserAccount", loginVo1);
+				request.getSession().setAttribute("AdminAccount", loginVo1);
+				loginVo.setResult( "SUCCESS") ;	
+			}
+			
+		} catch (Exception e) {
+			loginVo.setResult( "FAIL") ;	
+		}
+		return loginVo;
+	}
+	
+	/** 로그인 Check */
+	@RequestMapping(value = "/loginAdminCheckProcess.do")
+	@ResponseBody
+	public LoginVo loginAdminCheckProcess(HttpServletRequest request, LoginVo loginVo) throws Exception {
+			
+		try {
+			
+			loginVo.setUser_id(loginVo.getUserId());
+			loginVo.setSesion_id(loginVo.getSesionId());
 			
 			String shaPassword = EgovFileScrty.encryptPassword(loginVo.getPassword(), loginVo.getId());
 			loginVo.setShaPassword(shaPassword);
@@ -109,6 +140,7 @@ public class LoginController {
 			if (loginVo1 == null) {
 				loginVo.setResult( "FAIL") ;	
 			}else {
+				request.getSession().setAttribute("UserAccount", loginVo1);
 				request.getSession().setAttribute("AdminAccount", loginVo1);
 				loginVo.setResult( "SUCCESS") ;	
 			}

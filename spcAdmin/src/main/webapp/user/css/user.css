@@ -575,5 +575,9 @@ header{width: 100%; height: 118px; border-bottom: 1px #ddd solid; position:relat
 .pop-cont p{font-size: 16px; font-weight: 400; color: #333; line-height: 24px; text-align: center; padding-bottom: 30px;}
 .pop-cont p span{font-weight: 700; padding: 0px 3px; }
 
-
+.main-pop{}
+.main-pop .pop-cont{height: auto; max-height: 350px; padding: 0px 0px; overflow-y: auto;}
+.main-pop .pop-cont img{width: 100%;}
+.main-pop .pop-footer {text-align: right; margin-bottom: 0px;}
+.main-pop .pop-footer .check-cont{margin-right: 0px; }
 

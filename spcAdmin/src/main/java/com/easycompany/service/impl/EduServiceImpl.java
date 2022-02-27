@@ -1,17 +1,18 @@
 package com.easycompany.service.impl;
 
-import com.easycompany.cmm.util.FileUtil;
-import com.easycompany.cmm.util.StringUtil;
-import com.easycompany.mapper.EduMapper;
-import com.easycompany.service.EduService;
-import com.easycompany.service.vo.CategoryVo;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.easycompany.cmm.util.StringUtil;
+import com.easycompany.mapper.EduMapper;
+import com.easycompany.service.EduService;
+import com.easycompany.service.vo.CategoryVo;
+
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 @Service("eduService")
 @Transactional
@@ -35,6 +36,10 @@ public class EduServiceImpl extends EgovAbstractServiceImpl  implements EduServi
     return this.eduMapper.getCategoryExist(categoryVo);
   }
 
+  public int getCourseStatus(CategoryVo categoryVo) {
+	    return this.eduMapper.getCourseStatus(categoryVo);
+  }
+  
   public int insertCatgegory(CategoryVo categoryVo)
   {
     return this.eduMapper.insertCatgegory(categoryVo);
@@ -277,6 +282,14 @@ public class EduServiceImpl extends EgovAbstractServiceImpl  implements EduServi
   
   public int insertLifeEdu(CategoryVo categoryVo)
   {
-      return this.eduMapper.insertLifeEdu(categoryVo);
+	  int cnt =  this.eduMapper.insertLifeEdu(categoryVo);
+	  if ("course".equals(categoryVo.getGubun2())) {		  
+		  //수강인원이 다 찼으면 신청마감으로 변경함.
+		  if("F".equals(categoryVo.getCour_finish())) {
+			  cnt =  this.eduMapper.updateCourseStatus(categoryVo);
+		  }		  
+	  }
+	 
+      return cnt;
   }
 }

@@ -85,6 +85,17 @@ public class EduMapper extends EgovAbstractMapper
     }
     return ((Integer)selectOne(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
+  
+  public int getCourseStatus(CategoryVo categoryVo)
+  {
+    String sqlName = "getCourseStatus";
+
+    if ("course".equals(categoryVo.getGubun2())) {
+      sqlName = "getCourseStatus";
+    }
+
+    return ((Integer)selectOne(this.nameSpace + "." + sqlName, categoryVo)).intValue();
+  }
 
   public int insertCatgegory(CategoryVo categoryVo)
   {
@@ -152,6 +163,10 @@ public class EduMapper extends EgovAbstractMapper
     if ("lifeEduOnLineList".equals(categoryVo.getGubun2())) {
         sqlName = "getLifeEduOnLineList";
     }
+    if ("lifeEduSch".equals(categoryVo.getGubun2())) {
+        sqlName = "getlifeEduSchList";
+    }
+    
     
     return selectList(this.nameSpace + "." + sqlName, categoryVo);
   }
@@ -170,6 +185,9 @@ public class EduMapper extends EgovAbstractMapper
         sqlName = "getLifeEduOnLineCount";
     }
 
+    if ("lifeEduSch".equals(categoryVo.getGubun2())) {
+        sqlName = "getlifeEduSchCount";
+    }
     return ((Integer)selectOne(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
 
@@ -480,5 +498,11 @@ public class EduMapper extends EgovAbstractMapper
     }
     return Integer.valueOf(insert(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
+
+  public int updateCourseStatus(CategoryVo categoryVo) {
+	    String sqlName = "updateCourseStatus";
+	    return Integer.valueOf(update(this.nameSpace + "." + sqlName, categoryVo)).intValue();
+  }
+	  
   
 }

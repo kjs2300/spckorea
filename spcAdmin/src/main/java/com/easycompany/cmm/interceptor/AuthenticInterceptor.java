@@ -8,7 +8,6 @@ import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.util.WebUtils;
 
-import com.easycompany.cmm.vo.Account;
 import com.easycompany.cmm.vo.LoginVo;
 
 

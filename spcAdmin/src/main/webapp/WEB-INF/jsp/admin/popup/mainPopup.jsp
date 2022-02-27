@@ -8,23 +8,20 @@
 <script type="text/javascript" src="<c:url value='/resources/common/jquery.js'/>"></script>
 
 
-<div id="wrap" class="sty02">   
-    <div class="popWarp">
-        <p class="popTit"><c:out value="${mainForm.popup_nm}"/><span class="popClose"><a href="" title="닫기" onclick="self.close();">닫기</a></span></p>
-        <div class="popCont" style="padding: 10px;">
-            <div class="NumDesc" style="height: <c:out value='${vo.POPUP_HG-100}' />px">
-                
-                <c:if test="${not empty mainForm.popup_cn}">
-                    <div class="popContent">
-                        <html:xss>
-                            <c:out value="${mainForm.popup_cn}" escapeXml="false" />
-                        </html:xss>
-                    </div>
-                </c:if>
+<div class="dim-layer"></div>
+
+    <div class="main-pop pop-wrap sm-pop" style="left: 30%; top: 20%;">
+        <div class="pop-header">
+            <h1 class="h1-tit"><c:out value="${mainForm.popup_nm}"/></h1>
+            <button type="button" class="close-btn"  onclick="self.close();"><img src="${pageContext.request.contextPath}/user/images/common/close.png" alt="닫기"/></button>
+        </div>
+        <div class="pop-cont">
+            <c:out value="${mainForm.popup_cn}" escapeXml="false" />                
+        </div>
+        <div class="pop-footer">
+            <div class="check-cont">
+                <input type="checkbox" class="check-box" onclick="gfnCloseWin('pop<c:out value="${mainForm.popup_no}" />')" id="pop" style="vertical-align: middle;" /> 
+                <label>오늘하루 열지 않기</label>
             </div>
-        
-            <div class="AR MgT5"><input type="checkbox" onclick="gfnCloseWin('pop<c:out value="${mainForm.popup_no}" />')" id="pop" style="vertical-align: middle;" /> <label for="pop" class="labelPop">오늘하루 보이지 않기&nbsp;</label></div>
         </div>
     </div>
-</div>
-

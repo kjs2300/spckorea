@@ -1,7 +1,5 @@
 package com.easycompany.service.vo;
 
-import com.easycompany.cmm.vo.DefaultVO;
-
 public class CategoryVo extends MemberVo 
 {
   int category1_key;
@@ -81,6 +79,7 @@ public class CategoryVo extends MemberVo
   int    totCnt;
   int cour_no;
   int basket_no;
+  private String cour_finish;
   
   public String getCoper_nm_auto()
   {
@@ -698,5 +697,13 @@ public int getBasket_no() {
 
 public void setBasket_no(int basket_no) {
 	this.basket_no = basket_no;
+}
+
+public String getCour_finish() {
+	return cour_finish;
+}
+
+public void setCour_finish(String cour_finish) {
+	this.cour_finish = cour_finish;
 }
 }

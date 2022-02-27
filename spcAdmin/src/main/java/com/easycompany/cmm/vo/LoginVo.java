@@ -1,7 +1,8 @@
 package com.easycompany.cmm.vo;
 
+import com.easycompany.service.vo.MemberVo;
 
-public class LoginVo extends DefaultVO {
+public class LoginVo extends MemberVo {
 	
 
 	/**

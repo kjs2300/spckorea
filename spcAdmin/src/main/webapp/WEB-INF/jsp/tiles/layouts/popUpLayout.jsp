@@ -21,7 +21,7 @@ if (request.getProtocol().equals("HTTP/1.1"))
 <title><tiles:getAsString name="title" /></title>
 <head>        
     <link href="<c:url value='/css/reset.css' />" rel="stylesheet" type="text/css">
-    <link href="<c:url value='/css/admin.css' />" rel="stylesheet" type="text/css">
+    <link href="<c:url value='/user/css/user.css' />" rel="stylesheet" type="text/css">
     <link href="<c:url value='/css/common.css' />" rel="stylesheet" type="text/css">
         
 	<script src="<c:url value='/resources/js/jquery-3.4.1.min.js' />"></script>	

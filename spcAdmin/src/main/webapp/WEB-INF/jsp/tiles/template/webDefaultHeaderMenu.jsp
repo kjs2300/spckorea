@@ -33,7 +33,9 @@ model.addAttribute("path", request.getServletPath());
 	                 <a href="#">교육신청</a>
 	                 <ul class="depth3">
 	                     <li><a href="${pageContext.request.contextPath}/user/lifeEduOnLineList.do">온라인교육</a></li>
+	                     <!-- 
 	                     <li><a href="${pageContext.request.contextPath}/user/lifeEduOrgList.do">교육 기관별</a></li>
+	                      -->
 	                 </ul>
 	             </li>
 	             <li><a href="${pageContext.request.contextPath}/user/lifeEduSch.do">교육일정</a></li>
@@ -71,6 +73,7 @@ model.addAttribute("path", request.getServletPath());
 	                 </ul>
 	             </li>
 	         </ul>
+	         <!-- 
 	         <ul class="depth2">
 	             <li>
 	                 <a href="#">교육개설</a>
@@ -82,6 +85,7 @@ model.addAttribute("path", request.getServletPath());
 	             <li><a href="#">신청현황</a></li>
 	             <li><a href="#">결과보고</a></li>
 	         </ul>
+	          -->
 	         <ul class="depth2">
 	             <li><a href="#">공지사항</a></li>
 	             <li><a href="#">자료실</a></li>

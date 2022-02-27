@@ -43,6 +43,9 @@ public class MainController
     throws Exception
   {
     LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+    mainVo.setUser_id(loginvo.getUser_id());
+    mainVo.setReg_id(loginvo.getId());
+    mainVo.setUser_nm(loginvo.getUser_nm());
 
     if (StringUtil.isEmpty(mainVo.getGubun1())) {
       mainVo.setGubun1("R");
@@ -53,8 +56,7 @@ public class MainController
     mainVo.setWebPath(this.webPath);
 
     MainVo mainForm = this.mainService.getCommonDetail(mainVo);
-
-    mainVo.setReg_id(loginvo.getId());
+    
     model.addAttribute("mainVo", mainVo);
     model.addAttribute("mainForm", mainForm);
     model.addAttribute("path", request.getServletPath());
@@ -71,7 +73,9 @@ public class MainController
     {
       LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 
+      mainVo.setUser_id(loginvo.getUser_id());
       mainVo.setReg_id(loginvo.getId());
+      mainVo.setUser_nm(loginvo.getUser_nm());
 
       if (StringUtil.isEmpty(mainVo.getGubun1())) {
         mainVo.setGubun1("R");
@@ -143,6 +147,9 @@ public class MainController
     throws Exception
   {
     LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+    mainVo.setUser_id(loginvo.getUser_id());
+    mainVo.setReg_id(loginvo.getId());
+    mainVo.setUser_nm(loginvo.getUser_nm());
 
     mainVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
     mainVo.setPageSize(this.propertiesService.getInt("pageSize"));
@@ -171,7 +178,7 @@ public class MainController
     paginationInfo.setTotalRecordCount(totCnt);
     model.addAttribute("paginationInfo", paginationInfo);
 
-    mainVo.setReg_id(loginvo.getId());
+    
     model.addAttribute("mainVo", mainVo);
     model.addAttribute("path", request.getServletPath());
 
@@ -183,6 +190,9 @@ public class MainController
     throws Exception
   {
     LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+    mainVo.setUser_id(loginvo.getUser_id());
+    mainVo.setReg_id(loginvo.getId());
+    mainVo.setUser_nm(loginvo.getUser_nm());
 
     if (StringUtil.isEmpty(mainVo.getGubun1())) {
       mainVo.setGubun1("R");
@@ -194,7 +204,6 @@ public class MainController
 
     MainVo mainForm = this.mainService.getCommonDetail(mainVo);
 
-    mainVo.setReg_id(loginvo.getId());
     model.addAttribute("mainVo", mainVo);
     model.addAttribute("mainForm", mainForm);
     model.addAttribute("path", request.getServletPath());
@@ -210,7 +219,9 @@ public class MainController
     {
       LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 
+      mainVo.setUser_id(loginvo.getUser_id());
       mainVo.setReg_id(loginvo.getId());
+      mainVo.setUser_nm(loginvo.getUser_nm());
 
       if (StringUtil.isEmpty(mainVo.getGubun2())) {
         mainVo.setGubun2("img");
@@ -284,6 +295,10 @@ public class MainController
     throws Exception
   {
     LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+    
+    mainVo.setUser_id(loginvo.getUser_id());
+    mainVo.setReg_id(loginvo.getId());
+    mainVo.setUser_nm(loginvo.getUser_nm());
 
     mainVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
     mainVo.setPageSize(this.propertiesService.getInt("pageSize"));
@@ -312,7 +327,7 @@ public class MainController
     paginationInfo.setTotalRecordCount(totCnt);
     model.addAttribute("paginationInfo", paginationInfo);
 
-    mainVo.setReg_id(loginvo.getId());
+ 
     model.addAttribute("mainVo", mainVo);
     model.addAttribute("path", request.getServletPath());
 
@@ -324,7 +339,11 @@ public class MainController
     throws Exception
   {
     LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
-
+    
+    mainVo.setUser_id(loginvo.getUser_id());
+    mainVo.setReg_id(loginvo.getId());
+    mainVo.setUser_nm(loginvo.getUser_nm());
+    
     if (StringUtil.isEmpty(mainVo.getGubun1())) {
       mainVo.setGubun1("R");
     }
@@ -335,7 +354,7 @@ public class MainController
 
     MainVo mainForm = this.mainService.getCommonDetail(mainVo);
 
-    mainVo.setReg_id(loginvo.getId());
+    
     model.addAttribute("mainVo", mainVo);
     model.addAttribute("mainForm", mainForm);
     model.addAttribute("path", request.getServletPath());
@@ -351,7 +370,9 @@ public class MainController
     {
       LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 
+      mainVo.setUser_id(loginvo.getUser_id());
       mainVo.setReg_id(loginvo.getId());
+      mainVo.setUser_nm(loginvo.getUser_nm());
 
       if (StringUtil.isEmpty(mainVo.getGubun2())) {
         mainVo.setGubun2("banner");
@@ -424,6 +445,10 @@ public class MainController
     throws Exception
   {
     LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+    
+    mainVo.setUser_id(loginvo.getUser_id());
+    mainVo.setReg_id(loginvo.getId());
+    mainVo.setUser_nm(loginvo.getUser_nm());
 
     mainVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
     mainVo.setPageSize(this.propertiesService.getInt("pageSize"));
@@ -452,7 +477,6 @@ public class MainController
     paginationInfo.setTotalRecordCount(totCnt);
     model.addAttribute("paginationInfo", paginationInfo);
 
-    mainVo.setReg_id(loginvo.getId());
     model.addAttribute("mainVo", mainVo);
     model.addAttribute("path", request.getServletPath());
 
@@ -465,6 +489,10 @@ public class MainController
   {
     LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 
+    mainVo.setUser_id(loginvo.getUser_id());
+    mainVo.setReg_id(loginvo.getId());
+    mainVo.setUser_nm(loginvo.getUser_nm());
+    
     if (StringUtil.isEmpty(mainVo.getGubun1())) {
       mainVo.setGubun1("R");
     }
@@ -475,7 +503,6 @@ public class MainController
 
     MainVo mainForm = this.mainService.getCommonDetail(mainVo);
 
-    mainVo.setReg_id(loginvo.getId());
     model.addAttribute("mainVo", mainVo);
     model.addAttribute("mainForm", mainForm);
     model.addAttribute("path", request.getServletPath());
@@ -491,7 +518,9 @@ public class MainController
     {
       LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 
+      mainVo.setUser_id(loginvo.getUser_id());
       mainVo.setReg_id(loginvo.getId());
+      mainVo.setUser_nm(loginvo.getUser_nm());
 
       if (StringUtil.isEmpty(mainVo.getGubun2())) {
         mainVo.setGubun2("popup");

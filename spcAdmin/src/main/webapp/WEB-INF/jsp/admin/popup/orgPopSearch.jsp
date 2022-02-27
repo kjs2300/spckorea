@@ -15,12 +15,12 @@
  $(document).ready(function(){
  
     $('.ccheck').bind('click', function(){
-	    var checkstr = this.value;
-		var str = checkstr.split('+$#');
-		if(str.length ==2){
-		   $("#userid").val(str[0]); 
-		   $("#usernm").val(str[1]); 
-		}
+    	
+    	var userid = $(this).data('id');
+		var usernm = $(this).data('nm');
+		$("#userid").val(userid); 
+		$("#usernm").val(usernm); 
+		
 	});
 
  });
@@ -58,9 +58,9 @@
 	        </div>
 	        <div class="pop-cont">
 				<form  id="commonForm" name="commonForm"  method="post"  action="">
-					<input type="hidden" id="gubun1"         name="gubun1"         value='${categoryVo.gubun1}'  class="input-box" />
-					<input type="hidden" id="gubun1"         name="gubun2"         value='${categoryVo.gubun2}'  class="input-box" />
-				    <input type="hidden" id="pageIndex"      name="pageIndex"      class="input-box" value=1 />	
+					<input type="hidden" id="gubun1"         name="gubun1"      value='${categoryVo.gubun1}'  class="input-box" />
+					<input type="hidden" id="gubun1"         name="gubun2"      value='${categoryVo.gubun2}'  class="input-box" />
+				    <input type="hidden" id="pageIndex"      name="pageIndex"   class="input-box" value=1 />	
 				    <input type="hidden" id="userid"         name="userid"      class="input-box" />	
 				    <input type="hidden" id="usernm"         name="usernm"      class="input-box" />	
 				    
@@ -74,7 +74,7 @@
 	                           	<option value='${result.cd_nm}' <c:if test="${categoryVo.cd_nm == result.cd_nm }"> selected</c:if> > ${result.cd_nm}</option>
 	                        </c:forEach>
 	                    </select>
-	                    <input type="text" id="instructor_coper_nm" name="instructor_coper_nm" value='${categoryVo.instructor_coper_nm}' class="input-box"/>
+	                    <input type="text" id="coper_nm" name="coper_nm" value='${categoryVo.coper_nm}' class="input-box"/>
 	                    <button class="search-btn">검색</button>
 	                </div>
 	            </div>
@@ -101,10 +101,10 @@
 	                        
 	                          <c:forEach var="result" items="${resultList}" varStatus="status">
 	                          <tr>
-	                          <td><input type="radio" id='checkNo' name='checkNo' data-id='${result.user_id}' data-name="${result.instructor_coper_nm}" value="${result.user_id}+$#${result.instructor_coper_nm}" class="radio-box ccheck"/></td>
+	                          <td><input type="radio" id='checkNo' name='checkNo' data-id='${result.user_id}' data-nm="${result.coper_nm}" class="radio-box ccheck"/></td>
 	                            <td>${status.index + 1}</td>
 	                            <td>${result.cd_nm}</td>
-	                            <td>${result.instructor_coper_nm}</td>
+	                            <td>${result.coper_nm}</td>
 	                          </tr>
 	                        </c:forEach>
 	                       

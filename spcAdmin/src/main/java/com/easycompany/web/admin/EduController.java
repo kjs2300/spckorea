@@ -132,7 +132,9 @@ public class EduController
     {
       LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 
+      categoryVo.setUser_id(loginvo.getUser_id());
       categoryVo.setReg_id(loginvo.getId());
+      categoryVo.setUser_nm(loginvo.getUser_nm());
 
       if ("I".equals(categoryVo.getGubun1()))
       {
@@ -222,7 +224,9 @@ public class EduController
     {
       LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 
+      categoryVo.setUser_id(loginvo.getUser_id());
       categoryVo.setReg_id(loginvo.getId());
+      categoryVo.setUser_nm(loginvo.getUser_nm());
       categoryVo.setGubun2("category3");
 
       String fileAddpath  = this.filePath + File.separator + categoryVo.getGubun2();
@@ -311,7 +315,9 @@ public class EduController
     categoryVo.setPageSize(this.propertiesService.getInt("pageSize"));
 
     LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+    categoryVo.setUser_id(loginvo.getUser_id());
     categoryVo.setReg_id(loginvo.getId());
+    categoryVo.setUser_nm(loginvo.getUser_nm());
 
     PaginationInfo paginationInfo = new PaginationInfo();
     paginationInfo.setCurrentPageNo(categoryVo.getPageIndex());
@@ -378,7 +384,9 @@ public class EduController
     {
       LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 
+      categoryVo.setUser_id(loginvo.getUser_id());
       categoryVo.setReg_id(loginvo.getId());
+      categoryVo.setUser_nm(loginvo.getUser_nm());
       categoryVo.setGubun2("category3");
 
       if ("I".equals(categoryVo.getGubun1()))
@@ -419,7 +427,9 @@ public class EduController
     {
       LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 
+      categoryVo.setUser_id(loginvo.getUser_id());
       categoryVo.setReg_id(loginvo.getId());
+      categoryVo.setUser_nm(loginvo.getUser_nm());
 
       if ("I".equals(categoryVo.getGubun1())) {
         resultCnt = this.eduService.insertSchedule(categoryVo);
@@ -557,7 +567,9 @@ public class EduController
 	    {
 	      LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 	
+	      categoryVo.setUser_id(loginvo.getUser_id());
 	      categoryVo.setReg_id(loginvo.getId());
+	      categoryVo.setUser_nm(loginvo.getUser_nm());
 	
 	      if ("I".equals(categoryVo.getGubun1()))
 	      {
@@ -713,7 +725,9 @@ public class EduController
 	    {
 	      LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 	
+	      categoryVo.setUser_id(loginvo.getUser_id());
 	      categoryVo.setReg_id(loginvo.getId());
+	      categoryVo.setUser_nm(loginvo.getUser_nm());
 	
 	      if (StringUtil.isEmpty(categoryVo.getGubun2())) {
 	        categoryVo.setGubun2("eduInfoOnline");
@@ -911,7 +925,9 @@ public class EduController
 	    {
 	      LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 	
+	      categoryVo.setUser_id(loginvo.getUser_id());
 	      categoryVo.setReg_id(loginvo.getId());
+	      categoryVo.setUser_nm(loginvo.getUser_nm());
 	
 	      if (StringUtil.isEmpty(categoryVo.getGubun2())) {
 	        categoryVo.setGubun2("eduInfoOffline");
@@ -1066,7 +1082,9 @@ public class EduController
 	    {
 	      LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
 	
+	      categoryVo.setUser_id(loginvo.getUser_id());
 	      categoryVo.setReg_id(loginvo.getId());
+	      categoryVo.setUser_nm(loginvo.getUser_nm());
 	
 	      if (StringUtil.isEmpty(categoryVo.getGubun2())) {
 	        categoryVo.setGubun2("eduInfoNoOrgline");

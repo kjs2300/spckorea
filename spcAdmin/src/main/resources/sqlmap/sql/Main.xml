@@ -46,7 +46,7 @@
 		VALUES 
 		(
 			  #{logo_no}
-			, IFNULL(#{reg_id},'SYSTEM')
+			, IFNULL(#{user_id},'SYSTEM')
 			, #{file_id}
 		)	
 	</insert>
@@ -73,7 +73,7 @@
 			, #{img_nm}
 			, #{img_pos}
 			, #{link_url}
-			, IFNULL(#{reg_id},'SYSTEM')
+			, IFNULL(#{user_id},'SYSTEM')
 			, #{file_id}
 		)
 	</insert>
@@ -100,7 +100,7 @@
 			, #{banner_nm}
 			, #{banner_pos}
 			, #{link_url}
-			, IFNULL(#{reg_id},'SYSTEM')
+			, IFNULL(#{user_id},'SYSTEM')
 			, #{file_id}
 		)	
 	</insert>
@@ -134,7 +134,7 @@
 			, #{popup_ar}
 			, #{popup_hg}
 			, #{use_yn}
-			, IFNULL(#{reg_id},'SYSTEM')
+			, IFNULL(#{user_id},'SYSTEM')
 		)	
 	</insert>
 	
@@ -142,7 +142,7 @@
 		/**  com.easycompany.mapper.MainMapper.updateLogo **/	
 		UPDATE EDU_LOGO 
 		   SET FILE_ID = #{file_id}
-		      , CHG_ID  = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_ID  = IFNULL(#{user_id},'SYSTEM')
 		      , CHG_DT  = NOW()
  		 WHERE LOGO_NO = #{logo_no}
 	</update>	
@@ -156,7 +156,7 @@
 		  	  <if test=" file_id !=null and file_id !=''">	
 			  , FILE_ID  = #{file_id}   
 			 </if>
-		      , CHG_ID   = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_ID   = IFNULL(#{user_id},'SYSTEM')
 		      , CHG_DT   = NOW()
  		 WHERE IMG_NO    = #{img_no}
 	</update>	
@@ -170,7 +170,7 @@
 		  	  <if test=" file_id !=null and file_id !=''">	
 			  , FILE_ID  = #{file_id}   
 			 </if>
-		      , CHG_ID     = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_ID     = IFNULL(#{user_id},'SYSTEM')
 		      , CHG_DT     = NOW()
  		 WHERE BANNER_NO   = #{banner_no}
 	</update>	
@@ -185,7 +185,7 @@
 		      , POPUP_AR     = #{popup_ar}
 		      , POPUP_HG     = #{popup_hg}
 		      , USE_YN       = #{use_yn}
-		      , CHG_ID       = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_ID       = IFNULL(#{user_id},'SYSTEM')
 		      , CHG_DT       = NOW()
  		 WHERE POPUP_NO      = #{popup_no}
 	</update>	

@@ -1,6 +1,5 @@
 package com.easycompany.web.user;
 
-import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,16 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.WebUtils;
 
-import com.easycompany.cmm.util.FileUtil;
 import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.cmm.vo.LoginVo;
-import com.easycompany.service.MainService;
-import com.easycompany.service.EduService;
 import com.easycompany.service.AdBoardService;
+import com.easycompany.service.EduService;
+import com.easycompany.service.MainService;
 import com.easycompany.service.vo.AdBoardVo;
-import com.easycompany.service.vo.BoardVo;
-import com.easycompany.service.vo.MainVo;
 import com.easycompany.service.vo.CategoryVo;
+import com.easycompany.service.vo.MainVo;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -101,10 +98,10 @@ public class WebMainController
 
   
   @RequestMapping({"/popup.do"})
-  public String popupReg(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+  public String popup(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
     throws Exception
   {
-    LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+    LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
 
     if (StringUtil.isEmpty(mainVo.getGubun1())) {
       mainVo.setGubun1("R");
@@ -254,7 +251,7 @@ public class WebMainController
     throws Exception
   {
    
-	LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+	LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
 	  
    	categoryVo.setGubun1("R");
    	categoryVo.setGubun2("lifeEduOnLineList");
@@ -342,7 +339,7 @@ public class WebMainController
     throws Exception
   {
    
-	LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+	LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
 	  
    	categoryVo.setGubun1("R");
    	categoryVo.setGubun2("lifeEduOnLineReg");
@@ -367,7 +364,7 @@ public class WebMainController
     throws Exception
   {
    
-	LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+	LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
 	  
    	categoryVo.setGubun1("R");
    	categoryVo.setGubun2("lifeEduOnLineReg");
@@ -375,7 +372,8 @@ public class WebMainController
     CategoryVo categoryForm = this.eduService.getEduCationDetail(categoryVo);
     model.addAttribute("categoryForm", categoryForm);
     model.addAttribute("categoryVo",   categoryVo);
-    model.addAttribute("path",       request.getServletPath());
+    model.addAttribute("path",         request.getServletPath());
+    model.addAttribute("sessionId",    loginvo);
 
     return "lifeEduOnLineReg";
   }
@@ -389,20 +387,49 @@ public class WebMainController
 	    int resultCnt = 0;
 	    try
 	    {
-	      LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "AdminAccount");
+	      LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
 	
-	      categoryVo.setUser_id(loginvo.getId());
+	      categoryVo.setUser_id(loginvo.getUser_id());
 	      categoryVo.setReg_id(loginvo.getId());
-	      categoryVo.setUser_nm(loginvo.getName());
+	      categoryVo.setUser_nm(loginvo.getUser_nm());
 	      //basket course
 	      
-	      resultCnt = this.eduService.getCategoryExist(categoryVo);
-	
-	      if(resultCnt == 0) {
-	    	  resultCnt = this.eduService.insertLifeEdu(categoryVo);
-		      categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
-	      }else {
-	    	  categoryVo.setResult("EXIST");
+	      
+	      if ("course".equals(categoryVo.getGubun2())) {
+	    	  
+	    	  //수강신청일때 수강신청 인원 check
+	          resultCnt = this.eduService.getCourseStatus(categoryVo);
+	          
+	          //수강 마감 여부 마감시 수강 테이블에 수강 완료로 해야 한다.신청마감
+	          categoryVo.setCour_finish((resultCnt == 1 ? "F":"N"));
+	          categoryVo.setEdu_status("신청마감");
+	          
+	          if(resultCnt < 1) {
+	        	  categoryVo.setResult("FINISH");
+	          }else {
+	        	  
+	        	  resultCnt = this.eduService.getCategoryExist(categoryVo);
+	        	  
+			      if(resultCnt == 0) {
+			    	  resultCnt = this.eduService.insertLifeEdu(categoryVo);
+				      categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
+			      }else {
+			    	  categoryVo.setResult("EXIST");
+			      }
+	          }         
+	        
+	      }
+
+	      if ("basket".equals(categoryVo.getGubun2())) {
+	      
+		      resultCnt = this.eduService.getCategoryExist(categoryVo);
+		
+		      if(resultCnt == 0) {
+		    	  resultCnt = this.eduService.insertLifeEdu(categoryVo);
+			      categoryVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
+		      }else {
+		    	  categoryVo.setResult("EXIST");
+		      }
 	      }
 	      
 	    }
@@ -418,25 +445,42 @@ public class WebMainController
    * 생명지킴이 교육신청 > 교육일정  
    */
   @RequestMapping({"/lifeEduSch.do"})
-  public String userInstNotiList(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+  public String userInstNotiList(@ModelAttribute("CategoryVo") CategoryVo categoryVo, ModelMap model, HttpServletRequest request)
     throws Exception
   {
    
-    if (StringUtil.isEmpty(mainVo.getGubun1())) {
-      mainVo.setGubun1("R");
-    }
-    if (StringUtil.isEmpty(mainVo.getGubun2())) {
-      mainVo.setGubun2("logo");
-    }
-    mainVo.setWebPath(this.webPath);
+	  categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
+	    categoryVo.setPageSize(this.propertiesService.getInt("pageSize"));
+	
+	    PaginationInfo paginationInfo = new PaginationInfo();
+	    paginationInfo.setCurrentPageNo(categoryVo.getPageIndex());
+	    paginationInfo.setRecordCountPerPage(categoryVo.getPageUnit());
+	    paginationInfo.setPageSize(categoryVo.getPageSize());
+	
+	    int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+	    categoryVo.setOffset(offset);
+	    
+	    if (StringUtil.isEmpty(categoryVo.getCheckdate())) {
+	      categoryVo.setCheckdate("ALL");
+	    }
+	
+	    if (StringUtil.isEmpty(categoryVo.getCategory3_name())) {
+	    	categoryVo.setCategory3_name("");
+		}
+	    categoryVo.setGubun2("lifeEduSch");
+	 	categoryVo.setWebPath(this.webPath);
+	
+	    List list = this.eduService.getEducationList(categoryVo);
+	    model.addAttribute("resultList", list);
+	
+	    int totCnt = this.eduService.getEducationCount(categoryVo);
+	    paginationInfo.setTotalRecordCount(totCnt);
+	    model.addAttribute("paginationInfo", paginationInfo);
+	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
+	
 
-    MainVo mainForm = this.mainService.getCommonDetail(mainVo);
-
-    model.addAttribute("mainVo",    mainVo);
-    model.addAttribute("mainForm",  mainForm);
-    model.addAttribute("path",      request.getServletPath());
-
-    return "lifeEduSch";
+       return "lifeEduSch";
   }
   
   /*

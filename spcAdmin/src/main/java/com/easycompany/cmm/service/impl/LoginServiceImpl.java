@@ -27,6 +27,10 @@ public class LoginServiceImpl extends EgovAbstractServiceImpl implements LoginSe
     public int signUpInsert(LoginVo loginVo) {
     	return loginMapper.signUpInsert(loginVo);
     }
+    
+    public LoginVo userLogin(LoginVo loginVo) {
+    	return loginMapper.userLogin(loginVo);
+    }
 
 }
  

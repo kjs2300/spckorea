@@ -13,14 +13,80 @@
 
  <script type="text/javaScript" language="javascript" defer="defer">
  <!--
+  	$(document).ready(function(){
+ 		$('#email_select').change(function(){
+ 			var val  = $(this).val();
+ 			if(val =="AUTO"){
+ 				$('#eml_addr2').prop('readonly', false);
+ 				$('#eml_addr2').val('');
+ 			}else{ 				
+ 				$('#eml_addr2').prop('readonly', true);
+ 				$('#eml_addr2').val('');s
+ 			}
+		});
+ 	});
+ 
+    /**  페이지 이동 */
+	function goOkPage(){	
+		var frm = document.commonForm;
+		frm.action = "<c:url value='/user/lifeEduOnLieList.do'/>";
+		frm.submit();
+	}
  
 	function fn_course(){	
 	 
 		$("#gubun2").val('course'); 
+		
+		// 특수문자 / 문자 / 숫자 포함 형태의 8~15자리 이내의 암호 정규식
+		var regexPasswords = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+		//숫자와 문자 포함 형태의 6~12자리 이내의 암호 정규식
+		var regexPassword = /^[A-Za-z0-9]{6,12}$/;
+		//이메일 정규식
+		var regexEmail = /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i;
+		//핸드폰번호 정규식
+		var regexHp = /^\d{3}\d{3,4}\d{4}$/;
+		//일반 전화번호 정규식
+		var regexHomePhome = /^\d{2,3}-\d{3,4}-\d{4}$/;
+				
+		var mbl_telno = $("#mbl_telno").val(); 
+		var eml_addr1 = $("#eml_addr1").val();
+		var eml_addr2 = $("#eml_addr2").val();
+		var eml_addr  = eml_addr1 + "@" + eml_addr2;
+		var email_select = $("select[name=email_select] option:selected").val();  
+		if(email_select !="AUTO"){
+			eml_addr  = eml_addr1 + "@" + email_select;	
+		}
+		
+		if(mbl_telno ==""){
+			alert('휴대폰 번호를 입력 해주세요!');
+			$("#mbl_telno").focus();
+			return;	
+		}
+		if(!regexHp.test(mbl_telno)) {            
+			alert("휴대폰 번호 형식이 맞지 않습니다. 다시 입력해주세요.");
+			$("#mbl_telno").val("");
+			return;		
+		}
+		
+		if(eml_addr1 ==""){
+			alert('이메일을 입력 해주세요!');
+			$("#eml_addr1").focus();
+			return;	
+		}
+		
+		if(!regexEmail.test(eml_addr)) {            
+			alert("이메일 형식이 맞지 않습니다. 다시 입력해주세요.");
+			$("#eml_addr1").val("");
+			$("#eml_addr2").val("");
+			return;		
+		}		
+		
+		$("#eml_addr").val(eml_addr);
+		 
 		var msg = "수강신청 하시겠습니까?";
 		var yn = confirm(msg);	
 		if(yn){
-				
+			
 			$.ajax({	
 				data     : $("#commonForm").serialize(),
 			    url		 : "<c:url value='/user/lifeEduOnLineSave.do'/>",
@@ -42,10 +108,13 @@
 			var result = obj.result;			
 			if(result == "SUCCESS"){				
 				alert("산청하기가 정상 처리 되었습니다.[마이페이지]에서 확인 및 취소가 가능합니다.");				
-				history.back();			 
+				goOkPage();		 
 			} else if(result == "EXIST"){				
 				alert("이미 수강 신청하셨습니다.");	
 				return false;
+			} else if(result == "FINISH"){				
+				alert("수강 신청이 마감 되었습니다.");	
+				return false;					
 			}else {				
 				alert("등록이 실패 했습니다.");	
 				return false;
@@ -147,15 +216,15 @@
                           <tbody>
                               <tr>
                                   <th>회원유형</th>
-                                  <td></td>
+                                  <td>${sessionId.edu_auth_cd_nm}</td>
                               </tr>
                               <tr>
                                   <th>이름</th>
-                                  <td></td>
+                                  <td>${sessionId.user_nm}</td>
                               </tr>
                               <tr>
                                   <th>아이디</th>
-                                  <td></td>
+                                  <td>${sessionId.user_id}</td>
                               </tr>
                               <tr>
                                   <th>휴대폰</th>
@@ -165,11 +234,11 @@
                                   <th>이메일</th>
                                   <td>
                                       <div class="tb-cont">
-                                          <input type="text" class="input-box" id="eml_addr1" name="eml_addr1" />
+                                          <input type="text" class="input-box" id="eml_addr1" name="eml_addr1" maxlength="100"/>
                                           <span>@</span>
-                                          <input type="text" class="input-box" id="eml_addr2" name="eml_addr2" />
-                                          <select class="select">
-                                              <option value=''>직접입력</option>
+                                          <input type="text" class="input-box" id="eml_addr2" name="eml_addr2" maxlength="100"/>
+                                          <select class="select" id="email_select" name="email_select">
+                                              <option value='AUTO'>직접입력</option>
                                               <option value='naver.com'>naver.com</option>
                                               <option value='nate.com'>nate.com</option>
                                               <option value='gmail.com'>gmail.com</option>
@@ -189,7 +258,7 @@
               </form>
               <!---- button begin ---->
               <div class="btn-cont">
-                  <button type="button" onClick="";class="lg-btn orange-btn">신청하기</button>
+                  <button type="button" onClick="fn_course();"; class="lg-btn orange-btn">신청하기</button>
                   <button type="button" onClick="history.back();" class="lg-btn white-btn">목록</button>
               </div>
               <!---- button end ---->

@@ -81,6 +81,10 @@ public class MemberVo extends DefaultVO {
 	private String user_group_cd_nm; /* 권한코드명 */
 	private String login_dt;
 	private String password_chg_dt_nm;
+	private String userId;
+	private String sesionId;
+	private String edu_auth_cd_nm;
+	
 	
 	private boolean isAdmin; // 관리자 여부
 	
@@ -460,9 +464,27 @@ public class MemberVo extends DefaultVO {
 		this.password_chg_dt_nm = password_chg_dt_nm;
 	}
 	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getSesionId() {
+		return sesionId;
+	}
+	public void setSesionId(String sesionId) {
+		this.sesionId = sesionId;
+	}
 	@Override
 	public String toString() {
 		return "MemberVo [user_id=" + user_id + ", user_nm=" + user_nm + ", password=" + password + ", password_chg_dt=" + password_chg_dt + ", user_group_cd=" + user_group_cd + ", user_sttus_cd=" + user_sttus_cd + ", rjct_prvonsh_cn=" + rjct_prvonsh_cn + ", sesion_id=" + sesion_id + ", lgn_failr_cnt=" + lgn_failr_cnt + ", user_ip=" + user_ip + ", job_cd=" + job_cd + ", dept_nm=" + dept_nm + ", jbgd_nm=" + jbgd_nm + ", eml_cert_cd=" + eml_cert_cd + ", eml_cert_yn=" + eml_cert_yn + ", eml_addr=" + eml_addr + ", user_ncm_nm=" + user_ncm_nm + ", telno=" + telno + ", mbl_telno=" + mbl_telno + ", prvc_agre_yn=" + prvc_agre_yn + ", rm_cn=" + rm_cn + ", reg_dt=" + reg_dt + ", rgtr_id=" + rgtr_id + ", chg_dt=" + chg_dt + ", changer_id=" + changer_id + ", news_email_yn=" + news_email_yn + ", sms_yn=" + sms_yn + ", pg_yn=" + pg_yn + ", birth_ymd=" + birth_ymd + ", coper_no=" + coper_no + ", master_nm=" + master_nm + ", zip_code=" + zip_code + ", juso=" + juso + ", juso_detail=" + juso_detail + ", user_sex=" + user_sex + ", coper_gu_cd=" + coper_gu_cd + ", user_gu=" + user_gu + ", nickname_nm=" + nickname_nm + ", brvd_join_yn=" + brvd_join_yn + ", brvd_rltn_cd=" + brvd_rltn_cd + ", brvd_death_ymd=" + brvd_death_ymd + ", officer_yn=" + officer_yn + ", officer_sttus_cd=" + officer_sttus_cd + ", officer_org_cd=" + officer_org_cd + ", guard_yn=" + guard_yn + ", guard_sttus_cd=" + guard_sttus_cd + ", guard_license=" + guard_license + ", volunteer_yn=" + volunteer_yn + ", volunteer_sttus_cd=" + volunteer_sttus_cd + ", volunteer_license=" + volunteer_license + ", instructor_yn=" + instructor_yn + ", instructor_sttus_cd=" + instructor_sttus_cd + ", instructor_license=" + instructor_license + ", coper_nm=" + coper_nm + ", faxno=" + faxno + ", area_cd=" + area_cd + ", edu_auth_cd=" + edu_auth_cd + ", instructor_coper_nm=" + instructor_coper_nm + ", user_group_cd_nm=" + user_group_cd_nm + ", login_dt=" + login_dt + ", password_chg_dt_nm=" + password_chg_dt_nm + ", isAdmin=" + isAdmin + "]";
+	}
+	public String getEdu_auth_cd_nm() {
+		return edu_auth_cd_nm;
+	}
+	public void setEdu_auth_cd_nm(String edu_auth_cd_nm) {
+		this.edu_auth_cd_nm = edu_auth_cd_nm;
 	}
 	
 	

@@ -8,5 +8,6 @@ public interface LoginService {
 	public Account authenticate(String id, String password);	
 	public LoginVo checkPassword(LoginVo loginVo);		
 	public int signUpInsert(LoginVo loginVo);		
+	public LoginVo userLogin(LoginVo loginVo);		
 	
 }

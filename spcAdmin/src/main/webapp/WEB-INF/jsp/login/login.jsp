@@ -16,31 +16,32 @@
 	/**  페이지 이동 */
 	function goOkPage(){	
 		var frm = document.commonForm;
-		frm.action = "<c:url value='/edu/eduInfoOnlineList.do'/>";
+		frm.action = "<c:url value='/edu/eduInfoOfflineReg.do'/>";
+		//frm.action = "<c:url value='/main/logoList.do'/>";
 		frm.submit();
 	}
 		
 	/** 로그인 - 로그인 확인  */
 	function loginProcess(){
 	
-		var id = $("#id").val();
-		var password = $("#password").val();
+		var userId   = $("#userId").val();
+		var sesionId = $("#sesionId").val();
 		
 			
-		if (id == ""){			
+		if (userId == ""){			
 			alert("아이디를 입력해주세요.");
-			$("#id").focus();
+			$("#userId").focus();
 			return;
 		}
-		if (password == ""){			
-			alert("암호를 입력해주세요.");
-			$("#password").focus();
+		if (sesionId == ""){			
+			alert("sesionId 입력해주세요.");
+			$("#sesionId").focus();
 			return;
 		}
 		
 		$.ajax({	
 			data     : $("#commonForm").serialize(),
-		    url		 : "<c:url value='/login/loginCheckProcess.do'/>",
+		    url		 : "<c:url value='/login/loginUserCheckProcess.do'/>",
 	        dataType : "JSON",
 	        cache    : false,
 	        async    : false,
@@ -78,8 +79,8 @@
 	<section id="loginArea">
 		<form class="form_login" id="commonForm" name="commonForm"  method="post"  action="">
 			<h1 class="logo_login"> Admin Login Page</h1>
-			<li><input  class="input_large" type="text"    id="id"       name ="id"       value='kjs2300' maxlength="11" placeholder="아이디(핸드폰번호)" required></li>
-			<li><input  class="input_large" type="password"id="password" name ="password" value='1234'    placeholder="비밀번호" required></li>
+			<li><input  class="input_large" type="text"    id="userId"       name ="userId"       value='kjs2300'     placeholder="userId"   required></li>
+			<li><input  class="input_large" type="text"    id="sesionId"     name ="sesionId"     value='sesionId'    placeholder="sesionId" required></li>
 		</form>
 			<li><button class="btn_login"   onclick="javascript:loginProcess();" >로그인</button></li>
 	</section>

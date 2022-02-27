@@ -26,5 +26,10 @@ public class LoginMapper extends EgovAbstractMapper{
 	public int signUpInsert(LoginVo loginVo) throws DataAccessException{
 		return insert(nameSpace + "." +"signUpInsert", loginVo);
 	}
+	
+	public LoginVo userLogin(LoginVo loginVo) throws DataAccessException{
+		return (LoginVo)selectOne(nameSpace + "." +"userLogin", loginVo);
+	}
+	
 		
 }
