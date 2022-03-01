@@ -10,7 +10,7 @@
 
 <div class="dim-layer"></div>
 
-    <div class="main-pop pop-wrap sm-pop" style="left: 30%; top: 20%;">
+    <div class="main-pop pop-wrap sm-pop" style="height: 300px, width:800px ;">
         <div class="pop-header">
             <h1 class="h1-tit"><c:out value="${mainForm.popup_nm}"/></h1>
             <button type="button" class="close-btn"  onclick="self.close();"><img src="${pageContext.request.contextPath}/user/images/common/close.png" alt="닫기"/></button>

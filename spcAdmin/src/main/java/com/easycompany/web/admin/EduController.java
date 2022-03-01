@@ -1238,7 +1238,7 @@ public class EduController
   }
   
   /*
-  * 온라인 교육 관리 List
+  * 온라인 교육신청 신청자 관리 - 온라인 교육 List
   */
  @RequestMapping({"/eduInfoOnlineMangList.do"})
  public String eduInfoOnlineMangList(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
@@ -1260,7 +1260,7 @@ public class EduController
 	    }
 	
 	    if (StringUtil.isEmpty(categoryVo.getGubun2())) {
-	      categoryVo.setGubun2("eduInfoOnline");
+	      categoryVo.setGubun2("eduInfoOnlineMangList");
 	    }
 	
 	    if (StringUtil.isEmpty(categoryVo.getEdu_site())) {
@@ -1270,7 +1270,7 @@ public class EduController
 	    if (StringUtil.isEmpty(categoryVo.getSite())) {
 	        categoryVo.setSite("on");
 	    }
-	    
+	  
 	    categoryVo.setWebPath(this.webPath);
 	
 	    categoryVo.setGubun3("categorycode1");
@@ -1288,7 +1288,59 @@ public class EduController
 	
 	    return "eduInfoOnlineMangList";
  }
-  
+ 
+ /*
+  * 온라인 교육신청 신청자 관리 - 온라인 교육 상세  View
+  */
+ @RequestMapping({"/eduInfoOnlineMangView.do"})
+ public String eduInfoOnlineMangView(@ModelAttribute("categoryVo") CategoryVo categoryVo, ModelMap model ,HttpServletRequest request)
+   throws Exception
+ {
+	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
+	    categoryVo.setPageSize(this.propertiesService.getInt("pageSize"));
+	
+	    PaginationInfo paginationInfo = new PaginationInfo();
+	    paginationInfo.setCurrentPageNo(categoryVo.getPageIndex());
+	    paginationInfo.setRecordCountPerPage(categoryVo.getPageUnit());
+	    paginationInfo.setPageSize(categoryVo.getPageSize());
+	
+	    int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+	    categoryVo.setOffset(offset);
+	
+	    if (StringUtil.isEmpty(categoryVo.getGubun1())) {
+	      categoryVo.setGubun1("R");
+	    }
+	    
+	    if (StringUtil.isEmpty(categoryVo.getUser_nm())) {
+	    	categoryVo.setUser_nm("");
+		}
+	    
+	    categoryVo.setGubun2("eduInfoOnlineMangView");
+	    
+	    if (StringUtil.isEmpty(categoryVo.getEdu_site())) {
+	        categoryVo.setEdu_site("on");
+	    }
+	
+	    if (StringUtil.isEmpty(categoryVo.getSite())) {
+	        categoryVo.setSite("on");
+	    }
+	  
+	    categoryVo.setWebPath(this.webPath);
+	
+	
+	    List list = this.eduService.getEducationList(categoryVo);
+	    model.addAttribute("resultList", list);
+	
+	    int totCnt = this.eduService.getEducationCount(categoryVo);
+	    paginationInfo.setTotalRecordCount(totCnt);
+	    model.addAttribute("paginationInfo", paginationInfo);
+	    model.addAttribute("categoryVo", categoryVo);
+	    model.addAttribute("path", request.getServletPath());
+	
+	    return "eduInfoOnlineMangView";
+ }
+ 
+ 
   /*
    * 오프라인 교육 관리 List
    */

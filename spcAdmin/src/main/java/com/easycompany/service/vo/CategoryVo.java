@@ -80,6 +80,9 @@ public class CategoryVo extends MemberVo
   int cour_no;
   int basket_no;
   private String cour_finish;
+  private String category3_name1;
+  private int cnt;
+
   
   public String getCoper_nm_auto()
   {
@@ -705,5 +708,27 @@ public String getCour_finish() {
 
 public void setCour_finish(String cour_finish) {
 	this.cour_finish = cour_finish;
+}
+
+public String getCategory3_name1() {
+	return category3_name1;
+}
+
+public void setCategory3_name1(String category3_name1) {
+	this.category3_name1 = category3_name1;
+}
+
+/**
+ * @return the cnt
+ */
+public int getCnt() {
+	return cnt;
+}
+
+/**
+ * @param cnt the cnt to set
+ */
+public void setCnt(int cnt) {
+	this.cnt = cnt;
 }
 }

@@ -80,13 +80,19 @@
        <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoNoOrglineReg.jsp" />  
    </definition> 
    
-   <!-- admin > 교육신청 > 온라인 관리   -->
+   <!-- admin > 교육신청 > 신청자 관리 - 온라인 리스트   -->
    <definition name="eduInfoOnlineMangList" extends="base-definition">  
        <put-attribute name="title" value="교육신청관리" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoOnlineMangList.jsp" />  
    </definition> 
    
-   <!-- admin > 교육신청 > 오프라인 관리   -->
+   <!-- admin > 교육신청 > 신청자 관리 - 온라인 상세   -->
+   <definition name="eduInfoOnlineMangView" extends="base-definition">  
+       <put-attribute name="title" value="교육신청관리" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoOnlineMangView.jsp" />  
+   </definition> 
+   
+   <!-- admin > 교육신청 > 신청자 관리 - 오프라인 리스트   -->
    <definition name="eduInfoNoOrglineMangList" extends="base-definition">  
        <put-attribute name="title" value="교육신청관리" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoNoOrglineMangList.jsp" />  

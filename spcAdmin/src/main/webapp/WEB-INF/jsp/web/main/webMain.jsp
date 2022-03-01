@@ -56,7 +56,40 @@ $(document).ready(function(){
                                     <button class="mid-btn orange-btn">수강신청</button>
                                 </div>
                                 <div class="right-cont">
-                                    <span class="sm-ico"><img src="${pageContext.request.contextPath}/user/images/common/ico_mobile.png" alt="모바일강의"/></span>
+                                    
+                                    <span class="sm-ico"><img src="${pageContext.request.contextPath}/user/images/common/ico_pc.png" alt="pc강의"/></span>
+                                </div>
+                            </div>
+
+                            <ul class="summary-cont">
+                                <li>
+                                    <label>교육일시</label>
+                                    <span>2021.11.09</span>
+                                    <span>15:00~18:00</span>
+                                </li>
+                                <li>
+                                    <label>교육대상</label>
+                                    <span>성인</span>
+                                </li>
+                                <li>
+                                    <label>교육인원</label>
+                                    <span>200</span>명
+                                </li>
+                                <li>
+                                    <label>교육장소</label>
+                                    <span>본관 13층 대강의실</span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p class="sm-tit tag">한국생명존중희망재단</p>
+                            <h2 class="h3-tit">보고 듣고 말하기 2.0 기본형</h2>
+                            <div class="flex-colum">
+                                <div class="left-cont">R
+                                    <button class="mid-btn orange-btn">수강신청</button>
+                                </div>
+                                <div class="right-cont">
+                                    
                                     <span class="sm-ico"><img src="${pageContext.request.contextPath}/user/images/common/ico_pc.png" alt="pc강의"/></span>
                                 </div>
                             </div>
@@ -89,40 +122,7 @@ $(document).ready(function(){
                                     <button class="mid-btn orange-btn">수강신청</button>
                                 </div>
                                 <div class="right-cont">
-                                    <span class="sm-ico"><img src="${pageContext.request.contextPath}/user/images/common/ico_mobile.png" alt="모바일강의"/></span>
-                                    <span class="sm-ico"><img src="${pageContext.request.contextPath}/user/images/common/ico_pc.png" alt="pc강의"/></span>
-                                </div>
-                            </div>
-
-                            <ul class="summary-cont">
-                                <li>
-                                    <label>교육일시</label>
-                                    <span>2021.11.09</span>
-                                    <span>15:00~18:00</span>
-                                </li>
-                                <li>
-                                    <label>교육대상</label>
-                                    <span>성인</span>
-                                </li>
-                                <li>
-                                    <label>교육인원</label>
-                                    <span>200</span>명
-                                </li>
-                                <li>
-                                    <label>교육장소</label>
-                                    <span>본관 13층 대강의실</span>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <p class="sm-tit tag">한국생명존중희망재단</p>
-                            <h2 class="h3-tit">보고 듣고 말하기 2.0 기본형</h2>
-                            <div class="flex-colum">
-                                <div class="left-cont">
-                                    <button class="mid-btn orange-btn">수강신청</button>
-                                </div>
-                                <div class="right-cont">
-                                    <span class="sm-ico"><img src="${pageContext.request.contextPath}/user/images/common/ico_mobile.png" alt="모바일강의"/></span>
+                                    
                                     <span class="sm-ico"><img src="${pageContext.request.contextPath}/user/images/common/ico_pc.png" alt="pc강의"/></span>
                                 </div>
                             </div>
@@ -155,7 +155,7 @@ $(document).ready(function(){
                                     <button class="mid-btn orange-btn">수강신청</button>
                                 </div>
                                 <div class="right-cont">
-                                    <span class="sm-ico"><img src="${pageContext.request.contextPath}/user/images/common/ico_mobile.png" alt="모바일강의"/></span>
+                                    
                                     <span class="sm-ico"><img src="${pageContext.request.contextPath}/user/images/common/ico_pc.png" alt="pc강의"/></span>
                                 </div>
                             </div>

@@ -18,6 +18,9 @@
 		<if test=" category3_name !=null and category3_name !='' and category3_name !='선택 하세요'">
 			AND CATEGORY3_NAME LIKE CONCAT('%', #{category3_name} ,'%')
 		</if>
+		<if test=" category3_name1 !=null and category3_name1 !='' and category3_name1 !='선택 하세요'">
+			AND CATEGORY3_NAME LIKE CONCAT('%', #{category3_name1} ,'%')
+		</if>
 		<if test=" category1_key !=null and category1_key !=0">
 			AND CATEGORY1_KEY = #{category1_key} 
 		</if>
@@ -883,9 +886,9 @@
 		FROM EDU_REGISTRATION A
 		WHERE A.EDU_SITE = #{edu_site}
 		)
-		SELECT *
-		FROM TEMP
-		WHERE 1= 1
+		SELECT A.*, (SELECT COUNT(*) FROM EDU_COURSE_REGISTRATION WHERE EDU_NO = A.EDU_NO) CNT
+		  FROM TEMP A
+		 WHERE 1 = 1
 		<include refid="eduInfoOnlineListSearch" />
 		ORDER BY EDU_NO DESC
 		LIMIT #{recordCountPerPage} OFFSET #{offset}
@@ -1659,6 +1662,85 @@
 		    ]]>
 			</when>
 		</choose>
+	</select>
+	
+	<select id="getEduInfoOnlineMangViewList"		parameterType="com.easycompany.service.vo.CategoryVo"		resultType="com.easycompany.service.vo.CategoryVo">
+		/** com.easycompany.mapper.EduMapper.getEduInfoOnlineMangViewList **/
+		WITH TB_MEM AS 
+			(
+			SELECT   U.USER_NM
+				   , CASE
+					   WHEN U.USER_SEX = 'M' THEN '남자'
+					   WHEN U.USER_SEX = 'W' THEN '여자'
+					   ELSE U.USER_SEX
+				      END AS USER_SEX
+				    , FN_GET_CD_NM1('238', U.JOB_CD) JOB_CD
+				    , DATE_FORMAT(U.BIRTH_YMD,'%Y-%m-%d') AS BIRTH_YMD
+				    , C.EML_ADDR, C.MBL_TELNO, CONCAT(U.JUSO ,' ', U.JUSO_DETAIL) AS JUSO 
+				    , DATE_FORMAT(C.REG_DT,'%Y-%m-%d') AS REG_DT
+			   FROM EDU_COURSE_REGISTRATION C , EDU_REGISTRATION R , COM_USER U
+			  WHERE C.EDU_NO = R.EDU_NO
+			    AND C.USER_ID = U.USER_ID
+			    AND C.EDU_NO = #{edu_no}
+			 )
+			SELECT * 
+			  FROM TB_MEM
+	   	     WHERE USER_NM LIKE CONCAT('%', #{user_nm} ,'%')
+		  <choose>
+				<when
+					test="checkdate !=null and checkdate !='' and checkdate =='ALL' ">
+				</when>
+				<when
+					test="checkdate !=null and checkdate !='' and checkdate =='TODAY' ">
+					AND REG_DT = DATE_FORMAT(NOW(),'%Y-%m-%d') 
+				</when>
+				<when
+					test="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
+			   <![CDATA[
+			     AND  REG_DT >= #{train_s_date} AND REG_DT <= #{train_e_date} 
+			    ]]>
+				</when>
+			</choose>
+	   	 LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+	
+	<select id="getEduInfoOnlineMangViewCount"		parameterType="com.easycompany.service.vo.CategoryVo"	resultType="int">
+		/** com.easycompany.mapper.EduMapper.getEduInfoOnlineMangViewCount **/
+		WITH TB_MEM AS 
+			(
+			SELECT   U.USER_NM
+				   , CASE
+					   WHEN U.USER_SEX = 'M' THEN '남자'
+					   WHEN U.USER_SEX = 'W' THEN '여자'
+					   ELSE U.USER_SEX
+				      END AS USER_SEX
+				    , FN_GET_CD_NM1('238', U.JOB_CD) JOB_CD
+				    , DATE_FORMAT(U.BIRTH_YMD,'%Y-%m-%d') AS BIRTH_YMD
+				    , C.EML_ADDR, C.MBL_TELNO, CONCAT(U.JUSO ,' ', U.JUSO_DETAIL) AS JUSO 
+				    , DATE_FORMAT(C.REG_DT,'%Y-%m-%d') AS REG_DT
+			   FROM EDU_COURSE_REGISTRATION C , EDU_REGISTRATION R , COM_USER U
+			  WHERE C.EDU_NO = R.EDU_NO
+			    AND C.USER_ID = U.USER_ID
+			    AND C.EDU_NO = #{edu_no}
+			 )
+			SELECT COUNT(*) 
+			  FROM TB_MEM
+	   	      WHERE USER_NM LIKE CONCAT('%', #{user_nm} ,'%')
+		   <choose>
+				<when
+					test="checkdate !=null and checkdate !='' and checkdate =='ALL' ">
+				</when>
+				<when
+					test="checkdate !=null and checkdate !='' and checkdate =='TODAY' ">
+					AND REG_DT = DATE_FORMAT(NOW(),'%Y-%m-%d') 
+				</when>
+				<when
+					test="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
+			   <![CDATA[
+			     AND  REG_DT >= #{train_s_date} AND REG_DT <= #{train_e_date} 
+			    ]]>
+				</when>
+			</choose>
 	</select>
 	
 	<select id="getLifeEduOnLineDetail"		parameterType="com.easycompany.service.vo.CategoryVo"		resultType="com.easycompany.service.vo.CategoryVo">

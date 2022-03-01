@@ -29,8 +29,20 @@ public class EgovoOLineEducationExcel extends AbstractExcelView
     if ("eduInfoNoOrgline".equals(categoryVo.getGubun2())) {
         sheetName = "오프라인 교육(기관이외)";
         cellNameArr = new String[] { "No.", "기관명", "교육명", "교육내용", "교육방식", "교육기간/일시", "신청기간", "교육상태", "노출여부" };
-      }
+    }
+    
+    if ("eduInfoOnlineMangList".equals(categoryVo.getGubun2())) {
+        sheetName = "신청자 관리 온라인 교육";
+        cellNameArr = new String[] { "No.", "분류1", "분류2", "분류3", "교육내용", "교육대상", "학습시간", "신청자" };
+    }    
 
+    if ("eduInfoOnlineMangView".equals(categoryVo.getGubun2())) {
+        sheetName = "신청자 관리 온라인 교육 신청자 리스트";
+        cellNameArr = new String[] { "No.", "이름", "성별", "직업", "생년월일", "이메일", "연락처", "주소","신청일" };
+    }    
+
+    
+    
     HSSFCell cell = null;
 
     HSSFSheet sheet = wb.createSheet(sheetName);
@@ -143,6 +155,64 @@ public class EgovoOLineEducationExcel extends AbstractExcelView
 
         cell = getCell(sheet, 3 + i, 8);
         setText(cell, categVo.getExp_use_yn());
+      }
+      
+       //신청자 관리 온라인 교육
+      if ("eduInfoOnlineMangList".equals(categoryVo.getGubun2()))
+      {
+        cell = getCell(sheet, 3 + i, 0);
+        setText(cell, Integer.toString(i + 1));
+
+        cell = getCell(sheet, 3 + i, 1);
+        setText(cell, categVo.getCategory1_name());
+
+        cell = getCell(sheet, 3 + i, 2);
+        setText(cell, categVo.getCategory2_name());
+
+        cell = getCell(sheet, 3 + i, 3);
+        setText(cell, categVo.getCategory3_name());
+
+        cell = getCell(sheet, 3 + i, 4);
+        setText(cell, categVo.getEdu_cont());
+        
+        cell = getCell(sheet, 3 + i, 5);
+        setText(cell, categVo.getEdu_target());
+        
+        cell = getCell(sheet, 3 + i, 6);
+        setText(cell, String.valueOf(categVo.getEdu_time()) + "분");
+       
+        cell = getCell(sheet, 3 + i, 7);
+        setText(cell, String.valueOf(categVo.getCnt()));
+
+      }
+      
+      if ("eduInfoOnlineMangView".equals(categoryVo.getGubun2())) {
+    	  cell = getCell(sheet, 3 + i, 0);
+          setText(cell, Integer.toString(i + 1));
+
+          cell = getCell(sheet, 3 + i, 1);
+          setText(cell, categVo.getUser_nm());
+
+          cell = getCell(sheet, 3 + i, 2);
+          setText(cell, categVo.getUser_sex());
+
+          cell = getCell(sheet, 3 + i, 3);
+          setText(cell, categVo.getJob_cd());
+
+          cell = getCell(sheet, 3 + i, 4);
+          setText(cell, categVo.getBirth_ymd());
+          
+          cell = getCell(sheet, 3 + i, 5);
+          setText(cell, categVo.getEml_addr());
+          
+          cell = getCell(sheet, 3 + i, 6);
+          setText(cell, String.valueOf(categVo.getMbl_telno()) );
+         
+          cell = getCell(sheet, 3 + i, 7);
+          setText(cell, String.valueOf(categVo.getJuso()));
+          
+          cell = getCell(sheet, 3 + i, 8);
+          setText(cell, String.valueOf(categVo.getReg_dt()));
       }
       
     }

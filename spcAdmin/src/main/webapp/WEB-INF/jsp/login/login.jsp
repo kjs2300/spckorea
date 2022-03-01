@@ -16,8 +16,8 @@
 	/**  페이지 이동 */
 	function goOkPage(){	
 		var frm = document.commonForm;
-		frm.action = "<c:url value='/edu/eduInfoOfflineReg.do'/>";
-		//frm.action = "<c:url value='/main/logoList.do'/>";
+		//frm.action = "<c:url value='/edu/eduInfoOnlineMangList.do'/>";
+		frm.action = "<c:url value='/main/logoList.do'/>";
 		frm.submit();
 	}
 		
@@ -33,11 +33,13 @@
 			$("#userId").focus();
 			return;
 		}
+		/*
 		if (sesionId == ""){			
 			alert("sesionId 입력해주세요.");
 			$("#sesionId").focus();
 			return;
 		}
+		*/
 		
 		$.ajax({	
 			data     : $("#commonForm").serialize(),
@@ -80,7 +82,7 @@
 		<form class="form_login" id="commonForm" name="commonForm"  method="post"  action="">
 			<h1 class="logo_login"> Admin Login Page</h1>
 			<li><input  class="input_large" type="text"    id="userId"       name ="userId"       value='kjs2300'     placeholder="userId"   required></li>
-			<li><input  class="input_large" type="text"    id="sesionId"     name ="sesionId"     value='sesionId'    placeholder="sesionId" required></li>
+			<li><input  class="input_large" type="text"    id="sesionId"     name ="sesionId"     value=''    placeholder="sesionId" required></li>
 		</form>
 			<li><button class="btn_login"   onclick="javascript:loginProcess();" >로그인</button></li>
 	</section>
