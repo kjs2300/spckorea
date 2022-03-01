@@ -27,6 +27,7 @@ public class AdBoardVo extends MemberVo {
 	String notice_yn;
 	String checkdstr;
 	int file_cnt;
+	private String reg_nm;
 	
 	public Long getBoard_idx() {
 		return board_idx;
@@ -179,6 +180,12 @@ public class AdBoardVo extends MemberVo {
 	}
 	public void setFile_cnt(int file_cnt) {
 		this.file_cnt = file_cnt;
+	}
+	public String getReg_nm() {
+		return reg_nm;
+	}
+	public void setReg_nm(String reg_nm) {
+		this.reg_nm = reg_nm;
 	}
 
 }
