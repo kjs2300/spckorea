@@ -39,7 +39,7 @@ model.addAttribute("path", request.getServletPath());
 	                 </ul>
 	             </li>
 	             <li><a href="${pageContext.request.contextPath}/user/lifeEduSch.do">교육일정</a></li>
-	             <li><a href="${pageContext.request.contextPath}/user/lifeEduBoard.do">생명지킴이 활동 수기</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/lifeEduBoardList.do">생명지킴이 활동 수기</a></li>
 	         </ul>
 	         <ul class="depth2">
 	             <li>

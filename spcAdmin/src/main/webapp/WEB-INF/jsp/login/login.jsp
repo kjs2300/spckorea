@@ -81,8 +81,8 @@
 	<section id="loginArea">
 		<form class="form_login" id="commonForm" name="commonForm"  method="post"  action="">
 			<h1 class="logo_login"> Admin Login Page</h1>
-			<li><input  class="input_large" type="text"    id="userId"       name ="userId"       value='kjs2300'     placeholder="userId"   required></li>
-			<li><input  class="input_large" type="text"    id="sesionId"     name ="sesionId"     value=''    placeholder="sesionId" required></li>
+			<li><input  class="input_large" type="text"    id="userId"       name ="userId"       value='kjs2300'     placeholder="userId"   ></li>
+			<li><input  class="input_large" type="text"    id="sesionId"     name ="sesionId"     value=''            placeholder="sesionId" ></li>
 		</form>
 			<li><button class="btn_login"   onclick="javascript:loginProcess();" >로그인</button></li>
 	</section>

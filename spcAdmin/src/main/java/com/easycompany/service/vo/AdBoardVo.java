@@ -1,9 +1,7 @@
 package com.easycompany.service.vo;
 
-import com.easycompany.cmm.vo.DefaultVO;
-
 @SuppressWarnings("serial")
-public class AdBoardVo extends DefaultVO {
+public class AdBoardVo extends MemberVo {
 	
 	Long board_idx;
 	String board_type;

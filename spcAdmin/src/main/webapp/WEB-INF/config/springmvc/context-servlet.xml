@@ -36,6 +36,8 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/user/**"/>
+            <mvc:exclude-mapping path="/login/**" />
+            <mvc:exclude-mapping path="/adBoard/setEditImgUpLoad.do" />
             <bean class="com.easycompany.cmm.interceptor.WebAuthenticInterceptor" />
         </mvc:interceptor>
    </mvc:interceptors>

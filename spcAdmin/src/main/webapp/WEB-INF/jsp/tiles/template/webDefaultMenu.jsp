@@ -67,7 +67,7 @@
                         </ul>
 	                 </li>
 		             <li <c:if test="${fn:contains(path, '/user/lifeEduSch') }">    class="on" </c:if>>   <a href="${pageContext.request.contextPath}/user/lifeEduSch.do">교육일정</a></li>
-	             	 <li <c:if test="${fn:contains(path, '/user/lifeEduBoard') }">  class="on" </c:if>> <a href="${pageContext.request.contextPath}/user/lifeEduBoard.do">생명지킴이 활동 수기</a></li>
+	             	 <li <c:if test="${fn:contains(path, '/user/lifeEduBoard') }">  class="on" </c:if>> <a href="${pageContext.request.contextPath}/user/lifeEduBoardList.do">생명지킴이 활동 수기</a></li>
 		      </ul>
 	      </div>
      </c:if>

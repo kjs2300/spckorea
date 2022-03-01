@@ -53,8 +53,9 @@ public class WebMainController
    */
   @RequestMapping({"/webMain.do"})
   public String webMain(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
-    throws Exception
-  {
+    throws Exception {
+	  
+	LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
    
     if (StringUtil.isEmpty(mainVo.getGubun1())) {
       mainVo.setGubun1("R");
@@ -92,6 +93,7 @@ public class WebMainController
 	
     
     model.addAttribute("path",    request.getServletPath());
+    model.addAttribute("sessionId",    loginvo);
 
     return "webMain";
   }
@@ -113,10 +115,10 @@ public class WebMainController
 
     MainVo mainForm = this.mainService.getCommonDetail(mainVo);
 
-    mainVo.setReg_id(loginvo.getId());
-    model.addAttribute("mainVo", mainVo);
-    model.addAttribute("mainForm", mainForm);
-    model.addAttribute("path", request.getServletPath());
+    model.addAttribute("mainVo",    mainVo);
+    model.addAttribute("mainForm",  mainForm);
+    model.addAttribute("path",      request.getServletPath());
+    model.addAttribute("sessionId", loginvo);
 
     return "mainPop";
   }
@@ -327,6 +329,7 @@ public class WebMainController
     categoryVo.setWebPath(this.webPath);
     model.addAttribute("categoryVo", categoryVo);
     model.addAttribute("path",       request.getServletPath());
+    model.addAttribute("sessionId",    loginvo);
 
     return "lifeEduOnLineList";
   }
@@ -352,7 +355,8 @@ public class WebMainController
     
     model.addAttribute("categoryVo",   categoryVo);
     model.addAttribute("path",       request.getServletPath());
-
+    model.addAttribute("sessionId",    loginvo);
+    
     return "lifeEduOnLineInfo";
   }
   
@@ -448,8 +452,8 @@ public class WebMainController
   public String userInstNotiList(@ModelAttribute("CategoryVo") CategoryVo categoryVo, ModelMap model, HttpServletRequest request)
     throws Exception
   {
-   
-	  categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
+	    LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
+	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
 	    categoryVo.setPageSize(this.propertiesService.getInt("pageSize"));
 	
 	    PaginationInfo paginationInfo = new PaginationInfo();
@@ -478,7 +482,7 @@ public class WebMainController
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    model.addAttribute("categoryVo", categoryVo);
 	    model.addAttribute("path", request.getServletPath());
-	
+	    model.addAttribute("sessionId",    loginvo);
 
        return "lifeEduSch";
   }
@@ -486,25 +490,39 @@ public class WebMainController
   /*
    * 생명지킴이 교육신청 > 생명지킴이 활동 수기  
    */
-  @RequestMapping({"/lifeEduBoard.do"})
-  public String lifeEduBoard(@ModelAttribute("MainVo") MainVo mainVo, ModelMap model, HttpServletRequest request)
+  @RequestMapping({"/lifeEduBoardList.do"})
+  public String lifeEduBoard(@ModelAttribute("AdBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request)
     throws Exception
   {
    
-    if (StringUtil.isEmpty(mainVo.getGubun1())) {
-      mainVo.setGubun1("R");
-    }
-    if (StringUtil.isEmpty(mainVo.getGubun2())) {
-      mainVo.setGubun2("logo");
-    }
-    mainVo.setWebPath(this.webPath);
+		LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
+		adBoardVo.setPageUnit(propertiesService.getInt("pageUnit"));
+		adBoardVo.setPageSize(propertiesService.getInt("pageSize"));
+			
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(adBoardVo.getPageIndex());
+		paginationInfo.setRecordCountPerPage(adBoardVo.getPageUnit());
+		paginationInfo.setPageSize(adBoardVo.getPageSize());
+			
+			/***  offSet 설정  ***/
+		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
+		adBoardVo.setOffset(offset);
+		
+		adBoardVo.setBoard_type("04");
+		List<AdBoardVo> list = adBoardService.getBoardList(adBoardVo);
+		model.addAttribute("resultList", list);
+			
+		
+		int totCnt = adBoardService.getBoardCount(adBoardVo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+		
+		
+		model.addAttribute("adBoardVo", adBoardVo);
+		model.addAttribute("path",      request.getServletPath());
+	    model.addAttribute("sessionId", loginvo);
 
-    MainVo mainForm = this.mainService.getCommonDetail(mainVo);
-
-    model.addAttribute("mainVo",    mainVo);
-    model.addAttribute("mainForm",  mainForm);
-    model.addAttribute("path",      request.getServletPath());
-
-    return "lifeEduBoard";
+		return "lifeEduBoardList";
   }
 }
