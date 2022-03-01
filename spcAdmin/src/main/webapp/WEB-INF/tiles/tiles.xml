@@ -76,7 +76,7 @@
    </definition>  
    
      <!-- logout Page -->
-   <definition name="logout" extends="base-definition">  
+   <definition name="logout" extends="popUp-definition">  
        <put-attribute name="title" value="logout" />  
        <put-attribute name="body" value="/WEB-INF/jsp/login/logout.jsp" />  
    </definition>  

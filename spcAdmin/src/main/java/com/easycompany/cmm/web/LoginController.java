@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.easycompany.cmm.service.LoginService;
 import com.easycompany.cmm.service.SampleService;
 import com.easycompany.cmm.util.EgovFileScrty;
-import com.easycompany.cmm.util.FileUtil;
 import com.easycompany.cmm.vo.Account;
 import com.easycompany.cmm.vo.LoginVo;
-import com.easycompany.service.vo.BoardVo;
 
 @Controller
 @RequestMapping("login")
@@ -90,9 +88,9 @@ public class LoginController {
 			session.invalidate();
 			session = null;
 		} catch (Exception e) {
-			  return "login";
+			  return "logout";
 		}
-		return "login";
+		return "logout";
     }
     
 	/** 로그인 Check */

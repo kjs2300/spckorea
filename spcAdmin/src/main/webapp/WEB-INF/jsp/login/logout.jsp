@@ -1,30 +1,11 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<html>
-<head>
-<title><spring:message code="easaycompany.loginform.title"/></title>
-<link type="text/css" rel="stylesheet" href="scripts/easycompany.css" />
-</head>
-<body>
-로그인 페이지
-<br/>
-<br/>
-<br/>
-<br/>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<div id="navigation">
-	<ul>
-		<li class="first"><span class="current"><a href="employeeList.do">사원정보</a></span></li>
-		<li><a href="departmentList.do?depth=1">부서정보</a></li>		
-		<li><a href="departmentList.do?depth=1">부서정보</a></li>		
-		 <li><a href="${pageContext.request.contextPath}/board/boardList.do">게시판</a></li>
-	</ul>
-</div>
-
-<form:form commandName="account" action="${pageContext.request.contextPath}/loginProcess.do">
-아이디 : <input type=text name="id"> 패스워드: <input type=password name="password"> <input type=submit value="로그인">
-</form:form>
-</body>
-</html>
+<script type="text/javascript">	
+	$(document).ready(function(){	
+		alert('로그 아웃 되었습니다.');
+		self.close();
+	});
+</script>

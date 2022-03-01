@@ -5,9 +5,25 @@
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<script type="text/javascript">	
+/**
+ * 
+ * @param fileId
+ * @returns
+ */
+function gfnLogout(){
+	var msg = "정말로 로그아웃 하시겠습니까?";
+	var yn = confirm(msg);		
+	if(yn){
+		location.href = "${pageContext.request.contextPath}/login/logout.do";
+	}
+}
+
+</script>
+
 	<div id="header">
         <div class="top-wrap">
-            <a  href="${pageContext.request.contextPath}/user/webMain.do">홈</a>|<a>공지사항</a>|<a>마이페이지</a>|<a>나의 강의실</a>|<a>로그아웃</a>
+            <a  href="${pageContext.request.contextPath}/user/webMain.do">홈</a>|<a>공지사항</a>|<a>마이페이지</a>|<a>나의 강의실</a>|<a Onclick="javascript:gfnLogout()">로그아웃</a>
         </div>
 
         <div class="nav-wrap">
