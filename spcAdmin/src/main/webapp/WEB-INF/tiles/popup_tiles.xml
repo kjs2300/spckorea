@@ -15,4 +15,15 @@
        <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/mainPopup.jsp" />  
    </definition> 
    
+   <!--마이페이지 > 나의 강의실 -->
+   <definition name="popMyClass" extends="popUp-definition">  
+       <put-attribute name="title" value="나의 강의실" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/popup/myClass.jsp" />  
+   </definition>
+   
+   <!--마이페이지 > 영상시청 -->
+   <definition name="popMyPlayer" extends="popUp-definition">  
+       <put-attribute name="title" value="영상시청" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/popup/myPlayer.jsp" />  
+   </definition>
 </tiles-definitions>

@@ -71,4 +71,83 @@
 		      </ul>
 	      </div>
      </c:if>
+     
+     <c:if test="${idx != '' and idx != null}">
+	      <aside class="tit">분야별 교육신청</aside>
+	      <div class="lnb-menu">
+	          <ul>
+	                 <li <c:if test="${idx == '01'}">  class="on" </c:if>>
+	                 	<a href="#">생명지킴이 강사 양성 교육</a>
+	                 	<ul class="sub-lnb">
+                        	<li <c:if test="${idx == '01'}">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/sectorList.do?idx=01">교육신청</a></li>
+                        </ul>
+	                 </li>
+	                 <li <c:if test="${idx == '02'}">  class="on" </c:if>>
+	                 	<a href="#">실무자 역량 강화 교육</a>
+	                 	<ul class="sub-lnb">
+                        	<li <c:if test="${idx == '02'}">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/sectorList.do?idx=02">교육신청</a></li>
+                        </ul>
+	                 </li>
+	                 <li <c:if test="${idx == '03'}">  class="on" </c:if>>
+	                 	<a href="#">자살유족서비스 제공 인력교육</a>
+	                 	<ul class="sub-lnb">
+                        	<li <c:if test="${idx == '03'}">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/sectorList.do?idx=03">교육신청</a></li>
+                        </ul>
+	                 </li>
+	                 <li <c:if test="${idx == '04'}">  class="on" </c:if>>
+	                 	<a href="#">광역주도형 심리부검면담원 양성교육</a>
+	                 	<ul class="sub-lnb">
+                        	<li <c:if test="${idx == '04'}">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/sectorList.do?idx=04">교육신청</a></li>
+                        </ul>
+	                 </li>
+	                 <li <c:if test="${idx == '05'}">  class="on" </c:if>>
+	                 	<a href="#">자살사후대응 전문가 양성교육</a>
+	                 	<ul class="sub-lnb">
+                        	<li <c:if test="${idx == '05'}">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/sectorList.do?idx=05">교육신청</a></li>
+                        </ul>
+	                 </li>
+		      </ul>
+	      </div>
+     </c:if>
+     
+     <c:if test="${fn:contains(path, '/my')}">
+	      <aside class="tit">마이페이지</aside>
+	      <div class="lnb-menu">
+	          <ul>
+	                 <li <c:if test="${fn:contains(path, '/my/my01')}">  class="on" </c:if>>
+	                 	<a href="#">일반</a>
+	                 	<ul class="sub-lnb">
+                        	<li <c:if test="${fn:contains(path, '/my/my01info') }">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">기본정보</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01cart.do">장바구니</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01status.do">신청현황</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01edu.do">학습/교육현황</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01warrant.do">수료증발급</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01mylist.do">나의 글 보기</a></li>
+                        </ul>
+	                 </li>
+	                 <li <c:if test="${fn:contains(path, '/my/my02')}">  class="on" </c:if>>
+	                 	<a href="#">강사</a>
+	                 	<ul class="sub-lnb">
+                        	<li <c:if test="${fn:contains(path, '/user/lifeEduOnLie') }">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">기본정보</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">강사 활동 신청 내역</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">휴직 신청 내역</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">강사 보수 교육<br>신청내역</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">수료증발급</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">나의 글 보기</a></li>
+                        </ul>
+	                 </li>
+	                 <li <c:if test="${fn:contains(path, '/my/my03')}">  class="on" </c:if>>
+	                 	<a href="#">실무자</a>
+	                 	<ul class="sub-lnb">
+                        	<li <c:if test="${fn:contains(path, '/user/lifeEduOnLie') }">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">기본정보</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">장바구니</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">신청현황</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">학습/교육현황</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">수료증발급</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">나의 글 보기</a></li>
+                        </ul>
+	                 </li>
+		      </ul>
+	      </div>
+     </c:if>
   </div>

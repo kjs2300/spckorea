@@ -45,31 +45,31 @@ model.addAttribute("path", request.getServletPath());
 	             <li>
 	                 <a href="#">생명지킴이 강사 양성 교육</a>
 	                 <ul class="depth3">
-	                     <li><a href="#">교육신청</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/sectorList.do?idx=01">교육신청</a></li>
 	                 </ul>
 	             </li>
 	             <li>
 	                 <a href="#">실무자 역량 강화 교육</a>
 	                 <ul class="depth3">
-	                     <li><a href="#">교육신청</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/sectorList.do?idx=02">교육신청</a></li>
 	                 </ul>
 	             </li>
 	             <li>
 	                 <a href="#">자살유족서비스 제공 인력교육</a>
 	                 <ul class="depth3">
-	                     <li><a href="#">교육신청</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/sectorList.do?idx=03">교육신청</a></li>
 	                 </ul>
 	             </li>
 	             <li>
 	                 <a href="#">광역주도형 심리부검면담원 양성교육</a>
 	                 <ul class="depth3">
-	                     <li><a href="#">교육신청</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/sectorList.do?idx=04">교육신청</a></li>
 	                 </ul>
 	             </li>
 	             <li>
 	                 <a href="#">자살사후대응 전문가 양성교육</a>
 	                 <ul class="depth3">
-	                     <li><a href="#">교육신청</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/sectorList.do?idx=05">교육신청</a></li>
 	                 </ul>
 	             </li>
 	         </ul>

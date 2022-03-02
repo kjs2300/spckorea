@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.easycompany.mapper.SectorMapper">
+
+	<select id="getCategoryList1" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT   CATEGORY1_KEY, CATEGORY1_NAME
+		FROM EDU_CLASS_CATEGORY1
+		WHERE 1=1
+		<if test="site != ''">
+			AND SITE = #{site}
+		</if>
+		GROUP BY CATEGORY1_KEY, CATEGORY1_NAME
+	</select>
+	
+	<select id="getCategoryList2" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT   CATEGORY2_KEY, CATEGORY2_NAME
+		FROM EDU_CLASS_CATEGORY2
+		WHERE 1=1
+		<if test="site != ''">
+			AND SITE = #{site}
+		</if>
+		AND CATEGORY1_KEY = #{category1_key}
+		GROUP BY CATEGORY2_KEY, CATEGORY2_NAME
+	</select>
+	
+	<select id="getCategoryList3" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT   CATEGORY3_KEY, CATEGORY3_NAME
+		FROM EDU_CLASS_CATEGORY3
+		WHERE 1=1
+		<if test="site != ''">
+			AND SITE = #{site}
+		</if>
+		AND CATEGORY3_KEY IS NOT NULL
+		AND CATEGORY1_KEY = #{category1_key}
+		AND CATEGORY2_KEY = #{category2_key}
+		GROUP BY CATEGORY3_KEY, CATEGORY3_NAME
+	</select>
+
+	<select id="getSectorList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT  ER.EDU_NO, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = ER.CATEGORY1_KEY) AS CATEGORY1 , 
+				(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = ER.CATEGORY2_KEY) AS CATEGORY2 , 
+				(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = ER.CATEGORY3_KEY) AS CATEGORY3 , 
+                ER.INST_NM, ER.TRAIN_S_DATE, ER.TRAIN_E_DATE, ER.EDU_METHOD,ER.EDU_TIME, ER.EDU_NOTICE
+		  FROM EDU_REGISTRATION ER
+		 WHERE 1=1
+		    AND EDU_SITE = #{site}
+		<if test=" category1_key !=null and category1_key !=0">
+			AND ER.CATEGORY1_KEY = #{category1_key} 
+		</if>
+		<if test=" category2_key !=null and category2_key !=0 ">
+			AND ER.CATEGORY2_KEY = #{category2_key} 
+		</if>
+		<if test=" category3_key !=null and category3_key !=0">
+			AND ER.CATEGORY3_KEY = #{category3_key} 
+		</if>
+		 ORDER BY EDU_NO DESC<!-- TRAIN_S_DATE -->
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+		
+		<!-- ER.EDU_NO, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = ER.CATEGORY1_KEY) AS CATEGORY1 , 
+			(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = ER.CATEGORY2_KEY) AS CATEGORY2 , 
+			(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = ER.CATEGORY3_KEY) AS CATEGORY3 , 
+				ER.EDU_CONT,ER.INST_NM, ER.TRAIN_S_DATE, ER.TRAIN_E_DATE, ER.EDU_METHOD, ER.EDU_TIME,
+			   ER.EDU_TARGET,ER.EDU_TIME, ER.EDU_NOTICE,
+			   ER.EDU_GARDEN, ER.EDU_STATUS,ER.EDU_CONT,ER.EDU_METHOD, ER.EXP_USE_YN,
+			   ER.COPER_NM , ER.COPER_NM_AUTO, ER.COPER_ID, ER.COPER_CHECK  -->
+		  
+	</select>
+
+	<select id="getSectorListCnt"		parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
+		SELECT COUNT(*) 
+		  FROM EDU_REGISTRATION ER
+		 WHERE 1=1
+		    AND EDU_SITE = #{site}
+		<if test=" category1_key !=null and category1_key !=0">
+			AND ER.CATEGORY1_KEY = #{category1_key} 
+		</if>
+		<if test=" category2_key !=null and category2_key !=0 ">
+			AND ER.CATEGORY2_KEY = #{category2_key} 
+		</if>
+		<if test=" category3_key !=null and category3_key !=0">
+			AND ER.CATEGORY3_KEY = #{category3_key} 
+		</if>
+		 ORDER BY EDU_NO DESC
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+	
+	<select id="getSectorView" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT  ER.EDU_NO, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = ER.CATEGORY1_KEY) AS CATEGORY1 , 
+			(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = ER.CATEGORY2_KEY) AS CATEGORY2 , 
+			(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = ER.CATEGORY3_KEY) AS CATEGORY3 , 
+			ER.INST_NM, ER.TRAIN_S_DATE, ER.TRAIN_E_DATE, ER.EDU_METHOD,ER.EDU_TIME, ER.EDU_NOTICE,
+            ERD.EDU_INTRO, ERD.EDU_GOALS, ERD.EDU_CURR1, ERD.EDU_CURR2, ERD.EDU_CURR3,
+            ER.EDU_TARGET, ER.EDU_STATUS
+		FROM EDU_REGISTRATION ER,
+			 EDU_REGISTRATION_DETAIL ERD  
+		 WHERE 1=1
+		AND ER.EDU_NO = ERD.EDU_NO
+        AND ER.EDU_NO = ${edu_no}
+	</select>
+	
+	<insert id="basketInsert" parameterType="java.util.Map">	
+		INSERT INTO EDU_BASKET(
+		  	  BASKET_NO
+		  	, EDU_NO
+		  	, USER_ID
+		  	, USER_NM
+		  	, EML_ADDR
+		  	, MBL_TELNO
+		  	, REG_DT
+		  	, REG_ID
+		) VALUES (
+			  (SELECT MAX(BASKET_NO)+1 FROM EDU_BASKET)
+			, #{edu_no}
+			, #{UserAccount.user_id}
+			, #{UserAccount.user_nm}
+			, #{eml_addr1}||#{eml_addr2}
+			, #{mbl_telno}
+			, SYSDATE
+			, #{UserAccount.user_nm}
+		)	
+	</insert>
+	
+	<insert id="registInsert" parameterType="java.util.Map">	
+		INSERT INTO EDU_COURSE_REGISTRATION(
+		  	  COUR_NO
+		  	, EDU_NO
+		  	, USER_ID
+		  	, USER_NM
+		  	, EML_ADDR
+		  	, MBL_TELNO
+		  	, REG_DT
+		  	, REG_ID
+		) VALUES (
+			  (SELECT MAX(COUR_NO)+1 FROM EDU_COURSE_REGISTRATION)
+			, #{edu_no}
+			, #{UserAccount.user_id}
+			, #{UserAccount.user_nm}
+			, #{eml_addr1}||#{eml_addr2}
+			, #{mbl_telno}
+			, SYSDATE
+			, #{UserAccount.user_nm}
+		)	
+	</insert>
+</mapper>
