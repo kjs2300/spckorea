@@ -75,8 +75,8 @@
  });
   
  function fn_clearBtn(){
-	 $("#category3_key").val();
-	 $("#site").val();
+	 $("#category3_key").val("");
+	 $("#site").val("");
  }
  
  function fn_detail(edu_no){
@@ -142,17 +142,18 @@
                                 <button class="lg-btn navy-btn" id="clearBtn" name="clearBtn" onclick="fn_clearBtn();">초기화</button>
                             </div>
                         </div>
-                        </form>
+                        
                         <!---- search-wrap end ---->
 
                         <!---- sub-cont begin ---->
                         <div class="tit-cont">
                             <p class="total">전체 : <span>${totCnt}</span>건</p>
-                            <select class="select">
-                                <option>교육기간순</option>
-                                <option>교육등록순</option>
+                            <select class="select" id="listOder" name="listOder" onChange="document.commonForm.submit();">
+                                <option value="train_date" <c:if test="${listOder == 'train_date'}">selected</c:if>>교육기간순</option>
+                                <option value="edu_no" <c:if test="${listOder == 'edu_no'}">selected</c:if>>교육등록순</option>
                             </select>
                         </div>
+                        </form>
                         <!---- sub-cont end ---->
 
                         <div class="list-wrap">

@@ -5,7 +5,85 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="ui"     uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="<c:url value='/resources/common/jquery.js'/>"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+
+ <script type="text/javaScript" language="javascript" defer="defer">
+ $(document).ready(function(){		
+	 	
+ });
+ function fn_save(){
+	   if ($("#mbl_telno").val() == ""){			
+			alert("휴대폰을 입력하세요.");
+			$("#mbl_telno").focus();
+			return;
+		}
+	   if ($("#eml_addr1").val() == ""){			
+			alert("이메일을 입력하세요.");
+			$("#eml_addr1").focus();
+			return;
+		}	
+	   if ($("#eml_addr2").val() == ""){			
+			alert("이메일을 입력하세요.");
+			$("#eml_addr2").focus();
+			return;
+		}	
+
+		var formData = new FormData(); 
+		formData.append("mbl_telno",   $("#mbl_telno").val());
+		formData.append("eml_addr1",   $("#eml_addr1").val());
+		formData.append("eml_addr2",   $("#eml_addr2").val());
+		formData.append("gubun",   	   "R");
+		formData.append("edu_no",   $("#edu_no").val());
+		
+			
+		if(confirm("교육 신청을 하시겠습니까?")){
+				
+			$.ajax({	
+				data       : formData,
+			    url		   : "<c:url value='/user/sectorSave.do'/>",
+			    dataType   : "JSON",
+		        processData: false, 
+		        contentType: false,
+				type	   : "POST",	
+		        success    : function(obj) {
+		        	commonCallBack(obj);				
+		        },	       
+		        error 	: function(xhr, status, error) {} 		        
+		    });
+		}
+ }	
+ 
+ function email_chg(){
+	 $("#eml_addr2").val("");
+	 if($("#eml_sel").val() != ""){
+		 $("#eml_addr2").val($("#eml_sel").val());
+	 }
+ }
+ 
+ function commonCallBack(obj){
+		if(obj != null){		
+			
+			var result = obj.result;
+			
+			if(result == "SUCCESS"){				
+				alert("성공하였습니다.");				
+				fn_goList();				 
+			}else {				
+				alert("등록이 실패 했습니다.");	
+				return false;
+			}
+		}
+	}	
+ 
+ 	function fn_goList(){
+		document.location = "<c:url value='/user/sectorList.do'/>"+"?edu_no="+$('#edu_no').val()+"&idx="+$('#idx').val();
+	 }	
+</script>
 
 <!-- container  begin -->
                 <div id="container">
@@ -18,14 +96,15 @@
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                             <span>분야별 교육신청</span>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                            <span>생명지킴이 강사 양성교육</span>
+                            <span>실무자 역량 강화 교육</span>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                             <span>교육신청</span>
                         </div>
                     </div>
 
                     <div class="contents-wrap">
-                        
+                        <input type="hidden" id="edu_no" name="edu_no" value="${edu_no}">
+                        <input type="hidden" id="idx" name="idx" value="${idx}">
                         <div class="comp">
                             <h4 class="h4-tit">교육정보</h4>
                             <div class="table-wrap">
@@ -39,33 +118,33 @@
                                         <tr>
                                             <th>교육분류</th>
                                             <td>
-                                                <span>분류1</span>
-                                                <span>분류2</span>
+                                                <span>${result.CATEGORY1}</span>
+                                                <span>${result.CATEGORY2}</span>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>교육명</th>
-                                            <td>보고듣고말하기2.0 기본형(120분)</td>
+                                            <td>${result.CATEGORY3}</td>
                                         </tr>
                                         <tr>
                                             <th>강사명</th>
-                                            <td></td>
+                                            <td>${result.INST_NM}</td>
                                         </tr>
                                         <tr>
                                             <th>교육기간</th>
-                                            <td></td>
+                                            <td>${result.TRAIN_S_DATE} ~ ${result.TRAIN_E_DATE}</td>
                                         </tr>
                                         <tr>
                                             <th>교육방식</th>
-                                            <td></td>
+                                            <td>${result.EDU_METHOD}</td>
                                         </tr>
                                         <tr>
                                             <th>교육대상</th>
-                                            <td></td>
+                                            <td>${result.EDU_TARGET}</td>
                                         </tr>
                                         <tr>
                                             <th>교육상태</th>
-                                            <td></td>
+                                            <td>${result.EDU_STATUS}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -84,31 +163,34 @@
                                     <tbody>
                                         <tr>
                                             <th>회원유형</th>
-                                            <td></td>
+                                            <td>
+	                                            <c:if test="${UserAccount.user_gu == '1'}">개인</c:if>
+	                                            <c:if test="${UserAccount.user_gu == '2'}">기업</c:if>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>이름</th>
-                                            <td></td>
+                                            <td>${UserAccount.user_nm}</td>
                                         </tr>
                                         <tr>
                                             <th>아이디</th>
-                                            <td></td>
+                                            <td>${UserAccount.user_id}</td>
                                         </tr>
                                         <tr>
                                             <th>휴대폰</th>
-                                            <td><input type="text" class="input-box lg-width" placeholder="- 없이 입력해주세요" value=""/></td>
+                                            <td><input type="text" id="mbl_telno" name="mbl_telno" class="input-box lg-width" placeholder="- 없이 입력해주세요" value=""/></td>
                                         </tr>
                                         <tr>
                                             <th>이메일</th>
                                             <td>
                                                 <div class="tb-cont">
-                                                    <input type="text" class="input-box" value=""/>
+                                                    <input type="text" id="eml_addr1" name="eml_addr1" class="input-box" value=""/>
                                                     <span>@</span>
-                                                    <input type="text" class="input-box" value=""/>
-                                                    <select class="select">
-                                                        <option>직접입력</option>
-                                                        <option>naver.com</option>
-                                                        <option>gmail.com</option>
+                                                    <input type="text" id="eml_addr2" name="eml_addr2" class="input-box" value=""/>
+                                                    <select class="select" id="eml_sel" name="eml_sel" onchange="email_chg();">
+                                                        <option value="">직접입력</option>
+                                                        <option value="naver.com">naver.com</option>
+                                                        <option value="gmail.com">gmail.com</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -120,7 +202,7 @@
                         
                         <!---- button begin ---->
                         <div class="btn-cont">
-                            <button class="lg-btn orange-btn">신청하기</button>
+                            <button class="lg-btn orange-btn" onClick="fn_save();">신청하기</button>
                             <button class="lg-btn white-btn">목록</button>
                         </div>
                         <!---- button end ---->

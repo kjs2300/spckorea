@@ -96,7 +96,7 @@
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                             <span>분야별 교육신청</span>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                            <span>생명지킴이 강사 양성교육</span>
+                            <span>광역주도형 심리부검면담원 양성교육</span>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                             <span>교육신청</span>
                         </div>

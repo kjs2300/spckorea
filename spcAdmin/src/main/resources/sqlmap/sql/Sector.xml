@@ -44,7 +44,9 @@
                 ER.INST_NM, ER.TRAIN_S_DATE, ER.TRAIN_E_DATE, ER.EDU_METHOD,ER.EDU_TIME, ER.EDU_NOTICE
 		  FROM EDU_REGISTRATION ER
 		 WHERE 1=1
+		<if test=" site != ''">
 		    AND EDU_SITE = #{site}
+		</if>
 		<if test=" category1_key !=null and category1_key !=0">
 			AND ER.CATEGORY1_KEY = #{category1_key} 
 		</if>
@@ -54,7 +56,14 @@
 		<if test=" category3_key !=null and category3_key !=0">
 			AND ER.CATEGORY3_KEY = #{category3_key} 
 		</if>
-		 ORDER BY EDU_NO DESC<!-- TRAIN_S_DATE -->
+		<choose>
+			<when test="listOder == 'edu_no'">
+				ORDER BY EDU_NO DESC
+			</when>
+			<otherwise>
+				ORDER BY TRAIN_S_DATE DESC
+			</otherwise>
+		</choose>
 		LIMIT #{recordCountPerPage} OFFSET #{offset}
 		
 		<!-- ER.EDU_NO, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = ER.CATEGORY1_KEY) AS CATEGORY1 , 
@@ -71,7 +80,9 @@
 		SELECT COUNT(*) 
 		  FROM EDU_REGISTRATION ER
 		 WHERE 1=1
+		<if test=" site != ''">
 		    AND EDU_SITE = #{site}
+		</if>
 		<if test=" category1_key !=null and category1_key !=0">
 			AND ER.CATEGORY1_KEY = #{category1_key} 
 		</if>
@@ -81,7 +92,6 @@
 		<if test=" category3_key !=null and category3_key !=0">
 			AND ER.CATEGORY3_KEY = #{category3_key} 
 		</if>
-		 ORDER BY EDU_NO DESC
 		LIMIT #{recordCountPerPage} OFFSET #{offset}
 	</select>
 	
@@ -105,18 +115,12 @@
 		  	, EDU_NO
 		  	, USER_ID
 		  	, USER_NM
-		  	, EML_ADDR
-		  	, MBL_TELNO
-		  	, REG_DT
 		  	, REG_ID
 		) VALUES (
-			  (SELECT MAX(BASKET_NO)+1 FROM EDU_BASKET)
+			  (SELECT MAX(a.BASKET_NO)+1 FROM EDU_BASKET a)
 			, #{edu_no}
 			, #{UserAccount.user_id}
 			, #{UserAccount.user_nm}
-			, #{eml_addr1}||#{eml_addr2}
-			, #{mbl_telno}
-			, SYSDATE
 			, #{UserAccount.user_nm}
 		)	
 	</insert>
@@ -129,16 +133,14 @@
 		  	, USER_NM
 		  	, EML_ADDR
 		  	, MBL_TELNO
-		  	, REG_DT
 		  	, REG_ID
 		) VALUES (
-			  (SELECT MAX(COUR_NO)+1 FROM EDU_COURSE_REGISTRATION)
+			  (SELECT MAX(a.COUR_NO)+1 FROM EDU_COURSE_REGISTRATION a)
 			, #{edu_no}
 			, #{UserAccount.user_id}
 			, #{UserAccount.user_nm}
-			, #{eml_addr1}||#{eml_addr2}
+			, CONCAT(#{eml_addr1},'@',#{eml_addr2})
 			, #{mbl_telno}
-			, SYSDATE
 			, #{UserAccount.user_nm}
 		)	
 	</insert>

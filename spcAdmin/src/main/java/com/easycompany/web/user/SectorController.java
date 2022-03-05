@@ -57,7 +57,9 @@ public class SectorController
 	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
 	  paramMap.put("offset",offset);
 	    
-	  paramMap.put("site", "on");
+	  if(!paramMap.containsKey("site")) {
+		  paramMap.put("site", "on");
+	  }
 	  paramMap.put("sqlName", "getCategoryList1");
 	  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
 	  model.addAttribute("category1list", category1list);
@@ -135,14 +137,14 @@ public class SectorController
 	    Map<String, Object> result = new HashMap<String, Object>();
 	    try {
 	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
-	      if(paramMap.get("gubun").toString() == "B") {
+	      if(paramMap.get("gubun").toString().equals("B")) {
 	    	  paramMap.put("sqlName", "basketInsert");	
-	      }else if(paramMap.get("gubun").toString() == "R") {
+	      }else if(paramMap.get("gubun").toString().equals("R")) {
 	    	  paramMap.put("sqlName", "registInsert");	
 	      }
 	      resultCnt = sectorService.insertData(paramMap);
 	      
-	      if(resultCnt < 1) {
+	      if(resultCnt > 0) {
 	    	  result.put("result", "SUCCESS");
 	      }else {
 	    	  result.put("result", "FAIL");	 

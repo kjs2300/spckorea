@@ -14,15 +14,15 @@
 
  <script type="text/javaScript" language="javascript" defer="defer">
  $(document).ready(function(){		
-		 $('#category1_key').change(function(){
-			var val  = $(this).val();
+	 	$('#category1_key').change(function(){
+	 		var val  = $(this).val();
 
 			if( val ==""){
 				return;
 			}
 			
 			$("#category2_key").val("");
- 			$("#category3_key").val("");
+			$("#category3_key").val("");
 			
 			 $.ajax({	
 			    url     : "<c:url value='/user/category2list.do'/>",
@@ -38,7 +38,7 @@
 					option += '<option value="'+ret.CATEGORY2_KEY+'">'+ret.CATEGORY2_NAME+'</option>';		
 				});
 				$('select[name=category2_key]').html(option);						
-	        },	       
+	     },	       
 		        error 	: function(xhr, status, error) {}
 		        
 		     });
@@ -73,11 +73,23 @@
 		     });
 		 }); 
  });
+  
+ function fn_clearBtn(){
+	 $("#category3_key").val("");
+	 $("#site").val("");
+ }
+ 
+ function fn_detail(edu_no){
+	document.location = "<c:url value='/user/sectorView.do'/>"+"?edu_no="+edu_no+"&idx="+$('#idx').val();
+ }	
 </script>
-
      <!-- container  begin -->
                 <div id="container">
-
+                	<input type="hidden" id="category1" name="category1" value="${category1_key}">
+                	<input type="hidden" id="category2" name="category2" value="${category2_key}">
+                	<input type="hidden" id="category3" name="category3" value="${category3_key}">
+                	<input type="hidden" id="idx" name="idx" value="${idx}">
+                	
                     <div class="tit-wrap">
                         <h1 class="h1-tit">교육신청</h1>
 
@@ -93,196 +105,102 @@
                     </div>
 
                     <div class="contents-wrap">
-
+						<form  id="commonForm" name="commonForm"  method="post"  action="">
                         <!---- search-wrap begin ---->
                         <div class="search-wrap">
                             <div class="search-cont">
                                 <label>분류 :</label>
                                 <select class="select mr30"  id="category1_key" name="category1_key">
-			                        <option value=''>선택 하세요</option>
 			                    	<c:forEach var="result" items="${category1list}" varStatus="status">
-			                    		<option value='${result.CATEGORY1_KEY}' <c:if test="${category1_key == result.CATEGORY1_KEY}">selected</c:if>>${result.CATEGORY1_NAME}</option>
+			                    		<c:if test="${category1_key == result.CATEGORY1_KEY}">
+			                    			<option value='${result.CATEGORY1_KEY}' selected>${result.CATEGORY1_NAME}</option>
+			                    		</c:if>
 			                        </c:forEach>
 			                    </select>
                                 <select class="select"  id="category2_key" name="category2_key">
+			                    	<c:forEach var="result" items="${category2list}" varStatus="status">
+			                    		<c:if test="${category2_key == result.CATEGORY2_KEY}">
+			                    			<option value='${result.CATEGORY2_KEY}' selected>${result.CATEGORY2_NAME}</option>
+			                    		</c:if>
+			                        </c:forEach>
                                 </select>
                                 <select class="select lg-width"  id="category3_key" name="category3_key">
+                                	<option value=''>선택 하세요</option>
+			                    	<c:forEach var="result" items="${category3list}" varStatus="status">
+			                    		<option value='${result.CATEGORY3_KEY}' >${result.CATEGORY3_NAME}</option>
+			                        </c:forEach>
                                 </select>
                                 <select class="select" id="site" name="site">
                                     <option value="">전체</option>
-                                    <option value="on">온라인</option>
-                                    <option value="off">오프라인</option>
+                                    <option value="on" <c:if test="${site == 'on'}">selected</c:if>>온라인</option>
+                                    <option value="off" <c:if test="${site == 'off'}">selected</c:if>>오프라인</option>
                                 </select>
                             </div>
                             
                             <div class="btn-cont">
-                                <button class="lg-btn orange-btn">검색</button>
-                                <button class="lg-btn navy-btn">초기화</button>
+                                <button class="lg-btn orange-btn" id="searchBtn" name="searchBtn" onclick="">검색</button>
+                                <button class="lg-btn navy-btn" id="clearBtn" name="clearBtn" onclick="fn_clearBtn();">초기화</button>
                             </div>
                         </div>
+                        
                         <!---- search-wrap end ---->
 
                         <!---- sub-cont begin ---->
                         <div class="tit-cont">
-                            <p class="total">전체 : <span>100</span>건</p>
-                            <select class="select">
-                                <option>교육기간순</option>
-                                <option>교육등록순</option>
+                            <p class="total">전체 : <span>${totCnt}</span>건</p>
+                            <select class="select" id="listOder" name="listOder" onChange="document.commonForm.submit();">
+                                <option value="train_date" <c:if test="${listOder == 'train_date'}">selected</c:if>>교육기간순</option>
+                                <option value="edu_no" <c:if test="${listOder == 'edu_no'}">selected</c:if>>교육등록순</option>
                             </select>
                         </div>
+                        </form>
                         <!---- sub-cont end ---->
 
                         <div class="list-wrap">
                             <ul>
-                                <li>
-                                    <span class="badge-normal">일반</span>
-                                    <span class="tag">온라인생명 지킴이 교육</span>
-                                    <h3 class="h3-tit">보고듣고말하기2.0 기본형(120분)</h3>
-                                    <ul class="summary-cont">
-                                        <li>
-                                            <label>교육내용 :</label>
-                                            <span>2021년 제 11차 생명지킴이 강사양성 교육</span>
-                                        </li>
-                                        <li>
-                                            <label>교육기간 :</label>
-                                            <span>2021.01.01</span>~<span>2022.11.07</span>
-                                        </li>
-                                        <li>
-                                            <label>교육방식 :</label>
-                                            <span>오프라인 교육</span>
-                                        </li>
-                                        <li>
-                                            <label>학습시간 :</label>
-                                            <span>120</span>분
-                                        </li>
-                                        <li>
-                                            <label>강사명 :</label>
-                                            <span>이선우</span>
-                                        </li>
-                                        <li>
-                                            <label>안내문 :</label>
-                                            <a class="link">다운로드</a>
-                                        </li>
-                                        
-                                    </ul>
-                                </li>
-                                <li>
-                                    <span class="badge-org">기관</span>
-                                    <span class="tag">온라인생명 지킴이 교육</span>
-                                    <h3 class="h3-tit">보고듣고말하기2.0 기본형(120분)</h3>
-                                    <ul class="summary-cont">
-                                        <li>
-                                            <label>교육내용 :</label>
-                                            <span>2021년 제 11차 생명지킴이 강사양성 교육</span>
-                                        </li>
-                                        <li>
-                                            <label>교육기간 :</label>
-                                            <span>2021.01.01</span>~<span>2022.11.07</span>
-                                        </li>
-                                        <li>
-                                            <label>교육방식 :</label>
-                                            <span>오프라인 교육</span>
-                                        </li>
-                                        <li>
-                                            <label>학습시간 :</label>
-                                            <span>120</span>분
-                                        </li>
-                                        <li>
-                                            <label>강사명 :</label>
-                                            <span>이선우</span>
-                                        </li>
-                                        <li>
-                                            <label>안내문 :</label>
-                                            <a class="link">다운로드</a>
-                                        </li>
-                                        
-                                    </ul>
-                                </li>
-                                <li>
-                                    <span class="badge-instruct">강사</span>
-                                    <span class="tag">분류2</span>
-                                    <h3 class="h3-tit">보고듣고말하기2.0 기본형(120분)</h3>
-                                    <ul class="summary-cont">
-                                        <li>
-                                            <label>교육내용 :</label>
-                                            <span>2021년 제 11차 생명지킴이 강사양성 교육</span>
-                                        </li>
-                                        <li>
-                                            <label>교육기간 :</label>
-                                            <span>2021.01.01</span>~<span>2022.11.07</span>
-                                        </li>
-                                        <li>
-                                            <label>교육방식 :</label>
-                                            <span>오프라인 교육</span>
-                                        </li>
-                                        <li>
-                                            <label>학습시간 :</label>
-                                            <span>120</span>분
-                                        </li>
-                                        <li>
-                                            <label>강사명 :</label>
-                                            <span>이선우</span>
-                                        </li>
-                                        <li>
-                                            <label>안내문 :</label>
-                                            <a class="link">다운로드</a>
-                                        </li>
-                                        
-                                    </ul>
-                                </li>
-                                <li>
-                                    <span class="badge-worker">실무자</span>
-                                    <span class="tag">분류2</span>
-                                    <h3 class="h3-tit">보고듣고말하기2.0 기본형(120분)</h3>
-                                    <ul class="summary-cont">
-                                        <li>
-                                            <label>교육내용 :</label>
-                                            <span>2021년 제 11차 생명지킴이 강사양성 교육</span>
-                                        </li>
-                                        <li>
-                                            <label>교육기간 :</label>
-                                            <span>2021.01.01</span>~<span>2022.11.07</span>
-                                        </li>
-                                        <li>
-                                            <label>교육방식 :</label>
-                                            <span>오프라인 교육</span>
-                                        </li>
-                                        <li>
-                                            <label>학습시간 :</label>
-                                            <span>120</span>분
-                                        </li>
-                                        <li>
-                                            <label>강사명 :</label>
-                                            <span>이선우</span>
-                                        </li>
-                                        <li>
-                                            <label>안내문 :</label>
-                                            <a class="link">다운로드</a>
-                                        </li>
-                                    </ul>
-                                </li>
+                            	<c:forEach var="list" items="${resultList}" varStatus="status">
+                            		<li onClick="fn_detail('${list.EDU_NO}')"><span class="badge-normal">${list.CATEGORY1}</span>
+                                    	<span class="tag">${list.CATEGORY2}</span>
+                                    	<h3 class="h3-tit">${list.CATEGORY3}</h3>
+                                    	<input type="hidden" id="edu_no" name="edu_no" value="${list.EDU_NO}">
+                                    	<ul class="summary-cont">
+	                                        <li>
+	                                            <label>교육내용 :</label>
+	                                            <span>${list.EDU_CONT}</span>
+	                                        </li>
+	                                        <li>
+	                                            <label>교육기간 :</label>
+	                                            <span>${list.TRAIN_S_DATE}</span>~<span>${list.TRAIN_E_DATE}</span>
+	                                        </li>
+	                                        <li>
+	                                            <label>교육방식 :</label>
+	                                            <span>${list.EDU_METHOD}</span>
+	                                        </li>
+	                                        <li>
+	                                            <label>학습시간 :</label>
+	                                            <span>${list.EDU_TIME}</span>분
+	                                        </li>
+	                                        <li>
+	                                            <label>강사명 :</label>
+	                                            <span>${list.INST_NM}</span>
+	                                        </li>
+	                                        <li>
+	                                            <label>안내문 :</label>
+	                                            <a class="link">다운로드(${list.EDU_NOTICE})</a>
+	                                        </li>
+	                                        
+	                                    </ul>
+	                                </li>
+                            	</c:forEach>
                             </ul>
                         </div>
 
                         <!---- page begin ---->
                         <div class="page-wrap">
-                            <ul class="paging">
-                                <li><a>&lt;&lt;</a></li>
-                                <li><a>&lt;</a></li>
-                                <li class="on"><a>1</a></li>
-                                <li><a>2</a></li>
-                                <li><a>3</a></li>
-                                <li><a>4</a></li>
-                                <li><a>5</a></li>
-                                <li><a>6</a></li>
-                                <li><a>7</a></li>
-                                <li><a>8</a></li>
-                                <li><a>9</a></li>
-                                <li><a>10</a></li>
-                                <li><a>&gt;</a></li>
-                                <li><a>&gt;&gt;</a></li>
-                            </ul>
-                        </div>
+				        	 <ul class="paging">
+								<ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />
+					 		 </ul>
+				        </div>
                         <!---- page end ---->
 
                     </div>
