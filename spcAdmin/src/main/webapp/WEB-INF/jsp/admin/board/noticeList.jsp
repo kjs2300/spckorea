@@ -10,13 +10,22 @@
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
 
- <h1 class="h1-tit">공지사항</h1>
 
+ <h1 class="h1-tit">
+  <c:if test="${adBoardVo.board_type =='01'}">공지사항</c:if>
+  <c:if test="${adBoardVo.board_type =='02'}">자료실</c:if>
+  <c:if test="${adBoardVo.board_type =='03'}">FAQ</c:if>
+  <c:if test="${adBoardVo.board_type =='04'}">참여마당</c:if>
+  <c:if test="${adBoardVo.board_type =='05'}">강사 공지사항</c:if>
+  <c:if test="${adBoardVo.board_type =='06'}">강사 자료실</c:if>
+ </h1>
 
  <div class="search-wrap">
-     <form id="listForm" name="listForm" target="_self" action="/adBoard/noticeList.do" method="post" onsubmit="">
-     <input type="hidden" id="board_idx"   name="board_idx"  value="${adBoardVo.board_idx}"/>
+     <form id="commonForm" name="commonForm" target="_self" action="<c:url value='/adBoard/noticeList.do'/>" method="post" onsubmit="">
+     <input type="hidden" id="board_idx"   name="board_idx"  value="0"/>
+     <input type="hidden" id="board_type"  name="board_type" value="${adBoardVo.board_type}">
      <input type="hidden" id="gubun1"      name="gubun1"     value='I'   />
+     <input type="hidden" id="pageIndex"   name="pageIndex"  value=1 />
 	     <div class="search-cont">
 	         <div class="radio-cont">
 	             <input type="radio" class="radio-box" id="searchCondition" name="searchCondition" value="ALL" <c:if test="${adBoardVo.searchCondition =='ALL'  || (empty adBoardVo.searchCondition) }">checked </c:if>>
@@ -35,6 +44,14 @@
 	             <label for="">내용</label>
 	         </div>
 	         <input type="text" id='searchKeyword' name='searchKeyword' value="${adBoardVo.searchKeyword}" class="input-box" placeholder="직접입력"/>
+	         <c:if test="${adBoardVo.board_type =='02'}">
+	              <select class="select lg-width" id="board_refer_type" name="board_refer_type">
+                    <option value="전체"   <c:if test="${adBoardVo.board_refer_type == '전체' }">selected  </c:if> >전체</option>
+                    <option value="일반"   <c:if test="${adBoardVo.board_refer_type == '일반' }">selected  </c:if> >일반</option>
+                    <option value="실무자" <c:if test="${adBoardVo.board_refer_type == '실무자' }">selected </c:if> >실무자</option>
+                    <option value="기관"  <c:if test="${adBoardVo.board_refer_type == '기관' }">selected   </c:if> >기관</option>
+                  </select>
+	         </c:if>
 	     </div>
 	
 	     <div class="search-cont">
@@ -55,15 +72,15 @@
 	         </div>
 	         
 	         <button type="submit" class="search-btn">검색</button>
-	         <button class="search-btn white-btn ml20">초기화</button>
+	         <button type="reset"  class="search-btn white-btn ml20">초기화</button>
 	     </div>
      </form>
 
  </div>
  
  <div class="btn-cont mb20">
-     <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/adBoard/noticeReq.do' />'; ">등록</button>
-     <button class="mid-btn white-btn" onClick="javascript:btnDel();">선택삭제</button>
+     <button type="button" class="mid-btn blue-btn"  onclick="javascript:fn_regt();">등록</button>
+     <button type="button" class="mid-btn white-btn" onClick="javascript:btnDel();">선택삭제</button>
  </div>
  
  <div class="table-wrap">
@@ -74,7 +91,9 @@
              <col width="7%"/>
              <col width="9%"/>
              <col width="*"/>
-             <col width="10%"/>
+             <c:if test="${adBoardVo.board_type =='02'}">
+             <col width="7%"/>
+             </c:if>
              <col width="10%"/>
              <col width="8%"/>
              <col width="8%"/>
@@ -87,7 +106,9 @@
                  <th>No.</th>
                  <th>카테고리</th>
                  <th>제목</th>
-                 <th>첨부파일</th>
+                 <c:if test="${adBoardVo.board_type =='02'}">
+	              <th>분류</th>
+	             </c:if>
                  <th>작성일</th>
                  <th>작성자</th>
                  <th>조회수</th>
@@ -100,10 +121,12 @@
                   <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.board_idx}" class="check-box"/></td>
                   <td>${status.index + 1}</td>
                   <td>${result.board_type}</td>
-                  <td>${result.title}</td>
-                  <td><button class="sm-btn white-btn" onClick="javascript:fileDownload('${result.board_idx}');">다운로드</button></td>
-                  <td>${result.reg_dt}</td>
-                  <td>${result.reg_id}</td>
+                  <td  class="tl">${result.title}</td>
+                  <c:if test="${adBoardVo.board_type =='02'}">
+                  	<td>${result.board_refer_type}</td>
+                  </c:if>
+                  <td>${fn:substring(result.reg_dt,0,10) }</td>
+                  <td>${result.reg_nm}</td>
                   <td>${result.view_cnt}</td>
                   <td><button type="button" class="sm-btn blue-btn"  onClick="javascript:fn_edit('${result.board_idx}',  'E', 'noticeList');" >수정</button></td>
                   <td><button type="button" class="sm-btn white-btn" onClick="javascript:fn_delete('${result.board_idx}');">삭제</button></td>
@@ -111,7 +134,13 @@
              </c:forEach>
              <c:if test="${empty resultList }">
 	             <tr>
-	                 <td colspan='9'/>Data 없습니다.</td>
+	             	<c:if test="${adBoardVo.board_type =='02'}">
+	             		<td colspan='9'/>Data 없습니다.</td>
+	             	</c:if>
+	             	<c:if test="${adBoardVo.board_type !='02'}">
+	             		<td colspan='8'/>Data 없습니다.</td>
+	             	</c:if>
+	                 
 	             </tr>
           	 </c:if>
           </tbody>
@@ -148,7 +177,7 @@
  });
  
 function fn_edit(key1, str) {
- 	var frm = document.listForm;
+ 	var frm = document.commonForm;
  	$("#board_idx").val(key1);
   	frm.action = "<c:url value='/adBoard/noticeReq.do'/>";
  	frm.submit();
@@ -185,13 +214,13 @@ var btnDel = function() {
 
 var setDel = function(idxArray){
     $.ajax({
-        url: "/adBoard/noticeDel.do",
+        url: "<c:url value='/adBoard/noticeDel.do'/>",
         type: "POST",
         data: { "boardIdxArray" : idxArray },
         success: function(data) {
         	if(data == 'SUCCESS'){
         		alert("처리 완료하였습니다.");
-        		location.reload();
+        		fn_load();
         	}
         },
         error: function(data) {
@@ -200,5 +229,53 @@ var setDel = function(idxArray){
         }
     });
 };
+
+function fn_load(){
+	var frm = document.commonForm;
+	var type = $("#board_type").val();
+
+	if (type=="01"){
+		frm.action = "<c:url value='/adBoard/noticeList.do'/>";	
+	}else if (type=="02"){
+		frm.action = "<c:url value='/adBoard/referenceList.do'/>";	
+	}else if (type=="03"){
+		frm.action = "<c:url value='/adBoard/faqList.do'/>";	
+	}else if (type=="04"){
+		frm.action = "<c:url value='/adBoard/partiList.do'/>";	
+	}else if (type=="05"){
+		frm.action = "<c:url value='/adBoard/instructList.do'/>";	
+	}else if (type=="06"){
+		frm.action = "<c:url value='/adBoard/instructReferList.do'/>";	
+	}	
+  	frm.submit();
+}
+
+function fn_regt(){
+	var frm = document.commonForm;
+	var type = $("#board_type").val();
+	$("#board_idx").val(0);
+	if (type=="01"){
+		frm.action = "<c:url value='/adBoard/noticeReq.do'/>";	
+	}else if (type=="02"){
+		frm.action = "<c:url value='/adBoard/referenceReq.do'/>";	
+	}else if (type=="03"){
+		frm.action = "<c:url value='/adBoard/faqReq.do'/>";	
+	}else if (type=="04"){
+		frm.action = "<c:url value='/adBoard/partiReq.do'/>";	
+	}else if (type=="05"){
+		frm.action = "<c:url value='/adBoard/instructReq.do'/>";	
+	}else if (type=="06"){
+		frm.action = "<c:url value='/adBoard/instructReferReq.do'/>";	
+	}	
+  	frm.submit();
+}
+
+/* pagination 페이지 링크 function */
+function fn_egov_link_page(pageNo){
+	 $("#pageIndex").val(pageNo); 
+	 var frm = document.commonForm;
+	 frm.action = "<c:url value='/adBoard/noticeList.do'/>";
+  	 frm.submit();
+}
 
  </script>

@@ -14,10 +14,10 @@
 	 		WHEN 05 THEN '강사공지'
 	 		WHEN 06 THEN '강사자료실'
 		 END AS BOARD_TYPE,
-	    TITLE, LINK_URL, FILE_ID, VIEW_CNT, CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS REG_DT, REG_ID,
+	    TITLE, LINK_URL, FILE_ID, VIEW_CNT, CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS REG_DT, REG_ID, REG_NM,
 	    (SELECT COUNT(*) FROM edu_file WHERE FILE_KEY = BOARD_IDX AND FILE_GUBUN = 'board') AS FIEL_CNT, CONTENTS
 	    <if test="board_type !=null and board_type == '02'">
-	      	, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME
+	      	, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME, BOARD_REFER_TYPE
 	    </if>
 	      FROM edu_board
 	      <include refid="search"/>
@@ -36,8 +36,9 @@
 	<select id="selectDetailBoard" parameterType="com.easycompany.service.vo.AdBoardVo" resultType="com.easycompany.service.vo.AdBoardVo">
 		/**  com.easycompany.mapper.AdBoardMapper.selectDetailBoard **/	
 		SELECT BOARD_IDX, BOARD_TYPE, TITLE, CONTENTS, LINK_URL, FILE_ID, VIEW_CNT, REG_DT, REG_ID, CHG_DT, CHG_ID
+		       ,EDU_TYPE_01, EDU_TYPE_02, EDU_TYPE_03, EDU_TYPE_04, EDU_TYPE_05, EDU_TYPE_06, EDU_TYPE_07, EDU_TYPE_08, EDU_TYPE_09, EDU_TYPE_10, EDU_TYPE_11
 		<if test="board_type !=null and board_type == '02'">
-	      	, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME, NOTICE_YN
+	      	, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME, NOTICE_YN, BOARD_REFER_TYPE
 	     </if>
 	     <if test="board_type !=null and (board_type == '04' or board_type == '06')">
 		    , NOTICE_YN
@@ -61,6 +62,7 @@
 		  	, TITLE
 		  	, CONTENTS
 		  	, REG_ID
+		  	, REG_NM
 		  	<if test="board_type !=null and board_type == '02'">
 	      	, CATEGORY1_KEY
 	      	, CATEGORY2_KEY
@@ -69,17 +71,33 @@
 	      	, CATEGORY2_NAME
 	      	, CATEGORY3_NAME
 	      	, NOTICE_YN
+	      	, BOARD_REFER_TYPE
 	      </if>
 	      <if test="board_type !=null and (board_type == '04' or board_type == '06')">
 	      , NOTICE_YN
 	      </if>
+	      <if test="board_type !=null and (board_type == '06')">
+	      , EDU_TYPE_01
+		  , EDU_TYPE_02
+		  , EDU_TYPE_03
+		  , EDU_TYPE_04
+		  , EDU_TYPE_05
+		  , EDU_TYPE_06
+		  , EDU_TYPE_07
+		  , EDU_TYPE_08
+		  , EDU_TYPE_09
+		  , EDU_TYPE_10
+		  , EDU_TYPE_11
+      	 </if>
+	       
 		) 
 		VALUES 
 		(
 			  #{board_type}
 			, #{title}
 			, #{contents}
-			, IFNULL(#{reg_id},'SYSTEM')
+			, IFNULL(#{user_id}, 'SYSTEM')
+	        , IFNULL(#{user_nm}, '교육관리자')
 			<if test="board_type !=null and board_type == '02'">
 			, #{category1_key}
 			, #{category2_key}
@@ -88,10 +106,24 @@
 			, #{category2_name}
 			, #{category3_name}
 			, #{notice_yn}
+			, #{board_refer_type}
 			</if>
 			<if test="board_type !=null and (board_type == '04' or board_type == '06')">
 		    , #{notice_yn}
-	        </if>
+	        </if>	        
+	        <if test="board_type !=null and (board_type == '06')">
+	        , #{edu_type_01}
+			, #{edu_type_02}
+			, #{edu_type_03}
+			, #{edu_type_04}
+			, #{edu_type_05}
+			, #{edu_type_06}
+			, #{edu_type_07}
+			, #{edu_type_08}
+			, #{edu_type_09}
+			, #{edu_type_10}
+			, #{edu_type_11}
+      	     </if>
 		)	
 	</insert>
 	
@@ -99,23 +131,36 @@
 		/**  com.easycompany.mapper.AdBoardMapper.updateBoard **/	
 		UPDATE edu_board 
 		   SET BOARD_TYPE = #{board_type}
-		      , TITLE  = #{title}
+		      , TITLE     = #{title}
 		      , CONTENTS  = #{contents}
-		      , CHG_DT = date_format(current_timestamp(),'%Y%m%d%H%i%s')
-		      , CHG_ID = IFNULL(#{chg_id},'SYSTEM')
-		      , REG_ID = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_DT    = date_format(current_timestamp(),'%Y%m%d%H%i%s')
+		      , CHG_ID    = IFNULL(#{user_id}, 'SYSTEM')
 		      <if test="board_type !=null and board_type == '02'">
-		      	, CATEGORY1_KEY =  #{category1_key}
-		      	, CATEGORY2_KEY =  #{category2_key}
-		      	, CATEGORY3_KEY =  #{category3_key}
-		      	, CATEGORY1_NAME = #{category1_name}
-		      	, CATEGORY2_NAME = #{category2_name}
-		      	, CATEGORY3_NAME = #{category3_name}
-		      	, NOTICE_YN = #{notice_yn}
+		      	, CATEGORY1_KEY    = #{category1_key}
+		      	, CATEGORY2_KEY    = #{category2_key}
+		      	, CATEGORY3_KEY    = #{category3_key}
+		      	, CATEGORY1_NAME   = #{category1_name}
+		      	, CATEGORY2_NAME   = #{category2_name}
+		      	, CATEGORY3_NAME   = #{category3_name}
+		      	, NOTICE_YN        = #{notice_yn}
+		      	, BOARD_REFER_TYPE = #{board_refer_type}
 		     </if>
 		     <if test="board_type !=null and (board_type == '04' or board_type == '06')">
 		     	, NOTICE_YN = #{notice_yn}
 		     </if>
+		     <if test="board_type !=null and (board_type == '06')">
+		        , EDU_TYPE_01 = #{edu_type_01}
+			    , EDU_TYPE_02 = #{edu_type_02}
+			    , EDU_TYPE_03 = #{edu_type_03}
+			    , EDU_TYPE_04 = #{edu_type_04}
+			    , EDU_TYPE_05 = #{edu_type_05}
+			    , EDU_TYPE_06 = #{edu_type_06}
+			    , EDU_TYPE_07 = #{edu_type_07}
+			    , EDU_TYPE_08 = #{edu_type_08}
+			    , EDU_TYPE_09 = #{edu_type_09}
+			    , EDU_TYPE_10 = #{edu_type_10}
+			    , EDU_TYPE_11 = #{edu_type_11}
+	      	 </if>
  		 WHERE BOARD_IDX = #{board_idx}
 	</update>
 	
@@ -232,7 +277,7 @@
 		VALUES 
 		(
 			  #{logo_no}
-			, IFNULL(#{reg_id},'SYSTEM')
+			, IFNULL(#{user_id}, 'SYSTEM')
 			, #{file_id}
 		)	
 	</insert>
@@ -259,7 +304,7 @@
 			, #{img_nm}
 			, #{img_pos}
 			, #{link_url}
-			, IFNULL(#{reg_id},'SYSTEM')
+			, IFNULL(#{user_id}, 'SYSTEM')
 			, #{file_id}
 		)
 	</insert>
@@ -286,7 +331,7 @@
 			, #{banner_nm}
 			, #{banner_pos}
 			, #{link_url}
-			, IFNULL(#{reg_id},'SYSTEM')
+			, IFNULL(#{user_id}, 'SYSTEM')
 			, #{file_id}
 		)	
 	</insert>
@@ -320,7 +365,7 @@
 			, #{popup_ar}
 			, #{popup_hg}
 			, #{use_yn}
-			, IFNULL(#{reg_id},'SYSTEM')
+			, IFNULL(#{user_id}, 'SYSTEM')
 		)	
 	</insert>
 	
@@ -328,7 +373,7 @@
 		/**  com.easycompany.mapper.MainMapper.updateLogo **/	
 		UPDATE EDU_LOGO 
 		   SET FILE_ID = #{file_id}
-		      , CHG_ID  = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_ID  = IFNULL(#{user_id}, 'SYSTEM')
 		      , CHG_DT  = NOW()
  		 WHERE LOGO_NO = #{logo_no}
 	</update>	
@@ -342,7 +387,7 @@
 		  	  <if test=" file_id !=null and file_id !=''">	
 			  , FILE_ID  = #{file_id}   
 			 </if>
-		      , CHG_ID   = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_ID   = IFNULL(#{user_id}, 'SYSTEM')
 		      , CHG_DT   = NOW()
  		 WHERE IMG_NO    = #{img_no}
 	</update>	
@@ -356,7 +401,7 @@
 		  	  <if test=" file_id !=null and file_id !=''">	
 			  , FILE_ID  = #{file_id}   
 			 </if>
-		      , CHG_ID     = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_ID     = IFNULL(#{user_id}, 'SYSTEM')
 		      , CHG_DT     = NOW()
  		 WHERE BANNER_NO   = #{banner_no}
 	</update>	
@@ -371,7 +416,7 @@
 		      , POPUP_AR     = #{popup_ar}
 		      , POPUP_HG     = #{popup_hg}
 		      , USE_YN       = #{use_yn}
-		      , CHG_ID       = IFNULL(#{reg_id},'SYSTEM')
+		      , CHG_ID       = IFNULL(#{user_id}, 'SYSTEM')
 		      , CHG_DT       = NOW()
  		 WHERE POPUP_NO      = #{popup_no}
 	</update>	
@@ -550,6 +595,9 @@
 	      </if>
 	      <if test="board_type !=null and board_type != ''">
 	      	AND BOARD_TYPE = #{board_type}
+	      </if>
+	      <if test="board_type !=null and board_type == '02' and board_refer_type !=null  ">
+	      	AND BOARD_REFER_TYPE = #{board_refer_type}
 	      </if>
       </where>
 	</sql>

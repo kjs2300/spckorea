@@ -73,7 +73,6 @@ model.addAttribute("path", request.getServletPath());
 	                 </ul>
 	             </li>
 	         </ul>
-	         <!-- 
 	         <ul class="depth2">
 	             <li>
 	                 <a href="#">교육개설</a>
@@ -85,7 +84,6 @@ model.addAttribute("path", request.getServletPath());
 	             <li><a href="#">신청현황</a></li>
 	             <li><a href="#">결과보고</a></li>
 	         </ul>
-	          -->
 	         <ul class="depth2">
 	             <li><a href="#">공지사항</a></li>
 	             <li><a href="#">자료실</a></li>

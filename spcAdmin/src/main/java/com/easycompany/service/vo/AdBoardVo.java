@@ -27,7 +27,21 @@ public class AdBoardVo extends MemberVo {
 	String notice_yn;
 	String checkdstr;
 	int file_cnt;
+	
+	private String edu_type_01;
+	private String edu_type_02;
+	private String edu_type_03;
+	private String edu_type_04;
+	private String edu_type_05;
+	private String edu_type_06;
+	private String edu_type_07;
+	private String edu_type_08;
+	private String edu_type_09;
+	private String edu_type_10;
+	private String edu_type_11;
+	
 	private String reg_nm;
+	private String board_refer_type;
 	
 	public Long getBoard_idx() {
 		return board_idx;
@@ -186,6 +200,78 @@ public class AdBoardVo extends MemberVo {
 	}
 	public void setReg_nm(String reg_nm) {
 		this.reg_nm = reg_nm;
+	}
+	public String getEdu_type_01() {
+		return edu_type_01;
+	}
+	public void setEdu_type_01(String edu_type_01) {
+		this.edu_type_01 = edu_type_01;
+	}
+	public String getEdu_type_02() {
+		return edu_type_02;
+	}
+	public void setEdu_type_02(String edu_type_02) {
+		this.edu_type_02 = edu_type_02;
+	}
+	public String getEdu_type_03() {
+		return edu_type_03;
+	}
+	public void setEdu_type_03(String edu_type_03) {
+		this.edu_type_03 = edu_type_03;
+	}
+	public String getEdu_type_04() {
+		return edu_type_04;
+	}
+	public void setEdu_type_04(String edu_type_04) {
+		this.edu_type_04 = edu_type_04;
+	}
+	public String getEdu_type_05() {
+		return edu_type_05;
+	}
+	public void setEdu_type_05(String edu_type_05) {
+		this.edu_type_05 = edu_type_05;
+	}
+	public String getEdu_type_06() {
+		return edu_type_06;
+	}
+	public void setEdu_type_06(String edu_type_06) {
+		this.edu_type_06 = edu_type_06;
+	}
+	public String getEdu_type_07() {
+		return edu_type_07;
+	}
+	public void setEdu_type_07(String edu_type_07) {
+		this.edu_type_07 = edu_type_07;
+	}
+	public String getEdu_type_08() {
+		return edu_type_08;
+	}
+	public void setEdu_type_08(String edu_type_08) {
+		this.edu_type_08 = edu_type_08;
+	}
+	public String getEdu_type_09() {
+		return edu_type_09;
+	}
+	public void setEdu_type_09(String edu_type_09) {
+		this.edu_type_09 = edu_type_09;
+	}
+	public String getEdu_type_10() {
+		return edu_type_10;
+	}
+	public void setEdu_type_10(String edu_type_10) {
+		this.edu_type_10 = edu_type_10;
+	}
+	public String getEdu_type_11() {
+		return edu_type_11;
+	}
+	public void setEdu_type_11(String edu_type_11) {
+		this.edu_type_11 = edu_type_11;
+	}
+	public String getBoard_refer_type() {
+		return board_refer_type;
+	}
+	public void setBoard_refer_type(String board_refer_type) {
+		this.board_refer_type = board_refer_type;
 	}
 
 }

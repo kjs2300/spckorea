@@ -42,7 +42,6 @@ model.addAttribute("path", request.getServletPath());
         </ul>
 
     </li>
-    <!-- 
     <li <c:if test="${fn:contains(path, '/edu/eduStatus') || fn:contains(path, '/edu/eduTitle') || fn:contains(path, '/edu/eduReport') }">  class="on" </c:if> >
         <a href="#">기관(결과보고)</a>
         <ul class="depth02-menu">
@@ -51,7 +50,6 @@ model.addAttribute("path", request.getServletPath());
             <li <c:if test="${fn:contains(path, '/edu/eduReport')}">   class="active" </c:if>><a href="<c:url value='/edu/eduReportList.do'/>"> 교육결과 보고</a></li>
         </ul>
     </li>
-     -->
     <li>
         <a href="#">강사공간</a>
         <ul class="depth02-menu">
@@ -72,14 +70,14 @@ model.addAttribute("path", request.getServletPath());
     </li>
      
  
-	<li <c:if test="${fn:contains(path, '/adBoard/part') || fn:contains(path, '/adBoard/instruct')  || fn:contains(path, '/adBoard/notice') || fn:contains(path, '/adBoard/reference') || fn:contains(path, '/adBoard/faq') }">  class="on" </c:if> >
+	<li <c:if test="${fn:contains(path, '/adBoard/') }">  class="on" </c:if> >
         <a href="#">게시판</a>
         <ul class="depth02-menu">
-            <li <c:if test="${fn:contains(path, '/adBoard/notice')}">   class="active" </c:if>><a href="<c:url value='/adBoard/noticeList.do' />">공지사항</a></li>
-            <li <c:if test="${fn:contains(path, '/adBoard/reference')}">   class="active" </c:if>><a href="<c:url value='/adBoard/referenceList.do' />">자료실</a></li>
-            <li <c:if test="${fn:contains(path, '/adBoard/faq')}">   class="active" </c:if>><a href="<c:url value='/adBoard/faqList.do' />">FAQ</a></li>
-            <li <c:if test="${fn:contains(path, '/adBoard/part')}">   class="active" </c:if>><a href="<c:url value='/adBoard/partiList.do' />">참여마당</a></li>
-            <li <c:if test="${fn:contains(path, '/adBoard/instructLi') || fn:contains(path, '/adBoard/instructReq') }">   class="active" </c:if>><a href="<c:url value='/adBoard/instructList.do' />">강사 공지사항</a></li>
+            <li <c:if test="${fn:contains(path, '/adBoard/notice')}">    class="active" </c:if>><a href="<c:url value='/adBoard/noticeList.do' />">공지사항</a></li>
+            <li <c:if test="${fn:contains(path, '/adBoard/reference')}"> class="active" </c:if>><a href="<c:url value='/adBoard/referenceList.do' />">자료실</a></li>
+            <li <c:if test="${fn:contains(path, '/adBoard/faq')}">       class="active" </c:if>><a href="<c:url value='/adBoard/faqList.do' />">FAQ</a></li>
+            <li <c:if test="${fn:contains(path, '/adBoard/part')}">      class="active" </c:if>><a href="<c:url value='/adBoard/partiList.do' />">참여마당</a></li>
+            <li <c:if test="${fn:contains(path, '/adBoard/instructList') || fn:contains(path, '/adBoard/instructReq') }">   class="active" </c:if>><a href="<c:url value='/adBoard/instructList.do' />">강사 공지사항</a></li>
             <li <c:if test="${fn:contains(path, '/adBoard/instructRefer')}">   class="active" </c:if>><a href="<c:url value='/adBoard/instructReferList.do' />">강사 자료실</a></li>
         </ul>
     </li>

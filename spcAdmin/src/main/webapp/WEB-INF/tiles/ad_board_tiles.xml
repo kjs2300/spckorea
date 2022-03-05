@@ -4,12 +4,12 @@
 <tiles-definitions>  
   
    <definition name="noticeList" extends="base-definition">  
-       <put-attribute name="title" value="공지사항" />  
+       <put-attribute name="title" value="Admin 게시판" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/board/noticeList.jsp" />  
    </definition>  
    
    <definition name="noticeReq" extends="base-definition">  
-       <put-attribute name="title" value="공지사항등록" />  
+       <put-attribute name="title" value="Admin 게시판" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/board/noticeReq.jsp" />  
    </definition>
    
