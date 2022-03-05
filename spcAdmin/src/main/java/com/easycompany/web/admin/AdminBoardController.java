@@ -1,4 +1,4 @@
-package com.easycompany.web;
+package com.easycompany.web.admin;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,6 +54,11 @@ public class AdminBoardController {
 	public String getNoticeList(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 
 		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		
+		adBoardVo.setReg_id(loginvo.getUser_id());	
+		adBoardVo.setUser_id(loginvo.getUser_id());
+		adBoardVo.setUser_nm(loginvo.getUser_nm());	
+		
 		/** EgovPropertyService.sample */
 		adBoardVo.setPageUnit(propertiesService.getInt("pageUnit"));
 		adBoardVo.setPageSize(propertiesService.getInt("pageSize"));
@@ -68,7 +73,10 @@ public class AdminBoardController {
 		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
 		adBoardVo.setOffset(offset);
 		
-		adBoardVo.setBoard_type("01");
+		if(StringUtil.isEmpty(adBoardVo.getBoard_type()) ) {
+			adBoardVo.setBoard_type("01");
+		}
+		
 		List<AdBoardVo> list = adBoardService.getBoardList(adBoardVo);
 		model.addAttribute("resultList", list);
 			
@@ -77,24 +85,34 @@ public class AdminBoardController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		adBoardVo.setReg_id(loginvo.getId());		
+			
 		model.addAttribute("adBoardVo",   adBoardVo);
-		model.addAttribute("path",      request.getServletPath());
+		model.addAttribute("path",        request.getServletPath());
 
 		return "noticeList";
 	}
 	
 	@RequestMapping(value = "/noticeReq.do")
 	public String noticeReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
+		
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		
+		adBoardVo.setReg_id(loginvo.getUser_id());	
+		adBoardVo.setUser_id(loginvo.getUser_id());
+		adBoardVo.setUser_nm(loginvo.getUser_nm());	
+		
 		if(adBoardVo.getBoard_idx() != null) {
 			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
 			if(detailData != null ) {
 				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
 				model.addAttribute("resultFileList", files);
 			}
-			model.addAttribute("detailData",  detailData);
-			model.addAttribute("path", request.getServletPath());
+			model.addAttribute("detailData",  detailData);			
+			
 		}
+		model.addAttribute("sessionId",   loginvo);
+		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",        request.getServletPath());
 		return "noticeReq";
 	}
 	
@@ -105,6 +123,9 @@ public class AdminBoardController {
 		try {
 			
 			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+			adBoardVo.setReg_id(loginvo.getUser_id());	
+			adBoardVo.setUser_id(loginvo.getUser_id());
+			adBoardVo.setUser_nm(loginvo.getUser_nm());	
 			
 			String fileAddpath = this.filePath + File.separator + "board";
 			List<Map<String, Object>> fileSavelist = null;
@@ -160,6 +181,7 @@ public class AdminBoardController {
 		String result = "";
 		try {
 			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+			
 			List<Long> boardIdxList = new ArrayList<Long>();
 			
 			for(String idxStr : boardIdxStrArray){
@@ -209,24 +231,29 @@ public class AdminBoardController {
 		model.addAttribute("adBoardVo",   adBoardVo);
 		model.addAttribute("path",      request.getServletPath());
 
-		return "referenceList";
+		return "noticeList";
 	}
 	
 	@RequestMapping(value = "/referenceReq.do")
 	public String referenceReq(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 
-	if(adBoardVo.getBoard_idx() != null) {
-		adBoardVo.setBoard_type("02");
-		AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
-		if(detailData != null ) {
-			List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
-			model.addAttribute("resultFileList", files);
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		
+		if(adBoardVo.getBoard_idx() != null) {
+			adBoardVo.setBoard_type("02");
+			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
+			if(detailData != null ) {
+				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
+				model.addAttribute("resultFileList", files);
+			}
+			model.addAttribute("detailData",  detailData);
+			
 		}
-		model.addAttribute("detailData",  detailData);
-		model.addAttribute("path", request.getServletPath());
-	}
-
-		return "referenceReq";
+		model.addAttribute("sessionId",   loginvo);
+		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",        request.getServletPath());
+	
+		return "noticeReq";
 	}
 	
 	@RequestMapping(value = "/faqList.do")
@@ -259,7 +286,7 @@ public class AdminBoardController {
 		model.addAttribute("adBoardVo",   adBoardVo);
 		model.addAttribute("path",      request.getServletPath());
 
-		return "faqList";
+		return "noticeList";
 	}
 	
 	@RequestMapping(value = "/faqReq.do")
@@ -273,10 +300,13 @@ public class AdminBoardController {
 				model.addAttribute("resultFileList", files);
 			}
 			model.addAttribute("detailData",  detailData);
-			model.addAttribute("path", request.getServletPath());
+			
 		}
-
-		return "faqReq";
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		model.addAttribute("sessionId",   loginvo);
+		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",        request.getServletPath());
+		return "noticeReq";
 	}
 	
 	@RequestMapping(value = "/partiList.do")
@@ -309,7 +339,7 @@ public class AdminBoardController {
 		model.addAttribute("adBoardVo",   adBoardVo);
 		model.addAttribute("path",      request.getServletPath());
 
-		return "partiList";
+		return "noticeList";
 	}
 	
 	@RequestMapping(value = "/partiReq.do")
@@ -323,10 +353,14 @@ public class AdminBoardController {
 				model.addAttribute("resultFileList", files);
 			}
 			model.addAttribute("detailData",  detailData);
-			model.addAttribute("path", request.getServletPath());
 		}
 
-		return "partiReq";
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		model.addAttribute("sessionId",   loginvo);
+		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",        request.getServletPath());
+		
+		return "noticeReq";
 	}
 	
 	@RequestMapping(value = "/instructList.do")
@@ -359,7 +393,7 @@ public class AdminBoardController {
 		model.addAttribute("adBoardVo",   adBoardVo);
 		model.addAttribute("path",      request.getServletPath());
 
-		return "instructList";
+		return "noticeList";
 	}
 	
 	@RequestMapping(value = "/instructReq.do")
@@ -373,10 +407,14 @@ public class AdminBoardController {
 				model.addAttribute("resultFileList", files);
 			}
 			model.addAttribute("detailData",  detailData);
-			model.addAttribute("path",      request.getServletPath());
 		}
 
-		return "instructReq";
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		model.addAttribute("sessionId",   loginvo);
+		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",        request.getServletPath());
+		
+		return "noticeReq";
 	}
 	
 	@RequestMapping(value = "/instructReferList.do")
@@ -409,7 +447,7 @@ public class AdminBoardController {
 		model.addAttribute("adBoardVo",   adBoardVo);
 		model.addAttribute("path",      request.getServletPath());
 
-		return "instructReferList";
+		return "noticeList";
 	}
 	
 	@RequestMapping(value = "/instructReferReq.do")
@@ -423,10 +461,13 @@ public class AdminBoardController {
 				model.addAttribute("resultFileList", files);
 			}
 			model.addAttribute("detailData",  detailData);
-			model.addAttribute("path",      request.getServletPath());
 		}
-
-		return "instructReferReq";
+		
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		model.addAttribute("sessionId",   loginvo);
+		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",        request.getServletPath());
+		return "noticeReq";
 	}
 	
 	@RequestMapping({"/fileDownload.do"})

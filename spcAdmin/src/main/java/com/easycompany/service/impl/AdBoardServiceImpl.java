@@ -99,7 +99,7 @@ public class AdBoardServiceImpl extends EgovAbstractServiceImpl implements AdBoa
 		}
 		int result = adBoardMapper.delBoard(map);
 		if (result > 0) {
-			result = adBoardMapper.deleteBoardMapFile(map);
+			adBoardMapper.deleteBoardMapFile(map);
 		}
 		return result;
 	}

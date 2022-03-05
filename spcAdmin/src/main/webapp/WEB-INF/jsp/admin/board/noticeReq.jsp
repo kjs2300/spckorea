@@ -11,14 +11,22 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
-<h1 class="h1-tit">공지사항 ${ not empty detailData.board_idx ? "수정" : "등록"}</h1>
+<h1 class="h1-tit"> 
+  <c:if test="${adBoardVo.board_type =='01'}">공지사항</c:if>
+  <c:if test="${adBoardVo.board_type =='02'}">자료실</c:if>
+  <c:if test="${adBoardVo.board_type =='03'}">FAQ</c:if>
+  <c:if test="${adBoardVo.board_type =='04'}">참여마당</c:if>
+  <c:if test="${adBoardVo.board_type =='05'}">강사 공지사항</c:if>
+  <c:if test="${adBoardVo.board_type =='06'}">강사 자료실</c:if>
+  ${ not empty detailData.board_idx ? "수정" : "등록"}
+</h1>
 
 <form id="commonForm" name="commonForm" method="post" enctype="Multipart/form-data">
-<input type="hidden" name="board_idx" id="board_idx" value="${ not empty detailData.board_idx ? detailData.board_idx : '0'}">
-<input type="hidden" name="board_type" id="board_type" value="01">
-<input type="hidden" id="gubun1"  name="gubun1"  />
-<input type="hidden" id="checkdstr"      name="checkdstr"      class="input-box" value=''/>
-<input type="hidden" id="file_seq"       name="file_seq"       class="input-box" value=0/>
+<input type="hidden" id="board_idx"   name="board_idx"   value="${ not empty detailData.board_idx ? detailData.board_idx : '0'}">
+<input type="hidden" id="board_type"  name="board_type"  value="${adBoardVo.board_type}">
+<input type="hidden" id="gubun1"      name="gubun1"  />
+<input type="hidden" id="checkdstr"   name="checkdstr"   value=''/>
+<input type="hidden" id="file_seq"    name="file_seq"    value=0/>
 <div class="table-wrap">
     <table class="detail-tb">
         <caption>제목, 작성자, 패스워드, 내용, 첨부파일 정보가 있는 테이블</caption>
@@ -29,6 +37,19 @@
             <col width="*"/>
         </colgroup>
         <tbody>
+        	<c:if test="${adBoardVo.board_type =='02'}">
+        	<tr>
+                  <th>구분</th>
+                  <td colspan="3">
+                      <select class="select lg-width" id="board_refer_type" name="board_refer_type">
+                        <option value="전체"   <c:if test="${detailData.board_refer_type == '전체' }">selected  </c:if> >전체</option>
+                        <option value="일반"   <c:if test="${detailData.board_refer_type == '일반' }">selected  </c:if> >일반</option>
+                        <option value="실무자" <c:if test="${detailData.board_refer_type == '실무자' }">selected </c:if> >실무자</option>
+                        <option value="기관"  <c:if test="${detailData.board_refer_type == '기관' }">selected   </c:if> >기관</option>
+                      </select>
+                  </td>
+             </tr>
+             </c:if>
             <tr>
                 <th>제목</th>
                 <td colspan="3">
@@ -36,11 +57,66 @@
                 </td>
             </tr>
             <tr>
+            	<c:if test="${adBoardVo.board_type =='02' || adBoardVo.board_type =='04' || adBoardVo.board_type =='06'}">
+            	<th>공지</th>
+                <td><input type="checkbox" class="check-box" id="notice_yn" name="notice_yn" value="Y" <c:if test="${detailData.notice_yn == 'Y' }">checked </c:if>/></td>
+                </c:if>
                 <th>작성자</th>
-                <td><input type="text" class="input-box" id="reg_id" name="reg_id" value="${detailData.reg_id}"/></td>
+                <td><input type="text" class="input-box" id="user_nm" name="user_nm" value="${sessionId.user_nm}"/ readonly></td>
                 <!-- <th>패스워드</th>
                 <td><input type="text" class="input-box" value=""/></td> -->
             </tr>
+            <c:if test="${adBoardVo.board_type =='06'}">
+            <tr>
+	            <th>읽기권한</th>
+	            <td colspan="3">
+	                <div class="check-cont">
+	                    <input type="checkbox" class="check-box" id="edu_type_01" name="edu_type_01" value="Y" <c:if test="${detailData.edu_type_01 == 'Y' }">checked </c:if> ">
+	                    <label>보고듣고말하기 2.0 기본형</label>
+	                </div>
+	                <div class="check-cont">
+	                    <input type="checkbox" class="check-box" id="edu_type_02" name="edu_type_02" value="Y" <c:if test="${detailData.edu_type_02 == 'Y' }">checked </c:if> ">
+	                    <label>보고듣고말하기 2.0 청년</label>
+	                </div>
+	                <div class="check-cont">
+	                    <input type="checkbox" class="check-box" id="edu_type_03" name="edu_type_03" value="Y" <c:if test="${detailData.edu_type_03 == 'Y' }">checked </c:if> ">
+	                    <label>보고듣고말하기 2.0 중년</label>
+	                </div>
+	                <div class="check-cont">
+	                    <input type="checkbox" class="check-box" id="edu_type_04" name="edu_type_04" value="Y" <c:if test="${detailData.edu_type_04 == 'Y' }">checked </c:if> ">
+	                    <label>보고듣고말하기 2.0 노인</label>
+	                </div>
+	                <div class="check-cont">
+	                    <input type="checkbox" class="check-box" id="edu_type_05" name="edu_type_05" value="Y" <c:if test="${detailData.edu_type_05 == 'Y' }">checked </c:if> ">
+	                    <label>보고듣고말하기 2.0 중학생</label>
+	                </div>
+	                <div class="check-cont">
+	                    <input type="checkbox" class="check-box" id="edu_type_06" name="edu_type_06" value="Y" <c:if test="${detailData.edu_type_06 == 'Y' }">checked </c:if> ">
+	                    <label>보고듣고말하기 2.0 고등학생</label>
+	                </div>
+	                <div class="check-cont">
+	                    <input type="checkbox" class="check-box" id="edu_type_07" name="edu_type_07" value="Y" <c:if test="${detailData.edu_type_07 == 'Y' }">checked </c:if> ">
+	                    <label>보고듣고말하기 1.6W</label>
+	                </div>	                    
+	                <div class="check-cont">
+	                    <input type="checkbox" class="check-box" id="edu_type_08" name="edu_type_08" value="Y" <c:if test="${detailData.edu_type_08 == 'Y' }">checked </c:if> ">
+	                    <label>이어줌인 직장인</label>
+	                </div>
+	                <div class="check-cont">
+	                    <input type="checkbox" class="check-box" id="edu_type_09" name="edu_type_09" value="Y" <c:if test="${detailData.edu_type_09 == 'Y' }">checked </c:if> ">
+	                    <label>이어줌인 노인</label>
+	                </div>
+	                <div class="check-cont">
+	                    <input type="checkbox" class="check-box" id="edu_type_10" name="edu_type_10" value="Y" <c:if test="${detailData.edu_type_10 == 'Y' }">checked </c:if> ">
+	                    <label>이어줌인 청소년</label>
+	                </div>
+	                <div class="check-cont">
+	                    <input type="checkbox" class="check-box" id="edu_type_11" name="edu_type_11" value="Y" <c:if test="${detailData.edu_type_11 == 'Y' }">checked </c:if> ">
+	                    <label>이어줌인 대학생</label>
+	                </div>
+	            </td>
+	        </tr>
+	        </c:if>
             <tr>
                 <th>내용</th>
                 <td colspan="3">
@@ -134,8 +210,8 @@ function fn_save(gubun1){
 
 	$("#gubun1").val(gubun1); 
 	
-	var title       = $("#title").val();
-	var reg_id = $("#reg_id").val();
+	var title  = $("#title").val();
+	//var reg_id = $("#reg_id").val();
 	   
     if (title == ""){			
 		alert("제목을 입력해주세요");
@@ -146,47 +222,50 @@ function fn_save(gubun1){
    	}
     
     var checkNo ="";
-		if (gubun1 == "E"){	
-			$('input:checkbox[name="checkNo"]').each(function() {
- 			if(this.checked){
+	if (gubun1 == "E"){	
+		$('input:checkbox[name="checkNo"]').each(function() {
+			if(this.checked){
 	 			ischeckeds = true;
 	 			var strCheckdValue = this.value;
 	 			checkNo = checkNo + ',' + strCheckdValue; 
- 			}
+			}
 		});
-		}
+	}
 		
 	checkNo = checkNo.substring( 1, checkNo.length );
 	$("#checkdstr").val(checkNo);
-			
-		for (var x = 0; x < content_files.length; x++) {
+	
+	var formData = new FormData($('#commonForm')[0]);
+	
+	for (var x = 0; x < content_files.length; x++) {
 		// 삭제 안한것만 담아 준다. 
 		if(!content_files[x].is_delete){
 			 formData.append("article_file", content_files[x]);
 		}
 	}
 
-	var msg = "공지사항 등록 하시겠습니까?";
+	var msg = "등록 하시겠습니까?";
 	if (gubun1 == "E"){
-		msg = "공지사항 수정 하시겠습니까?";
+		msg = "수정 하시겠습니까?";
 	}
-	var formData = new FormData($('#commonForm')[0]);
-		var yn = confirm(msg);	
-		if(yn){
-			$.ajax({	
-				data     : formData,
-			    url		 : "<c:url value='/adBoard/noticeSave.do'/>",
-		        dataType : "JSON",
-				type	 : "POST",
-				processData: false, 
-		        contentType: false,
-		        success  : function(obj) {
-		        	commonCallBack(obj);				
-		        },	       
-		        error 	: function(xhr, status, error) {} 		        
-		    });
-		}
+	
+	var yn = confirm(msg);	
+	if(yn){
+		$.ajax({	
+			data     : formData,
+		    url		 : "<c:url value='/adBoard/noticeSave.do'/>",
+	        dataType : "JSON",
+			type	 : "POST",
+			processData: false, 
+	        contentType: false,
+	        success  : function(obj) {
+	        	commonCallBack(obj);				
+	        },	       
+	        error 	: function(xhr, status, error) {} 		        
+	    });
 	}
+}
+
 function commonCallBack(obj){
 	if(obj != null){		
 		
@@ -205,11 +284,33 @@ function commonCallBack(obj){
 	}
 }
 
+/*
 function fn_load(str) {
 	var frm = document.commonForm;
 	frm.action = "<c:url value='/adBoard/noticeList.do'/>";    
 	frm.submit();
  }
+ */
+function fn_load(){
+	var frm = document.commonForm;
+	var type = $("#board_type").val();
+
+	if (type=="01"){
+		frm.action = "<c:url value='/adBoard/noticeList.do'/>";	
+	}else if (type=="02"){
+		frm.action = "<c:url value='/adBoard/referenceList.do'/>";	
+	}else if (type=="03"){
+		frm.action = "<c:url value='/adBoard/faqList.do'/>";	
+	}else if (type=="04"){
+		frm.action = "<c:url value='/adBoard/partiList.do'/>";	
+	}else if (type=="05"){
+		frm.action = "<c:url value='/adBoard/instructList.do'/>";	
+	}else if (type=="06"){
+		frm.action = "<c:url value='/adBoard/instructReferList.do'/>";	
+	}	
+  	frm.submit();
+}
+
  
 $(function () {
     $('#btn-upload').click(function (e) {
@@ -280,3 +381,4 @@ function fileDownload(key1){
 
 
 </script>
+
