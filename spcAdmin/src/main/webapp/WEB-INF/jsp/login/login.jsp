@@ -9,14 +9,14 @@
 			if(e.keyCode == 13)  loginProcess();
 		});
 		
-		loginProcess();
+		//loginProcess();
 
 	});
 	
 	/**  페이지 이동 */
 	function goOkPage(){	
 		var frm = document.commonForm;
-		//frm.action = "<c:url value='/edu/eduInfoOnlineMangList.do'/>";
+		//frm.action = "<c:url value='/adBoard/noticeList.do'/>";
 		frm.action = "<c:url value='/main/logoList.do'/>";
 		frm.submit();
 	}
@@ -27,12 +27,13 @@
 		var userId   = $("#userId").val();
 		var sesionId = $("#sesionId").val();
 		
-			
+		/*	
 		if (userId == ""){			
 			alert("아이디를 입력해주세요.");
 			$("#userId").focus();
 			return;
 		}
+		*/
 		/*
 		if (sesionId == ""){			
 			alert("sesionId 입력해주세요.");
@@ -79,10 +80,10 @@
 </script>
 <!-- 로그인 -->
 	<section id="loginArea">
-		<form class="form_login" id="commonForm" name="commonForm"  method="post"  action="">
+		<form class="form_login" id="commonForm" name="commonForm"  method="post"  action=""> lms_admin  kjs2300
 			<h1 class="logo_login"> Admin Login Page</h1>
-			<li><input  class="input_large" type="text"    id="userId"       name ="userId"       value='kjs2300'     placeholder="userId"   ></li>
-			<li><input  class="input_large" type="text"    id="sesionId"     name ="sesionId"     value=''            placeholder="sesionId" ></li>
+			<li><input  class="input_large" type="text"    id="userId"       name ="userId"       value='lms_admin'     placeholder="userId"   ></li>
+			<li><input  class="input_large" type="text"    id="sesionId"     name ="sesionId"     value=''              placeholder="sesionId" ></li>
 		</form>
 			<li><button class="btn_login"   onclick="javascript:loginProcess();" >로그인</button></li>
 	</section>

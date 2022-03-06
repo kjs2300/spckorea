@@ -112,8 +112,15 @@
        <put-attribute name="body" value="/WEB-INF/jsp/web/edu/life/lifeEduBoardList.jsp" />  
    </definition>
    
+   
     <!--생명지킴이 교육신청 > 교육신청  > 생명지킴이 활동 글 작성/ 수정 -->
-   <definition name="lifeEduBoardReq" extends="base-definition">  
+   <definition name="lifeEduBoardView" extends="common-definition">  
+       <put-attribute name="title" value="생명지킴이 활동 수기" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/edu/life/lifeEduBoardView.jsp" />  
+   </definition>
+   
+   <!--생명지킴이 교육신청 > 교육신청  > 생명지킴이 활동 글 작성/ 수정 -->
+   <definition name="lifeEduBoardReq" extends="common-definition">  
        <put-attribute name="title" value="생명지킴이 활동 수기" />  
        <put-attribute name="body" value="/WEB-INF/jsp/web/edu/life/lifeEduBoardReq.jsp" />  
    </definition>

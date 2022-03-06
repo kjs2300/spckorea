@@ -27,56 +27,64 @@
 
        <div class="contents-wrap">
            <!---- search-wrap begin ---->
+           
+         <form id="commonForm" name="commonForm" target="_self" action="" method="post" onsubmit="">
+	     <input type="hidden" id="board_idx"   name="board_idx"  value="0"/>
+	     <input type="hidden" id="board_type"  name="board_type" value="${adBoardVo.board_type}">
+	     <input type="hidden" id="gubun1"      name="gubun1"     value='I'   />
+	     <input type="hidden" id="pageIndex"   name="pageIndex"  value=1 />
+	     <input type="hidden" id="sessionId"   name="sessionId"  value="${sessionId}" />
+
            <div class="search-wrap">
                <div class="search-cont">
                    <label>기간 :</label>
                    <div class="radio-cont">
-                       <input type="radio" class="radio-box" id="dateAll" name="radioGroupDate" value="" checked>
+                       <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="ALL" <c:if test="${adBoardVo.searchDate == 'ALL' || (empty adBoardVo.searchDate)}">checked </c:if>>
                        <label for="dateAll">전체</label>
-                   </div>
-                     
+                   </div>                     
                    <div class="radio-cont">
-                       <input type="radio" class="radio-box" id="dateToday" name="radioGroupDate" value="">
+                       <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="TODAY" <c:if test="${adBoardVo.searchDate == 'TODAY'}">checked </c:if>>
                        <label for="dateToday">오늘</label>
                    </div>
                    
                    <div class="radio-cont mr10">
-                       <input type="radio" class="radio-box" id="dateTerm" name="radioGroupDate" value="">
+                       <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="CHECK" <c:if test="${adBoardVo.searchDate == 'CHECK'}">checked </c:if>>
                        <label for="dateTerm">기간선택</label>
                    </div>
                    <div class="picker-wrap">
-                       <input type="text" id="datepickerFrom" class="input-box"/>
+                       <input type="text" id="board_start_date" name="board_start_date" class="input-box" readonly value="${adBoardVo.board_start_date}"/>
                        <span class="next-ico">-</span>
-                       <input type="text" id="datepickerTo" class="input-box"/>
+                       <input type="text" id="board_end_date" name="board_end_date" class="input-box" readonly value="${adBoardVo.board_end_date}"/>
                    </div>
                </div>
                <div class="search-cont">
                    <label>검색어 :</label>
                    <div class="radio-cont">
-                       <input type="radio" class="radio-box" id="" name="radioGroupDate" value="" checked>
+                       <input type="radio" class="radio-box" id="searchCondition" name="searchCondition" value="ALL" <c:if test="${adBoardVo.searchCondition =='ALL'  || (empty adBoardVo.searchCondition) }">checked </c:if>>
                        <label for="">전체</label>
                    </div>
                      
                    <div class="radio-cont">
-                       <input type="radio" class="radio-box" id="" name="radioGroupDate" value="">
+                       <input type="radio" class="radio-box" id="searchCondition" name="searchCondition" value="TITLE" <c:if test="${adBoardVo.searchCondition =='TITLE'}">checked </c:if>>
                        <label for="">제목</label>
                    </div>
                    
                    <div class="radio-cont mr10">
-                       <input type="radio" class="radio-box" id="" name="radioGroupDate" value="">
+                       <input type="radio" class="radio-box" id="searchCondition" name="searchCondition" value="REG_NM" <c:if test="${adBoardVo.searchCondition =='REG_NM'}">checked </c:if>>
                        <label for="">작성자명</label>
                    </div>
                    <div class="radio-cont mr10">
-                       <input type="radio" class="radio-box" id="" name="radioGroupDate" value="">
+                       <input type="radio" class="radio-box" id="searchCondition" name="searchCondition" value="CONTENTS" <c:if test="${adBoardVo.searchCondition =='CONTENTS'}">checked </c:if>>
                        <label for="">내용</label>
-                       <input type="text" class="input-box" placeholder="직접입력"/>
+                       <input type="text"  id='searchKeyword' name='searchKeyword' value="${adBoardVo.searchKeyword}" class="input-box" placeholder="직접입력"/>
                    </div>
                </div>
 
                <div class="btn-cont">
-                   <button  type="button" class="lg-btn orange-btn">검색</button>
+                   <button  type="submit" class="lg-btn orange-btn">검색</button>
                    <button  type="reset"  class="lg-btn navy-btn">초기화</button>
                </div>
+               </form>
            </div>
            <!---- search-wrap end ---->
 
@@ -93,7 +101,7 @@
 
            <!---- sub-cont begin ---->
            <div class="btn-cont mb20">
-               <button class="sm-btn navy-btn">등록</button>
+               <button type="button" class="sm-btn navy-btn" onClick="javascript:fn_regt();">등록</button>
            </div>
            <!---- sub-cont end ---->
 
@@ -121,17 +129,17 @@
                    	<c:forEach var="result" items="${resultList}" varStatus="status">
                         <tr>
                             <td>${status.index + 1}</td>
-                            <td class="tl"><a class="link" href="#">${result.title}</a></td>
-                            <td>${result.reg_id}</td>
+                            <td class="tl"><a class="link" data-idx='${result.board_idx}' >${result.title}</a></td>
+                            <td>${result.reg_nm}</td>
                             <td>${fn:substring(result.reg_dt,0,10) }</td>
                             <td>${result.view_cnt}</td>
                         </tr>
                        </c:forEach>
-     <c:if test="${empty resultList }">
-       <tr>
-           <td colspan='5'/>Data 없습니다.</td>
-       </tr>
-   	</c:if>
+  				       <c:if test="${empty resultList }">
+					       <tr>
+					           <td colspan='5'/>Data 없습니다.</td>
+					       </tr>
+					   </c:if>
                    </tbody>
                </table>
            </div>
@@ -149,8 +157,7 @@
 
 
  
-<script type="text/javascript">
- 
+<script type="text/javascript"> 
  $(document).ready(function(){
 		 $("#board_start_date, #board_end_date").datepicker({
 		  	dateFormat: 'yy-mm-dd' //달력 날짜 형태
@@ -170,60 +177,29 @@
            ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
            ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
      });
+		 
+     $('.link').bind('click', function(){
+	   	
+	   	var board_idx  = $(this).data('idx');
+	   	$("#board_idx").val(board_idx);
+		var frm = document.commonForm;
+		frm.action = "<c:url value='/user/lifeEduBoardView.do'/>";	
+	  	frm.submit();
+		
+	  });
  });
  
-function fn_edit(key1, str) {
- 	var frm = document.listForm;
- 	$("#board_idx").val(key1);
-  	frm.action = "<c:url value='/adBoard/noticeReq.do'/>";
- 	frm.submit();
-}
+ function fn_regt(){
+		var frm = document.commonForm;
+		$("#board_idx").val(0);
+		<c:if test="${empty sessionId }">
+		 alert('해당 교육은 회원 가입 후 사용이 가능합니다.\n회원 가입 후 이용해 주시기 바랍니다.');
+		 return;
+		</c:if>
 
-function fn_delete(idx) {
-	var idxArray = new Array();
-
-	idxArray.push(idx);
-	if(confirm('삭제 처리하시겠습니까?')) {
-		setDel(idxArray);
-	}
-
-}
-
-var btnDel = function() {
-
-	var idxArray = new Array();
-
-	$("input[name=checkNo]:checked").each(function() {
-		idxArray.push($(this).val());
-	});
-
-	if(idxArray.length < 1){
-		alert("선택한 내역이 없습니다.");
-		return false;
-	}
-	
-	if(confirm('삭제 처리하시겠습니까?')) {
-		setDel(idxArray);
-	}
-	
-};
-
-var setDel = function(idxArray){
-    $.ajax({
-        url: "/adBoard/noticeDel.do",
-        type: "POST",
-        data: { "boardIdxArray" : idxArray },
-        success: function(data) {
-        	if(data == 'SUCCESS'){
-        		alert("처리 완료하였습니다.");
-        		location.reload();
-        	}
-        },
-        error: function(data) {
-        	console.log(JSON.stringify(data));
-        	alert("처리중 오류가 발생했습니다.");
-        }
-    });
-};
+		frm.action = "<c:url value='/user/lifeEduBoardReq.do'/>";	
+	  	frm.submit();
+ }
+ 
 
  </script>

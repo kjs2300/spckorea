@@ -1,8 +1,13 @@
 package com.easycompany.web.user;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,15 +15,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.WebUtils;
 
+import com.easycompany.cmm.util.FileUtil;
 import com.easycompany.cmm.util.StringUtil;
 import com.easycompany.cmm.vo.LoginVo;
 import com.easycompany.service.AdBoardService;
 import com.easycompany.service.EduService;
 import com.easycompany.service.MainService;
 import com.easycompany.service.vo.AdBoardVo;
+import com.easycompany.service.vo.BoardVo;
 import com.easycompany.service.vo.CategoryVo;
 import com.easycompany.service.vo.MainVo;
 
@@ -525,4 +534,184 @@ public class WebMainController
 
 		return "lifeEduBoardList";
   }
+  
+  /*
+   * 생명지킴이 교육신청 > 생명지킴이 활동 수기  
+   */
+  @RequestMapping({"/lifeEduBoardView.do"})
+  public String lifeEduBoardView(@ModelAttribute("AdBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+   
+		LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
+		if(loginvo != null && loginvo.getUser_id() != null) {
+			adBoardVo.setReg_id(loginvo.getUser_id());	
+			adBoardVo.setUser_id(loginvo.getUser_id());
+			adBoardVo.setUser_nm(loginvo.getUser_nm());	
+		}
+		
+		//  조회수 증가
+		adBoardService.updateBoardViewCount(adBoardVo);
+		
+		
+		if(adBoardVo.getBoard_idx() != null) {
+			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
+			if(detailData != null ) {
+				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
+				model.addAttribute("resultFileList", files);
+			}
+			model.addAttribute("detailData",  detailData);			
+			
+		}
+		
+		//이전글
+		adBoardVo.setGubun1("pre");		
+		AdBoardVo detailPreData = adBoardService.selectViewDetailBoard(adBoardVo);
+		model.addAttribute("detailPreData",   detailPreData);
+		
+		//다음글
+		adBoardVo.setGubun1("next");
+		AdBoardVo detailNextData = adBoardService.selectViewDetailBoard(adBoardVo);
+		model.addAttribute("detailNextData",   detailNextData);
+		
+		model.addAttribute("sessionId",   loginvo);
+		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",        request.getServletPath());
+	
+		return "lifeEduBoardView";
+  }
+  
+  /*
+   * 생명지킴이 교육신청 > 생명지킴이 활동 수기  
+   */
+  @RequestMapping({"/lifeEduBoardReq.do"})
+  public String lifeEduBoardReq(@ModelAttribute("AdBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request)
+    throws Exception
+  {
+   
+		LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
+		
+		if(loginvo != null && loginvo.getUser_id() != null) {
+			adBoardVo.setReg_id(loginvo.getUser_id());	
+			adBoardVo.setUser_id(loginvo.getUser_id());
+			adBoardVo.setUser_nm(loginvo.getUser_nm());	
+		}
+
+		
+		if(adBoardVo.getBoard_idx() != null) {
+			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
+			if(detailData != null ) {
+				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
+				model.addAttribute("resultFileList", files);
+			}
+			model.addAttribute("detailData",  detailData);			
+			
+		}
+		model.addAttribute("sessionId",   loginvo);
+		model.addAttribute("adBoardVo",   adBoardVo);
+		model.addAttribute("path",        request.getServletPath());
+	
+		return "lifeEduBoardReq";
+  }
+  
+	@RequestMapping({"/fileDownload.do"})
+	@ResponseBody
+	public void fileDownload(HttpServletRequest request, HttpServletResponse response, BoardVo boardVo) throws Exception {
+		boardVo = adBoardService.selectFile(boardVo);
+		
+	    BoardVo boardVoForm = new BoardVo();
+	    boardVoForm.setFile_uuid(boardVo.getFile_uuid());
+	    boardVoForm.setFile_name(boardVo.getFile_name());
+	    boardVoForm.setFile_full_path(boardVo.getFile_full_path());
+	    boardVoForm.setFile_size(boardVo.getFile_size());	 
+	
+	    FileUtil.fileDownload(request, response, boardVoForm);
+	}
+	
+	@RequestMapping(value = "/boardSave.do")
+	@ResponseBody
+	public AdBoardVo boardSave(@RequestParam("article_file") List<MultipartFile> multipartFile, HttpServletRequest request, AdBoardVo adBoardVo) throws Exception {
+		int resultCnt = 0;
+		try {
+			
+			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "UserAccount");
+			if(loginvo != null && loginvo.getUser_id() != null) {
+				adBoardVo.setReg_id(loginvo.getUser_id());	
+				adBoardVo.setUser_id(loginvo.getUser_id());
+				adBoardVo.setUser_nm(loginvo.getUser_nm());	
+			}
+
+			
+			String fileAddpath = this.filePath + File.separator + "board";
+			List<Map<String, Object>> fileSavelist = null;
+			ArrayList<String> fileList = new ArrayList<>();
+			
+			if ("I".equals(adBoardVo.getGubun1())) { // 저장
+				fileSavelist = FileUtil.uploadFileMulti(multipartFile, request, fileAddpath); 
+				resultCnt = adBoardService.insertBoard(adBoardVo, fileSavelist);
+				adBoardVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
+			} else if("E".equals(adBoardVo.getGubun1())) { // 수정
+//				resultCnt = adBoardService.updateBoard(adBoardVo);
+				String[] ArraysStr = adBoardVo.getCheckdstr().split(",");
+		    	  if(ArraysStr.length >0){
+		    		  BoardVo boardVo = new BoardVo();
+		    		  for (String s : ArraysStr) {
+		    	        	if(!StringUtil.isEmpty(s)) {
+		    	        		boardVo.setFile_seq(Integer.parseInt(s));
+		    	        		BoardVo fileCategoryVo = adBoardService.selectFile(boardVo);
+		    	                fileList.add(fileCategoryVo.getFile_full_path());
+		    	        	}        	
+		    	      }   
+		    	  }
+		          
+		          //파일업로드
+		    	  if (multipartFile !=null && multipartFile.size() > 0) {
+		      		fileSavelist = FileUtil.uploadFileMulti(multipartFile, request, fileAddpath); 
+		      	  }
+		    	  
+		    	  //파일 추가, 정보업데이트
+		          resultCnt = adBoardService.updateBoard(adBoardVo, fileSavelist);
+		          
+		          //성공 시 파일 삭제
+		          if(resultCnt > 0) {
+			       	   if (fileList !=null && fileList.size() > 0) {
+			       		for (String fileFullPath : fileList) {
+			       			FileUtil.deleteFile(request, fileFullPath);
+			            }
+			       	  }
+			      }
+				adBoardVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
+			}
+			
+		} catch (Exception e) {
+			adBoardVo.setResult("FAIL");
+		}
+		return adBoardVo;
+	}
+	
+	@RequestMapping(value = "/boardDel.do")
+	@ResponseBody
+	public String boardDel(HttpServletRequest request, @RequestParam(value="boardIdxArray[]") List<String> boardIdxStrArray) throws Exception {
+		int resultCnt = 0;
+		String result = "";
+		try {
+
+			List<Long> boardIdxList = new ArrayList<Long>();
+			
+			for(String idxStr : boardIdxStrArray){
+				boardIdxList.add(Long.parseLong(idxStr));
+			}
+			
+		    HashMap<String, Object> map = new HashMap<String, Object>();
+		    map.put("boardIdxList", boardIdxList);
+		    
+		    resultCnt = adBoardService.delBoard(map);
+		    result = (resultCnt > 0 ? "SUCCESS" : "FAIL");
+		    
+		} catch (Exception e) {
+			result = "FAIL";
+		}
+		
+		return result;
+	}
 }

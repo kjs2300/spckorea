@@ -111,7 +111,9 @@ public class LoginController {
 				loginVo.setResult( "FAIL") ;	
 			}else {
 				request.getSession().setAttribute("UserAccount", loginVo1);
-				request.getSession().setAttribute("AdminAccount", loginVo1);
+				if(loginVo1.getUser_group_cd().equals("0003")) {
+					request.getSession().setAttribute("AdminAccount", loginVo1);
+				}				
 				loginVo.setResult( "SUCCESS") ;	
 			}
 			
