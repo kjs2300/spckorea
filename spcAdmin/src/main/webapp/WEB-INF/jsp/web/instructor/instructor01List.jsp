@@ -137,7 +137,7 @@
 							                <td>${result.REG_DT}</td>
 							                <td>${result.REG_ID}</td>
 							                <td>${result.VIEW_CNT}</td>
-							            </tr>
+							            </tr>  
                                     </c:forEach>
                                     <c:if test="${empty resultList }">
 							             <tr>
