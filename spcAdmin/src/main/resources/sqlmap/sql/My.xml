@@ -32,7 +32,7 @@
 		  
 	</select>
 
-	<select id="getMyListCnt"		parameterType="com.easycompany.service.vo.CategoryVo" resultType="int">
+	<select id="getMyListCnt" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(*) 
 		  FROM EDU_REGISTRATION ER
 		 WHERE 1=1

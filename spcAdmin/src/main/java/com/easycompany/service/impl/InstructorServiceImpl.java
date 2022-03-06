@@ -1,7 +1,7 @@
 package com.easycompany.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.easycompany.mapper.InstructorMapper;
 import com.easycompany.service.InstructorService;
-import com.easycompany.service.vo.AdBoardVo;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
@@ -20,34 +19,20 @@ public class InstructorServiceImpl extends EgovAbstractServiceImpl implements In
 	@Autowired
 	private InstructorMapper instructorMapper;
 
-	@Override
-	public List<AdBoardVo> getBoardList(AdBoardVo adBoardVo) {
-		return instructorMapper.getBoardList(adBoardVo);
+	public List<Map<String, Object>> getSelectList(Map<String, Object> paramMap) throws Exception {
+		return instructorMapper.getSelectList(paramMap);
 	}
-
-	@Override
-	public int getBoardCount(AdBoardVo adBoardVo) {
-		return instructorMapper.getBoardCount(adBoardVo);
+	
+	public Map<String, Object> getSelectData(Map<String, Object> paramMap) throws Exception {
+		return instructorMapper.getSelectData(paramMap);
 	}
-
-	@Override
-	public AdBoardVo selectDetailBoard(AdBoardVo adBoardVo) {
-		return instructorMapper.selectDetailBoard(adBoardVo);
+	
+	public int getSelectListCnt(Map<String, Object> paramMap) {
+		return instructorMapper.getSelectListCnt(paramMap);
 	}
-
-	@Override
-	public int insertBoard(AdBoardVo adBoardVo) {
-		return instructorMapper.insertBoard(adBoardVo);
-	}
-
-	@Override
-	public int updateBoard(AdBoardVo adBoardVo) {
-		return instructorMapper.updateBoard(adBoardVo);
-	}
-
-	@Override
-	public int delBoard(HashMap<String, Object> map) {
-		return instructorMapper.delBoard(map);
+	
+	public int insertData(Map<String, Object> paramMap) throws Exception {
+		return instructorMapper.insertData(paramMap);
 	}
 
 }

@@ -85,18 +85,18 @@ model.addAttribute("path", request.getServletPath());
 	             <li><a href="#">결과보고</a></li>
 	         </ul>
 	         <ul class="depth2">
-	             <li><a href="#">공지사항</a></li>
-	             <li><a href="#">자료실</a></li>
-	             <li><a href="#">활동신청</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/instructor01List.do">공지사항</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/instructor02List.do">자료실</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/instructor03List.do">활동신청</a></li>
 	             <li>
 	                 <a href="#">자격관리</a>
 	                 <ul class="depth3">
-	                     <li><a href="#">강사자격정보</a></li>
-	                     <li><a href="#">강의내역</a></li>
-	                     <li><a href="#">강사휴직신청</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/instructor04List.do">강사자격정보</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/instructor04lecture.do">강의내역</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/instructor04absence.do">강사휴직신청</a></li>
 	                 </ul>
 	             </li>
-	             <li><a href="#">강사 보수 교육</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/instructor05List.do">강사 보수 교육</a></li>
 	         </ul>
 	     </div>
 	 </div>

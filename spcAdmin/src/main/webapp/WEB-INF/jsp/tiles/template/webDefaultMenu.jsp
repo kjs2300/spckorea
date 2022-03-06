@@ -150,4 +150,33 @@
 		      </ul>
 	      </div>
      </c:if>
+     
+     <c:if test="${fn:contains(path, '/user/instructor')}">
+	      <aside class="tit">생명지킴이 강사공간</aside>
+	      <div class="lnb-menu">
+	          <ul>
+	                 <li <c:if test="${fn:contains(path, '/user/instructor01')}">  class="on" </c:if>>
+	                 	<a href="${pageContext.request.contextPath}/user/instructor01List.do">공지사항</a>
+		             </li>
+		             <li <c:if test="${fn:contains(path, '/user/instructor02')}">  class="on" </c:if>>
+	                 	<a href="${pageContext.request.contextPath}/user/instructor02List.do">자료실</a>
+		             </li>
+		             <li <c:if test="${fn:contains(path, '/user/instructor03')}">  class="on" </c:if>>
+	                 	<a href="${pageContext.request.contextPath}/user/instructor03List.do">활동신청</a>
+		             </li>
+		             <li <c:if test="${fn:contains(path, '/user/instructor04')}">  class="on" </c:if>>
+	                 	<a href="#">자격관리</a>
+	                 	<ul class="sub-lnb">
+                        	<li <c:if test="${fn:contains(path, '/user/instructor04List') }">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/instructor04List.do">강사자격정보</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/instructor04lecture') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/instructor04lecture.do">강의내역</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/instructor04absence') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/instructor04absence.do">강사휴직신청</a></li>
+                        </ul>
+	                 </li>
+		             <li <c:if test="${fn:contains(path, '/user/instructor05')}">  class="on" </c:if>>
+	                 	<a href="${pageContext.request.contextPath}/user/instructor05List.do">강사 보수 교육</a>
+		             </li>
+		      </ul>
+	      </div>
+     </c:if></li>
+	                 
   </div>

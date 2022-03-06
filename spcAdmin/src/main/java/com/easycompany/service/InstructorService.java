@@ -1,22 +1,15 @@
 package com.easycompany.service;
 
-import java.util.HashMap;
 import java.util.List;
-
-import com.easycompany.service.vo.AdBoardVo;
+import java.util.Map;
 
 public interface InstructorService {
 
-	List<AdBoardVo> getBoardList(AdBoardVo adBoardVo);
-
-	int getBoardCount(AdBoardVo adBoardVo);
-
-	AdBoardVo selectDetailBoard(AdBoardVo adBoardVo);
-
-	int insertBoard(AdBoardVo adBoardVo);
-
-	int updateBoard(AdBoardVo adBoardVo);
-
-	int delBoard(HashMap<String, Object> map);
-
+	public List<Map<String, Object>> getSelectList(Map<String, Object> paramMap) throws Exception;
+	
+	public Map<String, Object> getSelectData(Map<String, Object> paramMap) throws Exception;
+	
+	public int getSelectListCnt(Map<String, Object> paramMap);
+	
+	public int insertData(Map<String, Object> paramMap) throws Exception;
 }
