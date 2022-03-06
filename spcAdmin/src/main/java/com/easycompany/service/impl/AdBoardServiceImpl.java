@@ -113,5 +113,16 @@ public class AdBoardServiceImpl extends EgovAbstractServiceImpl implements AdBoa
 	public BoardVo selectFile(BoardVo boardVo) {
 		return adBoardMapper.selectFile(boardVo);
 	}
+	
+	@Override
+	public int updateBoardViewCount(AdBoardVo adBoardVo) {
+		return adBoardMapper.updateBoardViewCount(adBoardVo);
+	}
+	
+	@Override
+	public AdBoardVo selectViewDetailBoard(AdBoardVo adBoardVo) {
+		return adBoardMapper.selectViewDetailBoard(adBoardVo);
+	}
+
 
 }

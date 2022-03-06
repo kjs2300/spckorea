@@ -11,83 +11,115 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
-<h1 class="h1-tit">공지사항 ${ not empty detailData.board_idx ? "수정" : "등록"}</h1>
 
-<form id="commonForm" name="commonForm" method="post" enctype="Multipart/form-data">
-<input type="hidden" name="board_idx" id="board_idx" value="${ not empty detailData.board_idx ? detailData.board_idx : '0'}">
-<input type="hidden" name="board_type" id="board_type" value="01">
-<input type="hidden" id="gubun1"  name="gubun1"  />
-<input type="hidden" id="checkdstr"      name="checkdstr"      class="input-box" value=''/>
-<input type="hidden" id="file_seq"       name="file_seq"       class="input-box" value=0/>
-<div class="table-wrap">
-    <table class="detail-tb">
-        <caption>제목, 작성자, 패스워드, 내용, 첨부파일 정보가 있는 테이블</caption>
-        <colgroup>
-            <col width="20%"/>
-            <col width="30%"/>
-            <col width="20%"/>
-            <col width="*"/>
-        </colgroup>
-        <tbody>
-            <tr>
-                <th>제목</th>
-                <td colspan="3">
-                    <input type="text" class="input-box w768" id="title" name="title" value="${detailData.title}"/>
-                </td>
-            </tr>
-            <tr>
-                <th>작성자</th>
-                <td><input type="text" class="input-box" id="reg_id" name="reg_id" value="${detailData.reg_id}"/></td>
-                <!-- <th>패스워드</th>
-                <td><input type="text" class="input-box" value=""/></td> -->
-            </tr>
-            <tr>
-                <th>내용</th>
-                <td colspan="3">
-                    <div class="editor-box"><textarea name="contents" id="contents" rows="10" cols="100" style="width: 100%; height: 100%; border: 1px solid #ddd; display: none;">${detailData.contents}</textarea></div>
-                </td>
-            </tr>
-            <tr>
-                <th>첨부파일</th>
-                 <td>
-                  <div class="upload-box">
-                    <button id="btn-upload" type="button" style="border: 1px solid #ddd; outline: none;">파일 추가</button>
-				  <input id="input_file" multiple="multiple" type="file" style="display:none;">
-				  <span style="font-size:10px; color: gray;">※첨부파일은 최대 3개까지 등록이 가능합니다.</span>
-				  <div class="data_file_txt" id="data_file_txt" style="margin:10px;">
-					<span>첨부 파일</span><br />
-					<div id="articlefileChange"></div>
-				  </div>
-				  
-				  <c:forEach var="result" items="${resultFileList}" varStatus="status">
-				  	<c:if test="${status.index ==0 }">
-				  	Upload 파일명 </br>
-				  	</c:if>
-				  	 <a onclick="javascript:fileDownload('${result.file_seq}');"> ${result.file_name}</a>
-				  	 <input type="checkbox" id='checkNo' name='checkNo' value="${result.file_seq}" class="check-box"/>삭제 여부</br>
-				  </c:forEach>
+  <!-- container  begin -->
+                <div id="container">
+
+                    <div class="tit-wrap">
+                        <h1 class="h1-tit">생명지킴이 활동 수기</h1>
+
+                        <div class="side-cont">
+                            <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
+                            <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
+                            <span>생명지킴이교육</span>
+                            <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
+                            <span>생명지킴이 활동 수기</span>
+                        </div>
+                    </div>
+                    
+					<form id="commonForm" name="commonForm" method="post" enctype="Multipart/form-data">
+					<input type="hidden" id="board_idx"   name="board_idx"   value="${ not empty detailData.board_idx ? detailData.board_idx : '0'}">
+					<input type="hidden" id="board_type"  name="board_type"  value="${adBoardVo.board_type}">
+					<input type="hidden" id="gubun1"      name="gubun1"  />
+					<input type="hidden" id="checkdstr"   name="checkdstr"   value=''/>
+					<input type="hidden" id="file_seq"    name="file_seq"    value=0/>
+					
+                    <div class="contents-wrap">
+
+                        <div class="comp">
+                            <div class="table-wrap">
+                                <table class="detail-tb">
+                                    <caption>제목, 작성자, 패스워드, 첨부파일 정보가 있는 테이블</caption>
+                                    <colgroup>
+                                        <col width="20%"/>
+                                        <col width="20%"/>
+                                        <col width="20%"/>
+                                        <col width="*"/>
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th>제목</th>
+                                            <td colspan="3">
+                                                <input type="text" class="input-box lg-width" id="title" name="title" value="${detailData.title}" placeholder="제목입력"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>작성자</th>
+                                            <td colspan="3">${sessionId.user_nm}</td>
+                                       </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="editor-box">
+                                                 <textarea name="contents" id="contents" rows="10" cols="100" style="width: 100%; height: 100%; border: 1px solid #ddd; display: none;">${detailData.contents}</textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>첨부파일</th>
+                                            <td colspan="3">
+                                                <div class="upload-box">
+                                                   <button id="btn-upload" type="button" style="border: 1px solid #ddd; outline: none;">파일 추가</button>
+												  <input id="input_file" multiple="multiple" type="file" style="display:none;">
+												  <span style="font-size:10px; color: gray;">※첨부파일은 최대 3개까지 등록이 가능합니다.</span>
+												  <div class="data_file_txt" id="data_file_txt" style="margin:10px;">
+													<span>첨부 파일</span><br />
+													<div id="articlefileChange"></div>
+												  </div>
+												  
+												  <c:forEach var="result" items="${resultFileList}" varStatus="status">
+												  	<c:if test="${status.index ==0 }">
+												  	Upload 파일명 </br>
+												  	</c:if>
+												  	 <a onclick="javascript:fileDownload('${result.file_seq}');"> ${result.file_name}</a>
+												  	 <input type="checkbox" id='checkNo' name='checkNo' value="${result.file_seq}" class="check-box"/>삭제 여부</br>
+												  </c:forEach>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        </form>
+
+                        <!---- button begin ---->
+                        <div class="btn-cont">
+                            
+                            <c:if test="${empty detailData.board_idx }">
+						     		<button type="button" class="lg-btn navy-btn"  onClick="javascript:fn_save('I');">등록</button>
+						     </c:if>
+						     <c:if test="${not empty detailData.board_idx && sessionId.user_id == detailData.reg_id  }">
+						     		<button type="button" class="lg-btn navy-btn"  onClick="javascript:fn_save('E');">수정</button>
+						     </c:if>
+                            <button type="button" class="lg-btn white-btn" onClick="javascript:history.back();">취소</button>
+                        </div>
+                        <!---- button end ---->
+                        
+
+                    </div>
                 </div>
-				</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-</form>
-
-<div class="btn-cont">
-	<c:if test="${empty detailData.board_idx }">
-     		<button type="button" class="mid-btn blue-btn"   onClick="javascript:fn_save('I');">저장</button>
-     </c:if>
-     <c:if test="${not empty detailData.board_idx }">
-     		<button type="button" class="mid-btn blue-btn"   onClick="javascript:fn_save('E');">저장</button>
-     </c:if>
-    <button class="mid-btn white-btn" onClick="javascript:history.back();">취소</button>
-    <button class="mid-btn black-btn" onClick="javascript:history.back();">목록</button>
-</div>
-                
+                <!--  container end -->
+        
 <script type="text/javascript">
 $(document).ready(function() {
-	$("#input_file").on("change", fileCheck);
+	$("#input_file").on("change", fileCheck);	
+	<c:if test="${empty sessionId }">
+		var frm = document.commonForm;
+		var type = $("#board_type").val();
+		$("#board_idx").val(0);
+		frm.action = "<c:url value='/user/lifeEduBoardList.do'/>";	
+	  	frm.submit();
+	</c:if>	
 });
 var oEditors = [];
 
@@ -134,8 +166,8 @@ function fn_save(gubun1){
 
 	$("#gubun1").val(gubun1); 
 	
-	var title       = $("#title").val();
-	var reg_id = $("#reg_id").val();
+	var title  = $("#title").val();
+	//var reg_id = $("#reg_id").val();
 	   
     if (title == ""){			
 		alert("제목을 입력해주세요");
@@ -146,47 +178,50 @@ function fn_save(gubun1){
    	}
     
     var checkNo ="";
-		if (gubun1 == "E"){	
-			$('input:checkbox[name="checkNo"]').each(function() {
- 			if(this.checked){
+	if (gubun1 == "E"){	
+		$('input:checkbox[name="checkNo"]').each(function() {
+			if(this.checked){
 	 			ischeckeds = true;
 	 			var strCheckdValue = this.value;
 	 			checkNo = checkNo + ',' + strCheckdValue; 
- 			}
+			}
 		});
-		}
+	}
 		
 	checkNo = checkNo.substring( 1, checkNo.length );
 	$("#checkdstr").val(checkNo);
-			
-		for (var x = 0; x < content_files.length; x++) {
+	
+	var formData = new FormData($('#commonForm')[0]);
+	
+	for (var x = 0; x < content_files.length; x++) {
 		// 삭제 안한것만 담아 준다. 
 		if(!content_files[x].is_delete){
 			 formData.append("article_file", content_files[x]);
 		}
 	}
 
-	var msg = "공지사항 등록 하시겠습니까?";
+	var msg = "등록 하시겠습니까?";
 	if (gubun1 == "E"){
-		msg = "공지사항 수정 하시겠습니까?";
+		msg = "수정 하시겠습니까?";
 	}
-	var formData = new FormData($('#commonForm')[0]);
-		var yn = confirm(msg);	
-		if(yn){
-			$.ajax({	
-				data     : formData,
-			    url		 : "<c:url value='/adBoard/noticeSave.do'/>",
-		        dataType : "JSON",
-				type	 : "POST",
-				processData: false, 
-		        contentType: false,
-		        success  : function(obj) {
-		        	commonCallBack(obj);				
-		        },	       
-		        error 	: function(xhr, status, error) {} 		        
-		    });
-		}
+	
+	var yn = confirm(msg);	
+	if(yn){
+		$.ajax({	
+			data     : formData,
+		    url		 : "<c:url value='/user/boardSave.do'/>",
+	        dataType : "JSON",
+			type	 : "POST",
+			processData: false, 
+	        contentType: false,
+	        success  : function(obj) {
+	        	commonCallBack(obj);				
+	        },	       
+	        error 	: function(xhr, status, error) {} 		        
+	    });
 	}
+}
+
 function commonCallBack(obj){
 	if(obj != null){		
 		
@@ -205,11 +240,14 @@ function commonCallBack(obj){
 	}
 }
 
-function fn_load(str) {
+function fn_load(){
 	var frm = document.commonForm;
-	frm.action = "<c:url value='/adBoard/noticeList.do'/>";    
+	var type = $("#board_type").val();
+
+	frm.action = "<c:url value='/user/lifeEduBoardList.do'/>";	
 	frm.submit();
- }
+}
+
  
 $(function () {
     $('#btn-upload').click(function (e) {
@@ -273,10 +311,11 @@ function fileDelete(fileNum){
 function fileDownload(key1){
 	var frm = document.commonForm;
 	$("#file_seq").val(key1)
-	frm.action = "<c:url value='/adBoard/fileDownload.do'/>";
+	frm.action = "<c:url value='/user/fileDownload.do'/>";
 	frm.submit();
 }
 
 
 
 </script>
+

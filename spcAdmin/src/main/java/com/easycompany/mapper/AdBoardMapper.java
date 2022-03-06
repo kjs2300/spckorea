@@ -65,4 +65,11 @@ public class AdBoardMapper extends EgovAbstractMapper {
 		return selectList(nameSpace + ".delFileSelect", map);
 	}
 
+	public int updateBoardViewCount(AdBoardVo adBoardVo) {
+		return (Integer) update(nameSpace + ".updateBoardViewCount", adBoardVo);
+	}
+	
+	public AdBoardVo selectViewDetailBoard(AdBoardVo adBoardVo) {
+		return selectOne(nameSpace + ".selectViewDetailBoard", adBoardVo);
+	}
 }

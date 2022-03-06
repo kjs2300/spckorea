@@ -27,7 +27,7 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 		if(loginvo!=null){
 			return true;
 		}else{
-			ModelAndView modelAndView = new ModelAndView("redirect:/login/login.do");			
+			ModelAndView modelAndView = new ModelAndView("redirect:/user/webMain.do");			
 			throw new ModelAndViewDefiningException(modelAndView);
 		}
 	}

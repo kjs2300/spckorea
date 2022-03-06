@@ -35,7 +35,7 @@
 	
 	<select id="selectDetailBoard" parameterType="com.easycompany.service.vo.AdBoardVo" resultType="com.easycompany.service.vo.AdBoardVo">
 		/**  com.easycompany.mapper.AdBoardMapper.selectDetailBoard **/	
-		SELECT BOARD_IDX, BOARD_TYPE, TITLE, CONTENTS, LINK_URL, FILE_ID, VIEW_CNT, REG_DT, REG_ID, CHG_DT, CHG_ID
+		SELECT BOARD_IDX, BOARD_TYPE, TITLE, CONTENTS, LINK_URL, FILE_ID, VIEW_CNT, DATE_FORMAT( REG_DT, '%Y-%m-%d' ) REG_DT, REG_ID, REG_NM, CHG_DT, CHG_ID
 		       ,EDU_TYPE_01, EDU_TYPE_02, EDU_TYPE_03, EDU_TYPE_04, EDU_TYPE_05, EDU_TYPE_06, EDU_TYPE_07, EDU_TYPE_08, EDU_TYPE_09, EDU_TYPE_10, EDU_TYPE_11
 		<if test="board_type !=null and board_type == '02'">
 	      	, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME, NOTICE_YN, BOARD_REFER_TYPE
@@ -588,9 +588,14 @@
 	      <if test="searchCondition !=null and searchCondition == 'CONTENTS'">
 	      	AND CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%')
 	      </if>
-	      <if test="searchDate !=null and searchDate != 'ALL'">
+	      <if test="searchDate !=null and searchDate == 'CHECK'">
 	      	<![CDATA[
 		       AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) >= #{board_start_date} AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) <= #{board_end_date} 
+	        ]]>
+	      </if>
+	      <if test="searchDate !=null and searchDate == 'TODAY'">
+	      	<![CDATA[
+		       AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) = CAST( DATE_FORMAT(NOW(),'%x-%m-%d') AS CHAR(19)) 
 	        ]]>
 	      </if>
 	      <if test="board_type !=null and board_type != ''">
@@ -602,5 +607,29 @@
       </where>
 	</sql>
 	
+	<update id="updateBoardViewCount" parameterType="com.easycompany.service.vo.AdBoardVo">
+		/**  com.easycompany.mapper.AdBoardMapper.updateBoardViewCount **/	
+		UPDATE EDU_BOARD 
+		   SET VIEW_CNT = IFNULL(VIEW_CNT, 0) + 1 	    
+ 		 WHERE BOARD_IDX = #{board_idx}
+	</update>
+	
+	<select id="selectViewDetailBoard" parameterType="com.easycompany.service.vo.AdBoardVo" resultType="com.easycompany.service.vo.AdBoardVo">
+		/**  com.easycompany.mapper.AdBoardMapper.selectViewDetailBoard **/	
+		SELECT BOARD_IDX, BOARD_TYPE, TITLE, CONTENTS, LINK_URL, FILE_ID, VIEW_CNT, DATE_FORMAT( REG_DT, '%Y-%m-%d' ) REG_DT, REG_ID, REG_NM, CHG_DT, CHG_ID
+	      FROM EDU_BOARD
+	     WHERE USE_YN = 'Y' 
+	       AND BOARD_TYPE = #{board_type}
+	   	  <if test="gubun1 !=null and gubun1 == 'pre'">
+	   	   <![CDATA[
+	       AND BOARD_IDX = (SELECT MAX(BOARD_IDX) FROM EDU_BOARD WHERE BOARD_TYPE = #{board_type} AND USE_YN = 'Y' 	AND BOARD_IDX < #{board_idx})
+	       ]]>
+	      </if>
+		  <if test="gubun1 !=null and gubun1 == 'next'">
+	   	   <![CDATA[
+	       AND BOARD_IDX = (SELECT MIN(BOARD_IDX) FROM EDU_BOARD WHERE BOARD_TYPE = #{board_type}  AND USE_YN = 'Y' AND BOARD_IDX > #{board_idx})
+	       ]]>
+	      </if>
+	</select>
 	
 </mapper>

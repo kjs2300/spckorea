@@ -24,5 +24,9 @@ public interface AdBoardService {
 	List<BoardVo> selectFileList(AdBoardVo adBoardVo);
 
 	BoardVo selectFile(BoardVo boardVo);
+	
+	int updateBoardViewCount(AdBoardVo adBoardVo);
+	
+	AdBoardVo selectViewDetailBoard(AdBoardVo adBoardVo);
 
 }
