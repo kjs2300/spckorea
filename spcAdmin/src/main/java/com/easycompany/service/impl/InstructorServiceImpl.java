@@ -15,7 +15,7 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 @Service("instructorService")
 @Transactional
 public class InstructorServiceImpl extends EgovAbstractServiceImpl implements InstructorService {
-	
+	//InstructorAdmController 와 같이 사용
 	@Autowired
 	private InstructorMapper instructorMapper;
 

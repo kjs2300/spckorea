@@ -27,6 +27,7 @@
 			<mvc:mapping path="/adBoard/**" />
 			<mvc:mapping path="/warrant/**" />
 			<mvc:mapping path="/lms/**" />			
+			<mvc:mapping path="/inst/**" />			
 			<mvc:exclude-mapping path="/login/**" />						
 			<bean class="com.easycompany.cmm.interceptor.AuthenticInterceptor" />
 		</mvc:interceptor>
