@@ -142,11 +142,11 @@
         <h3 class="h3-tit">기관명</h3>
 
         <div class="radio-cont">
-            <input type="radio" class="radio-box" id="" name="" value="" checked>
+            <input type="radio" class="radio-box" id="org_all" name="org_all" value="ALL" checked>
             <label for="">전체</label>
         </div>
         <div class="radio-cont">
-            <input type="radio" class="radio-box" id="" name="" value="">
+            <input type="radio" class="radio-box" id="org_keyin" name="org_keyin" value="CHECK">
             <input type="text" class="input-box" placeholder="직접입력"/>
         </div>
     </div>
@@ -155,7 +155,7 @@
         <h3 class="h3-tit">지역</h3>
 
         <div class="radio-cont">
-            <input type="text" class="input-box" placeholder="직접입력"/>
+            <input type="text" id="area_keyin" name="area_keyin" class="input-box" placeholder="직접입력"/>
         </div>
     </div>
 
