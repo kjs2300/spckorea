@@ -56,7 +56,7 @@ public class InstructorController
 	  List<Map<String, Object>> list = instructorService.getSelectList(paramMap);
 	  model.addAttribute("resultList", list);
 	  
-	  paramMap.put("sqlName", "getBoardListCnt");
+	  paramMap.put("sqlName", "getBoardCount");
 	  int totCnt = instructorService.getSelectListCnt(paramMap);
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
