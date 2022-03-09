@@ -109,6 +109,14 @@
         AND ER.EDU_NO = ${edu_no}
 	</select>
 	
+	<select id="getBasketCheck" parameterType="java.util.Map" resultType="int">
+	SELECT  COUNT(BASKET_NO)
+		FROM EDU_BASKET
+		 WHERE 1=1
+		AND EDU_NO = ${edu_no}
+        AND USER_ID = #{UserAccount.user_id}
+	</select>
+	
 	<insert id="basketInsert" parameterType="java.util.Map">	
 		INSERT INTO EDU_BASKET(
 		  	  BASKET_NO
@@ -124,6 +132,14 @@
 			, #{UserAccount.user_nm}
 		)	
 	</insert>
+	
+	<select id="getRegistCheck" parameterType="java.util.Map" resultType="int">
+	SELECT  COUNT(COUR_NO)
+		FROM EDU_COURSE_REGISTRATION
+		 WHERE 1=1
+		AND EDU_NO = ${edu_no}
+        AND USER_ID = #{UserAccount.user_id}
+	</select>
 	
 	<insert id="registInsert" parameterType="java.util.Map">	
 		INSERT INTO EDU_COURSE_REGISTRATION(

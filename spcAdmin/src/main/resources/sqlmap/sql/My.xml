@@ -2,53 +2,37 @@
 <!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.easycompany.mapper.MyMapper">
-	<select id="getMyList" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT  ER.EDU_NO, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = ER.CATEGORY1_KEY) AS CATEGORY1 , 
-				(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = ER.CATEGORY2_KEY) AS CATEGORY2 , 
-				(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = ER.CATEGORY3_KEY) AS CATEGORY3 , 
-                ER.INST_NM, ER.TRAIN_S_DATE, ER.TRAIN_E_DATE, ER.EDU_METHOD,ER.EDU_TIME, ER.EDU_NOTICE
-		  FROM EDU_REGISTRATION ER
-		 WHERE 1=1
-		    AND EDU_SITE = #{site}
-		<if test=" category1_key !=null and category1_key !=0">
-			AND ER.CATEGORY1_KEY = #{category1_key} 
-		</if>
-		<if test=" category2_key !=null and category2_key !=0 ">
-			AND ER.CATEGORY2_KEY = #{category2_key} 
-		</if>
-		<if test=" category3_key !=null and category3_key !=0">
-			AND ER.CATEGORY3_KEY = #{category3_key} 
-		</if>
-		 ORDER BY EDU_NO DESC<!-- TRAIN_S_DATE -->
+	<select id="getCartList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT a.BASKET_NO,b.EDU_TIME,b.INST_NM,b.EDU_NO,a.user_id
+			   ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
+		FROM EDU_BASKET a, 
+			 EDU_REGISTRATION b
+		WHERE 1=1
+		AND a.EDU_NO = b.EDU_NO
+		AND b.CATEGORY1_KEY = #{category1_key}
+		AND a.USER_ID = #{UserAccount.user_id}
+		ORDER BY BASKET_NO DESC
 		LIMIT #{recordCountPerPage} OFFSET #{offset}
-		
-		<!-- ER.EDU_NO, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = ER.CATEGORY1_KEY) AS CATEGORY1 , 
-			(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = ER.CATEGORY2_KEY) AS CATEGORY2 , 
-			(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = ER.CATEGORY3_KEY) AS CATEGORY3 , 
-				ER.EDU_CONT,ER.INST_NM, ER.TRAIN_S_DATE, ER.TRAIN_E_DATE, ER.EDU_METHOD, ER.EDU_TIME,
-			   ER.EDU_TARGET,ER.EDU_TIME, ER.EDU_NOTICE,
-			   ER.EDU_GARDEN, ER.EDU_STATUS,ER.EDU_CONT,ER.EDU_METHOD, ER.EXP_USE_YN,
-			   ER.COPER_NM , ER.COPER_NM_AUTO, ER.COPER_ID, ER.COPER_CHECK  -->
-		  
 	</select>
 
-	<select id="getMyListCnt" parameterType="java.util.Map" resultType="int">
+	<select id="getCartListCnt" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(*) 
-		  FROM EDU_REGISTRATION ER
-		 WHERE 1=1
-		    AND EDU_SITE = #{site}
-		<if test=" category1_key !=null and category1_key !=0">
-			AND ER.CATEGORY1_KEY = #{category1_key} 
-		</if>
-		<if test=" category2_key !=null and category2_key !=0 ">
-			AND ER.CATEGORY2_KEY = #{category2_key} 
-		</if>
-		<if test=" category3_key !=null and category3_key !=0">
-			AND ER.CATEGORY3_KEY = #{category3_key} 
-		</if>
-		 ORDER BY EDU_NO DESC
-		LIMIT #{recordCountPerPage} OFFSET #{offset}
+		 FROM EDU_BASKET a, 
+			 EDU_REGISTRATION b
+		WHERE 1=1
+		AND a.EDU_NO = b.EDU_NO
+		AND b.CATEGORY1_KEY = #{category1_key}
+		AND a.USER_ID = #{UserAccount.user_id}
 	</select>
+	
+	<delete id="deleteCart" parameterType="java.util.Map">	
+		DELETE FROM EDU_BASKET
+		WHERE BASKET_NO IN (
+			<foreach collection="basketList" item="item" separator=",">
+				#{item}
+			</foreach>
+		) 
+	</delete>
 	
 	<select id="getMyView" parameterType="java.util.Map" resultType="java.util.Map">
 	SELECT  ER.EDU_NO, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = ER.CATEGORY1_KEY) AS CATEGORY1 , 
@@ -60,21 +44,21 @@
 			 EDU_REGISTRATION_DETAIL ERD  
 		 WHERE 1=1
 		AND ER.EDU_NO = ERD.EDU_NO
-        AND ER.EDU_NO = ${edu_no}
+        AND ER.EDU_NO = #{edu_no}
 	</select>
 
 	<select id="getOnclassTime" parameterType="java.util.Map" resultType="java.util.Map">
 	SELECT  COUR_TIME,COUR_STAT
 		FROM EDU_COURSE_REGISTRATION
 		 WHERE 1=1
-		  AND COUR_NO = ${cour_no}
-		  AND EDU_NO = ${edu_no}
+		  AND COUR_NO = #{cour_no}
+		  AND EDU_NO = #{edu_no}
 	</select>
 
 	<update id="onclassUpdate" parameterType="java.util.Map">	
 		UPDATE EDU_COURSE_REGISTRATION
-		SET COUR_TIME = ${cour_time}, COUR_STAT = ${cour_stat}
-		WHERE COUR_NO = ${cour_no}
-		  AND EDU_NO = ${edu_no}
+		SET COUR_TIME = #{cour_time}, COUR_STAT = #{cour_stat}
+		WHERE COUR_NO = #{cour_no}
+		  AND EDU_NO = #{edu_no}
 	</update>
 </mapper>

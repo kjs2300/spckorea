@@ -54,7 +54,7 @@ public class AdminInstructorController
 	  
 	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
 	  paramMap.put("offset",offset);
-	    
+	  paramMap.put("site","");
 	  paramMap.put("sqlName", "getCategoryList1");
 	  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
 	  model.addAttribute("category1list", category1list);
@@ -66,6 +66,12 @@ public class AdminInstructorController
 	  paramMap.put("sqlName", "getCategoryList3");
 	  List<Map<String, Object>> category3list = sectorService.getSelectList(paramMap);
 	  model.addAttribute("category3list", category3list);
+	  
+	  paramMap.put("sqlName", "getCodeList");
+	  paramMap.put("code","32");
+	  List<Map<String, Object>> codeList = instructorService.getSelectList(paramMap);
+	  model.addAttribute("codeList", codeList);
+	  
 	  
 	  paramMap.put("sqlName", "getSectorList");
 	  List<Map<String, Object>> list = sectorService.getSelectList(paramMap);
@@ -80,20 +86,18 @@ public class AdminInstructorController
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
 	  
-	  
-	  
 	  return "instructorAdm01List";
   }
   
   @RequestMapping({"/instructorAdm01View.do"})
   public String instructorAdm01View(@RequestParam Map<String, Object> paramMap, ModelMap model ,HttpServletRequest request) throws Exception {
-	    paramMap.put("board_type","05"); 	 
-	    paramMap.put("sqlName", "getBoardView");	
-		Map<String, Object> result = instructorService.getSelectData(paramMap);
-	  	model.addAttribute("result", result);
-		model.addAttribute("path", request.getServletPath());
-	    model.addAllAttributes(paramMap);
-		return "instructorAdm01View";
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));  
+	  //paramMap.put("sqlName", "getBoardView");	
+	  //Map<String, Object> result = instructorService.getSelectData(paramMap);
+	  //model.addAttribute("result", result);
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	  return "instructorAdm01View";
   }
   
   @RequestMapping({"/instructorAdm02List.do"})
@@ -124,35 +128,5 @@ public class AdminInstructorController
 	  
 	  
 	  return "instructorAdm04List";
-  }
-  
-  @RequestMapping({"/instructorAdm04lecture.do"})
-  public String instructorAdm04lecture(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
-	  model.addAttribute("path", request.getServletPath());
-	  model.addAllAttributes(paramMap);
-	  
-	  
-	  
-	  return "instructorAdm04lecture";
-  }
-  
-  @RequestMapping({"/instructorAdm04absence.do"})
-  public String instructorAdm04absence(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
-	  model.addAttribute("path", request.getServletPath());
-	  model.addAllAttributes(paramMap);
-	  
-	  
-	  
-	  return "instructorAdm04absence";
-  }
-  
-  @RequestMapping({"/instructorAdm05List.do"})
-  public String instructorAdm05List(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
-	  model.addAttribute("path", request.getServletPath());
-	  model.addAllAttributes(paramMap);
-	  
-	  
-	  
-	  return "instructorAdm05List";
   }
 }

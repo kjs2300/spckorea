@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -125,6 +126,32 @@ public class SectorController
 	  	model.addAttribute("UserAccount", request.getSession().getAttribute("UserAccount"));
 	    model.addAllAttributes(paramMap);
 		return "sector"+paramMap.get("idx")+"Req";
+  }
+  
+  @RequestMapping({"/sectorSaveCheck.do"})
+  @ResponseBody
+  public Map<String, Object> sectorSaveCheck(HttpServletRequest request, @RequestParam Map<String, Object> paramMap) throws Exception {
+	    int resultCnt = 0;
+	    Map<String, Object> result = new HashMap<String, Object>();
+	    try {
+	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	      if(paramMap.get("gubun").toString().equals("B")) {
+	    	  paramMap.put("sqlName", "getBasketCheck");	
+	      }else if(paramMap.get("gubun").toString().equals("R")) {
+	    	  paramMap.put("sqlName", "getRegistCheck");	
+	      }
+	      resultCnt = sectorService.getSelectListCnt(paramMap);
+	      
+	      if(resultCnt == 0) {
+	    	  result.put("result", "SUCCESS");
+	      }else {
+	    	  result.put("result", "FAIL");	 
+	      }
+	    } catch (Exception e) {
+	      result.put("result", "FAIL");
+	    }
+	
+	    return result;
   }
   
   @RequestMapping({"/sectorSave.do"})

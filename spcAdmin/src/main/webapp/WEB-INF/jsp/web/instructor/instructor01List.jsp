@@ -104,6 +104,7 @@
                                 <button type="button" class="lg-btn navy-btn" onClick="fn_clear();">초기화</button>
                             </div>
                         </div>
+                        </form>
                         <!---- search-wrap end ---->
 
                         <div class="comp">

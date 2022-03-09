@@ -83,12 +83,43 @@ public class InstructorController
   
   @RequestMapping({"/instructor02List.do"})
   public String instructor02List(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
+	  paramMap.put("pageUnit", this.propertiesService.getInt("pageUnit"));
+	  paramMap.put("pageSize", this.propertiesService.getInt("pageSize"));
+	  paramMap.put("recordCountPerPage", vo.getRecordCountPerPage());
+	  
+	  PaginationInfo paginationInfo = new PaginationInfo();
+	  paginationInfo.setCurrentPageNo(vo.getPageIndex());
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("pageUnit").toString()));
+	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+	  
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+	  paramMap.put("offset",offset);
+	  paramMap.put("board_type","06"); 	  
+	  paramMap.put("sqlName", "getBoardList");
+	  List<Map<String, Object>> list = instructorService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+	  
+	  paramMap.put("sqlName", "getBoardCount");
+	  int totCnt = instructorService.getSelectListCnt(paramMap);
+	  model.addAttribute("totCnt", totCnt);
+	  paginationInfo.setTotalRecordCount(totCnt);
+	  
+	  model.addAttribute("paginationInfo", paginationInfo);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
 	  
-	  
-	  
 	  return "instructor02List";
+  }
+  
+  @RequestMapping({"/instructor02View.do"})
+  public String instructor02View(@RequestParam Map<String, Object> paramMap, ModelMap model ,HttpServletRequest request) throws Exception {
+	    paramMap.put("board_type","06"); 	 
+	    paramMap.put("sqlName", "getBoardView");	
+		Map<String, Object> result = instructorService.getSelectData(paramMap);
+	  	model.addAttribute("result", result);
+		model.addAttribute("path", request.getServletPath());
+	    model.addAllAttributes(paramMap);
+		return "instructor02View";
   }
   
   @RequestMapping({"/instructor03List.do"})

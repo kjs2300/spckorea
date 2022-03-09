@@ -38,4 +38,8 @@ public class MyServiceImpl extends EgovAbstractServiceImpl  implements MyService
 	public int updateData(Map<String, Object> paramMap) throws Exception {
 		return MyMapper.updateData(paramMap);
 	}
+	
+	public int deleteData(Map<String, Object> paramMap) throws Exception {
+		return MyMapper.deleteData(paramMap);
+	}
 }

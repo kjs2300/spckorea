@@ -18,36 +18,78 @@
  });
   
  function fn_basket(edu_no){
-	 var formData = new FormData(); 
-		formData.append("gubun",   	   "B");
-		formData.append("edu_no",   $("#edu_no").val());
 			
 		if(confirm("장바구니에 등록 하시겠습니까?")){
-				
-			$.ajax({	
-				data       : formData,
-			    url		   : "<c:url value='/user/sectorSave.do'/>",
-			    dataType   : "JSON",
-		        processData: false, 
-		        contentType: false,
-				type	   : "POST",	
-		        success    : function(obj) {
-		        	var result = obj.result;
-					
-					if(result == "SUCCESS"){				
-						alert("장바구니에 등록 되었습니다.");		 
-					}else {				
-						alert("장바구니 등록이 실패 했습니다.");	
-						return false;
-					}
-		        },	       
-		        error 	: function(xhr, status, error) {} 		        
-		    });
+			var formData = new FormData(); 
+			formData.append("gubun",   	   "B");
+			formData.append("edu_no",   $("#edu_no").val());
+			
+			 $.ajax({	
+					data       : formData,
+				    url		   : "<c:url value='/user/sectorSaveCheck.do'/>",
+				    dataType   : "JSON",
+			        processData: false, 
+			        contentType: false,
+					type	   : "POST",	
+			        success    : function(obj) {
+			        	var result = obj.result;
+						
+						if(result == "SUCCESS"){				
+							$.ajax({	
+								data       : formData,
+							    url		   : "<c:url value='/user/sectorSave.do'/>",
+							    dataType   : "JSON",
+						        processData: false, 
+						        contentType: false,
+								type	   : "POST",	
+						        success    : function(obj) {
+						        	var result = obj.result;
+									
+									if(result == "SUCCESS"){				
+										alert("장바구니에 등록 되었습니다.");		 
+									}else {				
+										alert("장바구니 등록이 실패 했습니다.");	
+										return false;
+									}
+						        },	       
+						        error 	: function(xhr, status, error) {} 		        
+						    });
+						}else {				
+							alert("이미 장바구니에 등록 하였습니다.");	
+							return false;
+						}
+			        },	       
+			        error 	: function(xhr, status, error) {} 		        
+			    }); 	
+			
 		}
  }	
 	
  function fn_regist(edu_no){
-	document.location = "<c:url value='/user/sectorReq.do'/>"+"?edu_no="+$('#edu_no').val()+"&idx="+$('#idx').val();
+	 var formData = new FormData(); 
+	formData.append("gubun",   	   "R");
+	formData.append("edu_no",   $("#edu_no").val());
+	
+	 $.ajax({	
+			data       : formData,
+		    url		   : "<c:url value='/user/sectorSaveCheck.do'/>",
+		    dataType   : "JSON",
+	        processData: false, 
+	        contentType: false,
+			type	   : "POST",	
+	        success    : function(obj) {
+	        	var result = obj.result;
+				
+				if(result == "SUCCESS"){				
+					document.location = "<c:url value='/user/sectorReq.do'/>"+"?edu_no="+$('#edu_no').val()+"&idx="+$('#idx').val();	 
+				}else {				
+					alert("이미 신청 하였습니다.");	
+					return false;
+				}
+	        },	       
+	        error 	: function(xhr, status, error) {} 		        
+	    }); 
+	
  }	
  
  function fn_goList(edu_no){

@@ -18,6 +18,11 @@
 	   <put-attribute name="body" value="/WEB-INF/jsp/web/instructor/instructor02List.jsp" />  
 	</definition> 
 	
+	<definition name="instructor02View" extends="common-definition">  
+	   <put-attribute name="title" value="자료실" />  
+	   <put-attribute name="body" value="/WEB-INF/jsp/web/instructor/instructor02View.jsp" />  
+	</definition> 
+	
 	<definition name="instructor03List" extends="common-definition">  
 	   <put-attribute name="title" value="활동신청" />  
 	   <put-attribute name="body" value="/WEB-INF/jsp/web/instructor/instructor03List.jsp" />  
@@ -49,6 +54,11 @@
 	<definition name="instructorAdm01List" extends="base-definition">  
        <put-attribute name="title" value="강사자격 정보" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/instructor/instructorAdm01List.jsp" />  
+    </definition>
+    
+    <definition name="instructorAdm01View" extends="base-definition">  
+       <put-attribute name="title" value="강사자격 정보" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/instructor/instructorAdm01View.jsp" />  
     </definition>
     
     <definition name="instructorAdm02List" extends="base-definition">  

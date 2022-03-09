@@ -94,8 +94,8 @@
 	 $("#site").val("");
  }
  
- function fn_detail(edu_no){
-	//document.location = "<c:url value='/user/sectorView.do'/>"+"?edu_no="+edu_no+"&idx="+$('#idx').val();
+ function fn_detail(){
+	document.location = "<c:url value='/inst/instructorAdm01View.do'/>";
  }	
 </script>
 <h1 class="h1-tit">강사 자격 정보</h1>
@@ -118,19 +118,19 @@
             <input type="radio" class="radio-box" id="" name="" value="">
             
             <select class="select mr30"  id="category1_key" name="category1_key">
-            	<option value=''>선택 하세요</option>
+            	<option value='' >선택 하세요</option>
 				<c:forEach var="result" items="${category1list}" varStatus="status">
-					<option value='${result.CATEGORY1_KEY}' selected>${result.CATEGORY1_NAME}</option>
+					<option value='${result.CATEGORY1_KEY}' >${result.CATEGORY1_NAME}</option>
 				</c:forEach>
 			</select>
             <select class="select"  id="category2_key" name="category2_key">
-            	<option value=''>선택 하세요</option>
+            	<option value='' >선택 하세요</option>
 				<c:forEach var="result" items="${category2list}" varStatus="status">
-					<option value='${result.CATEGORY2_KEY}' selected>${result.CATEGORY2_NAME}</option>
+					<option value='${result.CATEGORY2_KEY}' >${result.CATEGORY2_NAME}</option>
 				</c:forEach>
             </select>
             <select class="select lg-width"  id="category3_key" name="category3_key">
-            	<option value=''>선택 하세요</option>
+            	<option value='' >선택 하세요</option>
 				<c:forEach var="result" items="${category3list}" varStatus="status">
 					<option value='${result.CATEGORY3_KEY}' >${result.CATEGORY3_NAME}</option>
 				</c:forEach>
@@ -313,7 +313,7 @@
                 <td>2021.10.05</td>
                 <td><span class="blue-txt">완료</span></td>
                 <td><span class="red-txt">미완료</span></td>
-                <td><button class="sm-btn blue-btn">수정</button></td>
+                <td><button class="sm-btn blue-btn" onClick="fn_detail();">수정</button></td>
             </tr>
             <tr>
                 <td></td>
