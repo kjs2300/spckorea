@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.easycompany.cmm.vo.DefaultVO;
 import com.easycompany.service.MyService;
+import com.easycompany.service.SectorService;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -27,6 +28,9 @@ public class MyController
 
   @Autowired
   private MyService myService;
+  
+  @Autowired
+  private SectorService sectorService;
   
   @Autowired
   protected EgovPropertyService propertiesService;
@@ -114,6 +118,10 @@ public class MyController
 	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
 	  paramMap.put("offset",offset);
 	    	  
+	  paramMap.put("sqlName", "getCategoryList1");
+	  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
+	  model.addAttribute("category1list", category1list);
+	  
 	  paramMap.put("category1_key", "1");
 	  paramMap.put("sqlName", "getCartList");
 	  List<Map<String, Object>> list = myService.getSelectList(paramMap);
@@ -145,11 +153,15 @@ public class MyController
 	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
 	  paramMap.put("offset",offset);
 	    	  
-	  paramMap.put("sqlName", "getMyList");
+	  paramMap.put("sqlName", "getCategoryList1");
+	  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
+	  model.addAttribute("category1list", category1list);
+	  
+	  paramMap.put("sqlName", "getEduList");
 	  List<Map<String, Object>> list = myService.getSelectList(paramMap);
 	  model.addAttribute("resultList", list);
 	  
-	  paramMap.put("sqlName", "getMyListCnt");
+	  paramMap.put("sqlName", "getEduListCnt");
 	  int totCnt = myService.getSelectListCnt(paramMap);
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);

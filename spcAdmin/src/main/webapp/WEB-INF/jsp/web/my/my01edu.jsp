@@ -240,32 +240,22 @@
                                             <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyClass.do'/>','popup');" class="sm-btn white-btn">바로가기</button></td>
                                         </tr>
                                     </c:forEach>
+                                    <c:if test="${empty resultList }">
+							             <tr>
+							                 <td colspan='7'/>Data 없습니다.</td>
+							             </tr>
+							        </c:if>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                             
     
-                            <!---- page begin ---->
-                            <div class="page-wrap">
-                                <ul class="paging">
-                                    <li><a>&lt;&lt;</a></li>
-                                    <li><a>&lt;</a></li>
-                                    <li class="on"><a>1</a></li>
-                                    <li><a>2</a></li>
-                                    <li><a>3</a></li>
-                                    <li><a>4</a></li>
-                                    <li><a>5</a></li>
-                                    <li><a>6</a></li>
-                                    <li><a>7</a></li>
-                                    <li><a>8</a></li>
-                                    <li><a>9</a></li>
-                                    <li><a>10</a></li>
-                                    <li><a>&gt;</a></li>
-                                    <li><a>&gt;&gt;</a></li>
-                                </ul>
-                            </div>
-                            <!---- page end ---->
+                           <div class="page-wrap">
+						     <ul class="paging">
+						         <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />
+						     </ul>
+						</div>
 
                     </div>
                 </div>
