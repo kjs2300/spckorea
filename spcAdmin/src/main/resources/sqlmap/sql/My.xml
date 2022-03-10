@@ -34,6 +34,93 @@
 		) 
 	</delete>
 	
+	<select id="getEduList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT  (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY) AS CATEGORY1_NAME
+				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
+		        ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
+		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT
+		        ,a.USER_NM, a.COUR_NO
+		        ,CASE a.COUR_STAT
+			 		WHEN 1 THEN '완료'
+			 		WHEN 2 THEN '미완료'
+				 END AS COUR_STAT         
+		FROM EDU_COURSE_REGISTRATION a, 
+			 EDU_REGISTRATION b
+		WHERE a.EDU_NO = b.EDU_NO
+		AND a.USER_ID = #{UserAccount.user_id}
+		<if test="edu_status != ''">
+			AND COUR_STAT = #{edu_status}
+		</if>
+		<if test="category1_key != ''">
+			AND b.CATEGORY1_KEY = #{category1_key}
+		</if>
+		<if test="category2_key != ''">
+			AND b.CATEGORY2_KEY = #{category2_key}
+		</if>
+		<if test="category3_key != ''">
+			AND b.CATEGORY3_KEY = #{category3_key}
+		</if>
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND REG_DT = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		ORDER BY COUR_NO DESC
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+	
+	<select id="getEduListCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) 
+		 FROM EDU_COURSE_REGISTRATION a, 
+			 EDU_REGISTRATION b
+		WHERE a.EDU_NO = b.EDU_NO
+		AND a.USER_ID = #{UserAccount.user_id}
+		<if test="edu_status != ''">
+			AND COUR_STAT = #{edu_status}
+		</if>
+		<if test="category1_key != ''">
+			AND b.CATEGORY1_KEY = #{category1_key}
+		</if>
+		<if test="category2_key != ''">
+			AND b.CATEGORY2_KEY = #{category2_key}
+		</if>
+		<if test="category3_key != ''">
+			AND b.CATEGORY3_KEY = #{category3_key}
+		</if>
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND REG_DT = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+	</select>
+	
+	<delete id="deleteEdu" parameterType="java.util.Map">	
+		DELETE FROM EDU_COURSE_REGISTRATION
+		WHERE COUR_NO IN (
+			<foreach collection="eduList" item="item" separator=",">
+				#{item}
+			</foreach>
+		) 
+	</delete>
+	
 	<select id="getMyView" parameterType="java.util.Map" resultType="java.util.Map">
 	SELECT  ER.EDU_NO, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = ER.CATEGORY1_KEY) AS CATEGORY1 , 
 			(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = ER.CATEGORY2_KEY) AS CATEGORY2 , 

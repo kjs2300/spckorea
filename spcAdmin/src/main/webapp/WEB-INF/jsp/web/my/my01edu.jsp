@@ -14,12 +14,81 @@
 
  <script type="text/javaScript" language="javascript" defer="defer">
  $(document).ready(function(){		
-	 	
+	 $("#start_date, #end_date").datepicker({
+		  	dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	       ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+        ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+        ,changeYear: true //option값 년 선택 가능
+        ,changeMonth: true //option값  월 선택 가능                
+        ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+        ,buttonImage: "<c:url value='/images/common/ico_calendar.png'/>" //버튼 이미지 경로
+        ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+        ,buttonText: "선택" //버튼 호버 텍스트              
+        ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+        ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+        ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+        ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+        ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+        ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+  	});
+	 
+	 $('#checkAll').click(function(){
+		    var isChecked = this.checked;
+			$('input:checkbox[name="checkNo"]').each(function() {
+ 			this.checked = isChecked;
+ 	    });
+ 	 });
  });
-function openWindowPop(url, name){
-    var options = 'top=10, left=10, width=1400px, height=900px, status=no, menubar=no, toolbar=no, resizable=no';
-    window.open(url, name, options);
-}
+ 
+ function fn_clear(){
+	 $("#searchDate").eq(0).prop("checked",true);
+	 $("#searchCondition").eq(0).prop("checked",true);
+	 $("[type='text']").val("");
+ }
+ 
+ function fn_delete(idx) {
+		var idxArray = new Array();
+
+		idxArray.push(idx);
+		if(confirm('삭제 처리하시겠습니까?')) {
+			setDel(idxArray);
+		}
+	}
+
+	var btnDel = function() {
+		var idxArray = new Array();
+
+		$("input[name=checkNo]:checked").each(function() {
+			idxArray.push($(this).val());
+		});
+		if(idxArray.length < 1){
+			alert("선택한 내역이 없습니다.");
+			return false;
+		}
+		if(confirm('삭제 처리하시겠습니까?')) {
+			setDel(idxArray);
+		}
+		
+	};
+
+	var setDel = function(idxArray){
+	    $.ajax({
+	        url: "<c:url value='/my/cartDel.do'/>",
+	        type: "POST",
+	        data: { "basket_no" : idxArray },
+	        success: function(data) {
+	        	if(data == 'SUCCESS'){
+	        		alert("처리 완료하였습니다.");
+	        		location.reload();
+	        	}
+	        },
+	        error: function(data) {
+	        	console.log(JSON.stringify(data));
+	        	alert("처리중 오류가 발생했습니다.");
+	        }
+	    });
+	};
 </script>
      <!-- container  begin -->
             <div id="container">
@@ -49,62 +118,69 @@ function openWindowPop(url, name){
                         </div>
                         <!---- tab-cont end ---->
 
-
                         <!---- search-wrap begin ---->
+                        <form  id="commonForm" name="commonForm"  method="post"  action="">
+                        
                         <div class="search-wrap">
                             <div class="search-cont">
                                 <label>기간 :</label>
                                 <div class="radio-cont">
-                                    <input type="radio" class="radio-box" id="dateAll" name="radioGroupDate" value="" checked>
+                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="ALL" <c:if test="${searchDate == 'ALL' || (empty searchDate)}">checked </c:if>>
                                     <label for="dateAll">전체</label>
                                 </div>
                                   
                                 <div class="radio-cont">
-                                    <input type="radio" class="radio-box" id="dateToday" name="radioGroupDate" value="">
+                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="TODAY" <c:if test="${searchDate == 'TODAY'}">checked </c:if>>
                                     <label for="dateToday">오늘</label>
                                 </div>
                                 
                                 <div class="radio-cont mr10">
-                                    <input type="radio" class="radio-box" id="dateTerm" name="radioGroupDate" value="">
+                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="CHECK" <c:if test="${searchDate == 'CHECK'}">checked </c:if>>
                                     <label for="dateTerm">기간선택</label>
                                 </div>
                                 <div class="picker-wrap">
-                                    <input type="text" id="datepickerFrom" class="input-box"/>
+                                    <input type="text" id="start_date" name="start_date" class="input-box" readonly value="${start_date}"/>
                                     <span class="next-ico">-</span>
-                                    <input type="text" id="datepickerTo" class="input-box"/>
+                                    <input type="text" id="end_date" name="end_date" class="input-box" readonly value="${end_date}"/>
                                 </div>
                             </div>
 
                             <div class="search-cont">
                                 <label>교육분류 :</label>
-                                <select class="select">
-                                    <option>분류를 선택해 주세요</option>
-                                    <option>분류1</option>
-                                </select>
-                                <select class="select">
-                                    <option>분류를 선택해 주세요</option>
-                                    <option>분류2</option>
-                                </select>
-                                <select class="select">
-                                    <option>분류를 선택해 주세요</option>
-                                    <option>분류3</option>
-                                </select>
+                                <select class="select mr30"  id="category1_key" name="category1_key">
+					            	<option value='' >선택 하세요</option>
+									<c:forEach var="result" items="${category1list}" varStatus="status">
+										<option value='${result.CATEGORY1_KEY}' >${result.CATEGORY1_NAME}</option>
+									</c:forEach>
+								</select>
+					            <select class="select"  id="category2_key" name="category2_key">
+					            	<option value='' >선택 하세요</option>
+									<c:forEach var="result" items="${category2list}" varStatus="status">
+										<option value='${result.CATEGORY2_KEY}' >${result.CATEGORY2_NAME}</option>
+									</c:forEach>
+					            </select>
+					            <select class="select lg-width"  id="category3_key" name="category3_key">
+					            	<option value='' >선택 하세요</option>
+									<c:forEach var="result" items="${category3list}" varStatus="status">
+										<option value='${result.CATEGORY3_KEY}' >${result.CATEGORY3_NAME}</option>
+									</c:forEach>
+					            </select>
                             </div>
 
                             <div class="search-cont">
                                 <label>학습현황 :</label>
                                 <div class="radio-cont">
-                                    <input type="radio" class="radio-box" id="" name="" value="" checked>
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="" <c:if test="${edu_status == ''}">checked </c:if>>
                                     <label for="">전체</label>
                                 </div>
                                   
                                 <div class="radio-cont">
-                                    <input type="radio" class="radio-box" id="" name="" value="">
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="1" <c:if test="${edu_status == '1'}">checked </c:if>>
                                     <label for="">학습중</label>
                                 </div>
                                 
                                 <div class="radio-cont mr10">
-                                    <input type="radio" class="radio-box" id="" name="" value="">
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="2" <c:if test="${edu_status == '2'}">checked </c:if>>
                                     <label for="">학습완료</label>
                                 </div>
                             </div>
@@ -114,6 +190,7 @@ function openWindowPop(url, name){
                                 <button class="lg-btn navy-btn">초기화</button>
                             </div>
                         </div>
+                        </form>
                         <!---- search-wrap end ---->
 
                         <!---- tit-cont begin ---->
@@ -151,106 +228,18 @@ function openWindowPop(url, name){
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <c:forEach var="result" items="${resultList}" varStatus="status">
                                         <tr>
-                                            <td>3</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl">보고 듣고 말하기 2.0 청소년</td>
-                                            <td>이진우</td>
-                                            <td>2021.12.15</td>
-                                            <td>미완료</td>
+                                            <td>${status.index + 1}</td>
+                                            <td>${result.CATEGORY1_NAME}</td>
+                                            <td>${result.CATEGORY2_NAME}</td>
+                                            <td class="tl">${result.CATEGORY3_NAME}</td>
+                                            <td>${result.USER_NM}</td>
+                                            <td>${result.REG_DT}</td>
+                                            <td>${result.COUR_STAT}</td>
                                             <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyClass.do'/>','popup');" class="sm-btn white-btn">바로가기</button></td>
                                         </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl">보고 듣고 말하기 2.0 청소년</td>
-                                            <td>이진우</td>
-                                            <td>2021.12.15</td>
-                                            <td>완료</td>
-                                            <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyClass.do'/>','popup');" class="sm-btn white-btn">바로가기</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>

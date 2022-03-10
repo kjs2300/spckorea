@@ -110,6 +110,7 @@
                     <div class="contents-wrap">
 
                         <!---- search-wrap begin ---->
+                        <form  id="commonForm" name="commonForm"  method="post"  action="">
                         <div class="search-wrap">
                             <div class="search-cont">
                                 <label>기간 :</label>
@@ -153,12 +154,12 @@
                                 <button class="lg-btn navy-btn" onClick="fn_clear();">초기화</button>
                             </div>
                         </div>
+                        </form>
                         <!---- search-wrap end ---->
 
                         <div class="btn-cont mb20">
                             <button type="button" class="lg-btn white-btn" onClick="btnDel();">선택삭제</button>
                         </div>
-
                         <div class="comp mt0">
                             <div class="table-wrap">
                                 <table class="list-tb">
