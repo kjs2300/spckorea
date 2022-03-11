@@ -103,11 +103,31 @@ public class MyController
 		return result;
 	}
   
+  @RequestMapping({"/courDel.do"})
+  @ResponseBody
+  public String courDel(HttpServletRequest request, @RequestParam(value="cour_no[]") List<Long> courList, @RequestParam Map<String, Object> paramMap) throws Exception {
+		int resultCnt = 0;
+		String result = "";
+		try {
+			paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+			paramMap.put("courList", courList); 
+			paramMap.put("sqlName", "deleteCour"); 
+			resultCnt = myService.deleteData(paramMap);
+		    result = (resultCnt > 0 ? "SUCCESS" : "FAIL");
+		    
+		} catch (Exception e) {
+			result = "FAIL";
+		}
+		
+		return result;
+	}
+  
   @RequestMapping({"/my01status.do"})
   public String my01status(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
 	  paramMap.put("pageUnit", this.propertiesService.getInt("pageUnit"));
 	  paramMap.put("pageSize", this.propertiesService.getInt("pageSize"));
 	  paramMap.put("recordCountPerPage", vo.getRecordCountPerPage());
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 	  
 	  PaginationInfo paginationInfo = new PaginationInfo();
 	  paginationInfo.setCurrentPageNo(vo.getPageIndex());
@@ -142,6 +162,7 @@ public class MyController
 	  paramMap.put("pageUnit", this.propertiesService.getInt("pageUnit"));
 	  paramMap.put("pageSize", this.propertiesService.getInt("pageSize"));
 	  paramMap.put("recordCountPerPage", vo.getRecordCountPerPage());
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 	  
 	  PaginationInfo paginationInfo = new PaginationInfo();
 	  paginationInfo.setCurrentPageNo(vo.getPageIndex());
