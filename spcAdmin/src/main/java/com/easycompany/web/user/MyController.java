@@ -108,7 +108,6 @@ public class MyController
 	  paramMap.put("pageUnit", this.propertiesService.getInt("pageUnit"));
 	  paramMap.put("pageSize", this.propertiesService.getInt("pageSize"));
 	  paramMap.put("recordCountPerPage", vo.getRecordCountPerPage());
-	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 	  
 	  PaginationInfo paginationInfo = new PaginationInfo();
 	  paginationInfo.setCurrentPageNo(vo.getPageIndex());
@@ -122,12 +121,11 @@ public class MyController
 	  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
 	  model.addAttribute("category1list", category1list);
 	  
-	  paramMap.put("category1_key", "1");
-	  paramMap.put("sqlName", "getCartList");
+	  paramMap.put("sqlName", "getStatusList");
 	  List<Map<String, Object>> list = myService.getSelectList(paramMap);
 	  model.addAttribute("resultList", list);
 	  
-	  paramMap.put("sqlName", "getCartListCnt");
+	  paramMap.put("sqlName", "getStatusListCnt");
 	  int totCnt = myService.getSelectListCnt(paramMap);
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
@@ -169,8 +167,6 @@ public class MyController
 	  model.addAttribute("paginationInfo", paginationInfo);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
-	  
-	  
 	  
 	  return "my01edu";
   }
