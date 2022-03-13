@@ -1,5 +1,6 @@
 package com.easycompany.web.user;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,17 +55,18 @@ public class MyController
 
   @RequestMapping({"/my01cart.do"})
   public String my01cart(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
-	  paramMap.put("pageUnit", this.propertiesService.getInt("pageUnit"));
-	  paramMap.put("pageSize", this.propertiesService.getInt("pageSize"));
-	  paramMap.put("recordCountPerPage", vo.getRecordCountPerPage());
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
-	  
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
 	  PaginationInfo paginationInfo = new PaginationInfo();
-	  paginationInfo.setCurrentPageNo(vo.getPageIndex());
-	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("pageUnit").toString()));
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
 	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
 	  
-	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
 	    	  
 	  paramMap.put("category1_key", "1");//일반:1,강사:3,실무자:2
@@ -124,22 +126,25 @@ public class MyController
   
   @RequestMapping({"/my01status.do"})
   public String my01status(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
-	  paramMap.put("pageUnit", this.propertiesService.getInt("pageUnit"));
-	  paramMap.put("pageSize", this.propertiesService.getInt("pageSize"));
-	  paramMap.put("recordCountPerPage", vo.getRecordCountPerPage());
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
-	  
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
 	  PaginationInfo paginationInfo = new PaginationInfo();
-	  paginationInfo.setCurrentPageNo(vo.getPageIndex());
-	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("pageUnit").toString()));
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
 	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
 	  
-	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
-	    	  
-	  paramMap.put("sqlName", "getCategoryList1");
-	  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
-	  model.addAttribute("category1list", category1list);
+	    
+	  paramMap.put("site", "on");
+	  paramMap.put("category1_key", "1");
+	  paramMap.put("sqlName", "getCategoryList2");
+	  List<Map<String, Object>> category2list = sectorService.getSelectList(paramMap);
+	  model.addAttribute("category2list", category2list);
 	  
 	  paramMap.put("sqlName", "getStatusList");
 	  List<Map<String, Object>> list = myService.getSelectList(paramMap);
@@ -159,22 +164,31 @@ public class MyController
   
   @RequestMapping({"/my01edu.do"})
   public String my01edu(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
-	  paramMap.put("pageUnit", this.propertiesService.getInt("pageUnit"));
-	  paramMap.put("pageSize", this.propertiesService.getInt("pageSize"));
-	  paramMap.put("recordCountPerPage", vo.getRecordCountPerPage());
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
-	  
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
 	  PaginationInfo paginationInfo = new PaginationInfo();
-	  paginationInfo.setCurrentPageNo(vo.getPageIndex());
-	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("pageUnit").toString()));
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
 	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
 	  
-	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
 	    	  
-	  paramMap.put("sqlName", "getCategoryList1");
-	  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
-	  model.addAttribute("category1list", category1list);
+	  paramMap.put("edu_status", "");
+	  paramMap.put("site", "on");
+	  paramMap.put("category1_key", "1");
+	  
+	  paramMap.put("sqlName", "getEduAllCnt");
+	  Map<String, Object> allCount = myService.getSelectData(paramMap);
+	  model.addAttribute("allCount", allCount);
+	  
+	  paramMap.put("sqlName", "getCategoryList2");
+	  List<Map<String, Object>> category2list = sectorService.getSelectList(paramMap);
+	  model.addAttribute("category2list", category2list);
 	  
 	  paramMap.put("sqlName", "getEduList");
 	  List<Map<String, Object>> list = myService.getSelectList(paramMap);
@@ -194,16 +208,18 @@ public class MyController
   
   @RequestMapping({"/my01warrant.do"})
   public String my01warrant(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
-	  paramMap.put("pageUnit", this.propertiesService.getInt("pageUnit"));
-	  paramMap.put("pageSize", this.propertiesService.getInt("pageSize"));
-	  paramMap.put("recordCountPerPage", vo.getRecordCountPerPage());
-	  
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
 	  PaginationInfo paginationInfo = new PaginationInfo();
-	  paginationInfo.setCurrentPageNo(vo.getPageIndex());
-	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("pageUnit").toString()));
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
 	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
 	  
-	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
 	    	  
 	  paramMap.put("sqlName", "getMyList");
@@ -226,16 +242,18 @@ public class MyController
   
   @RequestMapping({"/my01mylist.do"})
   public String my01mylist(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
-	  paramMap.put("pageUnit", this.propertiesService.getInt("pageUnit"));
-	  paramMap.put("pageSize", this.propertiesService.getInt("pageSize"));
-	  paramMap.put("recordCountPerPage", vo.getRecordCountPerPage());
-	  
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
 	  PaginationInfo paginationInfo = new PaginationInfo();
-	  paginationInfo.setCurrentPageNo(vo.getPageIndex());
-	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("pageUnit").toString()));
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
 	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
 	  
-	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
 	    	  
 	  paramMap.put("sqlName", "getMyList");
@@ -257,7 +275,18 @@ public class MyController
   
   @RequestMapping({"/popMyClass.do"})
   public String popMyClass(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 	  
+	  paramMap.put("sqlName", "getEduIngList");
+	  List<Map<String, Object>> ingList = myService.getSelectList(paramMap);
+	  model.addAttribute("ingList", ingList);
+	  
+	  paramMap.put("sqlName", "getEduEndList");
+	  List<Map<String, Object>> endList = myService.getSelectList(paramMap);
+	  model.addAttribute("endList", endList);
+	  
+	  LocalDate today = LocalDate.now();
+	  paramMap.put("today", today);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
 	

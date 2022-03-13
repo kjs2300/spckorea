@@ -47,12 +47,7 @@
 		SELECT  (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY) AS CATEGORY1_NAME
 				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
 		        ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
-		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT
-		        ,a.USER_NM, a.COUR_NO
-		        ,CASE a.COUR_STAT
-			 		WHEN 1 THEN '완료'
-			 		WHEN 2 THEN '미완료'
-				 END AS COUR_STAT         
+		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT      
 		FROM EDU_COURSE_REGISTRATION a, 
 			 EDU_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
@@ -121,6 +116,46 @@
 		</choose>
 	</select>
 	
+	<select id="getEduAllCnt" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT  COUNT(c.COUR_NO) AS ALL_CNT,
+				COUNT(CASE WHEN COUR_STAT=1 THEN 1 END) AS END_CNT,
+		        COUNT(CASE WHEN COUR_STAT!=1 THEN 1 END) AS ING_CNT
+		FROM (
+			SELECT  a.COUR_NO
+			,CASE a.COUR_STAT WHEN 1 THEN '완료' ELSE '미완료' END AS COUR_STAT      
+			FROM EDU_COURSE_REGISTRATION a, 
+				 EDU_REGISTRATION b
+			WHERE a.EDU_NO = b.EDU_NO
+			AND a.USER_ID = #{UserAccount.user_id}
+			<![CDATA[
+			AND TRAIN_S_DATE <= NOW() 
+	        ]]>
+			<if test="category1_key != '' and category1_key != null">
+				AND b.CATEGORY1_KEY = #{category1_key}
+			</if>
+			<if test="category2_key != '' and category2_key != null">
+				AND b.CATEGORY2_KEY = #{category2_key}
+			</if>
+			<if test="category3_key != '' and category3_key != null">
+				AND b.CATEGORY3_KEY = #{category3_key}
+			</if>
+			<choose>
+				<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+				</when>
+				<when
+					test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+					AND REG_DT = NOW()
+				</when>
+				<when
+					test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+			      <![CDATA[
+			       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
+			       ]]>
+				</when>
+			</choose>
+			) c
+	</select>
+	
 	<select id="getEduList" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT  (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY) AS CATEGORY1_NAME
 				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
@@ -129,7 +164,7 @@
 		        ,a.USER_NM, a.COUR_NO
 		        ,CASE a.COUR_STAT
 			 		WHEN 1 THEN '완료'
-			 		WHEN 2 THEN '미완료'
+			 		ELSE '미완료'
 				 END AS COUR_STAT         
 		FROM EDU_COURSE_REGISTRATION a, 
 			 EDU_REGISTRATION b
@@ -227,6 +262,86 @@
         AND ER.EDU_NO = #{edu_no}
 	</select>
 
+	<select id="getEduIngList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT  (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY) AS CATEGORY1_NAME
+				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
+		        ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
+		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT, b.INST_NM, b.EDU_TIME
+		        ,IFNULL(TIME_FORMAT(SEC_TO_TIME(FLOOR(a.COUR_TIME)),'%i'),'00') AS COUR_TIME_MIN
+		        ,IFNULL(TIME_FORMAT(SEC_TO_TIME(FLOOR(a.COUR_TIME)),'%s'),'00') AS COUR_TIME_SEC
+		        ,a.USER_NM, a.COUR_NO, b.EDU_NO
+		        ,CASE a.COUR_STAT
+			 		WHEN 1 THEN '완료'
+			 		ELSE '미완료'
+				 END AS COUR_STAT         
+		FROM EDU_COURSE_REGISTRATION a, 
+			 EDU_REGISTRATION b
+		WHERE a.EDU_NO = b.EDU_NO
+		AND a.USER_ID = #{UserAccount.user_id}
+		<![CDATA[
+		AND TRAIN_S_DATE <= NOW() 
+        ]]>
+		AND (a.COUR_STAT != '1' OR a.COUR_STAT IS NULL)
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND REG_DT = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<if test="edu_name != '' and edu_name != null">
+			AND b.CATEGORY3_NAME = #{edu_name}
+		</if>
+		ORDER BY COUR_NO DESC
+	</select>
+	
+	<select id="getEduEndList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT  (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY) AS CATEGORY1_NAME
+				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
+		        ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
+		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT, b.INST_NM, b.EDU_TIME
+		        ,TIME_FORMAT(SEC_TO_TIME(FLOOR(a.COUR_TIME)),'%i') AS COUR_TIME_MIN
+		        ,TIME_FORMAT(SEC_TO_TIME(FLOOR(a.COUR_TIME)),'%s') AS COUR_TIME_SEC
+		        ,a.USER_NM, a.COUR_NO, b.EDU_NO
+		        ,CASE a.COUR_STAT
+			 		WHEN 1 THEN '완료'
+			 		ELSE '미완료'
+				 END AS COUR_STAT         
+		FROM EDU_COURSE_REGISTRATION a, 
+			 EDU_REGISTRATION b
+		WHERE a.EDU_NO = b.EDU_NO
+		AND a.USER_ID = #{UserAccount.user_id}
+		<![CDATA[
+		AND TRAIN_S_DATE <= NOW() 
+        ]]>
+		AND COUR_STAT = '1'
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND REG_DT = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<if test="edu_name != '' and edu_name != null">
+			AND b.CATEGORY3_NAME = #{edu_name}
+		</if>
+		ORDER BY COUR_NO DESC
+	</select>
+	
 	<select id="getOnclassTime" parameterType="java.util.Map" resultType="java.util.Map">
 	SELECT  COUR_TIME,COUR_STAT
 		FROM EDU_COURSE_REGISTRATION

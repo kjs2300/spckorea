@@ -8,11 +8,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript" src="<c:url value='/resources/common/jquery.js'/>"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link href="//vjs.zencdn.net/7.6.6/video-js.css" rel="stylesheet" />
+<link href="//vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="//vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
-<script src="//vjs.zencdn.net/7.6.6/video.js"></script>
+<script src="//vjs.zencdn.net/7.8.4/video.js"></script>
 
 
  
@@ -25,7 +25,7 @@
             	<input type="hidden" id="cour_stat" name="cour_stat" value="${result.COUR_STAT}">
             	
             	<input type="hidden" id="finish" name="finish">
-				<video id="myvideo" class="video-js" controls preload="auto" width="1200" height="600" data-setup="{'autoplay': true}">
+				<video id="myvideo" class="video-js vjs-big-play-centerd" controls preload="auto" width="1200" height="600" data-setup="{'autoplay': true}">
 					<source src="http://14.32.115.22:50080/lmseditor/video/1.mp4" type="video/mp4" />
 				</video>
             </div>
@@ -33,10 +33,12 @@
             <script>
  if(document.getElementById("myvideo")){
 		videojs("myvideo").ready(function(){
-			var myPlayer = this;
+			var myPlayer = videojs('myvideo');
+			var currentTime = 0;
 			if($("#cour_time").val() != ""){
-				myPlayer.currentTime(30.0000);
-				myPlayer.play();
+				
+				
+				//myPlayer.play();
 				/* if(confirm("최종 수강한 위치에서부터 이어보기를 하시겠습니까?")){
 					myPlayer.currentTime(30.0000);
 					myPlayer.play();
@@ -46,8 +48,13 @@
 				} */
 				
 			}
+			myPlayer.on("play", function(event){
+				if(confirm("이어서 보시겠습니까?")){
+					currentTime = $("#cour_time").val();
+					myPlayer.currentTime(currentTime);
+				}
+			});
 			
-			var currentTime = 0;
 			myPlayer.on("seeking", function(event){
 				if(currentTime < myPlayer.currentTime()){
 					myPlayer.currentTime(currentTime);

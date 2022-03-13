@@ -40,16 +40,18 @@ public class InstructorController
   
   @RequestMapping({"/instructor01List.do"})
   public String instructor01List(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
-	  paramMap.put("pageUnit", this.propertiesService.getInt("pageUnit"));
-	  paramMap.put("pageSize", this.propertiesService.getInt("pageSize"));
-	  paramMap.put("recordCountPerPage", vo.getRecordCountPerPage());
-	  
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
 	  PaginationInfo paginationInfo = new PaginationInfo();
-	  paginationInfo.setCurrentPageNo(vo.getPageIndex());
-	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("pageUnit").toString()));
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
 	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
 	  
-	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
 	  paramMap.put("board_type","05"); 	  
 	  paramMap.put("sqlName", "getBoardList");
@@ -83,16 +85,18 @@ public class InstructorController
   
   @RequestMapping({"/instructor02List.do"})
   public String instructor02List(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
-	  paramMap.put("pageUnit", this.propertiesService.getInt("pageUnit"));
-	  paramMap.put("pageSize", this.propertiesService.getInt("pageSize"));
-	  paramMap.put("recordCountPerPage", vo.getRecordCountPerPage());
-	  
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
 	  PaginationInfo paginationInfo = new PaginationInfo();
-	  paginationInfo.setCurrentPageNo(vo.getPageIndex());
-	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("pageUnit").toString()));
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
 	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
 	  
-	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize();
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
 	  paramMap.put("board_type","06"); 	  
 	  paramMap.put("sqlName", "getBoardList");

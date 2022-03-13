@@ -97,6 +97,12 @@
  function fn_detail(){
 	document.location = "<c:url value='/inst/instructorAdm01View.do'/>";
  }	
+ function fn_egov_link_page(pageNo){
+	 var frm = document.commonForm;
+	 $("#pageIndex").val(pageNo); 
+ 	 frm.action = "<c:url value='/inst/instructorAdm01List.do'/>";
+   	 frm.submit();
+ }
 </script>
 <h1 class="h1-tit">강사 자격 정보</h1>
 
@@ -107,6 +113,7 @@
         <input type="hidden" id="category2" name="category2" value="${category2_key}">
         <input type="hidden" id="category3" name="category3" value="${category3_key}">
         <input type="hidden" id="site" name="site" value="">
+		<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
         
         <h3 class="h3-tit">강사 자격범위</h3>
 

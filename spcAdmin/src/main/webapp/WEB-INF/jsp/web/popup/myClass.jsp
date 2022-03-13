@@ -23,14 +23,14 @@
 </script>
     <!--  class-wrap begin -->
             <div class="class-wrap">
-
+		
                 <div class="tit-wrap flex-colum">
                     <!---- info-group begin ---->
                     <div class="info-group left-cont">
                         <h1 class="h1-tit">나의 강의실</h1>
                         <p><span class="name">${UserAccount.user_nm}</span>회원</p>
                         <p>|</p>
-                        <p>2021-11-12</p>
+                        <p>${today}</p>
                     </div>
                     <!---- info-group end ---->
 
@@ -41,39 +41,33 @@
                 
 
                 <!---- search-wrap begin ---->
+                <form  id="commonForm" name="commonForm"  method="post"  action="">
+                <input type="hidden" id="pageAdd1"  name="pageAdd1" value="" />
+                <input type="hidden" id="pageAdd2"  name="pageAdd2" value="" />
                 <div class="search-wrap">
                     <div class="search-cont">
                         <label>기간 :</label>
-                        <div class="radio-cont">
-                            <input type="radio" class="radio-box" id="dateAll" name="radioGroupDate" value="" checked>
-                            <label for="dateAll">전체</label>
-                        </div>
-                          
-                        <div class="radio-cont">
-                            <input type="radio" class="radio-box" id="dateToday" name="radioGroupDate" value="">
-                            <label for="dateToday">오늘</label>
-                        </div>
-                        
-                        <div class="radio-cont mr10">
-                            <input type="radio" class="radio-box" id="dateTerm" name="radioGroupDate" value="">
-                            <label for="dateTerm">기간선택</label>
-                        </div>
-                        <div class="picker-wrap">
-                            <input type="text" id="datepickerFrom" class="input-box" style="width:150px;"/>
-                            <span class="next-ico">-</span>
-                            <input type="text" id="datepickerTo" class="input-box" style="width:150px;"/>
-                        </div>
-
+                                <div class="radio-cont">
+                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="ALL" <c:if test="${searchDate == 'ALL' || (empty searchDate)}">checked </c:if>>
+                                    <label for="dateAll">전체</label>
+                                </div>
+                                  
+                                <div class="radio-cont">
+                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="TODAY" <c:if test="${searchDate == 'TODAY'}">checked </c:if>>
+                                    <label for="dateToday">오늘</label>
+                                </div>
+                                
+                                <div class="radio-cont mr10">
+                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="CHECK" <c:if test="${searchDate == 'CHECK'}">checked </c:if>>
+                                    <label for="dateTerm">기간선택</label>
+                                </div>
+                                <div class="picker-wrap">
+                                    <input type="text" id="start_date" name="start_date" class="input-box" readonly value="${start_date}"/>
+                                    <span class="next-ico">-</span>
+                                    <input type="text" id="end_date" name="end_date" class="input-box" readonly value="${end_date}"/>
+                                </div>
                         <label>교육명 :</label>
-                        <div class="radio-cont">
-                            <input type="radio" class="radio-box" id="" name="" value="" checked>
-                            <label for="">전체</label>
-                        </div>
-                        <div class="radio-cont">
-                            <input type="radio" class="radio-box" id="" name="" value="">
-                            <input type="text" class="input-box" placeholder="직접입력"/>
-                        </div>
-
+                        <input type="text" id="edu_name" name="edu_name" class="input-box" placeholder="직접입력"/>
                     </div>
 
                     <div class="btn-cont">
@@ -118,39 +112,19 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            <c:forEach var="list" items="${ingList}" varStatus="status">
                                 <tr>
-                                    <td>3</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="tl">보고 듣고 말하기 2.0 청소년</td>
-                                    <td>백종오</td>
-                                    <td>2021.12.15</td>
-                                    <td><span>01</span>시간<span>25</span>분<span>40</span>초</td>
-                                    <td><span>01</span>시간<span>25</span>분<span>40</span>초</td>
-                                    <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyPlayer.do'/>?edu_no=1&cour_no=1','popup2');" class="sm-btn white-btn">바로가기</button></td>
+                                    <td>${status.index + 1}</td>
+                                    <td>${list.CATEGORY1_NAME}</td>
+                                    <td>${list.CATEGORY2_NAME}</td>
+                                    <td class="tl">${list.CATEGORY3_NAME}</td>
+                                    <td>${list.INST_NM}</td>
+                                    <td>${list.REG_DT}</td>
+                                    <td>${list.EDU_TIME}분</td>
+                                    <td>${list.COUR_TIME_MIN}분 ${list.COUR_TIME_SEC}초</td>
+                                    <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyPlayer.do'/>?edu_no=${list.EDU_NO}&cour_no=${list.COUR_NO}','popup2');" class="sm-btn white-btn">바로가기</button></td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="tl">보고 듣고 말하기 2.0 청소년</td>
-                                    <td>백종오</td>
-                                    <td>2021.12.15</td>
-                                    <td><span>01</span>시간<span>25</span>분<span>40</span>초</td>
-                                    <td><span>01</span>시간<span>25</span>분<span>40</span>초</td>
-                                    <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyPlayer.do'/>?edu_no=1&cour_no=1','popup2');" class="sm-btn white-btn">바로가기</button></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="tl"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>
@@ -191,61 +165,19 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            <c:forEach var="list" items="${endList}" varStatus="status">
                                 <tr>
-                                    <td>3</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="tl">보고 듣고 말하기 2.0 청소년</td>
-                                    <td>백종오</td>
-                                    <td>2021.12.15</td>
-                                    <td><span>01</span>시간<span>25</span>분<span>40</span>초</td>
-                                    <td><span>01</span>시간<span>25</span>분<span>40</span>초</td>
-                                    <td><button class="sm-btn white-btn">바로가기</button></td>
+                                    <td>${status.index + 1}</td>
+                                    <td>${list.CATEGORY1_NAME}</td>
+                                    <td>${list.CATEGORY2_NAME}</td>
+                                    <td class="tl">${list.CATEGORY3_NAME}</td>
+                                    <td>${list.INST_NM}</td>
+                                    <td>${list.REG_DT}</td>
+                                    <td>${list.EDU_TIME}분</td>
+                                    <td>${list.COUR_TIME_MIN}분 ${list.COUR_TIME_SEC}초</td>
+                                    <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyPlayer.do'/>?edu_no=${list.EDU_NO}&cour_no=${list.COUR_NO}','popup2');" class="sm-btn white-btn">바로가기</button></td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="tl">보고 듣고 말하기 2.0 청소년</td>
-                                    <td>백종오</td>
-                                    <td>2021.12.15</td>
-                                    <td><span>01</span>시간<span>25</span>분<span>40</span>초</td>
-                                    <td><span>01</span>시간<span>25</span>분<span>40</span>초</td>
-                                    <td><button class="sm-btn white-btn">바로가기</button></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="tl"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="tl"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="tl"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>

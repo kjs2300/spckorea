@@ -89,6 +89,12 @@
 	        }
 	    });
 	};
+	 function fn_egov_link_page(pageNo){
+		 var frm = document.commonForm;
+		 $("#pageIndex").val(pageNo); 
+	 	 frm.action = "<c:url value='/my/my01status.do'/>";
+	   	 frm.submit();
+	 }
 </script>
      <!-- container  begin -->
             <div id="container">
@@ -111,6 +117,7 @@
 						
                         <!---- search-wrap begin ---->
                         <form  id="commonForm" name="commonForm"  method="post"  action="">
+		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
                         <div class="search-wrap">
                             <div class="search-cont">
                                 <label>기간 :</label>
@@ -138,10 +145,7 @@
                             <div class="search-cont">
                                 <label>교육분류 :</label>
                                 <select class="select mr30"  id="category1_key" name="category1_key">
-					            	<option value='' >선택 하세요</option>
-									<c:forEach var="result" items="${category1list}" varStatus="status">
-										<option value='${result.CATEGORY1_KEY}' >${result.CATEGORY1_NAME}</option>
-									</c:forEach>
+										<option value='1' >일반</option>
 								</select>
 					            <select class="select"  id="category2_key" name="category2_key">
 					            	<option value='' >선택 하세요</option>

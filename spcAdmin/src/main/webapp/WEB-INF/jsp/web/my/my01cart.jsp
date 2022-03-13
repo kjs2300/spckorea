@@ -89,6 +89,12 @@
 	        }
 	    });
 	};
+	function fn_egov_link_page(pageNo){
+		 var frm = document.commonForm;
+		 $("#pageIndex").val(pageNo); 
+	 	 frm.action = "<c:url value='/my/my01cart.do'/>";
+	   	 frm.submit();
+	 }
 </script>
      <!-- container  begin -->
             <div id="container">
@@ -111,6 +117,7 @@
 
                         <!---- search-wrap begin ---->
                         <form  id="commonForm" name="commonForm"  method="post"  action="">
+		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
                         <div class="search-wrap">
                             <div class="search-cont">
                                 <label>기간 :</label>

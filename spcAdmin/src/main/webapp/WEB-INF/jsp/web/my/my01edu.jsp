@@ -89,6 +89,16 @@
 	        }
 	    });
 	};
+	function openWindowPop(url, name){
+	    var options = 'top=10, left=10, width=1200px, height=800px, status=no, menubar=no, toolbar=no, resizable=no';
+	    window.open(url, name, options);
+	}	
+	function fn_egov_link_page(pageNo){
+		 var frm = document.commonForm;
+		 $("#pageIndex").val(pageNo); 
+	 	 frm.action = "<c:url value='/my/my01edu.do'/>";
+	   	 frm.submit();
+	 }
 </script>
      <!-- container  begin -->
             <div id="container">
@@ -120,6 +130,7 @@
 
                         <!---- search-wrap begin ---->
                         <form  id="commonForm" name="commonForm"  method="post"  action="">
+		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
                         
                         <div class="search-wrap">
                             <div class="search-cont">
@@ -148,10 +159,7 @@
                             <div class="search-cont">
                                 <label>교육분류 :</label>
                                 <select class="select mr30"  id="category1_key" name="category1_key">
-					            	<option value='' >선택 하세요</option>
-									<c:forEach var="result" items="${category1list}" varStatus="status">
-										<option value='${result.CATEGORY1_KEY}' >${result.CATEGORY1_NAME}</option>
-									</c:forEach>
+										<option value='1' >일반</option>
 								</select>
 					            <select class="select"  id="category2_key" name="category2_key">
 					            	<option value='' >선택 하세요</option>
@@ -170,7 +178,7 @@
                             <div class="search-cont">
                                 <label>학습현황 :</label>
                                 <div class="radio-cont">
-                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="" <c:if test="${edu_status == ''}">checked </c:if>>
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="" <c:if test="${edu_status == '' || empty edu_status}">checked </c:if>>
                                     <label for="">전체</label>
                                 </div>
                                   
@@ -195,9 +203,9 @@
 
                         <!---- tit-cont begin ---->
                         <div class="tit-cont flex-left">
-                            <p class="total">전체 : <span>15</span>건</p>
-                            <p class="total">학습중 : <span>10</span>건</p>
-                            <p class="total">학습완료 : <span>5</span>건</p>
+                            <p class="total">전체 : <span>${allCount.ALL_CNT}</span>건</p>
+                            <p class="total">학습중 : <span>${allCount.ING_CNT}</span>건</p>
+                            <p class="total">학습완료 : <span>${allCount.END_CNT}</span>건</p>
                         </div>
                         <!---- tit-cont end ---->
 

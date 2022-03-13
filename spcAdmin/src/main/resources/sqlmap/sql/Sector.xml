@@ -7,7 +7,7 @@
 		SELECT   CATEGORY1_KEY, CATEGORY1_NAME
 		FROM EDU_CLASS_CATEGORY1
 		WHERE 1=1
-		<if test="site != ''">
+		<if test="site != '' and site != null">
 			AND SITE = #{site}
 		</if>
 		GROUP BY CATEGORY1_KEY, CATEGORY1_NAME
@@ -17,7 +17,7 @@
 		SELECT   CATEGORY2_KEY, CATEGORY2_NAME
 		FROM EDU_CLASS_CATEGORY2
 		WHERE 1=1
-		<if test="site != ''">
+		<if test="site != '' and site != null">
 			AND SITE = #{site}
 		</if>
 		AND CATEGORY1_KEY = #{category1_key}
@@ -28,7 +28,7 @@
 		SELECT   CATEGORY3_KEY, CATEGORY3_NAME
 		FROM EDU_CLASS_CATEGORY3
 		WHERE 1=1
-		<if test="site != ''">
+		<if test="site != '' and site != null">
 			AND SITE = #{site}
 		</if>
 		AND CATEGORY3_KEY IS NOT NULL
@@ -129,7 +129,7 @@
 			, #{edu_no}
 			, #{UserAccount.user_id}
 			, #{UserAccount.user_nm}
-			, #{UserAccount.user_nm}
+			, #{UserAccount.user_id}
 		)	
 	</insert>
 	
@@ -157,7 +157,7 @@
 			, #{UserAccount.user_nm}
 			, CONCAT(#{eml_addr1},'@',#{eml_addr2})
 			, #{mbl_telno}
-			, #{UserAccount.user_nm}
+			, #{UserAccount.user_id}
 		)	
 	</insert>
 </mapper>

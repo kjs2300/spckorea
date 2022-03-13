@@ -120,9 +120,9 @@
                         	<li <c:if test="${fn:contains(path, '/my/my01info') }">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01info.do">기본정보</a></li>
 	                    	<li <c:if test="${fn:contains(path, '/my/my01cart') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01cart.do">장바구니</a></li>
 	                    	<li <c:if test="${fn:contains(path, '/my/my01status') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01status.do">신청현황</a></li>
-	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01edu.do">학습/교육현황</a></li>
-	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01warrant.do">수료증발급</a></li>
-	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01mylist.do">나의 글 보기</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/my/my01edu') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01edu.do">학습/교육현황</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/my/my01warrant') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01warrant.do">수료증발급</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/my/my01mylist') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/my/my01mylist.do">나의 글 보기</a></li>
                         </ul>
 	                 </li>
 	                 <li <c:if test="${fn:contains(path, '/my/my02')}">  class="on" </c:if>>

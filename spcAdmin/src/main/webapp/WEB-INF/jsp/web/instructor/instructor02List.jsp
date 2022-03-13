@@ -39,6 +39,12 @@
 	 $("#searchCondition").eq(0).prop("checked",true);
 	 $("[type='text']").val("");
  }
+ function fn_egov_link_page(pageNo){
+	 var frm = document.commonForm;
+	 $("#pageIndex").val(pageNo); 
+ 	 frm.action = "<c:url value='/user/instructor02List.do'/>";
+   	 frm.submit();
+ }
 </script>
      <!-- container  begin -->
                 <div id="container">
@@ -56,6 +62,7 @@
 
                     <div class="contents-wrap">
 						<form  id="commonForm" name="commonForm"  method="post"  action="">
+		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
 						<input type="hidden" id="board_idx"   name="board_idx"  value="06"/>
                         <!---- search-wrap begin ---->
                         <div class="search-wrap">

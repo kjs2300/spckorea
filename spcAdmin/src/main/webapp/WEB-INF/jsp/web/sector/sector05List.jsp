@@ -82,6 +82,12 @@
  function fn_detail(edu_no){
 	document.location = "<c:url value='/user/sectorView.do'/>"+"?edu_no="+edu_no+"&idx="+$('#idx').val();
  }	
+ function fn_egov_link_page(pageNo){
+	 var frm = document.commonForm;
+	 $("#pageIndex").val(pageNo); 
+ 	 frm.action = "<c:url value='/user/sectorList.do'/>";
+   	 frm.submit();
+ }
 </script>
      <!-- container  begin -->
                 <div id="container">
@@ -89,6 +95,7 @@
                 	<input type="hidden" id="category2" name="category2" value="${category2_key}">
                 	<input type="hidden" id="category3" name="category3" value="${category3_key}">
                 	<input type="hidden" id="idx" name="idx" value="${idx}">
+		    		<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
                 	
                     <div class="tit-wrap">
                         <h1 class="h1-tit">교육신청</h1>
