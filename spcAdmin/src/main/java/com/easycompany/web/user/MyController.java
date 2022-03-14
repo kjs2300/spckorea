@@ -222,11 +222,11 @@ public class MyController
 	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
 	    	  
-	  paramMap.put("sqlName", "getMyList");
+	  paramMap.put("sqlName", "getWarrantList");
 	  List<Map<String, Object>> list = myService.getSelectList(paramMap);
 	  model.addAttribute("resultList", list);
 	  
-	  paramMap.put("sqlName", "getMyListCnt");
+	  paramMap.put("sqlName", "getWarrantListCnt");
 	  int totCnt = myService.getSelectListCnt(paramMap);
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
@@ -234,8 +234,6 @@ public class MyController
 	  model.addAttribute("paginationInfo", paginationInfo);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
-	  
-	  
 	  
 	  return "my01warrant";
   }

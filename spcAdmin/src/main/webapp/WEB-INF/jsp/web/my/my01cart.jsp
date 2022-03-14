@@ -69,7 +69,6 @@
 		if(confirm('삭제 처리하시겠습니까?')) {
 			setDel(idxArray);
 		}
-		
 	};
 
 	var setDel = function(idxArray){
