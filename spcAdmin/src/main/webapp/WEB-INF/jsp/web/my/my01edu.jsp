@@ -183,12 +183,12 @@
                                 </div>
                                   
                                 <div class="radio-cont">
-                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="1" <c:if test="${edu_status == '1'}">checked </c:if>>
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="2" <c:if test="${edu_status == '2'}">checked </c:if>>
                                     <label for="">학습중</label>
                                 </div>
                                 
                                 <div class="radio-cont mr10">
-                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="2" <c:if test="${edu_status == '2'}">checked </c:if>>
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="1" <c:if test="${edu_status == '1'}">checked </c:if>>
                                     <label for="">학습완료</label>
                                 </div>
                             </div>
@@ -242,7 +242,7 @@
                                             <td>${result.CATEGORY1_NAME}</td>
                                             <td>${result.CATEGORY2_NAME}</td>
                                             <td class="tl">${result.CATEGORY3_NAME}</td>
-                                            <td>${result.USER_NM}</td>
+                                            <td>${result.INST_NM}</td>
                                             <td>${result.REG_DT}</td>
                                             <td>${result.COUR_STAT}</td>
                                             <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyClass.do'/>','popup');" class="sm-btn white-btn">바로가기</button></td>

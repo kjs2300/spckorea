@@ -178,7 +178,6 @@ public class MyController
 	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
 	    	  
-	  paramMap.put("edu_status", "");
 	  paramMap.put("site", "on");
 	  paramMap.put("category1_key", "1");
 	  
@@ -236,6 +235,18 @@ public class MyController
 	  model.addAllAttributes(paramMap);
 	  
 	  return "my01warrant";
+  }
+  
+  @RequestMapping({"/popMyWarrant.do"})
+  public String popMyWarrant(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  paramMap.put("sqlName", "getMyWarrant");
+	  model.addAttribute("result", myService.getSelectData(paramMap));
+	  
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	
+	    return "popMyWarrant";
   }
   
   @RequestMapping({"/my01mylist.do"})

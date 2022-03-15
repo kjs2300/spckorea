@@ -26,4 +26,11 @@
        <put-attribute name="title" value="영상시청" />  
        <put-attribute name="body" value="/WEB-INF/jsp/web/popup/myPlayer.jsp" />  
    </definition>
+   
+   <!--마이페이지 > 수료증발급 -->
+   <definition name="popMyWarrant" extends="popUp-definition">  
+       <put-attribute name="title" value="수료증발급" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/popup/myWarrant.jsp" />  
+   </definition>
+   
 </tiles-definitions>

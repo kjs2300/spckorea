@@ -160,7 +160,7 @@
 		SELECT  (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY) AS CATEGORY1_NAME
 				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
 		        ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
-		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT
+		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT, b.INST_NM
 		        ,a.USER_NM, a.COUR_NO
 		        ,CASE a.COUR_STAT
 			 		WHEN 1 THEN '완료'
@@ -173,7 +173,7 @@
 		<![CDATA[
 		AND TRAIN_S_DATE <= NOW() 
         ]]>
-		<if test="edu_status != ''">
+		<if test="edu_status != '' and edu_status != null">
 			AND COUR_STAT = #{edu_status}
 		</if>
 		<if test="category1_key != '' and category1_key != null">
@@ -331,6 +331,9 @@
 	<update id="onclassUpdate" parameterType="java.util.Map">	
 		UPDATE EDU_COURSE_REGISTRATION
 		SET COUR_TIME = #{cour_time}, COUR_STAT = #{cour_stat}
+			<if test="cour_stat == '1' and category2_key != null">
+			,AND CHG_DT = NOW()
+			</if>
 		WHERE COUR_NO = #{cour_no}
 		  AND EDU_NO = #{edu_no}
 	</update>
@@ -340,7 +343,7 @@
 				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
 		        ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
 		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT, b.INST_NM
-		        ,a.USER_NM, a.COUR_NO
+		        ,a.USER_NM, a.COUR_NO, a.EDU_NO
 		        ,DATE_FORMAT(a.LICENSE_PBL_DATE,'%Y-%m-%d') AS LICENSE_PBL_DATE
 		        ,CASE a.LICENSE_PBL
 			 		WHEN 1 THEN '발급'
@@ -432,5 +435,20 @@
 		      	AND LICENSE_PBL = '2'
 			</when>
 		</choose>
+	</select>
+	
+	<select id="getMyWarrant" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT  a.USER_NM
+			,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
+			,DATE_FORMAT(a.CHG_DT,'%Y') AS DATE_Y
+			,DATE_FORMAT(a.CHG_DT,'%m') AS DATE_M
+			,DATE_FORMAT(a.CHG_DT,'%d') AS DATE_D
+		FROM EDU_COURSE_REGISTRATION a,
+			 EDU_REGISTRATION b
+		 WHERE 1=1
+		  AND a.EDU_NO = b.EDU_NO
+		  AND a.COUR_NO = #{cour_no}
+		  AND a.EDU_NO = #{edu_no}
+		  AND a.USER_ID = #{UserAccount.user_id}
 	</select>
 </mapper>

@@ -46,7 +46,10 @@
 	 $("#searchCondition").eq(0).prop("checked",true);
 	 $("[type='text']").val("");
  }
- 
+ function openWindowPop(url, name){
+	    var options = 'top=10, left=10, width=810px, height=1200px, status=no, menubar=no, toolbar=no, resizable=no';
+	    window.open(url, name, options);
+	}	
 </script>
      <!-- container  begin -->
             <div id="container">
@@ -191,7 +194,7 @@
                                             <td>${result.INST_NM}</td>
                                             <td>${result.LICENSE_PBL}</td>
                                             <td>${result.LICENSE_PBL_DATE}</td>
-                                            <td><button class="sm-btn white-btn">발급하기</button></td>
+                                            <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyWarrant.do'/>?cour_no=${result.COUR_NO}&edu_no=${result.EDU_NO}','popup');" class="sm-btn white-btn">발급하기</button></td>
                                         </tr>
                                     </c:forEach>
                                     </tbody>
