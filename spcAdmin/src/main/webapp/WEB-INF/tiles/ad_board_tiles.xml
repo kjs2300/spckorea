@@ -2,6 +2,10 @@
 <!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
  
 <tiles-definitions>  
+	<definition name="notice01List" extends="common-definition">  
+		<put-attribute name="title" value="공지사항" />  
+		<put-attribute name="body" value="/WEB-INF/jsp/web/board/notice01List.jsp" />  
+	</definition> 
   
    <definition name="noticeList" extends="base-definition">  
        <put-attribute name="title" value="Admin 게시판" />  

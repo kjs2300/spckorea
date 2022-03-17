@@ -27,7 +27,7 @@ function openWindowPop(url, name){
 
 	<div id="header">
         <div class="top-wrap">
-            <a  href="${pageContext.request.contextPath}/user/webMain.do">홈</a>|<a>공지사항</a>|<a href="${pageContext.request.contextPath}/my/my01info.do">마이페이지</a>|<a onClick="javascript:openWindowPop('<c:url value='/my/popMyClass.do'/>','popup');">나의 강의실</a>|<a Onclick="javascript:gfnLogout()">로그아웃</a>
+            <a  href="${pageContext.request.contextPath}/user/webMain.do">홈</a>|<a href="${pageContext.request.contextPath}/user/notice01List.do">공지사항</a>|<a href="${pageContext.request.contextPath}/my/my01info.do">마이페이지</a>|<a onClick="javascript:openWindowPop('<c:url value='/my/popMyClass.do'/>','popup');">나의 강의실</a>|<a Onclick="javascript:gfnLogout()">로그아웃</a>
         </div>
 
         <div class="nav-wrap">

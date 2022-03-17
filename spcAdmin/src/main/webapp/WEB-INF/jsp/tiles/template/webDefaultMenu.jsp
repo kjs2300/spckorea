@@ -110,6 +110,23 @@
 	      </div>
      </c:if>
      
+     <c:if test="${fn:contains(path, '/user/notice')}">
+	      <aside class="tit">공지사항</aside>
+	      <div class="lnb-menu">
+	          <ul>
+	                 <li <c:if test="${fn:contains(path, '/user/notice01')}">  class="on" </c:if>>
+	                 	<a href="${pageContext.request.contextPath}/user/notice01List.do">공지사항</a>
+		             </li>
+		             <li <c:if test="${fn:contains(path, '/user/notice02')}">  class="on" </c:if>>
+	                 	<a href="${pageContext.request.contextPath}/user/notice02List.do">자료실</a>
+		             </li>
+		             <li <c:if test="${fn:contains(path, '/user/notice03')}">  class="on" </c:if>>
+	                 	<a href="${pageContext.request.contextPath}/user/notice03List.do">F&Q</a>
+		             </li>
+		      </ul>
+	      </div>
+     </c:if>
+     
      <c:if test="${fn:contains(path, '/my')}">
 	      <aside class="tit">마이페이지</aside>
 	      <div class="lnb-menu">
