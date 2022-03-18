@@ -77,6 +77,9 @@
  function fn_clearBtn(){
 	 $("#category3_key").val("");
 	 $("#site").val("");
+	 $("#searchDate").eq(0).prop("checked",true);
+	 $("#searchCondition").eq(0).prop("checked",true);
+	 $("[type='text']").val("");
  }
  
  function fn_detail(edu_no){
