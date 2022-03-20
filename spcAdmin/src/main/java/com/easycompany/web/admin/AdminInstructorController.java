@@ -1,11 +1,13 @@
 package com.easycompany.web.admin;
 
+import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.List; 
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.easycompany.cmm.util.EgovFileScrty;
 import com.easycompany.cmm.vo.DefaultVO;
 import com.easycompany.service.InstructorService;
 import com.easycompany.service.SectorService;
@@ -69,18 +72,16 @@ public class AdminInstructorController
 	  List<Map<String, Object>> category3list = sectorService.getSelectList(paramMap);
 	  model.addAttribute("category3list", category3list);
 	  
-	  paramMap.put("sqlName", "getCodeList");
-	  paramMap.put("code","32");
-	  List<Map<String, Object>> codeList = instructorService.getSelectList(paramMap);
-	  model.addAttribute("codeList", codeList);
+	  paramMap.put("sqlName", "getInstructorAllCnt");
+	  Map<String, Object> allCount = instructorService.getSelectData(paramMap);
+	  model.addAttribute("allCount", allCount);
 	  
-	  
-	  paramMap.put("sqlName", "getSectorList");
-	  List<Map<String, Object>> list = sectorService.getSelectList(paramMap);
+	  paramMap.put("sqlName", "getInstructorList");
+	  List<Map<String, Object>> list = instructorService.getSelectList(paramMap);
 	  model.addAttribute("resultList", list);
 	  
-	  paramMap.put("sqlName", "getSectorListCnt");
-	  int totCnt = sectorService.getSelectListCnt(paramMap);
+	  paramMap.put("sqlName", "getInstructorListCnt");
+	  int totCnt = instructorService.getSelectListCnt(paramMap);
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
 	  
@@ -94,12 +95,48 @@ public class AdminInstructorController
   @RequestMapping({"/instructorAdm01View.do"})
   public String instructorAdm01View(@RequestParam Map<String, Object> paramMap, ModelMap model ,HttpServletRequest request) throws Exception {
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));  
-	  //paramMap.put("sqlName", "getBoardView");	
-	  //Map<String, Object> result = instructorService.getSelectData(paramMap);
-	  //model.addAttribute("result", result);
+	  
+	  paramMap.put("sqlName", "getCodeList");
+	  paramMap.put("code","32");
+	  List<Map<String, Object>> codeList = instructorService.getSelectList(paramMap);
+	  model.addAttribute("codeList", codeList);
+	  
+	  paramMap.put("sqlName", "getInstructorView");	
+	  Map<String, Object> result = instructorService.getSelectData(paramMap);
+	  
+	  model.addAttribute("result", result);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
 	  return "instructorAdm01View";
+  }
+  
+  @RequestMapping({"/instructorAdm01Save.do"})
+  @ResponseBody
+  public Map<String, Object> instructorAdm01Save(HttpServletRequest request, @RequestParam Map<String, Object> paramMap) throws Exception {
+	    int resultCnt = 0;
+	    Map<String, Object> result = new HashMap<String, Object>();
+	    try {
+	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	      if(!paramMap.get("password").toString().equals("")) {
+	    	  String shaPassword = EgovFileScrty.encryptPassword(paramMap.get("password").toString(), paramMap.get("user_id").toString());
+	    	  paramMap.put("shaPassword",shaPassword);
+	      }
+	      paramMap.put("sqlName", "updateUserData");	
+	      resultCnt = instructorService.updateData(paramMap);
+	      
+	      paramMap.put("sqlName", "updateInstructorData");	
+	      resultCnt = instructorService.insertData(paramMap);
+	      
+	      if(resultCnt > 0) {
+	    	  result.put("result", "SUCCESS");
+	      }else {
+	    	  result.put("result", "FAIL");	 
+	      }
+	    } catch (Exception e) {
+	      result.put("result", "FAIL");
+	    }
+	
+	    return result;
   }
   
   @RequestMapping({"/instructorAdm02List.do"})

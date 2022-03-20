@@ -170,7 +170,7 @@
                         <!---- search-wrap end ---->
 
                         <div class="btn-cont mb20">
-                            <button class="lg-btn white-btn">선택삭제</button>
+                            <!-- <button class="lg-btn white-btn">선택삭제</button> -->
                         </div>
 
                         <div class="comp mt0">
@@ -178,7 +178,7 @@
                                 <table class="list-tb">
                                     <caption>분류1, 분류2, 분류3(교육명), 강사명, 신청일, 취소 정보가 있는 테이블</caption>
                                     <colgroup>
-                                    	<col width="8%"/>
+                                    	<%-- <col width="8%"/> --%>
                                         <col width="8%"/>
                                         <col width="10%"/>
                                         <col width="14%"/>
@@ -189,7 +189,7 @@
                                     </colgroup>
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox" id="checkAll" name='checkAll' class="check-box"/></th>
+                                            <!-- <th><input type="checkbox" id="checkAll" name='checkAll' class="check-box"/></th> -->
                                             <th>No.</th>
                                             <th>분류1</th>
                                             <th>분류2</th>
@@ -202,14 +202,18 @@
                                     <tbody>
                                     <c:forEach var="result" items="${resultList}" varStatus="status">
                                         <tr>
-                                            <td><input type="checkbox" class="check-box" id='checkNo' name='checkNo' value="${result.BASKET_NO}"/></td>
+                                            <%-- <td><input type="checkbox" class="check-box" id='checkNo' name='checkNo' value="${result.BASKET_NO}"/></td> --%>
                                             <td>${status.index + 1}</td>
                                             <td>${result.CATEGORY1_NAME}</td>
                                             <td>${result.CATEGORY2_NAME}</td>
                                             <td class="tl">${result.CATEGORY3_NAME}</td>
-                                            <td>${result.USER_NM}</td>
+                                            <td>${result.INST_NM}</td>
                                             <td>${result.REG_DT}</td>
-                                            <td><button  class="sm-btn white-btn" onClick="fn_delete('${result.COUR_NO}');">취소</button></td>
+                                            <td>
+                                            <c:if test="${result.CANCEL_CHECK == 'Y'}">
+                                            	<button  class="sm-btn white-btn" onClick="fn_delete('${result.COUR_NO}');">취소</button>
+                                            </c:if>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                     <c:if test="${empty resultList }">

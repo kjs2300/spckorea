@@ -29,64 +29,6 @@
      ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
      ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
 	});
-	 	$('#category1_key').change(function(){
-	 		var val  = $(this).val();
-
-			if( val ==""){
-				return;
-			}
-			
-			$("#category2_key").val("");
-			$("#category3_key").val("");
-			
-			 $.ajax({	
-			    url     : "<c:url value='/user/category2list.do'/>",
-			    data    : $("#commonForm").serialize(),
-		        dataType: "JSON",
-		        cache   : false,
-				async   : true,
-				type	: "POST",	
-				success: function(data, opt, inx){
-				var option = '';
-				option += '<option value="">선택 하세요</opton>'; //선택
-				$.each(data, function(i, ret){
-					option += '<option value="'+ret.CATEGORY2_KEY+'">'+ret.CATEGORY2_NAME+'</option>';		
-				});
-				$('select[name=category2_key]').html(option);						
-	     },	       
-		        error 	: function(xhr, status, error) {}
-		        
-		     });
-		 });
-				 
-		$('#category2_key').change(function(){
-			var val  = $(this).val();
-
-			if( val ==""){
-				return;
-			}
-			
-			$("#category3_key").val("");
-					
-			 $.ajax({	
-			    url     : "<c:url value='/user/category3list.do'/>",
-			    data    : $("#commonForm").serialize(),
-		        dataType: "JSON",
-		        cache   : false,
-				async   : true,
-				type	: "POST",	
-				success: function(data, opt, inx){
-				var option = '';
-				option += '<option value="0">선택 하세요</opton>'; //선택
-				$.each(data, function(i, ret){
-					option += '<option value="'+ret.CATEGORY3_KEY+'">'+ret.CATEGORY3_NAME+'</option>';		
-				});
-				$('select[name=category3_key]').html(option);						
-		        },	       
-		        error 	: function(xhr, status, error) {}
-		        
-		     });
-		 }); 
  });
   
  function email_chg(){
@@ -104,15 +46,50 @@
 	 $("[type='text']").val("");
  }
  
- function fn_detail(edu_no){
-	//document.location = "<c:url value='/user/sectorView.do'/>"+"?edu_no="+edu_no+"&idx="+$('#idx').val();
- }	
+ function fn_save(){
+	 if(confirm("저장 하시겠습니까?")){
+		 var formData = new FormData($('#commonForm')[0]);
+			$.ajax({	
+				data       : formData,
+			    url		   : "<c:url value='/inst/instructorAdm01Save.do'/>",
+			    dataType   : "JSON",
+		        processData: false, 
+		        contentType: false,
+				type	   : "POST",	
+		        success    : function(obj) {
+		        	commonCallBack(obj);				
+		        },	       
+		        error 	: function(xhr, status, error) {} 		        
+		    });
+		}
+ }
+ 
+ function commonCallBack(obj){
+		if(obj != null){		
+			
+			var result = obj.result;
+			
+			if(result == "SUCCESS"){				
+				alert("저장 하였습니다.");				
+				fn_goList();				 
+			}else {				
+				alert("저장 실패 했습니다.");	
+				return false;
+			}
+		}
+	}	
+
+function fn_goList(){
+	document.location = "<c:url value='/inst/instructorAdm01List.do'/>";
+}	
 </script>
 
 <div class="search-wrap">
 	<h1 class="h1-tit">강사 자격 정보</h1>
-
+				<form  id="commonForm" name="commonForm"  method="post"  action="">
                 <div class="table-wrap">
+                   
+		    		<input type="hidden" id="user_id" name="user_id" value="${result.USER_ID}">	
                     <h2 class="h2-tit">회원정보</h2>
 
                     <table class="detail-tb">
@@ -124,42 +101,42 @@
                         <tbody>
                             <tr>
                                 <th>아이디</th>
-                                <td>${UserAccount.id}</td>
+                                <td>${result.USER_ID}</td>
                             </tr>
                             <tr>
                                 <th>이름</th>
-                                <td><input type="text" id="user_nm" name="user_nm" class="input-box lg-width" value="${UserAccount.name}"/></td>
+                                <td><input type="text" id="user_nm" name="user_nm" class="input-box lg-width" value="${result.USER_NM}"/></td>
                             </tr>
                             <tr>
                                 <th>비밀번호</th>
                                 <td>
-                                    <input type="password" id="password" name="password" class="input-box lg-width" value=""/>
+                                    <input type="text" id="password" name="password" class="input-box lg-width" value=""/>
                                     <span class="point">변경 할 경우에만 입력하세요.</span>
                                 </td>
                             </tr>
                             <tr>
                                 <th>전화번호</th>
                                 <td>
-                                    <input type="text" id="telno" name="telno" class="input-box lg-width" placeholder="- 없이 입력해주세요" value="${UserAccount.telno}"/>
+                                    <input type="text" id="telno" name="telno" class="input-box lg-width" placeholder="- 없이 입력해주세요" value="${result.TELNO}"/>
                                 </td>
                             </tr>
                             <tr>
                                 <th>휴대폰</th>
                                 <td>
-                                    <input type="text" id="mbl_telno" name="mbl_telno" class="input-box lg-width" placeholder="- 없이 입력해주세요" value="${UserAccount.mbl_telno}"/>
+                                    <input type="text" id="mbl_telno" name="mbl_telno" class="input-box lg-width" placeholder="- 없이 입력해주세요" value="${result.MBL_TELNO}"/>
                                 </td>
                             </tr>
                             <tr>
                                 <th>팩스번호</th>
                                 <td>
-                                    <input type="text" id="faxno" name="faxno" class="input-box lg-width" placeholder="- 없이 입력해주세요" value="${UserAccount.faxno}"/>
+                                    <input type="text" id="faxno" name="faxno" class="input-box lg-width" placeholder="- 없이 입력해주세요" value="${result.FAXNO}"/>
                                 </td>
                             </tr>
                             <tr>
                                 <th>이메일</th>
                                 <td>
                                     <div class="tb-cont">
-                                    	<c:set var="email" value="${fn:split(UserAccount.eml_addr, '@')}" />
+                                    	<c:set var="email" value="${fn:split(result.EML_ADDR, '@')}" />
                                         <input type="text" id="eml_addr1" name="eml_addr1" class="input-box" value="${email[0]}"/>
                                         <span>@</span>
                                         <input type="text" id="eml_addr2" name="eml_addr2" class="input-box" value="${email[1]}"/>
@@ -176,12 +153,12 @@
                                 <td>
                                     <div class="tb-cont">
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="user_sex" name="user_sex" value="M" <c:if test="${UserAccount.user_sex == 'M'}">checked</c:if>>
+                                            <input type="radio" class="radio-box" id="user_sex" name="user_sex" value="M" <c:if test="${result.USER_SEX == 'M'}">checked</c:if>>
                                             <label>남자</label>
                                         </div>
                                           
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="user_sex" name="user_sex" value="W" <c:if test="${UserAccount.user_sex == 'W'}">checked</c:if>>
+                                            <input type="radio" class="radio-box" id="user_sex" name="user_sex" value="W" <c:if test="${result.USER_SEX == 'W'}">checked</c:if>>
                                             <label>여자</label>
                                         </div>
                                     </div>
@@ -208,15 +185,15 @@
                                 <td colspan="3">
                                     <div class="tb-cont">
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="status" name="status" value="1">
+                                            <input type="radio" class="radio-box" id="status" name="status" value="1" <c:if test="${result.INS_STATUS == '1'}">checked</c:if>>
                                             <label>활동</label>
                                         </div>
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="status" name="status"value="2">
+                                            <input type="radio" class="radio-box" id="status" name="status"value="2" <c:if test="${result.INS_STATUS == '2'}">checked</c:if>>
                                             <label>상실(일반)</label>
                                         </div>
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="status" name="status" value="3">
+                                            <input type="radio" class="radio-box" id="status" name="status" value="3" <c:if test="${result.INS_STATUS == '3'}">checked</c:if>>
                                             <label>휴직</label>
                                         </div>
                                     </div>
@@ -227,23 +204,23 @@
                                 <td colspan="3">
                                     <div class="tb-cont">
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="class" name="class" value="0">
+                                            <input type="radio" class="radio-box" id="class" name="class" value="0" <c:if test="${result.INS_CLASS == '0'}">checked</c:if>>
                                             <label>전체</label>
                                         </div>
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="class" name="class" value="1">
+                                            <input type="radio" class="radio-box" id="class" name="class" value="1" <c:if test="${result.INS_CLASS == '1'}">checked</c:if>>
                                             <label>일반강사</label>
                                         </div>
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="class" name="class" value="2">
+                                            <input type="radio" class="radio-box" id="class" name="class" value="2" <c:if test="${result.INS_CLASS == '2'}">checked</c:if>>
                                             <label>실무자</label>
                                         </div>
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="class" name="class" value="3">
+                                            <input type="radio" class="radio-box" id="class" name="class" value="3" <c:if test="${result.INS_CLASS == '3'}">checked</c:if>>
                                             <label>공공기간(학교, 군, 경찰, 도시철도 등)</label>
                                         </div>
                                         <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="class" name="class" value="4">
+                                            <input type="radio" class="radio-box" id="class" name="class" value="4" <c:if test="${result.INS_CLASS == '4'}">checked</c:if>>
                                             <label>기업(삼성,현대. sk 등)</label>
                                         </div>
                                     </div>
@@ -254,17 +231,17 @@
                                 <td>
                                     <select id="area_cd" name="area_cd" class="select">
                                         <c:forEach var="code" items="${codeList}" varStatus="status">
-											<option value='${code.CD}' <c:if test="${result.area_cd == code.CD}">selected</c:if>>${code.CD_NM}</option>
+											<option value='${code.CD}' <c:if test="${result.AREA_CD == code.CD}">selected</c:if>>${code.CD_NM}</option>
 										</c:forEach>
                                     </select>
                                 </td>
                                 <th>기관명</th>
                                 <td>
-                                    <input type="text" id="coper_nm" name="coper_nm" class="input-box" value="${result.coper_nm}"/>
+                                    <input type="text" id="coper_nm" name="coper_nm" class="input-box" value="${result.COPER_NM}"/>
                                 </td>
                             </tr>
                             <tr>
-                                <th>휴직이력</th>
+                                <th>휴직이력</th><!-- 휴직이력 및 기간 DB구조상 수정불가 -->
                                 <td>
                                     <input type="text" class="input-box" value=""/>
                                 </td>
@@ -434,266 +411,9 @@
                         </tbody>
                     </table><!------   // 20211223  수정  ------>
                 </div>
-
+				</form>
                 <div class="btn-cont">
-                    <button class="mid-btn blue-btn">저장하기</button>
-                    <button class="mid-btn white-btn">취소</button>
+                    <button type="button" class="mid-btn blue-btn" onClick="fn_save();">저장하기</button>
+                    <button type="button" class="mid-btn white-btn">취소</button>
                 </div>
-</div>
-
-<div class="btn-cont mb20">
-    <dl class="count-txt">
-        <dt>전체 <span>115</span></dt>
-        <dt class="green-txt">활동<span>115</span></dt>
-        <dt class="gray-txt">상실(일반) <span>115</span></dt>
-        <dt class="purple-txt">휴직 <span>115</span></dt>
-    </dl>
-
-    <button class="mid-btn black-btn">엑셀다운</button>
-    <button class="mid-btn white-btn">선택삭제</button>
-</div>
-
-<div class="table-wrap scroll-wrap">
-    <table class="list-tb">
-        <caption>선택, 상태, 강사명, 강사분류, 성별, 이메일, 연락처, 강의횟수,누적 강의횟수, 지역, 소속기관, 최종 수료일, 오프라인 2회교육, 온라인 보수교육, 수정 정보가 있는 테이블</caption>
-        <colgroup>
-            <col width="3%"/>
-            <col width="4%"/>
-            <col width="5%"/>
-            <col width="8%"/>
-            <col width="6%"/>
-            <col width="5%"/>
-            <col width="*"/>
-            <col width="8%"/>
-            <col width="6%"/>
-            <col width="6%"/>
-            <col width="6%"/>
-            <col width="6%"/>
-            <col width="6%"/>
-            <col width="6%"/>
-            <col width="6%"/>
-            <col width="6%"/>
-        </colgroup>
-        <thead>
-            <tr>
-                <th><input type="checkbox" class="check-box"/></th>
-                <th>No.</th>
-                <th>상태</th>   
-                <th>강사(ID)</th>
-                <th>강사분류</th>
-                <th>성별</th>
-                <th>이메일</th>
-                <th>연락처</th>
-                <th>강의횟수</th>
-                <th>누적<br/>강의횟수</th>
-                <th>지역</th>
-                <th>소속기관</th>
-                <th>최종<br/>수료일</th>
-                <th>오프라인<br/>2회교육</th>
-                <th>온라인<br/>보수교육</th>
-                <th>수정</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="checkbox" class="check-box"/></td>
-                <td>1</td>
-                <td>활동</td>
-                <td><span class="block">이보람</span><span  class="block">fgfdfdgfdgg</span></td>
-                <td>기업</td>
-                <td>남</td>
-                <td>fgfdfdgfdgg@naver.com</td>
-                <td>01012345678</td>
-                <td>32</td>
-                <td>120</td>
-                <td>서울</td>
-                <td>한신만어ㅏㅣ러ㅏㅁ러</td>
-                <td>2021.10.05</td>
-                <td><span class="blue-txt">완료</span></td>
-                <td><span class="red-txt">미완료</span></td>
-                <td><button class="sm-btn blue-btn">수정</button></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="page-wrap">
-    <ul class="paging">
-        <li><a>&lt;&lt;</a></li>
-        <li><a>&lt;</a></li>
-        <li class="on"><a>1</a></li>
-        <li><a>2</a></li>
-        <li><a>3</a></li>
-        <li><a>4</a></li>
-        <li><a>5</a></li>
-        <li><a>6</a></li>
-        <li><a>7</a></li>
-        <li><a>8</a></li>
-        <li><a>9</a></li>
-        <li><a>10</a></li>
-        <li><a>&gt;</a></li>
-        <li><a>&gt;&gt;</a></li>
-    </ul>
 </div>

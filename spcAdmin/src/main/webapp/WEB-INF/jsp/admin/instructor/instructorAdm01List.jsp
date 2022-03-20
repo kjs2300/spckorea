@@ -97,8 +97,8 @@
 	 $("[type='text']").val("");
  }
  
- function fn_detail(){
-	document.location = "<c:url value='/inst/instructorAdm01View.do'/>";
+ function fn_detail(id){
+	document.location = "<c:url value='/inst/instructorAdm01View.do'/>?user_id="+id;
  }	
  function fn_egov_link_page(pageNo){
 	 var frm = document.commonForm;
@@ -121,22 +121,25 @@
         <h3 class="h3-tit">강사 자격범위</h3>
 
         <div class="radio-cont">
-            <input type="radio" class="radio-box" id="category_all" name="category_all" value="ALL" checked>
+            <input type="radio" class="radio-box" id="category_chk" name="category_chk" value="ALL" checked>
             <label for="">전체</label>
         </div>
         <div class="radio-cont">
-            <input type="radio" class="radio-box" id="" name="" value="">
+            <input type="radio" class="radio-box" id="category_chk" name="category_chk" value="CHECK">
             
             <select class="select mr30"  id="category1_key" name="category1_key">
             	<option value='' >선택 하세요</option>
 				<c:forEach var="result" items="${category1list}" varStatus="status">
-					<option value='${result.CATEGORY1_KEY}' >${result.CATEGORY1_NAME}</option>
+					<c:if test="${result.CATEGORY1_KEY == '7'}">
+					<option value='${result.CATEGORY1_KEY}'>${result.CATEGORY1_NAME}</option>
+					</c:if>
 				</c:forEach>
 			</select>
             <select class="select"  id="category2_key" name="category2_key">
-            	<option value='' >선택 하세요</option>
 				<c:forEach var="result" items="${category2list}" varStatus="status">
-					<option value='${result.CATEGORY2_KEY}' >${result.CATEGORY2_NAME}</option>
+					<c:if test="${result.CATEGORY2_KEY == '14'}">
+					<option value='${result.CATEGORY2_KEY}'>${result.CATEGORY2_NAME}</option>
+					</c:if>
 				</c:forEach>
             </select>
             <select class="select lg-width"  id="category3_key" name="category3_key">
@@ -255,10 +258,10 @@
 
 <div class="btn-cont mb20">
     <dl class="count-txt">
-        <dt>전체 <span>115</span></dt>
-        <dt class="green-txt">활동<span>115</span></dt>
-        <dt class="gray-txt">상실(일반) <span>115</span></dt>
-        <dt class="purple-txt">휴직 <span>115</span></dt>
+        <dt>전체 <span>${allCount.ALL_CNT}</span></dt>
+        <dt class="green-txt">활동<span>${allCount.CNT1}</span></dt>
+        <dt class="gray-txt">상실(일반) <span>${allCount.CNT2}</span></dt>
+        <dt class="purple-txt">휴직 <span>${allCount.CNT3}</span></dt>
     </dl>
 
     <button class="mid-btn black-btn">엑셀다운</button>
@@ -307,205 +310,37 @@
             </tr>
         </thead>
         <tbody>
+        	<c:forEach var="result" items="${resultList}" varStatus="status">
             <tr>
                 <td><input type="checkbox" class="check-box"/></td>
-                <td>1</td>
-                <td>활동</td>
-                <td><span class="block">이보람</span><span  class="block">fgfdfdgfdgg</span></td>
-                <td>기업</td>
-                <td>남</td>
-                <td>fgfdfdgfdgg@naver.com</td>
-                <td>01012345678</td>
-                <td>32</td>
-                <td>120</td>
-                <td>서울</td>
-                <td>한신만어ㅏㅣ러ㅏㅁ러</td>
-                <td>2021.10.05</td>
+                <td>${status.index + 1}</td>
+                <td>${result.INS_STATUS}</td>
+                <td><span class="block">${result.USER_NM}</span><span  class="block">${result.USER_ID}</span></td>
+                <td>${result.INS_CLASS}</td>
+                <td>${result.USER_SEX_NM}</td>
+                <td>${result.EML_ADDR}</td>
+                <td>${result.MBL_TELNO}</td>
+                <td>${result.EDU_COUNT}</td>
+                <td>${result.EDU_ALL_COUNT}</td>
+                <td>${result.AREA_NM}</td>
+                <td>${result.COPER_NM}</td>
+                <td>${result.LICENSE_DT}</td>
                 <td><span class="blue-txt">완료</span></td>
                 <td><span class="red-txt">미완료</span></td>
-                <td><button class="sm-btn blue-btn" onClick="fn_detail();">수정</button></td>
+                <td><button class="sm-btn blue-btn" onClick="fn_detail('${result.USER_ID}');">수정</button></td>
             </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            </c:forEach>
+            <c:if test="${empty resultList }">
+				<tr>
+					<td colspan='16'/>Data 없습니다.</td>
+				</tr>
+			</c:if>
         </tbody>
     </table>
 </div>
 
 <div class="page-wrap">
-    <ul class="paging">
-        <li><a>&lt;&lt;</a></li>
-        <li><a>&lt;</a></li>
-        <li class="on"><a>1</a></li>
-        <li><a>2</a></li>
-        <li><a>3</a></li>
-        <li><a>4</a></li>
-        <li><a>5</a></li>
-        <li><a>6</a></li>
-        <li><a>7</a></li>
-        <li><a>8</a></li>
-        <li><a>9</a></li>
-        <li><a>10</a></li>
-        <li><a>&gt;</a></li>
-        <li><a>&gt;&gt;</a></li>
-    </ul>
+	<ul class="paging">
+		<ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />
+	</ul>
 </div>

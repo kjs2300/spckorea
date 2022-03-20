@@ -170,6 +170,9 @@ public class MyController
 	  if(!paramMap.containsKey("pageIndex")) {
 		  paramMap.put("pageIndex", 1);
 	  }
+	  if(!paramMap.containsKey("site")) {
+		  paramMap.put("site", "on");
+	  }
 	  PaginationInfo paginationInfo = new PaginationInfo();
 	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
 	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
@@ -178,7 +181,7 @@ public class MyController
 	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
 	    	  
-	  paramMap.put("site", "on");
+	  
 	  paramMap.put("category1_key", "1");
 	  
 	  paramMap.put("sqlName", "getEduAllCnt");

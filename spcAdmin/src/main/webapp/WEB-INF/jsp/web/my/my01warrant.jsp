@@ -50,6 +50,12 @@
 	    var options = 'top=10, left=10, width=810px, height=1200px, status=no, menubar=no, toolbar=no, resizable=no';
 	    window.open(url, name, options);
 	}	
+ function fn_egov_link_page(pageNo){
+	 var frm = document.commonForm;
+	 $("#pageIndex").val(pageNo); 
+ 	 frm.action = "<c:url value='/my/my01warrant.do'/>";
+   	 frm.submit();
+ }
 </script>
      <!-- container  begin -->
             <div id="container">
@@ -82,6 +88,8 @@
 
 
                         <!---- search-wrap begin ---->
+                        <form  id="commonForm" name="commonForm"  method="post"  action="">
+		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
                         <div class="search-wrap">
                             <div class="search-cont">
                                 <label>기간 :</label>
@@ -148,6 +156,7 @@
                                 <button class="lg-btn navy-btn" onClick="fn_clear();">초기화</button>
                             </div>
                         </div>
+                        </form>
                         <!---- search-wrap end ---->
 
                         <!---- tit-cont begin ---->
@@ -197,6 +206,11 @@
                                             <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyWarrant.do'/>?cour_no=${result.COUR_NO}&edu_no=${result.EDU_NO}','popup');" class="sm-btn white-btn">발급하기</button></td>
                                         </tr>
                                     </c:forEach>
+                                    <c:if test="${empty resultList }">
+							             <tr>
+							                 <td colspan='8'/>Data 없습니다.</td>
+							             </tr>
+							        </c:if>
                                     </tbody>
                                 </table>
                             </div>

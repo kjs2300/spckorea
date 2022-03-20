@@ -12,4 +12,6 @@ public interface InstructorService {
 	public int getSelectListCnt(Map<String, Object> paramMap);
 	
 	public int insertData(Map<String, Object> paramMap) throws Exception;
+	
+	public int updateData(Map<String, Object> paramMap) throws Exception;
 }

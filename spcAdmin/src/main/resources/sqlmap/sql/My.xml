@@ -47,14 +47,13 @@
 		SELECT  (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY) AS CATEGORY1_NAME
 				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
 		        ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
-		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT      
+		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT, b.INST_NM
+                ,CASE WHEN b.TRAIN_S_DATE > NOW() THEN 'Y' ELSE 'N' END AS CANCEL_CHECK 
 		FROM EDU_COURSE_REGISTRATION a, 
 			 EDU_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
+		AND (USE_YN = 'Y' OR USE_YN IS NULL)
 		AND a.USER_ID = #{UserAccount.user_id}
-		<![CDATA[
-        AND TRAIN_S_DATE > NOW()  
-        ]]>
 		<if test="category1_key != '' and category1_key != null">
 			AND b.CATEGORY1_KEY = #{category1_key}
 		</if>
@@ -87,10 +86,8 @@
 		 FROM EDU_COURSE_REGISTRATION a, 
 			 EDU_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
+		AND (USE_YN = 'Y' OR USE_YN IS NULL)
 		AND a.USER_ID = #{UserAccount.user_id}
-		<![CDATA[
-        AND TRAIN_S_DATE > NOW() 
-        ]]>
 		<if test="category1_key != '' and category1_key != null">
 			AND b.CATEGORY1_KEY = #{category1_key}
 		</if>
@@ -122,7 +119,7 @@
 		        COUNT(CASE WHEN COUR_STAT!=1 THEN 1 END) AS ING_CNT
 		FROM (
 			SELECT  a.COUR_NO
-			,CASE a.COUR_STAT WHEN 1 THEN '완료' ELSE '미완료' END AS COUR_STAT      
+			,a.COUR_STAT
 			FROM EDU_COURSE_REGISTRATION a, 
 				 EDU_REGISTRATION b
 			WHERE a.EDU_NO = b.EDU_NO
@@ -165,11 +162,16 @@
 		        ,CASE a.COUR_STAT
 			 		WHEN 1 THEN '완료'
 			 		ELSE '미완료'
-				 END AS COUR_STAT         
+				 END AS COUR_STAT 
+				,CASE a.COUR_STAT
+			 		WHEN 1 THEN '교육완료'
+			 		ELSE '교육전'
+				 END AS OFF_STAT   <!-- //교육기간 확인후 수정 -->   
 		FROM EDU_COURSE_REGISTRATION a, 
 			 EDU_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
 		AND a.USER_ID = #{UserAccount.user_id}
+		AND b.EDU_SITE = #{site}
 		<![CDATA[
 		AND TRAIN_S_DATE <= NOW() 
         ]]>
@@ -209,6 +211,7 @@
 			 EDU_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
 		AND a.USER_ID = #{UserAccount.user_id}
+		AND b.EDU_SITE = #{site}
 		<![CDATA[
         AND TRAIN_S_DATE <= NOW() 
         ]]>
@@ -256,6 +259,7 @@
 			 EDU_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
 		AND a.USER_ID = #{UserAccount.user_id}
+		AND b.EDU_SITE = #{site}
 		<![CDATA[
 		AND TRAIN_S_DATE <= NOW() 
         ]]>
@@ -450,5 +454,47 @@
 		  AND a.COUR_NO = #{cour_no}
 		  AND a.EDU_NO = #{edu_no}
 		  AND a.USER_ID = #{UserAccount.user_id}
+	</select>
+	
+	<select id="getMyList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT BOARD_IDX,
+	    TITLE, LINK_URL, FILE_ID, VIEW_CNT, CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19) ) AS REG_DT, REG_ID, REG_NM,
+	    (SELECT COUNT(*) FROM edu_file WHERE FILE_KEY = BOARD_IDX AND FILE_GUBUN = 'board') AS FIEL_CNT, CONTENTS
+	      FROM edu_board
+		WHERE REG_ID = #{UserAccount.user_id}
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) = NOW()
+			</when>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) >= #{start_date} 
+		       AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+	     ORDER BY BOARD_IDX DESC
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+	
+	<select id="getMyListCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) 
+		  FROM edu_board
+		WHERE REG_ID = #{UserAccount.user_id}
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) = NOW()
+			</when>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) >= #{start_date} 
+		       AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
 	</select>
 </mapper>
