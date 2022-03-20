@@ -95,7 +95,7 @@
         	<c:forEach var="result" items="${resultList}" varStatus="status">
 	            <tr>
 	                <td><input type="checkbox" class="check-box" name='checkNo' value="${result.board_idx}" class="check-box"/></td>
-	                <td>${status.index + 1}</td>
+	                <td><c:out value="${(adBoardVo.pageIndex-1) * adBoardVo.pageSize + (status.count)}"/></td>
 	                <td class="tl">${result.title}</td>
 	                <td><button class="sm-btn white-btn">다운로드</button></td>
 	                <td>${result.reg_dt}</td>

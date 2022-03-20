@@ -69,7 +69,7 @@
 
 	function goOkPage(){	
 		var frm = document.commonForm;
-		frm.action = "<c:url value='/user/lifeEduOnLineList.do'/>";
+		frm.action = "<c:url value='/user/lifeEduOrgList02.do'/>";
 		frm.submit();
 	}
      //-->
@@ -80,7 +80,7 @@
     <div id="container">
 
         <div class="tit-wrap">
-            <h1 class="h1-tit">온라인 생명 지킴이 교육</h1>
+            <h1 class="h1-tit">기관 생명 지킴이 교육</h1>
             <div class="side-cont">
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
@@ -88,7 +88,7 @@
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                 <span>교육신청</span>
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                <span>온라인 생명 지킴이 교육</span>
+                <span>기관 생명 지킴이 교육</span>
             </div>
         </div>
 

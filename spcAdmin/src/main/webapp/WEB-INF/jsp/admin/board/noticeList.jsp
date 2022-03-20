@@ -119,7 +119,7 @@
         	  <c:forEach var="result" items="${resultList}" varStatus="status">
               <tr>
                   <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.board_idx}" class="check-box"/></td>
-                  <td>${status.index + 1}</td>
+                  <td><c:out value="${(adBoardVo.pageIndex-1) * adBoardVo.pageSize + (status.count)}"/></td>
                   <td>${result.board_type}</td>
                   <td  class="tl">${result.title}</td>
                   <c:if test="${adBoardVo.board_type =='02'}">

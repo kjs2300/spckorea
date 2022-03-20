@@ -61,10 +61,8 @@
 	                 	<a href="#">교육신청</a>
 	                 	<ul class="sub-lnb">
                         	<li <c:if test="${fn:contains(path, '/user/lifeEduOnLine') }">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/lifeEduOnLineList.do">온라인교육</a></li>
-	                    	<!-- 
 	                    	<li <c:if test="${fn:contains(path, '/user/lifeEduOrg') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/lifeEduOrgList.do">교육 기관별</a></li>
-	                    	 -->
-                        </ul>
+	                    </ul>
 	                 </li>
 		             <li <c:if test="${fn:contains(path, '/user/lifeEduSch') }">    class="on" </c:if>>   <a href="${pageContext.request.contextPath}/user/lifeEduSch.do">교육일정</a></li>
 	             	 <li <c:if test="${fn:contains(path, '/user/lifeEduBoard') }">  class="on" </c:if>> <a href="${pageContext.request.contextPath}/user/lifeEduBoardList.do">생명지킴이 활동 수기</a></li>

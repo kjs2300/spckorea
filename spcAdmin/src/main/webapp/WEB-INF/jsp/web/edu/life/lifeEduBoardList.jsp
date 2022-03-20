@@ -128,7 +128,7 @@
                    <tbody>
                    	<c:forEach var="result" items="${resultList}" varStatus="status">
                         <tr>
-                            <td>${status.index + 1}</td>
+                            <td><c:out value="${(adBoardVo.pageIndex-1) * adBoardVo.pageSize + (status.count)}"/></td>
                             <td class="tl"><a class="link" data-idx='${result.board_idx}' >${result.title}</a></td>
                             <td>${result.reg_nm}</td>
                             <td>${fn:substring(result.reg_dt,0,10) }</td>

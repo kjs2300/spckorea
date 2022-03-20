@@ -1971,4 +1971,128 @@
 		     , CHG_DT = NOW()
 		  WHERE EDU_NO = #{edu_no}
 	</update>
+	
+<select id="getLifeEduOrgList"		parameterType="com.easycompany.service.vo.CategoryVo"		resultType="com.easycompany.service.vo.CategoryVo">
+		/** com.easycompany.mapper.EduMapper.getLifeEduOrgList **/
+		WITH 
+		CLASS AS
+			(
+			SELECT A.CATEGORY1_KEY, B.CATEGORY2_KEY,C.CATEGORY3_KEY, A.CATEGORY1_NAME, 
+			  	   B.CATEGORY2_NAME,C.CATEGORY3_NAME,A.SITE
+			  FROM EDU_CLASS_CATEGORY1 AS A
+			  LEFT OUTER
+			  JOIN EDU_CLASS_CATEGORY2 AS B ON(A.CATEGORY1_KEY = B.CATEGORY1_KEY AND A.SITE = B.SITE)
+			  LEFT OUTER
+			  JOIN EDU_CLASS_CATEGORY3 AS C ON (B.CATEGORY2_KEY = C.CATEGORY2_KEY AND C.SITE = B.SITE)
+			),
+		REGI_D AS 
+		    (
+			SELECT  A.EDU_NO, A.EDU_SITE, A.CATEGORY1_KEY, A.CATEGORY2_KEY,A.CATEGORY3_KEY, B.CATEGORY1_NAME
+				   , B.CATEGORY2_NAME,B.CATEGORY3_NAME
+ 				   , A.INST_NM, A.TRAIN_S_DATE, A.TRAIN_E_DATE, A.EDU_TARGET,A.EDU_TIME
+		           , A.EDU_GARDEN, A.EDU_STATUS,A.EDU_CONT,A.EDU_METHOD, A.EXP_USE_YN
+		           , A.COPER_NM , A.COPER_NM_AUTO, A.COPER_ID, A.COPER_CHECK,A.REG_DT
+			  FROM EDU_REGISTRATION A, CLASS B
+			 WHERE A.CATEGORY1_KEY = B.CATEGORY1_KEY 
+			   AND A.CATEGORY2_KEY = B.CATEGORY2_KEY 
+			   AND A.CATEGORY3_KEY = B.CATEGORY3_KEY 
+			   AND A.CATEGORY1_KEY = #{category1_key}
+			   AND A.CATEGORY2_KEY = #{category2_key}
+			   AND A.EXP_USE_YN ='Y'
+		  	   AND A.EDU_STATUS =#{edu_status}
+			   AND A.EDU_SITE   =#{edu_site} 			   
+	        )
+	    SELECT *
+		  FROM REGI_D
+	   	 WHERE 1=1
+	   	 <choose>
+			<when test ="searchCondition !=null and searchCondition !='' and searchCondition =='INST_NM'        and searchKeyword !=null and searchKeyword !='' ">
+			   AND  INST_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
+			</when>
+			<when test ="searchCondition !=null and searchCondition !='' and searchCondition =='CATEGORY3_NAME' and searchKeyword !=null and searchKeyword !='' ">
+			  AND  CATEGORY3_NAME LIKE CONCAT('%', #{searchKeyword} ,'%')
+			</when>
+		  </choose>
+		  <choose>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='ALL' ">
+			</when>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='TODAY' ">
+				AND TRAIN_S_DATE = DATE_FORMAT(NOW(),'%x-%m-%d')
+			</when>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
+		      <![CDATA[
+		       AND  TRAIN_S_DATE >= #{train_s_date} AND TRAIN_E_DATE <= #{train_e_date} 
+		       ]]>
+			</when>
+		</choose>
+		   <if test=" sort_ordr !=null and sort_ordr =='TRAIN_S_DATE'">
+			  ORDER BY TRAIN_S_DATE  DESC
+		   </if>
+		   	<if test=" sort_ordr !=null and sort_ordr =='REG_DT'">
+			  ORDER BY REG_DT  DESC
+			 </if>
+	   	 LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+	
+	<select id="getLifeEduOrgCount"		parameterType="com.easycompany.service.vo.CategoryVo"	resultType="int">
+		/** com.easycompany.mapper.EduMapper.getLifeEduOrgCount **/
+		WITH 
+		CLASS AS
+			(
+			SELECT A.CATEGORY1_KEY, B.CATEGORY2_KEY,C.CATEGORY3_KEY, A.CATEGORY1_NAME, 
+			  	   B.CATEGORY2_NAME,C.CATEGORY3_NAME,A.SITE
+			  FROM EDU_CLASS_CATEGORY1 AS A
+			  LEFT OUTER
+			  JOIN EDU_CLASS_CATEGORY2 AS B ON(A.CATEGORY1_KEY = B.CATEGORY1_KEY AND A.SITE = B.SITE)
+			  LEFT OUTER
+			  JOIN EDU_CLASS_CATEGORY3 AS C ON (B.CATEGORY2_KEY = C.CATEGORY2_KEY AND C.SITE = B.SITE)
+			),
+		REGI_D AS 
+		    (
+			SELECT A.EDU_SITE, A.CATEGORY1_KEY, A.CATEGORY2_KEY,A.CATEGORY3_KEY, B.CATEGORY1_NAME
+				   , B.CATEGORY2_NAME,B.CATEGORY3_NAME
+ 				   , A.INST_NM, A.TRAIN_S_DATE, A.TRAIN_E_DATE, A.EDU_TARGET,A.EDU_TIME
+		           , A.EDU_GARDEN, A.EDU_STATUS,A.EDU_CONT,A.EDU_METHOD, A.EXP_USE_YN
+		           , A.COPER_NM , A.COPER_NM_AUTO, A.COPER_ID, A.COPER_CHECK,A.REG_DT
+			  FROM EDU_REGISTRATION A, CLASS B
+			 WHERE A.CATEGORY1_KEY = B.CATEGORY1_KEY 
+			   AND A.CATEGORY2_KEY = B.CATEGORY2_KEY 
+			   AND A.CATEGORY3_KEY = B.CATEGORY3_KEY 
+			   AND A.EXP_USE_YN ='Y'
+			   AND A.CATEGORY1_KEY = #{category1_key}
+			   AND A.CATEGORY2_KEY = #{category2_key}
+		  	   AND A.EDU_STATUS =#{edu_status}
+			   AND A.EDU_SITE   =#{edu_site} 
+	        )
+	    SELECT count(*)
+		  FROM REGI_D
+	   	 WHERE 1=1
+	   	  <choose>
+			<when test ="searchCondition !=null and searchCondition !='' and searchCondition =='INST_NM' and searchKeyword !=null and searchKeyword !='' ">
+			   AND  INST_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
+			</when>
+			<when test ="searchCondition !=null and searchCondition !='' and  searchCondition =='CATEGORY3_NAME' and searchKeyword !=null and searchKeyword !='' ">
+			  AND  CATEGORY3_NAME LIKE CONCAT('%', #{searchKeyword} ,'%')
+			</when>
+		  </choose>
+		  <choose>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='ALL' ">
+			</when>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='TODAY' ">
+				AND TRAIN_S_DATE = DATE_FORMAT(NOW(),'%x-%m-%d')
+			</when>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
+		      <![CDATA[
+		       AND  TRAIN_S_DATE >= #{train_s_date} AND TRAIN_E_DATE <= #{train_e_date} 
+		       ]]>
+			</when>
+		</choose>
+	</select>
+	
 </mapper>

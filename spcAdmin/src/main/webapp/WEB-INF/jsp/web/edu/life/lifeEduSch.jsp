@@ -165,7 +165,7 @@
                                     <tbody>
                                    	 <c:forEach var="result" items="${resultList}" varStatus="status">
                                         <tr>
-                                            <td>${status.index + 1}</td>
+                                            <td><c:out value="${(adBoardVo.pageIndex-1) * adBoardVo.pageSize + (status.count)}"/></td>
                                             <td>${result.train_s_date}</td>
                                             <td>${result.category1_name}</td>
                                             <td class="tl">${result.category2_name}</td>

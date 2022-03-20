@@ -40,11 +40,11 @@
 			$("#sesionId").focus();
 			return;
 		}
-		*/
+		
 		
 		$.ajax({	
 			data     : $("#commonForm").serialize(),
-		    url		 : "<c:url value='/login/loginUserCheckProcess.do'/>",
+		    url		 : "<c:url value='/login/loginUser.do'/>",
 	        dataType : "JSON",
 	        cache    : false,
 	        async    : false,
@@ -55,10 +55,10 @@
 	        error 	: function(xhr, status, error) {}
 	        
 	    });
-		
-		//var frm = document.commonForm;
-		//frm.action = "<c:url value='/login/loginCheckProcess.do'/>";
-		//frm.submit();		
+		*/
+		var frm = document.commonForm;
+		frm.action = "<c:url value='/login/loginUser.do'/>";
+		frm.submit();		
 	}	
 	
 	/** 콜백 함수 */

@@ -102,7 +102,7 @@
 	                          <c:forEach var="result" items="${resultList}" varStatus="status">
 	                          <tr>
 	                          <td><input type="radio" id='checkNo' name='checkNo' data-id='${result.user_id}' data-nm="${result.coper_nm}" class="radio-box ccheck"/></td>
-	                            <td>${status.index + 1}</td>
+	                            <td><c:out value="${(categoryVo.pageIndex-1) * categoryVo.pageSize + (status.count)}"/></td>
 	                            <td>${result.cd_nm}</td>
 	                            <td>${result.coper_nm}</td>
 	                          </tr>

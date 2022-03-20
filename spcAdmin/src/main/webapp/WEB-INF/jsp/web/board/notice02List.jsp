@@ -141,7 +141,7 @@
                                 <tbody>
                                     <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <tr>
-                                        <td>${status.index + 1}</td>
+                                        <td><c:out value="${(adBoardVo.pageIndex-1) * adBoardVo.pageSize + (status.count)}"/></td>
                                         <td class="tl"><a class="link" href="<c:url value='/adBoard/noticeReq.do?board_idx'/>">${result.title}</a></td>
                                         <td>${result.reg_nm}</td>
                                         <td><button class="sm-btn white-btn">다운로드</button></td>

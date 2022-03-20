@@ -153,7 +153,7 @@
                         <tbody>
                             <c:forEach var="result" items="${resultList}" varStatus="status">
 	                        <tr class="goView" style="cursor:pointer" data-no="${result.edu_no}" data-site="${categoryVo.edu_site}">
-	                            <td>${status.index + 1}</td>
+	                            <td><c:out value="${(categoryVo.pageIndex-1) * categoryVo.pageSize + (status.count)}"/></td>
                                 <td>${result.user_nm}</td>
                                 <td>${result.user_sex}</td>
                                 <td>${result.job_cd}</td>
