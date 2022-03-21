@@ -33,9 +33,7 @@ model.addAttribute("path", request.getServletPath());
 	                 <a href="#">교육신청</a>
 	                 <ul class="depth3">
 	                     <li><a href="${pageContext.request.contextPath}/user/lifeEduOnLineList.do">온라인교육</a></li>
-	                     <!-- 
 	                     <li><a href="${pageContext.request.contextPath}/user/lifeEduOrgList.do">교육 기관별</a></li>
-	                      -->
 	                 </ul>
 	             </li>
 	             <li><a href="${pageContext.request.contextPath}/user/lifeEduSch.do">교육일정</a></li>

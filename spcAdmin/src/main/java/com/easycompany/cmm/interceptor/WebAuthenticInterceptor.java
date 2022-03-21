@@ -24,16 +24,18 @@ public class WebAuthenticInterceptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response, Object handler) throws Exception {		
 		
 		System.out.println("System User Info");
+		
+		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "UserAccount");
+		return true;
 		/*
-		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
 		if(loginvo!=null){
 			return true;
 		}else{
-			ModelAndView modelAndView = new ModelAndView("redirect:/web/webMain.do");			
+			ModelAndView modelAndView = new ModelAndView("redirect:/user/");			
 			throw new ModelAndViewDefiningException(modelAndView);
 		}
 		*/
-		return true;
+		
 	}
 
 }

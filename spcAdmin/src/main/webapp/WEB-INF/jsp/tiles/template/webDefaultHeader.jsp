@@ -28,8 +28,10 @@ function openWindowPop(url, name){
 	<div id="header">
         <div class="top-wrap">
             <a  href="${pageContext.request.contextPath}/user/webMain.do">홈</a>|<a href="${pageContext.request.contextPath}/user/notice01List.do">공지사항</a>|<a href="${pageContext.request.contextPath}/my/my01info.do">마이페이지</a>|<a onClick="javascript:openWindowPop('<c:url value='/my/popMyClass.do'/>','popup');">나의 강의실</a>|<a Onclick="javascript:gfnLogout()">로그아웃</a>
+        	<c:if test="${sessionId.user_group_cd eq '0003'}">
+        	|<a href="${pageContext.request.contextPath}/admin/">LMS 관리자</a>
+        	</c:if>
         </div>
-
         <div class="nav-wrap">
             <a class="logo" href="${pageContext.request.contextPath}/user/webMain.do">
             	<c:if test="${not empty logoForm.logo_no }">

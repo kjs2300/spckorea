@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndViewDefiningException;
 
 import com.easycompany.cmm.service.LoginService;
 import com.easycompany.cmm.service.SampleService;
@@ -120,7 +122,43 @@ public class LoginController {
 		} catch (Exception e) {
 			loginVo.setResult( "FAIL") ;	
 		}
+		
+		
 		return loginVo;
+	}
+	
+	
+	/** 로그인 Check */
+	@RequestMapping(value = "/loginUser.do")
+	@ResponseBody
+	public LoginVo loginUser(HttpServletRequest request, LoginVo loginVo) throws Exception {
+			
+		try {
+			
+			loginVo.setUser_id(loginVo.getUserId());
+			loginVo.setSesion_id(loginVo.getSesionId());
+			
+			String shaPassword = EgovFileScrty.encryptPassword(loginVo.getPassword(), loginVo.getId());
+			loginVo.setShaPassword(shaPassword);
+			LoginVo loginVo1 = (LoginVo)loginService.userLogin(loginVo);
+			
+			if (loginVo1 == null) {
+				loginVo.setResult( "FAIL") ;	
+			}else {
+				request.getSession().setAttribute("UserAccount", loginVo1);
+				if(loginVo1.getUser_group_cd().equals("0003")) {
+					request.getSession().setAttribute("AdminAccount", loginVo1);
+				}				
+				loginVo.setResult( "SUCCESS") ;	
+			}
+			
+		} catch (Exception e) {
+			loginVo.setResult( "FAIL") ;	
+		}
+		
+		ModelAndView modelAndView = new ModelAndView("redirect:/user/");			
+		throw new ModelAndViewDefiningException(modelAndView);
+
 	}
 	
 	/** 로그인 Check */

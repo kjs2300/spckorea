@@ -24,73 +24,56 @@
 		 $("#category3_key").val(0);
 		 
 		 var frm = document.commonForm;
-		 frm.action = "<c:url value='/user/lifeEduOnLineInfo.do'/>";
+		 frm.action = "<c:url value='/user/lifeEduOrgInfo.do'/>";
 	   	 frm.submit();	   	 
 	});
+	 
+	 $("#train_e_date, #train_s_date").datepicker({
+		dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	    ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+        ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+        ,changeYear: true //option값 년 선택 가능
+        ,changeMonth: true //option값  월 선택 가능                
+        ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+        ,buttonImage: "<c:url value='/images/common/ico_calendar.png'/>" //버튼 이미지 경로
+        ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+        ,buttonText: "선택" //버튼 호버 텍스트              
+        ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+        ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+        ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+        ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+        ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+        ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+ 	});
  });
  
  function fn_search(){
 	 var frm = document.commonForm;
-	 var category1_key = $("select[name=category1_key] option:selected").val();  //교육분류1
-     var category2_key = $("select[name=category2_key] option:selected").val();  //교육분류2
-  	 var category3_key = $("select[name=category3_key] option:selected").val();  //교육명		
-  	 
-  	 var sort_ordr = $("select[name=sort_ordr] option:selected").val();  // 정렬		
+
+	 
+	 var sort_ordr = $("select[name=sort_ordr] option:selected").val();  // 정렬		
   	 var searchCondition = $("select[name=searchCondition] option:selected").val();  //검색조건		
   	 
   	 $("#sort_ordr").val(sort_ordr);
   	 $("#searchCondition").val(searchCondition);
-  	 
-  	 if (category1_key == ""){			
-	   $("#category1_key").val(0);
-	 }
-	 if (category2_key == ""){			
-		$("#category2_key").val(0);
-	 }
-	
-	 if (category3_key == ""){			
-		$("#category3_key").val(0);
-	 }	
-	 
-	 var category1_name = $("select[name=category1_key] option:selected").text();  //교육분류1
-	 var category2_name = $("select[name=category2_key] option:selected").text();  //교육분류1
-	 var category3_name = $("select[name=category3_key] option:selected").text();  //교육분류1
-	
-	 $("#category1_name").val(category1_name);
-	 $("#category2_name").val(category2_name);
-	 $("#category3_name").val(category3_name);
 	    
-	 frm.action = "<c:url value='/user/lifeEduOnLineList.do'/>";
+	 frm.action = "<c:url value='/user/lifeEduOrgList02.do'/>";
 	 frm.submit();
 }
  
  /* pagination 페이지 링크 function */
  function fn_egov_link_page(pageNo){
 	 var frm = document.commonForm;
-	 var category1_key = $("select[name=category1_key] option:selected").val();  //교육분류1
-     var category2_key = $("select[name=category2_key] option:selected").val();  //교육분류2
-  	 var category3_key = $("select[name=category3_key] option:selected").val();  //교육명		   
+
+	 var sort_ordr = $("select[name=sort_ordr] option:selected").val();  // 정렬		
+  	 var searchCondition = $("select[name=searchCondition] option:selected").val();  //검색조건		
   	 
-  	var category1_name = $("select[name=category1_key] option:selected").text();  //교육분류1
-    var category2_name = $("select[name=category2_key] option:selected").text();  //교육분류1
-    var category3_name = $("select[name=category3_key] option:selected").text();  //교육분류1
-  	
-    $("#category1_name").val(category1_name);
-    $("#category2_name").val(category2_name);
-    $("#category3_name").val(category3_name);
-  	   
-  	 if (category1_key == ""){			
-	   $("#category1_key").val(0);
-	 }
-	 if (category2_key == ""){			
-		$("#category2_key").val(0);
-	 }
-	
-	 if (category3_key == ""){			
-		$("#category3_key").val(0);
-	 }	
+  	 $("#sort_ordr").val(sort_ordr);
+  	 $("#searchCondition").val(searchCondition);
+  	 
 	 $("#pageIndex").val(pageNo); 
-	 frm.action = "<c:url value='/user/lifeEduOnLineList.do'/>";
+	 frm.action = "<c:url value='/user/lifeEduOrgList02.do'/>";
    	 frm.submit();
  }
      //-->
@@ -101,7 +84,7 @@
     <div id="container">
 
         <div class="tit-wrap">
-            <h1 class="h1-tit">온라인 생명 지킴이 교육</h1>
+            <h1 class="h1-tit">기관 생명 지킴이 교육</h1>
             <div class="side-cont">
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
@@ -109,11 +92,19 @@
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                 <span>교육신청</span>
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                <span>온라인 생명 지킴이 교육</span>
+                <span>기관 생명 지킴이 교육</span>
             </div>
         </div>
 
         <div class="contents-wrap">
+        
+        	<div class="tab-cont">
+                 <ul>
+                     <li class="on"><a href="${pageContext.request.contextPath}/user/lifeEduOrgList.do">교육 신청 방법</a></li>
+                     <li class="on">교육 신청</li>
+                 </ul>
+             </div>
+             
             <!---- search-wrap begin ---->
             <form  id="commonForm" name="commonForm"  method="post"  action="">
 			<input type="hidden" id="gubun1"     name="gubun1"    value='I'/>
@@ -121,37 +112,35 @@
 		    <input type="hidden" id="edu_site"   name="edu_site"  value='${categoryVo.edu_site}'/>
 		    <input type="hidden" id="edu_no"     name="edu_no"    value=0 />
 		    <input type="hidden" id="pageIndex"  name="pageIndex" value=1 />	
-		    <input type="hidden" id="category1_name"  name="category1_name" />	
-		    <input type="hidden" id="category2_name"  name="category2_name" />	
-		    <input type="hidden" id="category3_name"  name="category3_name" />	
 		    
             <div class="search-wrap">
+				<div class="search-cont">
+                     <label>교육일 :</label>
+                     <div class="radio-cont">
+                         <input type="radio" class="radio-box cdate" id="checkdate" name="checkdate" value="ALL"   <c:if test="${categoryVo.checkdate =='ALL'  }">checked </c:if>  >
+                         <label for="dateAll">전체</label>
+                     </div>
+                       
+                     <div class="radio-cont">
+                         <input type="radio" class="radio-box cdate" id="checkdate" name="checkdate" value="TODAY"  <c:if test="${categoryVo.checkdate =='TODAY'}">checked </c:if>  >
+                         <label for="dateToday">오늘</label>
+                     </div>
+                     
+                     <div class="radio-cont mr10">
+                         <input type="radio" class="radio-box cdate" id="checkdate" name="checkdate" value="TERM" <c:if test="${categoryVo.checkdate =='TERM'}">checked </c:if>  >
+                         <label for="dateTerm">기간선택</label>
+                     </div>
+                     <div class="picker-wrap">
+                         <input type="text"  id="train_s_date" name="train_s_date" readonly value="${categoryVo.train_s_date}" class="input-box"/>
+                         <span class="next-ico">-</span>
+                         <input type="text"  id="train_e_date" name="train_e_date" readonly value="${categoryVo.train_e_date}" class="input-box"/>
+                     </div>
+                 </div>
                 <div class="search-cont">
-                    <label>분류 :</label>
-                    <select class="select" id="category1_key" name="category1_key">
-                        <option value=''>선택 하세요</option>
-                    	<c:forEach var="result" items="${category1list}" varStatus="status">
-                        	<option value='${result.code_cd}' <c:if test="${categoryVo.category1_name == result.code_name}">selected </c:if> >${result.code_name}</option>
-                        </c:forEach>
-                    </select>                   
-                    <select class="select" id="category2_key" name="category2_key">
-                        <option value=''>선택 하세요</option>
-                    	<c:forEach var="result" items="${category2list}" varStatus="status">
-                        	<option value='${result.code_cd}' <c:if test="${categoryVo.category2_name == result.code_name}">selected </c:if>>${result.code_name}</option>
-                        </c:forEach>
-                    </select>
-                    <select class="select" id="category3_key" name="category3_key">
-                        <option value=''>선택 하세요</option>
-                    	<c:forEach var="result" items="${category3list}" varStatus="status">
-                        	<option value='${result.code_cd}' <c:if test="${categoryVo.category3_name == result.code_name}">selected </c:if> >${result.code_name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div class="search-cont">
-                    <label>기타 :</label>
+                    <label>검색 :</label>
                     <select id="searchCondition"     name="searchCondition" class="select">
                         <option value="CATEGORY3_NAME" <c:if test="${categoryVo.searchCondition =='CATEGORY3_NAME'}">selected </c:if>>교육명</option>
-                        <option value="INST_NM"        <c:if test="${categoryVo.searchCondition =='INST_NM'}">selected </c:if>>강사명</option>
+                        <option value="TRAIN_S_DATE"   <c:if test="${categoryVo.searchCondition =='TRAIN_S_DATE'}">selected </c:if>>교육기관</option>
                     </select>
                     <input id="searchKeyword" name="searchKeyword" type="text" value='${categoryVo.searchKeyword}' class="input-box" placeholder="직접입력"/>
                 </div>

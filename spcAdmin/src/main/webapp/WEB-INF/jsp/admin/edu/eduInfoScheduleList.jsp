@@ -294,7 +294,7 @@
                  	  <c:forEach var="result" items="${resultList}" varStatus="status">
                        <tr>
                            <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.edu_key}" class="check-box"/></td>
-                           <td>${status.index + 1}</td>
+                           <td><c:out value="${(categoryVo.pageIndex-1) * categoryVo.pageSize + (status.count)}"/></td>
                            <td>${result.edu_start_date}</td>
                            <td>${result.edu_org_name}</td>
                            <td>${result.category1_name}</td>
