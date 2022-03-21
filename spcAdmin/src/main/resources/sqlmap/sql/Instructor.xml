@@ -86,7 +86,113 @@
 	
 	
 	<!-- 관리자 -->
+	<select id="getInstructorAllCnt" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT COUNT(b.USER_ID) AS ALL_CNT
+			  ,COUNT(CASE b.INS_STATUS WHEN '1' THEN 1 END) AS CNT1
+			  ,COUNT(CASE b.INS_STATUS WHEN '2' THEN 1 END) AS CNT2
+			  ,COUNT(CASE b.INS_STATUS WHEN '3' THEN 1 END) AS CNT3
+        FROM (
+        SELECT  USER_ID
+			   ,(SELECT STATUS FROM EDU_INSTRUCTOR WHERE COM_USER_ID = a.USER_ID) AS INS_STATUS
+		FROM COM_USER a
+		where 1=1
+		AND a.EDU_AUTH_CD IN ('03','04')
+		<if test=" category3_key !=null and category3_key !=0 and category_chk == 'ALL'">
+			AND a.USER_ID IN (SELECT DISTINCT USER_ID FROM COM_USER_EDUINFO WHERE EDU_CD = #{category3_key})
+		</if>
+        ) b
+	</select>
+	
+	<select id="getInstructorList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT a.* 
+			   ,(SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = a.AREA_CD) AS AREA_NM
+			   ,CASE
+					   WHEN a.USER_SEX = 'M' THEN '남자'
+					   WHEN a.USER_SEX = 'W' THEN '여자'
+					   ELSE a.USER_SEX
+				      END AS USER_SEX_NM
+			   ,(SELECT CASE WHEN STATUS = '1' THEN '활동' 
+						 WHEN STATUS = '2' THEN '상실' 
+	                     WHEN STATUS = '3' THEN '휴직' 
+					END
+				 FROM EDU_INSTRUCTOR WHERE COM_USER_ID = a.USER_ID) AS INS_STATUS
+			   ,(SELECT CASE WHEN CLASS = '1' THEN '일반' 
+							 WHEN CLASS = '2' THEN '실무자' 
+		                     WHEN CLASS = '3' THEN '기관' 
+		                     WHEN CLASS = '4' THEN '기업' 
+						END
+				 FROM EDU_INSTRUCTOR WHERE COM_USER_ID = a.USER_ID) AS INS_CLASS
+			   ,'' AS EDU_COUNT
+			   ,'' AS EDU_ALL_COUNT
+			   ,'' AS EDU_COUNT
+			   ,'' AS LICENSE_DT
+		FROM COM_USER a
+		where 1=1
+		AND a.EDU_AUTH_CD IN ('03','04')
+		<if test=" category3_key !=null and category3_key !=0 and category_chk == 'ALL'">
+			AND a.USER_ID IN (SELECT DISTINCT USER_ID FROM COM_USER_EDUINFO WHERE EDU_CD = #{category3_key})
+		</if>
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+
+	<select id="getInstructorListCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) 
+		FROM COM_USER a
+		where 1=1
+		AND a.EDU_AUTH_CD IN ('03','04')
+		<if test=" category3_key !=null and category3_key !=0 and category_chk == 'ALL'">
+			AND a.USER_ID IN (SELECT DISTINCT USER_ID FROM COM_USER_EDUINFO WHERE EDU_CD = #{category3_key})
+		</if>
+	</select>
+	
 	<select id="getCodeList" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT CD, CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '${code}'
 	</select>
+	
+	<select id="getInstructorView" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT a.*
+		FROM COM_USER a
+		WHERE a.USER_ID = #{user_id}
+	</select>
+	
+	<update id="updateUserData" parameterType="java.util.Map">	
+		UPDATE COM_USER
+		SET	USER_NM = #{user_nm}, 	
+		<if test="password != null and password != ''">
+			PASSWORD = #{shaPassword}, 	
+		</if>
+			TELNO = #{telno},
+			MBL_TELNO = #{mbl_telno},
+			FAXNO = #{faxno},
+			EML_ADDR = CONCAT(#{eml_addr1},'@',#{eml_addr2}),
+			USER_SEX = #{user_sex},
+			AREA_CD = #{area_cd},
+			COPER_NM = #{coper_nm}
+		WHERE USER_ID = #{user_id} 		
+	</update>
+	
+	<insert id="updateInstructorData" parameterType="java.util.Map">	
+		 INSERT INTO
+      		EDU_INSTRUCTOR (
+	         COM_USER_ID,
+	         STATUS,
+	         CLASS,
+	         REG_DT,
+	         REG_ID,
+	         USE_YN
+		      )
+		   VALUES (
+		      #{user_id},
+		      #{status},
+		      #{class},
+		      DATE_FORMAT(NOW(),'%x-%m-%d'),
+		      #{UserAccount.user_id},
+		      'Y'
+		   )
+		   ON
+		      DUPLICATE KEY
+		   UPDATE
+		      STATUS = #{status},
+		      CLASS = #{class}    
+	</insert>
 </mapper>
