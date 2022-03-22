@@ -243,10 +243,10 @@ function fn_goList(){
                             <tr>
                                 <th>휴직이력</th><!-- 휴직이력 및 기간 DB구조상 수정불가 -->
                                 <td>
-                                    <input type="text" class="input-box" value=""/>
+                                    <input type="text" class="input-box" value="" readOnly/>
                                 </td>
                                 <th>신청서 보기</th>
-                                <td>
+                                <td> 
                                     <a class="link block">신청서1</a>
                                     <a class="link block">신청서2</a>
                                     <a class="link block">신청서3</a>
@@ -256,9 +256,9 @@ function fn_goList(){
                                 <th>휴직기간</th>
                                 <td colspan="3">
                                     <div class="picker-wrap">
-                                        <input type="text" id="datepickerFrom02" class="input-box"/>
+                                        <input type="text" id="datepickerFrom02" class="input-box" readOnly/>
                                         <span class="next-ico">-</span>
-                                        <input type="text" id="datepickerTo02" class="input-box"/>
+                                        <input type="text" id="datepickerTo02" class="input-box" readOnly/>
                                     </div>
                                 </td>
                             </tr>
