@@ -124,11 +124,11 @@ public class WarrantController {
 			paramMap.put("AdminAccount", request.getSession().getAttribute("AdminAccount"));
 			
 			
-			if ("I".equals(paramMap.get("gubun").toString())) { // 저장
+			if ("I".equals(paramMap.get("actFlag").toString())) { // 저장
 				paramMap.put("sqlName", "warrantSave");
 				resultCnt = warrantService.insertData(paramMap);
 				
-			} else if("E".equals(paramMap.get("gubun").toString())) { // 수정
+			} else if("E".equals(paramMap.get("actFlag").toString())) { // 수정
 				paramMap.put("sqlName", "warrantUpdate");
 				resultCnt = warrantService.updateData(paramMap);
 			}
