@@ -2,21 +2,21 @@ package com.easycompany.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.easycompany.service.vo.WarrantVo;
 
 public interface WarrantService {
 
-	List<WarrantVo> warrantOnlineList(WarrantVo warrantVo);
-
-	int warrantOnlineListCnt(WarrantVo warrantVo);
-
-	WarrantVo selectDetailOnline(WarrantVo warrantVo);
-
-	int warrantSave(WarrantVo warrantVo);
-
-	int warrantUpdate(WarrantVo warrantVo);
-
-	int warrantDel(HashMap<String, Object> map);
-
+	public List<Map<String, Object>> getSelectList(Map<String, Object> paramMap) throws Exception;
+	
+	public Map<String, Object> getSelectData(Map<String, Object> paramMap) throws Exception;
+	
+	public int getSelectListCnt(Map<String, Object> paramMap);
+	
+	public int insertData(Map<String, Object> paramMap) throws Exception;
+	
+	public int updateData(Map<String, Object> paramMap) throws Exception;
+	
+	public int deleteData(Map<String, Object> paramMap) throws Exception;
 }

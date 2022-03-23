@@ -2,7 +2,9 @@ package com.easycompany.mapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.easycompany.service.vo.WarrantVo;
@@ -14,28 +16,28 @@ public class WarrantMapper extends EgovAbstractMapper {
 	
 	String nameSpace = "com.easycompany.mapper.WarrantMapper";
 
-	public List<WarrantVo> warrantOnlineList(WarrantVo warrantVo) {
-		return selectList(nameSpace + ".warrantOnlineList", warrantVo);
+	public List<Map<String, Object>> getSelectList(Map<String, Object> paramMap) throws DataAccessException {
+		return selectList(this.nameSpace + "." + paramMap.get("sqlName"), paramMap);
 	}
-
-	public int warrantOnlineListCnt(WarrantVo warrantVo) {
-		return selectOne(nameSpace + ".warrantOnlineListCnt", warrantVo);
+	
+	public Map<String, Object> getSelectData(Map<String, Object> paramMap) throws DataAccessException {
+		return selectOne(this.nameSpace + "." + paramMap.get("sqlName"), paramMap);
 	}
-
-	public WarrantVo selectDetailOnline(WarrantVo warrantVo) {
-		return selectOne(nameSpace + ".selectDetailOnline", warrantVo);
+  
+	public int getSelectListCnt(Map<String, Object> paramMap) {
+		return ((Integer)selectOne(this.nameSpace + "." + paramMap.get("sqlName"), paramMap)).intValue();
 	}
-
-	public int warrantSave(WarrantVo warrantVo) {
-		return insert(nameSpace + ".warrantSave", warrantVo);
+	
+	public int insertData(Map<String, Object> paramMap) throws DataAccessException {
+		return insert(this.nameSpace + "." + paramMap.get("sqlName"), paramMap);
 	}
-
-	public int warrantUpdate(WarrantVo warrantVo) {
-		return (Integer) update(nameSpace + ".warrantUpdate", warrantVo);
+	
+	public int updateData(Map<String, Object> paramMap) throws DataAccessException {
+		return update(this.nameSpace + "." + paramMap.get("sqlName"), paramMap);
 	}
-
-	public int warrantDel(HashMap<String, Object> map) {
-		return (Integer) update(nameSpace + ".warrantDel", map);
+	
+	public int deleteData(Map<String, Object> paramMap) throws DataAccessException {
+		return delete(this.nameSpace + "." + paramMap.get("sqlName"), paramMap);
 	}
 
 }

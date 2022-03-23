@@ -2,6 +2,7 @@ package com.easycompany.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,35 +25,27 @@ public class WarrantServiceImpl extends EgovAbstractServiceImpl implements Warra
 	@Value("#{dbinfo['file.path']}")
 	private String filePath;
 
-	@Override
-	public List<WarrantVo> warrantOnlineList(WarrantVo warrantVo) {
-		return warrantMapper.warrantOnlineList(warrantVo);
+	public List<Map<String, Object>> getSelectList(Map<String, Object> paramMap) throws Exception {
+		return warrantMapper.getSelectList(paramMap);
 	}
-
-	@Override
-	public int warrantOnlineListCnt(WarrantVo warrantVo) {
-		return warrantMapper.warrantOnlineListCnt(warrantVo);
+	
+	public Map<String, Object> getSelectData(Map<String, Object> paramMap) throws Exception {
+		return warrantMapper.getSelectData(paramMap);
 	}
-
-	@Override
-	public WarrantVo selectDetailOnline(WarrantVo warrantVo) {
-		return warrantMapper.selectDetailOnline(warrantVo);
+	
+	public int getSelectListCnt(Map<String, Object> paramMap) {
+		return warrantMapper.getSelectListCnt(paramMap);
 	}
-
-	@Override
-	public int warrantSave(WarrantVo warrantVo) {
-		return warrantMapper.warrantSave(warrantVo);
+	
+	public int insertData(Map<String, Object> paramMap) throws Exception {
+		return warrantMapper.insertData(paramMap);
 	}
-
-	@Override
-	public int warrantUpdate(WarrantVo warrantVo) {
-		return warrantMapper.warrantUpdate(warrantVo);
+	
+	public int updateData(Map<String, Object> paramMap) throws Exception {
+		return warrantMapper.updateData(paramMap);
 	}
-
-	@Override
-	public int warrantDel(HashMap<String, Object> map) {
-		return warrantMapper.warrantDel(map);
+	
+	public int deleteData(Map<String, Object> paramMap) throws Exception {
+		return warrantMapper.deleteData(paramMap);
 	}
-
-
 }
