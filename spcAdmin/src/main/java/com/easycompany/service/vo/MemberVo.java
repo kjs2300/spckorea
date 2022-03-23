@@ -84,6 +84,10 @@ public class MemberVo extends DefaultVO {
 	private String userId;
 	private String sesionId;
 	private String edu_auth_cd_nm;
+	private String org_manage_yn;        // 기관관리자 신청여부
+	private String org_manage_sttus_cd; // 기관관리자 신청상태코드
+	private boolean isInstLmsAdmin;      // LMS 기관 관리자 여부
+	private boolean isLmsAdmin;           // LMS 관리자 여부
 	
 	
 	private boolean isAdmin; // 관리자 여부
@@ -485,6 +489,30 @@ public class MemberVo extends DefaultVO {
 	}
 	public void setEdu_auth_cd_nm(String edu_auth_cd_nm) {
 		this.edu_auth_cd_nm = edu_auth_cd_nm;
+	}
+	public String getOrg_manage_yn() {
+		return org_manage_yn;
+	}
+	public void setOrg_manage_yn(String org_manage_yn) {
+		this.org_manage_yn = org_manage_yn;
+	}
+	public String getOrg_manage_sttus_cd() {
+		return org_manage_sttus_cd;
+	}
+	public void setOrg_manage_sttus_cd(String org_manage_sttus_cd) {
+		this.org_manage_sttus_cd = org_manage_sttus_cd;
+	}
+	public boolean isInstLmsAdmin() {
+		return isInstLmsAdmin;
+	}
+	public void setInstLmsAdmin(boolean isInstLmsAdmin) {
+		this.isInstLmsAdmin = isInstLmsAdmin;
+	}
+	public boolean isLmsAdmin() {
+		return isLmsAdmin;
+	}
+	public void setLmsAdmin(boolean isLmsAdmin) {
+		this.isLmsAdmin = isLmsAdmin;
 	}
 	
 	
