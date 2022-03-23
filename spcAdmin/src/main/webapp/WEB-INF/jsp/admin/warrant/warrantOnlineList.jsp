@@ -89,16 +89,16 @@
         <tbody>
         	<c:forEach var="result" items="${resultList}" varStatus="status">
 	            <tr>
-	                <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.license_idx}" class="check-box"/></td>
+	                <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.LICENSE_IDX}" class="check-box"/></td>
 	                <td>${status.index + 1}</td>
-	                <td>${result.category1_name}</td>
-	                <td>${result.category2_name}</td>
-	                <td class="tl">${result.category3_name}</td>
-	                <td><c:if test="${result.license_status}">비활성</c:if> <c:if test="${!result.license_status}">활성</c:if></td>
-	                <td>${result.reg_dt}</td>
+	                <td>${result.CATEGORY1_NAME}</td>
+	                <td>${result.CATEGORY2_NAME}</td>
+	                <td class="tl">${result.CATEGORY3_NAME}</td>
+	                <td>${result.LICENSE_STATUS}</td>
+	                <td>${result.REG_DT}</td>
 	                <td>
-	                    <button class="sm-btn black-btn" onClick="javascript:fn_edit('${result.license_idx}');">수정</button>
-	                    <button class="sm-btn white-btn" onClick="javascript:fn_delete('${result.license_idx}');">삭제</button>
+	                    <button class="sm-btn black-btn" onClick="javascript:fn_edit('${result.LICENSE_IDX}');">수정</button>
+	                    <button class="sm-btn white-btn" onClick="javascript:fn_delete('${result.LICENSE_IDX}');">삭제</button>
 	                </td>
 	            </tr>
             </c:forEach>
@@ -222,7 +222,7 @@ var btnDel = function() {
 
 var setDel = function(idxArray){
     $.ajax({
-        url: "/warrant/warrantDel.do",
+        url: "<c:url value='/warrant/warrantDel.do'/>",
         type: "POST",
         data: { "boardIdxArray" : idxArray },
         success: function(data) {

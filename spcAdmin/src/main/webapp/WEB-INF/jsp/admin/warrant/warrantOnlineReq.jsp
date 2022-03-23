@@ -24,7 +24,7 @@
 <form id="commonForm" name="commonForm" method="post">
 <input type="hidden" name="license_idx" id="license_idx" value="${license_idx}">
 <input type="hidden" id="license_type"   name="license_type"  value="A"/>
-<input type="text" id="actFlag"  name="actFlag" value="${actFlag}" />
+<input type="hidden" id="actFlag"  name="actFlag" value="${actFlag}" />
 <div class="table-wrap">
     <table class="detail-tb">
         <caption>기본양식, 분류선택, 수료증 발급 활성화 정보가 있는 테이블</caption>
@@ -65,11 +65,11 @@
                 <th>수료증 발급 활성화</th>
                 <td>
                     <div class="radio-cont">
-                        <input type="radio" class="radio-box" id="license_status" name="license_status" value="false" <c:if test="${!detailData.license_status}">checked </c:if>/>
+                        <input type="radio" class="radio-box" id="license_status" name="license_status" value="0" <c:if test="${result.LICENSE_STATUS == false}">checked </c:if>/>
                         <label for="">활성</label>
                     </div>
                     <div class="radio-cont">
-                        <input type="radio" class="radio-box" id="license_status" name="license_status" value="true" <c:if test="${detailData.license_status}">checked </c:if>/>
+                        <input type="radio" class="radio-box" id="license_status" name="license_status" value="1" <c:if test="${result.LICENSE_STATUS == true}">checked </c:if>/>
                         <label for="">비활성</label>
                     </div>
                 </td>

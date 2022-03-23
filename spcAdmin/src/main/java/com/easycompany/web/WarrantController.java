@@ -103,11 +103,23 @@ public class WarrantController {
 		paramMap.put("sqlName", "getCategoryList1");
 		List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
 		model.addAttribute("category1list", category1list);
-		if(paramMap.get("actFlag") == "U") {
+		if(paramMap.get("actFlag").toString().equals("U")) {
 			paramMap.put("license_type", "A");
 			paramMap.put("sqlName", "selectDetailOnline");	
 			Map<String, Object> result = warrantService.getSelectData(paramMap);
 		  	model.addAttribute("result", result);
+		  	
+		  	paramMap.put("category1_key", result.get("CATEGORY1_KEY"));
+		  	paramMap.put("category2_key", result.get("CATEGORY2_KEY"));
+		  	paramMap.put("category3_key", result.get("CATEGORY3_KEY"));
+		  	
+			paramMap.put("sqlName", "getCategoryList2");
+			List<Map<String, Object>> category2list = sectorService.getSelectList(paramMap);
+			model.addAttribute("category2list", category2list);
+			  
+			paramMap.put("sqlName", "getCategoryList3");
+			List<Map<String, Object>> category3list = sectorService.getSelectList(paramMap);
+			model.addAttribute("category3list", category3list);
 		}
 		model.addAttribute("path", request.getServletPath());
 		model.addAllAttributes(paramMap);
@@ -120,15 +132,13 @@ public class WarrantController {
 		int resultCnt = 0;
 		 Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			
 			paramMap.put("AdminAccount", request.getSession().getAttribute("AdminAccount"));
-			
 			
 			if ("I".equals(paramMap.get("actFlag").toString())) { // 저장
 				paramMap.put("sqlName", "warrantSave");
 				resultCnt = warrantService.insertData(paramMap);
 				
-			} else if("E".equals(paramMap.get("actFlag").toString())) { // 수정
+			} else if("U".equals(paramMap.get("actFlag").toString())) { // 수정
 				paramMap.put("sqlName", "warrantUpdate");
 				resultCnt = warrantService.updateData(paramMap);
 			}
@@ -267,22 +277,22 @@ public class WarrantController {
 	
 	@RequestMapping(value = "/warrantDel.do")
 	@ResponseBody
-	public String warrantDel(HttpServletRequest request, @RequestParam(value="boardIdxArray[]") List<String> boardIdxStrArray) throws Exception {
+	public String warrantDel(HttpServletRequest request, @RequestParam(value="boardIdxArray[]") List<String> boardIdxStrArray, @RequestParam Map<String, Object> paramMap) throws Exception {
 		int resultCnt = 0;
 		String result = "";
 		try {
 			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
-			List<Long> boardIdxList = new ArrayList<Long>();
+			/*List<Long> boardIdxList = new ArrayList<Long>();
 			
 			for(String idxStr : boardIdxStrArray){
 				boardIdxList.add(Long.parseLong(idxStr));
 			}
 			
 		    HashMap<String, Object> map = new HashMap<String, Object>();
-		    map.put("boardIdxList", boardIdxList);
-		    
-		    map.put("sqlName", "warrantDel");
-		    resultCnt = warrantService.deleteData(map);
+		    map.put("boardIdxList", boardIdxList);*/
+			paramMap.put("boardIdxList", boardIdxStrArray); 
+		    paramMap.put("sqlName", "warrantDel");
+		    resultCnt = warrantService.deleteData(paramMap);
 		    result = (resultCnt > 0 ? "SUCCESS" : "FAIL");
 		    
 		} catch (Exception e) {

@@ -5,13 +5,26 @@
 
 	<select id="warrantOnlineList" parameterType="java.util.Map"	resultType="java.util.Map">
 		 /**  com.easycompany.mapper.WarrantMapper.warrantOnlineList **/
-	    SELECT LICENSE_IDX, CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY, CATEGORY1_NAME, CATEGORY2_NAME, CATEGORY3_NAME,
-	    	CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS REG_DT, REG_ID, LICENSE_STATUS
-	      FROM edu_license
+	    SELECT a.LICENSE_IDX, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = a.CATEGORY1_KEY) AS CATEGORY1_NAME
+				, (SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = a.CATEGORY2_KEY) AS CATEGORY2_NAME
+			    , (SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = a.CATEGORY3_KEY) AS CATEGORY3_NAME
+			    ,CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19) ) AS REG_DT, REG_ID, 
+			    CASE WHEN LICENSE_STATUS = 0 THEN '활성' WHEN LICENSE_STATUS = 1 THEN '비활성' END AS LICENSE_STATUS
+				      FROM edu_license a
 	      WHERE 1=1
+	      AND USE_YN = 'Y'
 	      <if test="license_type !=null and license_type != ''">
 	      	AND LICENSE_TYPE = #{license_type}
 	      </if>
+	      <if test="category1_key != '' and category1_key != null">
+				AND CATEGORY1_KEY = #{category1_key}
+			</if>
+			<if test="category2_key != '' and category2_key != null">
+				AND CATEGORY2_KEY = #{category2_key}
+			</if>
+			<if test="category3_key != '' and category3_key != null">
+				AND CATEGORY3_KEY = #{category3_key}
+			</if>
 	     ORDER BY LICENSE_IDX DESC
 	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}
 	</select>
@@ -21,7 +34,20 @@
     	/**  com.easycompany.mapper.WarrantMapper.warrantOnlineListCnt **/
 		 SELECT COUNT(*) cnt
 	       FROM edu_license
-	     <include refid="search"/>
+	      WHERE 1=1 
+	      AND USE_YN = 'Y'
+	      <if test="license_type !=null and license_type != ''">
+	      	AND LICENSE_TYPE = #{license_type}
+	      </if>
+	      <if test="category1_key != '' and category1_key != null">
+				AND CATEGORY1_KEY = #{category1_key}
+			</if>
+			<if test="category2_key != '' and category2_key != null">
+				AND CATEGORY2_KEY = #{category2_key}
+			</if>
+			<if test="category3_key != '' and category3_key != null">
+				AND CATEGORY3_KEY = #{category3_key}
+			</if>
 	</select>
 	
 	<select id="selectDetailOnline" parameterType="java.util.Map" resultType="java.util.Map">
@@ -46,9 +72,6 @@
 	      	 CATEGORY1_KEY
 	      	, CATEGORY2_KEY
 	      	, CATEGORY3_KEY
-	      	, CATEGORY1_NAME
-	      	, CATEGORY2_NAME
-	      	, CATEGORY3_NAME
 	      	, REG_ID
 	      	, LICENSE_TYPE
 		) 
@@ -57,9 +80,6 @@
 			 #{category1_key}
 			, #{category2_key}
 			, #{category3_key}
-			, #{category1_name}
-			, #{category2_name}
-			, #{category3_name}
 			, IFNULL(#{reg_id},'SYSTEM')
 			, #{license_type}
 		)	
@@ -72,9 +92,6 @@
 	      	 CATEGORY1_KEY =  #{category1_key}
 	      	, CATEGORY2_KEY =  #{category2_key}
 	      	, CATEGORY3_KEY =  #{category3_key}
-	      	, CATEGORY1_NAME = #{category1_name}
-	      	, CATEGORY2_NAME = #{category2_name}
-	      	, CATEGORY3_NAME = #{category3_name}
 	      	, LICENSE_STATUS = #{license_status}
 	      	, CHG_DT = date_format(current_timestamp(),'%Y%m%d%H%i%s')
 		    , CHG_ID = IFNULL(#{chg_id},'SYSTEM')
