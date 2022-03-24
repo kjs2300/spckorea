@@ -38,4 +38,9 @@
        <put-attribute name="body" value="/WEB-INF/jsp/admin/warrant/warrantOrgReq.jsp" />  
    </definition>
    
+   <definition name="warrantNumber" extends="base-definition">  
+       <put-attribute name="title" value="번호수료증" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/warrant/warrantNumber.jsp" />  
+   </definition>
+   
 </tiles-definitions>

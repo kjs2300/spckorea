@@ -179,7 +179,7 @@ function commonCallBack(obj){
 		
 		if(result == "SUCCESS"){				
 			alert("성공하였습니다.");				
-			fn_load('R');				 
+			document.location = "<c:url value='/warrant/warrantOnlineList.do'/>";  		 
 		} else if(result == "EXIST"){				
 			alert("이미 등록 되었습니다.");	
 			return false;
@@ -189,11 +189,5 @@ function commonCallBack(obj){
 		}
 	}
 }
-
-function fn_load(str) {
-	var frm = document.commonForm;
-	frm.action = "<c:url value='/warrant/warrantOnlineList.do'/>";    
-	frm.submit();
- }
  
 </script>

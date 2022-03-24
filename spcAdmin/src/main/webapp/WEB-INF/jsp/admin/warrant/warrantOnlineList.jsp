@@ -27,7 +27,6 @@
     <input type="hidden" id="category2" name="category2" value="${category2_key}">
     <input type="hidden" id="category3" name="category3" value="${category3_key}">
     <input type="hidden" id="license_idx"   name="license_idx"  value="${warrantVo.license_idx}"/>
-    <input type="hidden" id="gubun1"      name="gubun1"     value='I'   />
     <input type="hidden" id="license_type"   name="license_type"  value="A"/>
     <div class="search-cont">
         <select class="select mr30"  id="category1_key" name="category1_key">

@@ -21,32 +21,43 @@
 </div>
 
 <div class="search-wrap">
-    <form id="listForm" name="listForm" target="_self" action="/warrant/warrantOfflineList.do" method="post" onsubmit="">
-    <input type="hidden" id="license_idx"   name="license_idx"  value="${warrantVo.license_idx}"/>
-    <input type="hidden" id="gubun1"      name="gubun1"     value='I'   />
-    <input type="hidden" id="license_type"   name="license_type"  value="B"/>
+    <form id="listForm" name="listForm" target="_self" action="" method="post" onsubmit="">
+    <input type="hidden" id="category1" name="category1" value="${category1_key}">
+    <input type="hidden" id="category2" name="category2" value="${category2_key}">
+    <input type="hidden" id="category3" name="category3" value="${category3_key}">
+    <input type="hidden" id="LICENSE_IDX"   name="LICENSE_IDX"  value="${warrantVo.LICENSE_IDX}"/>
+    <input type="hidden" id="license_type"   name="license_type"  value="A"/>
     <div class="search-cont">
-        <select class="select">
-            <option>분류1</option>
+        <select class="select mr30"  id="category1_key" name="category1_key">
+        	<option value=''>선택 하세요</option>
+			<c:forEach var="result" items="${category1list}" varStatus="status">
+				<c:if test="${result.CATEGORY1_KEY != '7'}">
+			     <option value='${result.CATEGORY1_KEY}' <c:if test="${category1_key == result.CATEGORY1_KEY}">selected</c:if>>${result.CATEGORY1_NAME}</option>
+			     </c:if>
+			 </c:forEach>
+		</select>
+        <select class="select"  id="category2_key" name="category2_key">
+        	<option value=''>선택 하세요</option> 
+			<c:forEach var="result" items="${category2list}" varStatus="status">
+			     <option value='${result.CATEGORY2_KEY}' <c:if test="${category2_key == result.CATEGORY2_KEY}">selected</c:if>>${result.CATEGORY2_NAME}</option>
+			</c:forEach>
         </select>
-
-        <select class="select">
-            <option>분류2</option>
-        </select>
-
-        <select class="select">
-            <option>분류3</option>
+        <select class="select lg-width"  id="category3_key" name="category3_key">
+            <option value=''>선택 하세요</option>
+			<c:forEach var="result" items="${category3list}" varStatus="status">
+			     <option value='${result.CATEGORY3_KEY}' <c:if test="${category3_key == result.CATEGORY3_KEY}">selected</c:if>>${result.CATEGORY3_NAME}</option>
+			</c:forEach>
         </select>
 
         <button class="search-btn">검색</button>
-        <button class="search-btn white-btn ml20">초기화</button>
+        <button class="search-btn white-btn ml20" onclick="fn_clearBtn();">초기화</button>
     </div>
     </form>
 
 </div>
 
 <div class="btn-cont mb20">
-    <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/warrant/warrantOfflineReq.do' />'; ">등록</button>
+    <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/warrant/warrantOfflineReq.do' />?actFlag=I'; ">등록</button>
     <button class="mid-btn white-btn" onClick="javascript:btnDel();">선택삭제</button>
 </div>
 
@@ -80,17 +91,17 @@
         <tbody>
         	<c:forEach var="result" items="${resultList}" varStatus="status">
 	            <tr>
-	                <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.license_idx}" class="check-box"/></td>
+	                <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.LICENSE_IDX}" class="check-box"/></td>
 	                <td>${status.index + 1}</td>
-	                <td>${result.category1_name}</td>
-	                <td>${result.category2_name}</td>
-	                <td class="tl">${result.category3_name}</td>
-	                <td>2021.10.05</td>
-	                <td><c:if test="${result.license_status}">비활성</c:if> <c:if test="${!result.license_status}">활성</c:if></td>
-	                <td>${result.reg_dt}</td>
+	                <td>${result.CATEGORY1_NAME}</td>
+	                <td>${result.CATEGORY2_NAME}</td>
+	                <td class="tl">${result.CATEGORY3_NAME}</td>
+	                <td>${result.EDU_EDATE}</td>
+	                <td>${result.LICENSE_STATUS}</td>
+	                <td>${result.REG_DT}</td>
 	                <td>
-	                    <button class="sm-btn black-btn" onClick="javascript:fn_edit('${result.license_idx}',  'E', 'warrantOfflineList');">수정</button>
-	                    <button class="sm-btn white-btn" onClick="javascript:fn_delete('${result.license_idx}');">삭제</button>
+	                    <button class="sm-btn black-btn" onClick="javascript:fn_edit('${result.LICENSE_IDX}');">수정</button>
+	                    <button class="sm-btn white-btn" onClick="javascript:fn_delete('${result.LICENSE_IDX}');">삭제</button>
 	                </td>
 	            </tr>
             </c:forEach>
@@ -112,12 +123,70 @@
 <script type="text/javascript">
  
  $(document).ready(function(){
+	 $('#category1_key').change(function(){
+	 		var val  = $(this).val();
+
+			if( val ==""){
+				return;
+			}
+			
+			$("#category2_key").val("");
+			$("#category3_key").val("");
+			
+			 $.ajax({	
+			    url     : "<c:url value='/user/category2list.do'/>",
+			    data    : $("#listForm").serialize(),
+		        dataType: "JSON",
+		        cache   : false,
+				async   : true,
+				type	: "POST",	
+				success: function(data, opt, inx){
+				var option = '';
+				option += '<option value="">선택 하세요</opton>'; //선택
+				$.each(data, function(i, ret){
+					option += '<option value="'+ret.CATEGORY2_KEY+'">'+ret.CATEGORY2_NAME+'</option>';		
+				});
+				$('select[name=category2_key]').html(option);						
+	     },	       
+		        error 	: function(xhr, status, error) {}
+		        
+		     });
+		 });
+				 
+		$('#category2_key').change(function(){
+			var val  = $(this).val();
+
+			if( val ==""){
+				return;
+			}
+			
+			$("#category3_key").val("");
+					
+			 $.ajax({	
+			    url     : "<c:url value='/user/category3list.do'/>",
+			    data    : $("#listForm").serialize(),
+		        dataType: "JSON",
+		        cache   : false,
+				async   : true,
+				type	: "POST",	
+				success: function(data, opt, inx){
+				var option = '';
+				option += '<option value="0">선택 하세요</opton>'; //선택
+				$.each(data, function(i, ret){
+					option += '<option value="'+ret.CATEGORY3_KEY+'">'+ret.CATEGORY3_NAME+'</option>';		
+				});
+				$('select[name=category3_key]').html(option);						
+		        },	       
+		        error 	: function(xhr, status, error) {}
+		        
+		     });
+		 });
  });
  
-function fn_edit(key1, str) {
+function fn_edit(key1) {
  	var frm = document.listForm;
  	$("#license_idx").val(key1);
-  	frm.action = "<c:url value='/warrant/warrantOfflineReq.do'/>";
+  	frm.action = "<c:url value='/warrant/warrantOfflineReq.do'/>?actFlag=U";
  	frm.submit();
 }
 
@@ -152,7 +221,7 @@ var btnDel = function() {
 
 var setDel = function(idxArray){
     $.ajax({
-        url: "/warrant/warrantDel.do",
+        url: "<c:url value='/warrant/warrantDel.do'/>",
         type: "POST",
         data: { "boardIdxArray" : idxArray },
         success: function(data) {

@@ -73,7 +73,11 @@
 	      	, CATEGORY2_KEY
 	      	, CATEGORY3_KEY
 	      	, REG_ID
+	      	, LICENSE_STATUS
 	      	, LICENSE_TYPE
+	      	<if test="edu_edate !=null and edu_edate != ''">
+	      	, EDU_EDATE
+	      	</if>
 		) 
 		VALUES 
 		(
@@ -81,7 +85,11 @@
 			, #{category2_key}
 			, #{category3_key}
 			, IFNULL(#{reg_id},'SYSTEM')
+			, #{license_status}
 			, #{license_type}
+			<if test="edu_edate !=null and edu_edate != ''">
+	      	, #{edu_edate}
+	      	</if>
 		)	
 	</insert>
 	

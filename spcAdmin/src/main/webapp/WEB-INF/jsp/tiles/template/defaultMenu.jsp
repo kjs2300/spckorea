@@ -81,11 +81,11 @@ model.addAttribute("path", request.getServletPath());
             <li <c:if test="${fn:contains(path, '/adBoard/instructRefer')}">   class="active" </c:if>><a href="<c:url value='/adBoard/instructReferList.do' />">강사 자료실</a></li>
         </ul>
     </li>
-    <li <c:if test="${path =='/warrant/warrantGeneralDefault.do'}">  class="on" </c:if>>
+    <li <c:if test="${fn:contains(path, '/warrant/') }">  class="on" </c:if>>
         <a href="#">수료증/기타</a>
         <ul class="depth02-menu">
-            <li><c:if test="${path =='/warrant/warrantGeneralDefault.do'}" >        class="active" </c:if>><a href="<c:url value='/warrant/warrantGeneralDefault.do' />">일반 수료증</a></li>
-            <li><a href="#">번호 수료증</a></li>
+            <li <c:if test="${fn:contains(path, '/warrant/warrantGeneralDefault')}"> class="active" </c:if>><a href="<c:url value='/warrant/warrantGeneralDefault.do' />">일반 수료증</a></li>
+            <li <c:if test="${fn:contains(path, '/warrant/warrantNumber')}"> class="active" </c:if>><a href="<c:url value='/warrant/warrantNumber.do' />">번호 수료증</a></li>
             <li><a href="#">수료증 발급</a></li>
             <li><a href="#">업로드 자료</a></li>
         </ul>
