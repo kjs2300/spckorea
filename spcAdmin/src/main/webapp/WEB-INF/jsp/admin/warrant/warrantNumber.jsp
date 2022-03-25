@@ -14,8 +14,8 @@
 <div class="tab-cont">
     <ul>
         <li class="on"><a href="<c:url value='/warrant/warrantNumber.do' />">기본 양식</a></li>
-        <li><a href="<c:url value='/warrant/warrantOnlineList.do' />">등록</a></li>
-        <li><a href="<c:url value='/warrant/warrantOfflineList.do' />">목록/수정</a></li>
+        <li><a href="<c:url value='/warrant/warrantNumberReqList.do' />">등록</a></li>
+        <li><a href="<c:url value='/warrant/warrantNumberReqList.do' />">목록/수정</a></li>
     </ul>
 </div>
 
@@ -33,6 +33,6 @@
 
       <div class="warrant-foot">
           <span>한국생명존중희망재단 이사장</span>
-          <img src="./images/common/stamp.png" alt="생명존중희망재단 이사장인"/>
+          <img src="${pageContext.request.contextPath}/images/common/stamp.png" alt="생명존중희망재단 이사장인"/>
       </div>
   </div>

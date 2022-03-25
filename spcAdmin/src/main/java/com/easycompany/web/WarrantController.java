@@ -336,5 +336,52 @@ public class WarrantController {
 
 		return "warrantNumber";
 	}
+	
+	@RequestMapping(value = "/warrantNumberReqList.do")
+	public String warrantNumberReqList(@RequestParam Map<String, Object> paramMap, ModelMap model, HttpServletRequest request) throws Exception {
+		paramMap.put("pageSize", 10);
+		paramMap.put("recordCountPerPage", 10);
+		paramMap.put("AdminAccount", request.getSession().getAttribute("AdminAccount"));
+		if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+		}
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+		paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
+		paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+		  
+		int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
+		paramMap.put("offset",offset);
+		 
+		if(!paramMap.containsKey("site")) {
+			paramMap.put("site", "on");
+		}
 
+		paramMap.put("sqlName", "getCategoryList1");
+		List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
+		model.addAttribute("category1list", category1list);
+		
+		paramMap.put("sqlName", "getCategoryList2_opt");
+		List<Map<String, Object>> category2list = sectorService.getSelectList(paramMap);
+		model.addAttribute("category2list", category2list);
+		  
+		paramMap.put("sqlName", "getCategoryList3");
+		List<Map<String, Object>> category3list = sectorService.getSelectList(paramMap);
+		model.addAttribute("category3list", category3list);
+		
+		paramMap.put("sqlName", "warrantNumberReqList");
+		List<Map<String, Object>> list = warrantService.getSelectList(paramMap);
+		model.addAttribute("resultList", list);
+		  
+		paramMap.put("sqlName", "warrantNumberReqListCnt");
+		int totCnt = warrantService.getSelectListCnt(paramMap);
+		model.addAttribute("totCnt", totCnt);
+		paginationInfo.setTotalRecordCount(totCnt);
+
+		model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("path", request.getServletPath());
+		model.addAllAttributes(paramMap);
+		  
+		return "warrantNumberReqList";
+	}
 }

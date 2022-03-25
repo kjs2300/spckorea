@@ -231,5 +231,66 @@
       </where>
 	</sql>
 	
-	
+	<select id="warrantNumberReqList" parameterType="java.util.Map"	resultType="java.util.Map">
+	    SELECT a.LICENSE_IDX, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = a.CATEGORY1_KEY) AS CATEGORY1_NAME
+				, (SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = a.CATEGORY2_KEY) AS CATEGORY2_NAME
+			    , (SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = a.CATEGORY3_KEY) AS CATEGORY3_NAME
+			    , CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19) ) AS REG_DT, REG_ID
+			    , (SELECT USER_NM FROM COM_USER WHERE USER_ID = a.USER_ID) AS USER_NM, a.USER_ID
+			    , EDU_NUMBER, LICENSE_FIELD
+			    ,CASE WHEN LICENSE_STATUS = 0 THEN '활성' WHEN LICENSE_STATUS = 1 THEN '비활성' END AS LICENSE_STATUS
+				      FROM edu_user_license a
+	      WHERE 1=1
+	      AND USE_YN = 'Y'
+	      <if test="license_type !=null and license_type != ''">
+	      	AND LICENSE_TYPE = #{license_type}
+	      </if>
+	      <if test="category1_key != '' and category1_key != null">
+				AND CATEGORY1_KEY = #{category1_key}
+			</if>
+			<if test="category2_key != '' and category2_key != null">
+				AND CATEGORY2_KEY = #{category2_key}
+			</if>
+			<if test="category3_key != '' and category3_key != null">
+				AND CATEGORY3_KEY = #{category3_key}
+			</if>
+			<choose>
+				<when test ="searchType !=null and searchType !='' and searchType =='name'">
+				  AND USER_ID IN (SELECT USER_ID FROM COM_USER WHERE USER_NM LIKE CONCAT('%', #{searchText} ,'%'))
+				</when>
+				<when test ="searchType !=null and searchType !='' and  searchType =='id'">
+				  AND  USER_ID LIKE CONCAT('%', #{searchText} ,'%')
+				</when>
+			  </choose>
+	     ORDER BY LICENSE_IDX DESC
+	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}
+	</select>
+
+
+	<select id="warrantNumberReqListCnt" parameterType="java.util.Map" resultType="int">
+		 SELECT COUNT(*) cnt
+	       	      FROM edu_user_license a
+	      WHERE 1=1
+	      AND USE_YN = 'Y'
+	      <if test="license_type !=null and license_type != ''">
+	      	AND LICENSE_TYPE = #{license_type}
+	      </if>
+	      <if test="category1_key != '' and category1_key != null">
+				AND CATEGORY1_KEY = #{category1_key}
+			</if>
+			<if test="category2_key != '' and category2_key != null">
+				AND CATEGORY2_KEY = #{category2_key}
+			</if>
+			<if test="category3_key != '' and category3_key != null">
+				AND CATEGORY3_KEY = #{category3_key}
+			</if>
+			<choose>
+				<when test ="searchType !=null and searchType !='' and searchType =='name'">
+				  AND USER_ID IN (SELECT USER_ID FROM COM_USER WHERE USER_NM LIKE CONCAT('%', #{searchText} ,'%'))
+				</when>
+				<when test ="searchType !=null and searchType !='' and  searchType =='id'">
+				  AND  USER_ID LIKE CONCAT('%', #{searchText} ,'%')
+				</when>
+			  </choose>
+	</select>
 </mapper>

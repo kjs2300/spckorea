@@ -37,6 +37,17 @@
 		GROUP BY CATEGORY3_KEY, CATEGORY3_NAME
 	</select>
 
+	<select id="getCategoryList2_opt" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT   CATEGORY2_KEY, CATEGORY2_NAME
+		FROM EDU_CLASS_CATEGORY2
+		WHERE 1=1
+		<if test="site != '' and site != null">
+			AND SITE = #{site}
+		</if>
+		AND CD_NO IN ('02','04','05','06')
+		AND CATEGORY1_KEY = #{category1_key}
+		GROUP BY CATEGORY2_KEY, CATEGORY2_NAME
+	</select>
 	<select id="getSectorList" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT  ER.EDU_NO, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = ER.CATEGORY1_KEY) AS CATEGORY1 , 
 				(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = ER.CATEGORY2_KEY) AS CATEGORY2 , 
