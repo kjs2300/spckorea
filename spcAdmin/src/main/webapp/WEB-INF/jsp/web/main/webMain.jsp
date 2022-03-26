@@ -25,8 +25,6 @@ $(document).ready(function(){
 });
 <%--필수  --%>
 </script>	
-    
-
 
  <!--  main-layer begin -->
         <article id="main-layer">
@@ -189,7 +187,7 @@ $(document).ready(function(){
             <section class="noti-contents">
                 <div class="cont-list">
                     <h1>공지사항</h1>
-                    <a href="" class="more-btn white-btn">더보기 +</a>
+                    <a href="${pageContext.request.contextPath}/user/notice01List.do" class="more-btn white-btn">더보기 +</a>
                     <ul class="main-list">
                         <c:forEach var="result" items="${notiList}" varStatus="status">
                         <li>

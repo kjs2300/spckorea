@@ -101,7 +101,7 @@ public class WebMainController
 	model.addAttribute("notiList", notiList);
 	
     
-    model.addAttribute("path",    request.getServletPath());
+    model.addAttribute("path",         request.getServletPath());
     model.addAttribute("sessionId",    loginvo);
 
     return "webMain";

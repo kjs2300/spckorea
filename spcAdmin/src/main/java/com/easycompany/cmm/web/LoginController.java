@@ -18,6 +18,7 @@ import com.easycompany.cmm.service.SampleService;
 import com.easycompany.cmm.util.EgovFileScrty;
 import com.easycompany.cmm.vo.Account;
 import com.easycompany.cmm.vo.LoginVo;
+import  com.easycompany.cmm.util.StringUtil;
 
 @Controller
 @RequestMapping("login")
@@ -145,10 +146,25 @@ public class LoginController {
 			if (loginVo1 == null) {
 				loginVo.setResult( "FAIL") ;	
 			}else {
-				request.getSession().setAttribute("UserAccount", loginVo1);
+				
+				//기관 관리자
+				if(!StringUtil.isEmpty(loginVo1.getOrg_manage_yn())  && "Y".equals(loginVo1.getOrg_manage_yn())) {
+					loginVo1.setInstLmsAdmin(true);
+				}
+				
+				//기관 여부
+				if(!StringUtil.isEmpty(loginVo1.getUser_gu())  && "1".equals(loginVo1.getUser_gu())) {
+					loginVo1.setInstLm(true);
+				}
+		
+				//LMS 관리자
 				if(loginVo1.getUser_group_cd().equals("0003")) {
+					loginVo1.setLmsAdmin(true);
+		
 					request.getSession().setAttribute("AdminAccount", loginVo1);
-				}				
+				}		
+				
+				request.getSession().setAttribute("UserAccount", loginVo1);
 				loginVo.setResult( "SUCCESS") ;	
 			}
 			
