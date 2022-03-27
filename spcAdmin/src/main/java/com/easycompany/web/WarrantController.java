@@ -384,4 +384,40 @@ public class WarrantController {
 		  
 		return "warrantNumberReqList";
 	}
+
+	@RequestMapping(value = "/popWarrantNumberReq.do")
+	public String popWarrantNumberReq(@RequestParam Map<String, Object> paramMap, ModelMap model, HttpServletRequest request) throws Exception {
+		model.addAttribute("path", request.getServletPath());
+		model.addAllAttributes(paramMap);
+		return "popWarrantNumberReq";
+	}
+	
+	@RequestMapping(value = "/warrantNumberSave.do")
+	@ResponseBody
+	public Map<String, Object> warrantNumberSave(HttpServletRequest request, @RequestParam Map<String, Object> paramMap) throws Exception {
+		int resultCnt = 0;
+		 Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			paramMap.put("AdminAccount", request.getSession().getAttribute("AdminAccount"));
+			
+			if ("I".equals(paramMap.get("actFlag").toString())) { // 저장
+				if(paramMap.get("license_type").toString().equals("C")) {
+					paramMap.put("license_status", 1);
+				}else {
+					paramMap.put("license_status", 0);
+				}
+				paramMap.put("sqlName", "warrantSave");
+				resultCnt = warrantService.insertData(paramMap);
+				
+			} else if("U".equals(paramMap.get("actFlag").toString())) { // 수정
+				paramMap.put("sqlName", "warrantUpdate");
+				resultCnt = warrantService.updateData(paramMap);
+			}
+//			
+		} catch (Exception e) {
+			result.put("result", "FAIL");	 
+		}
+		result.put("result",resultCnt > 0 ? "SUCCESS" : "FAIL");
+		return result;
+	}
 }

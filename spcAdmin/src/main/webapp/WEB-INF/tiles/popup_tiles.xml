@@ -15,6 +15,12 @@
        <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/mainPopup.jsp" />  
    </definition> 
    
+   <!-- 메인 팝업 창  -->
+   <definition name="popWarrantNumberReq" extends="popUp-definition">  
+       <put-attribute name="title" value="팝업 공지" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/warrantNumberReq.jsp" />  
+   </definition> 
+   
    <!--마이페이지 > 나의 강의실 -->
    <definition name="popMyClass" extends="popUp-definition">  
        <put-attribute name="title" value="나의 강의실" />  

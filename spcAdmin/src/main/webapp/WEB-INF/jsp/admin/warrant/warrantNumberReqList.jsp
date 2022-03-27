@@ -62,49 +62,45 @@
 </div>
 
 <div class="btn-cont mb20">
-    <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/warrant/warrantOnlineReq.do' />?actFlag=I'; ">등록</button>
-    <button class="mid-btn white-btn" onClick="javascript:btnDel();">선택삭제</button>
+    <button class="mid-btn white-btn">선택삭제</button>
 </div>
 
 <div class="table-wrap">
     <table class="list-tb">
-        <caption>선택, 분류1, 분류2, 분류3(교육명), 수료증 발급 활성화, 등록일, 관리 정보가 있는 테이블</caption>
+       <caption>선택, 분류3(교육명), 이름, 아이디, 소속, 연락처, 수료증 발급 등록 정보가 있는 테이블</caption>
        <colgroup>
            <col width="6%"/>
-           <col width="6%"/>
-           <col width="10%"/>
-           <col width="10%"/>
+           <col width="8%"/>
            <col width="*"/>
            <col width="10%"/>
            <col width="12%"/>
            <col width="15%"/>
-       </colgroup>
+           <col width="12%"/>
+           <col width="10%"/>
+        </colgroup>
         <thead>
             <tr>
                 <th><input type="checkbox" class="check-box"/></th>
                 <th>No.</th>
-                <th>분류1</th>
-                <th>분류2</th>
                 <th>분류3(교육명)</th>
-                <th>수료증 발급<br/>활성화</th>
-                <th>등록일</th>
-                <th>관리</th>
+                <th>이름</th>
+                <th>아이디</th>
+                <th>소속</th>
+                <th>연락처</th>
+                <th>수료증 발급 등록</th>
             </tr>
         </thead>
         <tbody>
         	<c:forEach var="result" items="${resultList}" varStatus="status">
 	            <tr>
-	                <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.LICENSE_IDX}" class="check-box"/></td>
-	                <td>${status.index + 1}</td>
-	                <td>${result.CATEGORY1_NAME}</td>
-	                <td>${result.CATEGORY2_NAME}</td>
-	                <td class="tl">${result.CATEGORY3_NAME}</td>
-	                <td>${result.LICENSE_STATUS}</td>
-	                <td>${result.REG_DT}</td>
-	                <td>
-	                    <button class="sm-btn black-btn" onClick="javascript:fn_edit('${result.LICENSE_IDX}');">수정</button>
-	                    <button class="sm-btn white-btn" onClick="javascript:fn_delete('${result.LICENSE_IDX}');">삭제</button>
-	                </td>
+	            	<td><input type="checkbox" id='checkNo' name='checkNo' value="${result.COUR_NO}" class="check-box"/></td>
+                    <td>${status.index + 1}</td>
+                    <td class="tl">${result.EDU_NAME}</td>
+                    <td>${result.USER_NM}</td>
+                    <td>${result.USER_ID}</td>
+                    <td>${result.COPER_NM}</td>
+                    <td>${result.MBL_TELNO}</td>
+                    <td><c:if test="${result.ADD_CHK == null || result.ADD_CHK == ''}"><button onClick="javascript:openWindowPop('<c:url value='/warrant/popWarrantNumberReq.do'/>?cour_no=${result.COUR_NO}','popup');" class="sm-btn black-btn">등록하기</button></c:if></td>
 	            </tr>
             </c:forEach>
             <c:if test="${empty resultList }">
@@ -186,16 +182,11 @@
  });
  
  function fn_clearBtn(){
-	 $("#category3_key").val("");
+	 $("#searchDate").eq(0).prop("checked",true);
+	 $("#searchCondition").eq(0).prop("checked",true);
+	 $("[type='text']").val("");
  }
  
-function fn_edit(key1) {
- 	var frm = document.listForm;
- 	$("#license_idx").val(key1);
-  	frm.action = "<c:url value='/warrant/warrantOnlineReq.do'/>?actFlag=U";
- 	frm.submit();
-}
-
 function fn_delete(idx) {
 	var idxArray = new Array();
 
@@ -227,7 +218,7 @@ var btnDel = function() {
 
 var setDel = function(idxArray){
     $.ajax({
-        url: "<c:url value='/warrant/warrantDel.do'/>",
+        url: "<c:url value='/warrant/warrantNumberDel.do'/>",
         type: "POST",
         data: { "boardIdxArray" : idxArray },
         success: function(data) {
@@ -243,4 +234,15 @@ var setDel = function(idxArray){
     });
 };
 
+function openWindowPop(url, name){
+    var options = 'top=10, left=10, width=540px, height=360px, status=no, menubar=no, toolbar=no, resizable=no';
+    window.open(url, name, options);
+}	
+
+function fn_egov_link_page(pageNo){
+	 var frm = document.commonForm;
+	 $("#pageIndex").val(pageNo); 
+	 frm.action = "<c:url value='/warrant/warrantNumberReqList.do'/>";
+  	 frm.submit();
+}
  </script>
