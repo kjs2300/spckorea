@@ -93,9 +93,15 @@
    </definition> 
    
    <!-- admin > 교육신청 > 신청자 관리 - 오프라인 리스트   -->
-   <definition name="eduInfoNoOrglineMangList" extends="base-definition">  
+   <definition name="eduInfoMangNoOrglineMangList" extends="base-definition">  
        <put-attribute name="title" value="교육신청관리" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoNoOrglineMangList.jsp" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoMangNoOrglineMangList.jsp" />  
+   </definition> 
+   
+    <!-- admin > 교육신청 > 신청자 관리 - 오프라인 상세   -->
+   <definition name="eduInfoMangNoOrglineMangView" extends="base-definition">  
+       <put-attribute name="title" value="교육신청관리" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/edu/eduInfoMangNoOrglineMangView.jsp" />  
    </definition> 
    
    <!-- admin > 기관(결과보고) > 교육신청 현황   -->

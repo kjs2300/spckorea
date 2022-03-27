@@ -51,7 +51,7 @@
 			$("#train_e_date").val('');
 		}
 		
-		frm.action = "<c:url value='/edu/eduInfoOnlineMangView.do'/>";
+		frm.action = "<c:url value='/edu/eduInfoMangNoOrglineMangView.do'/>";
 		frm.submit();
 	}
      
@@ -66,7 +66,7 @@
      function fn_egov_link_page(pageNo){
     	 var frm = document.commonForm;
 		 $("#pageIndex").val(pageNo); 
-     	 frm.action = "<c:url value='/edu/eduInfoOnlineMangView.do'/>";
+     	 frm.action = "<c:url value='/edu/eduInfoMangNoOrglineMangView.do'/>";
        	 frm.submit();
      }
      //-->
@@ -74,8 +74,8 @@
 
         <div class="tab-cont">
                <ul>
-                   <li class="on">온라인교육</li>
-                   <li>오프라인 교육</li>
+                   <li>온라인교육</li>
+                   <li  class="on">오프라인 교육</li>
                </ul>
          </div>
 		<form  id="commonForm" name="commonForm"  method="post"  action="">
@@ -85,6 +85,7 @@
 		    <input type="hidden" id="excelFileName"  name="excelFileName"  value=''  />
 		    <input type="hidden" id="edu_no"         name="edu_no"         value='${categoryVo.edu_no}' />		
 		    <input type="hidden" id="edu_site"       name="edu_site"       value='${categoryVo.edu_site}'/>
+		    <input type="hidden" id="site"           name="site"           value='${categoryVo.site}'/>
 		    <input type="hidden" id="pageIndex"      name="pageIndex"        value=1  />	
 
            <div class="search-wrap">

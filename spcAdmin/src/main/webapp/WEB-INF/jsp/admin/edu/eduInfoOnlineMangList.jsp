@@ -59,6 +59,10 @@
  			var val  = $(this).val();
 
  			if( val ==""){
+ 				var option = '';
+ 				option += '<option value="">선택 하세요</opton>'; //선택
+ 				$('select[name=category2_key]').html(option);
+ 				$('select[name=category3_key]').html(option);	
  				return;
  			}
  			$("#gubun3").val('categorycode2');
@@ -89,7 +93,10 @@
  			var val  = $(this).val();
 
  			if( val ==""){
- 				return;
+ 				var option = '';
+ 				option += '<option value="">선택 하세요</opton>'; //선택
+ 				$('select[name=category3_key]').html(option);	
+ 				 return false;
  			}
  			$("#gubun3").val('categorycode3');
  			$("#category3_key").val(0);
@@ -244,10 +251,7 @@
         <div class="tab-cont">
                <ul>
                    <li class="on">온라인교육</li>
-                   <!--  
-                    <li ><a href="<c:url value='/edu/eduInfoNoOrglineMangList.do'/>">오프라인 교육</a></li>
-                    -->
-                  
+                    <li ><a href="<c:url value='/edu/eduInfoMangNoOrglineMang.do'/>">오프라인 교육</a></li>
                </ul>
          </div>
 		<form  id="commonForm" name="commonForm"  method="post"  action="">
@@ -350,7 +354,7 @@
                                 <td class="tl">${result.edu_cont}</td>
                                 <td>${result.edu_target}</td>
                                 <td>${result.edu_time}분</td>
-                                <td>${result.cnt}</td>
+                                <td>${result.cnt}명</td>
                             </tr>
                             </c:forEach>
                             <c:if test="${empty resultList }">
