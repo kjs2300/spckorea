@@ -238,6 +238,7 @@
 					,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY AND CATEGORY2_KEY = b.CATEGORY2_KEY AND CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY2_NAME
                     ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY AND CATEGORY2_KEY = b.CATEGORY2_KEY AND CATEGORY3_KEY = b.CATEGORY3_KEY) AS EDU_NAME
                     ,(SELECT LICENSE_IDX FROM EDU_USER_LICENSE WHERE USER_ID = a.USER_ID AND EDU_NO = a.EDU_NO) AS ADD_CHK
+                    ,(SELECT REG_DT FROM EDU_USER_LICENSE WHERE USER_ID = a.USER_ID AND EDU_NO = a.EDU_NO) AS ADD_DT
 				 FROM EDU_COURSE_REGISTRATION a,
 					  EDU_REGISTRATION b
 				WHERE a.EDU_NO = b.EDU_NO
@@ -261,6 +262,11 @@
 				  AND a.USER_ID LIKE CONCAT('%', #{searchText} ,'%')
 				</when>
 			  </choose>
+			<if test="searchDate !=null and searchDate != 'ALL'">
+		      	<![CDATA[
+			       AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) >= #{start_date} AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) <= #{end_date} 
+		        ]]>
+		      </if>
 	     ORDER BY COUR_NO DESC
 	    LIMIT #{recordCountPerPage}  OFFSET  #{offset}
 	</select>
@@ -308,6 +314,7 @@
 		(
 	      	USER_ID
 	      	, EDU_NO
+	      	, COUR_NO
 	      	, LICENSE_NUMBER
 	      	, LICENSE_FIELD
 	      	, CATEGORY1_KEY
@@ -323,6 +330,7 @@
 		(
 			#{USER_ID}
 			, #{EDU_NO}
+			, #{cour_no}
 			, #{license_number}
 			, #{license_field}
 			, #{CATEGORY1_KEY}

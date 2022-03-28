@@ -48,4 +48,8 @@
        <put-attribute name="body" value="/WEB-INF/jsp/admin/warrant/warrantNumberReqList.jsp" />  
    </definition>
    
+   <definition name="warrantNumberModList" extends="base-definition">  
+       <put-attribute name="title" value="번호수료증 목록/수정" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/warrant/warrantNumberModList.jsp" />  
+   </definition>
 </tiles-definitions>

@@ -24,7 +24,7 @@
    </definition> 
    
    <definition name="popWarrantNumberMod" extends="popUp-definition">  
-       <put-attribute name="title" value="수료증 등록" />  
+       <put-attribute name="title" value="수료증 수정" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/warrantNumberMod.jsp" />  
    </definition> 
    

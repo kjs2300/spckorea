@@ -104,6 +104,13 @@ public class SectorController
 	    return sectorService.getSelectList(paramMap);
   }
   
+  @RequestMapping({"/category2list_opt.do"})
+  @ResponseBody
+  public List<Map<String, Object>> category2list_opt(@RequestParam Map<String, Object> paramMap) throws Exception {
+	    paramMap.put("sqlName", "getCategoryList2_opt");
+	    return sectorService.getSelectList(paramMap);
+  }
+  
   @RequestMapping({"/category3list.do"})
   @ResponseBody
   public List<Map<String, Object>> category3list(@RequestParam Map<String, Object> paramMap) throws Exception {

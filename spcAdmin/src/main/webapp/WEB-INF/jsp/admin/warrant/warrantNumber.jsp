@@ -15,7 +15,7 @@
     <ul>
         <li class="on"><a href="<c:url value='/warrant/warrantNumber.do' />">기본 양식</a></li>
         <li><a href="<c:url value='/warrant/warrantNumberReqList.do' />">등록</a></li>
-        <li><a href="<c:url value='/warrant/warrantNumberReqList.do' />">목록/수정</a></li>
+        <li><a href="<c:url value='/warrant/warrantNumberModList.do' />">목록/수정</a></li>
     </ul>
 </div>
 

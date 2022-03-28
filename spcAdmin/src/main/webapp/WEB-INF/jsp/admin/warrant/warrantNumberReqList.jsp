@@ -15,14 +15,13 @@
     <ul>
         <li><a href="<c:url value='/warrant/warrantNumber.do' />">기본 양식</a></li>
         <li class="on"><a href="<c:url value='/warrant/warrantNumberReqList.do' />">등록</a></li>
-        <li><a href="<c:url value='/warrant/warrantNumberReqList.do' />">목록/수정</a></li>
+        <li><a href="<c:url value='/warrant/warrantNumberModList.do' />">목록/수정</a></li>
     </ul>
 </div>
 
 <div class="search-wrap">
     <form id="listForm" name="listForm" target="_self" action="" method="post" onsubmit="">
     <input type="hidden" id="category3" name="category3" value="${category3_key}">
-    <input type="hidden" id="license_idx"   name="license_idx"  value="${warrantVo.license_idx}"/>
     <div class="search-cont">
     	<select class="select" id="site" name="site">
             <option value="on">온라인</option>
@@ -132,7 +131,7 @@
 			$("#category3_key").val("");
 			
 			 $.ajax({	
-			    url     : "<c:url value='/user/category2list.do'/>",
+			    url     : "<c:url value='/user/category2list_opt.do'/>",
 			    data    : $("#listForm").serialize(),
 		        dataType: "JSON",
 		        cache   : false,
