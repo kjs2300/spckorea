@@ -235,8 +235,9 @@
 	    SELECT a.COUR_NO, a.EDU_NO, a.USER_NM, a.USER_ID
 					,(SELECT COPER_NM FROM COM_USER WHERE USER_ID = a.USER_ID) AS COPER_NM
                     ,(SELECT MBL_TELNO FROM COM_USER WHERE USER_ID = a.USER_ID) AS MBL_TELNO
-					,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY AND CATEGORY2_KEY = b.CATEGORY2_KEY AND CATEGORY3_KEY = b.CATEGORY3_KEY) AS EDU_NAME
-                    ,(SELECT LICENSE_IDX FROM EDU_USER_LICENSE WHERE USER_ID = a.USER_ID AND EDU_NUMBER = a.EDU_NO) AS ADD_CHK
+					,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY AND CATEGORY2_KEY = b.CATEGORY2_KEY AND CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY2_NAME
+                    ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY AND CATEGORY2_KEY = b.CATEGORY2_KEY AND CATEGORY3_KEY = b.CATEGORY3_KEY) AS EDU_NAME
+                    ,(SELECT LICENSE_IDX FROM EDU_USER_LICENSE WHERE USER_ID = a.USER_ID AND EDU_NO = a.EDU_NO) AS ADD_CHK
 				 FROM EDU_COURSE_REGISTRATION a,
 					  EDU_REGISTRATION b
 				WHERE a.EDU_NO = b.EDU_NO
@@ -291,4 +292,69 @@
 				</when>
 			  </choose>
 	</select>
+	
+	<select id="warrantNumberDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT EDU_NO, (CASE EDU_SITE WHEN 'on' THEN 'A' WHEN 'off' THEN 'B' END) AS LICENSE_TYPE
+			   , CATEGORY1_KEY, CATEGORY2_KEY, CATEGORY3_KEY,
+		       (select USER_ID from EDU_COURSE_REGISTRATION WHERE COUR_NO = #{cour_no}) AS USER_ID
+		FROM EDU_REGISTRATION
+		WHERE 1=1
+		AND EDU_NO IN (select EDU_NO from EDU_COURSE_REGISTRATION WHERE COUR_NO = #{cour_no})
+	</select>
+	
+	<insert id="warrantNumberSave" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="license_idx">
+		INSERT 
+		INTO edu_user_license
+		(
+	      	USER_ID
+	      	, EDU_NO
+	      	, LICENSE_NUMBER
+	      	, LICENSE_FIELD
+	      	, CATEGORY1_KEY
+	      	, CATEGORY2_KEY
+	      	, CATEGORY3_KEY
+	      	, LICENSE_STATUS
+	      	, LICENSE_TYPE
+	      	, USE_YN
+	      	, REG_DT
+	      	, REG_ID
+		) 
+		VALUES 
+		(
+			#{USER_ID}
+			, #{EDU_NO}
+			, #{license_number}
+			, #{license_field}
+			, #{CATEGORY1_KEY}
+			, #{CATEGORY2_KEY}
+			, #{CATEGORY3_KEY}
+			, 1
+			, #{LICENSE_TYPE}
+			, 'Y'
+			, DATE_FORMAT(NOW(),'%x-%m-%d')
+		    , #{AdminAccount.user_id}
+		)	
+	</insert>
+	
+	<update id="warrantNumberUpdate" parameterType="java.util.Map">
+		UPDATE edu_user_license 
+		   SET 
+	      	 CATEGORY1_KEY =  #{category1_key}
+	      	, CATEGORY2_KEY =  #{category2_key}
+	      	, CATEGORY3_KEY =  #{category3_key}
+	      	, LICENSE_STATUS = #{license_status}
+	      	, CHG_DT = date_format(current_timestamp(),'%Y%m%d%H%i%s')
+		    , CHG_ID = IFNULL(#{chg_id},'SYSTEM')
+ 		 WHERE LICENSE_IDX = #{license_idx}
+	</update>
+	
+	<update id="warrantNumberDel">
+		UPDATE edu_user_license 
+		   SET CHG_DT = date_format(current_timestamp(),'%Y%m%d%H%i%s'),
+		   USE_YN = 'N'
+ 		 WHERE LICENSE_IDX IN (
+				<foreach collection="boardIdxList" item="item" separator=",">
+					#{item}
+				</foreach>)
+	</update>
 </mapper>

@@ -400,24 +400,80 @@ public class WarrantController {
 		try {
 			paramMap.put("AdminAccount", request.getSession().getAttribute("AdminAccount"));
 			
-			if ("I".equals(paramMap.get("actFlag").toString())) { // 저장
-				if(paramMap.get("license_type").toString().equals("C")) {
-					paramMap.put("license_status", 1);
-				}else {
-					paramMap.put("license_status", 0);
-				}
-				paramMap.put("sqlName", "warrantSave");
-				resultCnt = warrantService.insertData(paramMap);
-				
-			} else if("U".equals(paramMap.get("actFlag").toString())) { // 수정
-				paramMap.put("sqlName", "warrantUpdate");
-				resultCnt = warrantService.updateData(paramMap);
-			}
-//			
+			paramMap.put("sqlName", "warrantNumberDetail");	
+			Map<String, Object> resultData = warrantService.getSelectData(paramMap);
+		  	paramMap.putAll(resultData);
+		  	
+			paramMap.put("sqlName", "warrantNumberSave");
+			resultCnt = warrantService.insertData(paramMap);			
 		} catch (Exception e) {
 			result.put("result", "FAIL");	 
 		}
 		result.put("result",resultCnt > 0 ? "SUCCESS" : "FAIL");
 		return result;
 	}
+	
+	@RequestMapping(value = "/warrantNumberModList.do")
+	public String warrantNumberModList(@RequestParam Map<String, Object> paramMap, ModelMap model, HttpServletRequest request) throws Exception {
+		paramMap.put("pageSize", 10);
+		paramMap.put("recordCountPerPage", 10);
+		paramMap.put("AdminAccount", request.getSession().getAttribute("AdminAccount"));
+		if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+		}
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+		paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
+		paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+		  
+		int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
+		paramMap.put("offset",offset);
+		 
+		if(!paramMap.containsKey("site")) {
+			paramMap.put("site", "on");
+		}
+
+		paramMap.put("sqlName", "getCategoryList1");
+		List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
+		model.addAttribute("category1list", category1list);
+		
+		paramMap.put("sqlName", "getCategoryList2_opt");
+		List<Map<String, Object>> category2list = sectorService.getSelectList(paramMap);
+		model.addAttribute("category2list", category2list);
+		  
+		paramMap.put("sqlName", "getCategoryList3");
+		List<Map<String, Object>> category3list = sectorService.getSelectList(paramMap);
+		model.addAttribute("category3list", category3list);
+		
+		paramMap.put("sqlName", "warrantNumberReqList");
+		List<Map<String, Object>> list = warrantService.getSelectList(paramMap);
+		model.addAttribute("resultList", list);
+		  
+		paramMap.put("sqlName", "warrantNumberReqListCnt");
+		int totCnt = warrantService.getSelectListCnt(paramMap);
+		model.addAttribute("totCnt", totCnt);
+		paginationInfo.setTotalRecordCount(totCnt);
+
+		model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("path", request.getServletPath());
+		model.addAllAttributes(paramMap);
+		  
+		return "warrantNumberModList";
+	}
+	
+	@RequestMapping(value = "/popWarrantNumberView.do")
+	public String popWarrantNumberView(@RequestParam Map<String, Object> paramMap, ModelMap model, HttpServletRequest request) throws Exception {
+		model.addAttribute("path", request.getServletPath());
+		model.addAllAttributes(paramMap);
+		return "popWarrantNumberView";
+	}
+	
+	@RequestMapping(value = "/popWarrantNumberMod.do")
+	public String popWarrantNumberMod(@RequestParam Map<String, Object> paramMap, ModelMap model, HttpServletRequest request) throws Exception {
+		model.addAttribute("path", request.getServletPath());
+		model.addAllAttributes(paramMap);
+		return "popWarrantNumberMod";
+	}
+	
+	
 }

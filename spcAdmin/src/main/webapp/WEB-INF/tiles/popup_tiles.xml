@@ -3,22 +3,29 @@
  
 <tiles-definitions>  
    
-   <!-- 기관명 검색 -->
    <definition name="orgPopSearch" extends="popUp-definition">  
        <put-attribute name="title" value="기관명 검색" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/orgPopSearch.jsp" />  
    </definition>  
   
-    <!-- 메인 팝업 창  -->
    <definition name="mainPop" extends="popUp-definition">  
        <put-attribute name="title" value="팝업 공지" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/mainPopup.jsp" />  
    </definition> 
    
-   <!-- 메인 팝업 창  -->
    <definition name="popWarrantNumberReq" extends="popUp-definition">  
-       <put-attribute name="title" value="팝업 공지" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/warrantNumberReq.jsp" />  
+       <put-attribute name="title" value="수료증 등록" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/warrantNumberReq.jsp" /> 
+   </definition> 
+   
+   <definition name="popWarrantNumberView" extends="popUp-definition">  
+       <put-attribute name="title" value="수료증 보기" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/warrantNumberView.jsp" />  
+   </definition> 
+   
+   <definition name="popWarrantNumberMod" extends="popUp-definition">  
+       <put-attribute name="title" value="수료증 등록" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/admin/popup/warrantNumberMod.jsp" />  
    </definition> 
    
    <!--마이페이지 > 나의 강의실 -->

@@ -37,12 +37,12 @@
        <put-attribute name="title" value="기관등록" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/warrant/warrantOrgReq.jsp" />  
    </definition>
-   
+      
    <definition name="warrantNumber" extends="base-definition">  
        <put-attribute name="title" value="번호수료증" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/warrant/warrantNumber.jsp" />  
-   </definition>
-   
+   </definition>   
+      
    <definition name="warrantNumberReqList" extends="base-definition">  
        <put-attribute name="title" value="번호수료증 등록" />  
        <put-attribute name="body" value="/WEB-INF/jsp/admin/warrant/warrantNumberReqList.jsp" />  

@@ -14,8 +14,8 @@
 <div class="tab-cont">
     <ul>
         <li><a href="<c:url value='/warrant/warrantNumber.do' />">기본 양식</a></li>
-        <li class="on"><a href="<c:url value='/warrant/warrantNumberReqList.do' />">등록</a></li>
-        <li><a href="<c:url value='/warrant/warrantNumberReqList.do' />">목록/수정</a></li>
+        <li><a href="<c:url value='/warrant/warrantNumberReqList.do' />">등록</a></li>
+        <li class="on"><a href="<c:url value='/warrant/warrantNumberModList.do' />">목록/수정</a></li>
     </ul>
 </div>
 
@@ -24,7 +24,20 @@
     <input type="hidden" id="category3" name="category3" value="${category3_key}">
     <input type="hidden" id="license_idx"   name="license_idx"  value="${warrantVo.license_idx}"/>
     <div class="search-cont">
-    	<select class="select" id="site" name="site">
+    	<div class="radio-cont">
+           <input type="radio" class="radio-box" id="dateAll" name="radioGroupDate" value="" checked>
+           <label for="dateAll">전체</label>
+       </div>
+       <div class="radio-cont mr10">
+           <input type="radio" class="radio-box" id="dateTerm" name="radioGroupDate" value="">
+           <label for="dateTerm">기간선택</label>
+       </div>
+       <div class="picker-wrap">
+           <input type="text" id="datepickerFrom" class="input-box"/>
+           <span class="next-ico">-</span>
+           <input type="text" id="datepickerTo" class="input-box"/>
+       </div>
+       	<select class="select" id="site" name="site">
             <option value="on">온라인</option>
             <option value="off">오프라인</option>
         </select>
@@ -37,21 +50,13 @@
 			 </c:forEach>
 		</select>
         <select class="select"  id="category2_key" name="category2_key">
+        	
         	<option value=''>선택 하세요</option> 
 			<c:forEach var="result" items="${category2list}" varStatus="status">
 			     <option value='${result.CATEGORY2_KEY}' <c:if test="${category2_key == result.CATEGORY2_KEY}">selected</c:if>>${result.CATEGORY2_NAME}</option>
 			</c:forEach>
-        </select>
-        <select class="select lg-width"  id="category3_key" name="category3_key">
-            <option value=''>선택 하세요</option>
-			<c:forEach var="result" items="${category3list}" varStatus="status">
-			     <option value='${result.CATEGORY3_KEY}' <c:if test="${category3_key == result.CATEGORY3_KEY}">selected</c:if>>${result.CATEGORY3_NAME}</option>
-			</c:forEach>
-        </select>
-		<select class="select" id="searchType" name="searchType">
-            <option value="name">이름</option>
-            <option value="id">아이디</option>
-        </select>
+        </select>                
+        
         <input type="text" id="searchText" name="searchText" class="input-box lg-width" placeholder="직접입력">
         
         <button class="search-btn">검색</button>
@@ -67,31 +72,50 @@
 
 <div class="table-wrap">
     <table class="list-tb">
-       <caption>선택, 분류3(교육명), 이름, 아이디, 소속, 연락처, 수료증 발급 등록 정보가 있는 테이블</caption>
+       <caption>선택, 분류3(교육명), 이름, 아이디, 소속, 연락처, 등록일, 미리보기, 관리 정보가 있는 테이블</caption>
        <colgroup>
+           <col width="5%"/>
            <col width="6%"/>
-           <col width="8%"/>
            <col width="*"/>
-           <col width="10%"/>
+           <col width="7%"/>
+           <col width="8%"/>
            <col width="12%"/>
-           <col width="15%"/>
-           <col width="12%"/>
            <col width="10%"/>
-        </colgroup>
-        <thead>
-            <tr>
-                <th><input type="checkbox" class="check-box"/></th>
-                <th>No.</th>
-                <th>분류3(교육명)</th>
-                <th>이름</th>
-                <th>아이디</th>
-                <th>소속</th>
-                <th>연락처</th>
-                <th>수료증 발급 등록</th>
-            </tr>
-        </thead>
+           <col width="8%"/>
+           <col width="8%"/>
+           <col width="12%"/>
+       </colgroup>
+       <thead>
+           <tr>
+               <th><input type="checkbox" class="check-box"/></th>
+               <th>No.</th>
+               <th>분류3(교육명)</th>
+               <th>이름</th>
+               <th>아이디</th>
+               <th>소속</th>
+               <th>연락처</th>
+               <th>등록일</th>
+               <th>미리보기</th>
+               <th>관리</th>
+           </tr>
+       </thead>
         <tbody>
         	<c:forEach var="result" items="${resultList}" varStatus="status">
+	            <tr>
+                    <td><input type="checkbox" id='checkNo' name='checkNo' value="${result.COUR_NO}" class="check-box"/></td>
+                    <td>1</td>
+                    <td class="tl">보고듣고말하기2.0 중년편</td>
+                    <td>홍길동</td>
+                    <td>aaaaaaaa</td>
+                    <td>삼성물산</td>
+                    <td>010 3458 3352</td>
+                    <td>2021.11.07</td>
+                    <td><button class="sm-btn black-btn">보기</button></td>
+                    <td>
+                        <button class="sm-btn blue-btn">수정</button>
+                        <button class="sm-btn white-btn">삭제</button>
+                    </td>
+                </tr>
 	            <tr>
 	            	<td><input type="checkbox" id='checkNo' name='checkNo' value="${result.COUR_NO}" class="check-box"/></td>
                     <td>${status.index + 1}</td>
@@ -105,7 +129,7 @@
             </c:forEach>
             <c:if test="${empty resultList }">
 	             <tr>
-	                 <td colspan='8'/>Data 없습니다.</td>
+	                 <td colspan='10'/>Data 없습니다.</td>
 	             </tr>
           	 </c:if>
         </tbody>
@@ -121,64 +145,6 @@
 <script type="text/javascript">
  
  $(document).ready(function(){
-	 $('#category1_key').change(function(){
-	 		var val  = $(this).val();
-
-			if( val ==""){
-				return;
-			}
-			
-			$("#category2_key").val("");
-			$("#category3_key").val("");
-			
-			 $.ajax({	
-			    url     : "<c:url value='/user/category2list.do'/>",
-			    data    : $("#listForm").serialize(),
-		        dataType: "JSON",
-		        cache   : false,
-				async   : true,
-				type	: "POST",	
-				success: function(data, opt, inx){
-				var option = '';
-				option += '<option value="">선택 하세요</opton>'; //선택
-				$.each(data, function(i, ret){
-					option += '<option value="'+ret.CATEGORY2_KEY+'">'+ret.CATEGORY2_NAME+'</option>';		
-				});
-				$('select[name=category2_key]').html(option);						
-	     },	       
-		        error 	: function(xhr, status, error) {}
-		        
-		     });
-		 });
-				 
-		$('#category2_key').change(function(){
-			var val  = $(this).val();
-
-			if( val ==""){
-				return;
-			}
-			
-			$("#category3_key").val("");
-					
-			 $.ajax({	
-			    url     : "<c:url value='/user/category3list.do'/>",
-			    data    : $("#listForm").serialize(),
-		        dataType: "JSON",
-		        cache   : false,
-				async   : true,
-				type	: "POST",	
-				success: function(data, opt, inx){
-				var option = '';
-				option += '<option value="0">선택 하세요</opton>'; //선택
-				$.each(data, function(i, ret){
-					option += '<option value="'+ret.CATEGORY3_KEY+'">'+ret.CATEGORY3_NAME+'</option>';		
-				});
-				$('select[name=category3_key]').html(option);						
-		        },	       
-		        error 	: function(xhr, status, error) {}
-		        
-		     });
-		 }); 
  });
  
  function fn_clearBtn(){
