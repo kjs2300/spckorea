@@ -243,6 +243,7 @@ public class MyController
   @RequestMapping({"/popMyWarrant.do"})
   public String popMyWarrant(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  	  
 	  paramMap.put("sqlName", "getMyWarrant");
 	  model.addAttribute("result", myService.getSelectData(paramMap));
 	  
@@ -250,6 +251,19 @@ public class MyController
 	  model.addAllAttributes(paramMap);
 	
 	    return "popMyWarrant";
+  }
+  
+  @RequestMapping({"/popMyWarrantNum.do"})
+  public String popMyWarrantNum(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  	  
+	  paramMap.put("sqlName", "getMyWarrant");
+	  model.addAttribute("result", myService.getSelectData(paramMap));
+	  
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	
+	    return "popMyWarrantNum";
   }
   
   @RequestMapping({"/my01mylist.do"})

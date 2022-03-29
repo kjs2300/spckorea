@@ -109,7 +109,7 @@
                     <td>${result.COPER_NM}</td>
                     <td>${result.MBL_TELNO}</td>
                     <td>${result.ADD_DT}</td>
-                    <td><c:if test="${result.ADD_DT != '' && result.ADD_DT != null}"><button class="sm-btn black-btn">보기</button></c:if></td>
+                    <td><c:if test="${result.ADD_DT != '' && result.ADD_DT != null}"><button onClick="javascript:openWindowPop('<c:url value='/my/popMyWarrantNum.do'/>?cour_no=${result.COUR_NO}&edu_no=${result.EDU_NO}','popup');" class="sm-btn black-btn">보기</button></c:if></td>
                     <td>
                     	<c:if test="${result.ADD_DT != '' && result.ADD_DT != null}">
 	                        <button class="sm-btn blue-btn">수정</button>
@@ -240,7 +240,7 @@ var setDel = function(idxArray){
 };
 
 function openWindowPop(url, name){
-    var options = 'top=10, left=10, width=540px, height=360px, status=no, menubar=no, toolbar=no, resizable=no';
+    var options = 'top=10, left=10, width=810px, height=1200px, status=no, menubar=no, toolbar=no, resizable=no';
     window.open(url, name, options);
 }	
 

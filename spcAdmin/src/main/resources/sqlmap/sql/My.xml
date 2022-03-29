@@ -442,18 +442,26 @@
 	</select>
 	
 	<select id="getMyWarrant" parameterType="java.util.Map" resultType="java.util.Map">
-	SELECT  a.USER_NM
+	SELECT  a.USER_NM, a.USER_ID
 			,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
 			,DATE_FORMAT(a.CHG_DT,'%Y') AS DATE_Y
 			,DATE_FORMAT(a.CHG_DT,'%m') AS DATE_M
 			,DATE_FORMAT(a.CHG_DT,'%d') AS DATE_D
+            ,DATE_FORMAT(NOW(), '%y') AS NOWYEAR
+            ,c.LICENSE_NUMBER
+            ,(SELECT COPER_NM FROM COM_USER WHERE USER_ID = a.USER_ID) AS COPER_NM
+            ,DATE_FORMAT(c.REG_DT,'%Y') AS CDATE_Y
+			,DATE_FORMAT(c.REG_DT,'%m') AS CDATE_M
+			,DATE_FORMAT(c.REG_DT,'%d') AS CDATE_D
 		FROM EDU_COURSE_REGISTRATION a,
-			 EDU_REGISTRATION b
+			 EDU_REGISTRATION b,
+             EDU_USER_LICENSE c
 		 WHERE 1=1
 		  AND a.EDU_NO = b.EDU_NO
+		  AND a.EDU_NO = c.EDU_NO
+          AND a.COUR_NO = c.COUR_NO
 		  AND a.COUR_NO = #{cour_no}
 		  AND a.EDU_NO = #{edu_no}
-		  AND a.USER_ID = #{UserAccount.user_id}
 	</select>
 	
 	<select id="getMyList" parameterType="java.util.Map" resultType="java.util.Map">
