@@ -505,4 +505,14 @@
 			</when>
 		</choose>
 	</select>
+	
+	<update id="myWarrantUpdate" parameterType="java.util.Map">	
+		UPDATE EDU_COURSE_REGISTRATION
+		SET COUR_TIME = #{cour_time}, COUR_STAT = #{cour_stat}
+			<if test="cour_stat == '1' and category2_key != null">
+			,AND CHG_DT = NOW()
+			</if>
+		WHERE COUR_NO = #{cour_no}
+		  AND EDU_NO = #{edu_no}
+	</update><!--수정해야함-->
 </mapper>

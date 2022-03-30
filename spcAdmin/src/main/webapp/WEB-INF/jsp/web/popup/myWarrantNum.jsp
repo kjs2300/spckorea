@@ -22,24 +22,23 @@
 	background:url(../images/common/02bg.jpg) no-repeat center center;
 	background-size:contain;
 }
-.warrant-tit{font-size: 60px;font-weight: 600; font-family: batang; color: #333; text-align: center; line-height: 120px; padding-top: 200px; letter-spacing: 8px;}
+.warrant-tit{font-size: 60px;font-weight: 600; font-family: batang; color: #333; text-align: center; line-height: 120px; padding-top: 150px; letter-spacing: 8px;}
 
-.warrant-num{font-size: 16px; font-weight: 400; line-height: 24px; text-align: left; color: #333;}
+.warrant-num{font-size: 16px; font-weight: 400; line-height: 24px; text-align: left; color: #333;padding-top:50px;padding-left:65px;}
 .warrant-num span{font-weight: 500;}
 
 .warrant-cont{padding: 55px 130px;}
-.warrant-cont p{margin-bottom: 45px; font-size: 25px; font-weight: 500; line-height: 34px; text-align: left; color: #333; text-align:center;}
+.warrant-cont p{margin-bottom: 45px; font-size: 25px; font-weight: 500; line-height: 34px; text-align: left; color: #333;}
 .warrant-cont p span{padding: 0px 3px 0px 0px; font-weight: 700; color: #000;}
 
-.warrant-cont .name{text-align:right;}
 .warrant-cont .title{}
 .warrant-cont .des{text-align: center; font-size: 23px; line-height: 40px; font-weight: 400;}
 .warrant-cont .date{text-align: center;}
 .warrant-cont .date span{padding: 0px 3px 0px 10px;}
 .warrant-cont .date span:first-child{padding: 0px 3px 0px 0px;}
-.warrant-foot{padding: 0px 70px; text-align: right;}
-.warrant-foot span{font-size: 20px; line-height: 30px; font-weight: 600; color: #000;}
-.warrant-foot img{width: 20%; max-width: 300px;}
+.warrant-foot{padding: 50px 70px; text-align: center;margin-left:90px;}
+.warrant-foot span{font-size: 25px; line-height: 30px; font-weight: 600; color: #000;}
+.warrant-foot img{width: 15%; max-width: 300px;}
 /* .warrant-foot{
 	margin-left:360px;
 } */
@@ -88,7 +87,7 @@
         <img src="${pageContext.request.contextPath}/images/common/stamp.png" alt="생명존중희망재단 이사장인"/>
     </div>
 </div>
-<div class="warrant-foot">
+<div class="warrant-foot2">
 		<button type="button" onClick="downloadURI();" class="sm-btn white-btn">다운로드</button>
     </div>
     <%-- <!--  class-wrap begin -->
