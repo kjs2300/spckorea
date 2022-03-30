@@ -112,7 +112,7 @@
                     <td><c:if test="${result.ADD_DT != '' && result.ADD_DT != null}"><button onClick="javascript:openWindowPop('<c:url value='/my/popMyWarrantNum.do'/>?cour_no=${result.COUR_NO}&edu_no=${result.EDU_NO}','popup');" class="sm-btn black-btn">보기</button></c:if></td>
                     <td>
                     	<c:if test="${result.ADD_DT != '' && result.ADD_DT != null}">
-	                        <button class="sm-btn blue-btn">수정</button>
+	                        <button onClick="javascript:openWindowPop('<c:url value='/warrant/popWarrantNumberMod.do'/>?cour_no=${result.COUR_NO}&edu_no=${result.EDU_NO}','popup');" class="sm-btn blue-btn">수정</button>
 	                        <button class="sm-btn white-btn">삭제</button>
                         </c:if>
                     </td>
