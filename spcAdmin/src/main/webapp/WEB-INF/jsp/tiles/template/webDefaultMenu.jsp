@@ -125,6 +125,28 @@
 	      </div>
      </c:if>
      
+     <c:if test="${fn:contains(path, '/user/org')}">
+	      <aside class="tit">기관 회원 서비스</aside>
+	      <div class="lnb-menu">
+	          <ul>
+	          		<li <c:if test="${fn:contains(path, '/user/org01')}">  class="on" </c:if>>
+	                 	<a href="#">기관회원 교육신청</a>
+	                 	<ul class="sub-lnb">
+                        	<li <c:if test="${fn:contains(path, '/user/org01info') }">  class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/org01info.do">교육소개</a></li>
+	                    	<li <c:if test="${fn:contains(path, '/user/org01List') }">    class="active" </c:if>> <a href="${pageContext.request.contextPath}/user/org01List.do">교육신청</a></li>
+                        </ul>
+	                 </li>
+	                 
+	                 <li <c:if test="${fn:contains(path, '/user/org02')}">  class="on" </c:if>>
+	                 	<a href="${pageContext.request.contextPath}/user/org02List.do">신청 현황</a>
+		             </li>
+		             <li <c:if test="${fn:contains(path, '/user/org03')}">  class="on" </c:if>>
+	                 	<a href="${pageContext.request.contextPath}/user/org03List.do">결과 보고</a>
+		             </li>
+		      </ul>
+	      </div>
+     </c:if>
+     
      <c:if test="${fn:contains(path, '/my')}">
 	      <aside class="tit">마이페이지</aside>
 	      <div class="lnb-menu">

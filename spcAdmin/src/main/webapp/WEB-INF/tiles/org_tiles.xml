@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+ 
+<tiles-definitions>  
+   
+	   <!--분야별 교육신청 > 생명지킴이 강사 양성 교육 - 교육신청 -->
+	   <definition name="org01info" extends="common-definition">  
+	       <put-attribute name="title" value="기관회원 - 교육소개" />  
+	       <put-attribute name="body" value="/WEB-INF/jsp/web/org/org01info.jsp" />  
+	   </definition> 
+	   
+	   <definition name="org01List" extends="common-definition">  
+	       <put-attribute name="title" value="기관회원 - 교육신청" />  
+	       <put-attribute name="body" value="/WEB-INF/jsp/web/org/org01List.jsp" />  
+	   </definition> 
+	   
+	   <definition name="org01Rep" extends="common-definition">  
+	       <put-attribute name="title" value="기관회원 - 교육신청" />  
+	       <put-attribute name="body" value="/WEB-INF/jsp/web/org/org01Rep.jsp" />  
+	   </definition> 
+	   
+  </tiles-definitions>
