@@ -77,7 +77,7 @@
                         <!---- tit-cont begin ---->
                         <div class="tit-cont">
                             <p class="total">전체 : <span>100</span>건</p>
-                            <select class="select">
+                            <select class="select" id="sortType">
                                 <option >교육기간순</option>
                                 <option>교육등록순</option>
                             </select>
