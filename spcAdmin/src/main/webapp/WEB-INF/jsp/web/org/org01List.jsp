@@ -24,18 +24,18 @@
  }
  
  function fn_detail(edu_no){
-	document.location = "<c:url value='/user/sectorView.do'/>"+"?edu_no="+edu_no+"&idx="+$('#idx').val();
+	document.location = "<c:url value='/user/org01Req.do'/>"+"?edu_no="+edu_no;
  }	
  function fn_egov_link_page(pageNo){
 	 var frm = document.commonForm;
 	 $("#pageIndex").val(pageNo); 
- 	 frm.action = "<c:url value='/user/sectorList.do'/>";
+ 	 frm.action = "<c:url value='/user/org01List.do'/>";
    	 frm.submit();
  }
 </script>
      <!-- container  begin -->
                 <div id="container">
-                	<input type="hidden" id="idx" name="idx" value="${idx}">
+		    		<input type="hidden" id="idx" name="idx" value="${idx}">
 		    		<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
                 	
                     <div class="tit-wrap">
@@ -60,10 +60,10 @@
                             <div class="search-cont">
                                 <label>교육명 :</label>
                                 <select class="select" id="searchType" name="searchType">
-                                    <option id="coper" name="coper">기관명</option>
-                                    <option id="edu" name="edu">교육명</option>
+                                    <option value="coper" <c:if test="${searchType == 'coper'}">selected</c:if>>기관명</option>
+                                    <option value="edu" <c:if test="${searchType == 'edu'}">selected</c:if>>교육명</option>
                                 </select>
-                                <input type="text" id="searchText" name="searchText" class="input-box lg-width" placeholder="직접입력"/>
+                                <input type="text" id="searchText" name="searchText" value="${searchText}" class="input-box lg-width" placeholder="직접입력"/>
                             </div>
 
                             <div class="btn-cont">
@@ -110,124 +110,31 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    	<c:forEach var="result" items="${resultList}" varStatus="status">
                                         <tr>
-                                            <td>10</td>
-                                            <td>한국생명존중 희망재단</td>
-                                            <td class="tl">보고듣고말하기 2.0 기본형</td>
-                                            <td>성인</td>
-                                            <td><span>120</span>분</td>
-                                            <td>최대<span>120</span>명</td>
-                                            <td><button class="sm-btn navy-btn">신청하기</button></td>
+                                            <td>${status.index + 1}</td>
+                                            <td>${result.COPER_NM_AUTO}</td>
+                                            <td class="tl">${result.CATEGORY3_NAME}</td>
+                                            <td>${result.EDU_TARGET}</td>
+                                            <td><span>${result.EDU_TIME}</span>분</td>
+                                            <td>최대<span>${result.EDU_GARDEN}</span>명</td>
+                                            <td>
+                                            	<c:if test="${result.EDU_STATUS eq '신청중'}">
+                                            		<button class="sm-btn navy-btn" onClick="fn_detail('${result.EDU_NO}');">신청하기</button>
+                                            	</c:if>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td>9</td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td>8</td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                        </c:forEach>
+                                        <c:if test="${empty resultList }">
+								             <tr>
+								                 <td colspan='7'/>Data 없습니다.</td>
+								             </tr>
+								        </c:if>
                                     </tbody>
                                 </table>
                             </div>
 
                         </div>
-
-                        <!---- page begin ---->
-                        <div class="page-wrap">
-                            <ul class="paging">
-                                <li><a>&lt;&lt;</a></li>
-                                <li><a>&lt;</a></li>
-                                <li class="on"><a>1</a></li>
-                                <li><a>2</a></li>
-                                <li><a>3</a></li>
-                                <li><a>4</a></li>
-                                <li><a>5</a></li>
-                                <li><a>6</a></li>
-                                <li><a>7</a></li>
-                                <li><a>8</a></li>
-                                <li><a>9</a></li>
-                                <li><a>10</a></li>
-                                <li><a>&gt;</a></li>
-                                <li><a>&gt;&gt;</a></li>
-                            </ul>
-                        </div>
-                        <!---- page end ---->
-
-                    </div>
 
                         <!---- page begin ---->
                         <div class="page-wrap">

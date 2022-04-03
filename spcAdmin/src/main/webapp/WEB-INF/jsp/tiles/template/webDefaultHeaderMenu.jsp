@@ -75,12 +75,12 @@ model.addAttribute("path", request.getServletPath());
 	             <li>
 	                 <a href="#">교육신청</a>
 	                 <ul class="depth3">
-	                     <li><a href="${pageContext.request.contextPath}/user/org01info">교육소개</a></li>
-	                     <li><a href="${pageContext.request.contextPath}/user/org01List">교육신청</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/org01info.do">교육소개</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/org01List.do">교육신청</a></li>
 	                 </ul>
 	             </li>
-	             <li><a href="${pageContext.request.contextPath}/user/org02List">신청현황</a></li>
-	             <li><a href="${pageContext.request.contextPath}/user/org03List">결과보고</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/org02List.do">신청현황</a></li>
+	             <li><a href="${pageContext.request.contextPath}/user/org03List.do">결과보고</a></li>
 	         </ul>
 	         <ul class="depth2">
 	             <li><a href="${pageContext.request.contextPath}/user/instructor01List.do">공지사항</a></li>
