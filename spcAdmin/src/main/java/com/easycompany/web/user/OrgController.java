@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
  
 import com.easycompany.cmm.vo.DefaultVO;
+import com.easycompany.service.InstructorService;
 import com.easycompany.service.OrgService;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
@@ -31,6 +32,9 @@ public class OrgController
   
   @Autowired
   protected EgovPropertyService propertiesService;
+  
+  @Autowired
+  protected InstructorService instructorService;
 
   @Value("#{dbinfo['file.path']}")
   private String filePath;
@@ -81,7 +85,12 @@ public class OrgController
     
   @RequestMapping({"/org01Req.do"})
   public String orgView(@RequestParam Map<String, Object> paramMap, ModelMap model ,HttpServletRequest request) throws Exception {
-		paramMap.put("sqlName", "getOrgView");	
+	  	paramMap.put("sqlName", "getCodeList");
+	  	paramMap.put("code","32");
+	  	List<Map<String, Object>> codeList = instructorService.getSelectList(paramMap);
+		model.addAttribute("codeList", codeList);
+		  
+	  	paramMap.put("sqlName", "getOrgView");	
 		Map<String, Object> result = orgService.getSelectData(paramMap);
 	  	model.addAttribute("result", result);
 	  	model.addAttribute("path", request.getServletPath());
@@ -89,15 +98,23 @@ public class OrgController
 		return "org01Req";
   }
   
-  @RequestMapping({"/orgReq.do"})
-  public String orgReq(@RequestParam Map<String, Object> paramMap, ModelMap model ,HttpServletRequest request) throws Exception {
-		paramMap.put("sqlName", "getOrgView");	
-		Map<String, Object> result = orgService.getSelectData(paramMap);
-	  	model.addAttribute("result", result);
-	  	model.addAttribute("UserAccount", request.getSession().getAttribute("UserAccount"));
-	  	model.addAttribute("path", request.getServletPath());
-	    model.addAllAttributes(paramMap);
-		return "org"+paramMap.get("idx")+"Req";
+  @RequestMapping({"/popInsSearch.do"})
+  public String popInsSearch(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  	  
+	  paramMap.put("sqlName", "getCodeList");
+	  paramMap.put("code","32");
+	  List<Map<String, Object>> codeList = instructorService.getSelectList(paramMap);
+	  model.addAttribute("codeList", codeList);
+		
+	  paramMap.put("sqlName", "getInsSearch");
+	  List<Map<String, Object>> list = orgService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+	  
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	
+	  return "popInsSearch";
   }
   
   @RequestMapping({"/orgSaveCheck.do"})

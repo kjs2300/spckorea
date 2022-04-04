@@ -14,7 +14,24 @@
 
  <script type="text/javaScript" language="javascript" defer="defer">
  $(document).ready(function(){		
-	 	
+   $("#edu_date").datepicker({
+		  	dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	       ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+  ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+  ,changeYear: true //option값 년 선택 가능
+  ,changeMonth: true //option값  월 선택 가능                
+  ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+  ,buttonImage: "<c:url value='/images/common/ico_calendar.png'/>" //버튼 이미지 경로
+  ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+  ,buttonText: "선택" //버튼 호버 텍스트              
+  ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+  ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+  ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+  ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+  ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+  ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+  ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+	});
  });
  function fn_save(){
 	   if ($("#mbl_telno").val() == ""){			
@@ -80,6 +97,11 @@
 		}
 	}	
  
+ function openWindowPop(url, name){
+	    var options = 'top=10, left=10, width=700px, height=600px, status=no, menubar=no, toolbar=no, resizable=no';
+	    window.open(url, name, options);
+	}	
+ 
  	function fn_goList(){
 		document.location = "<c:url value='/user/sectorList.do'/>"+"?edu_no="+$('#edu_no').val()+"&idx="+$('#idx').val();
 	 }	
@@ -119,12 +141,13 @@
                                             <th>기관명</th>
                                             <td>
                                                 <div class="tb-cont">
-                                                    <select class="select">
+                                                    <select id="area_cd" name="area_cd" class="select">
                                                         <option>지역선택</option>
-                                                        <option>서울</option>
-                                                        <option>부산</option>
+                                                        <c:forEach var="code" items="${codeList}" varStatus="status">
+															<option value='${code.CD}' <c:if test="${result.AREA_CD == code.CD}">selected</c:if>>${code.CD_NM}</option>
+														</c:forEach>
                                                     </select>
-                                                    <input type="text" class="input-box" value=""/>
+                                                    <input type="text" class="input-box" value="${result.COPER_NM}"/>
                                                 </div>
                                             </td>
                                         </tr>
@@ -168,20 +191,20 @@
                                             <td>
                                                 <div class="tb-cont">
                                                     <div class="radio-cont">
-                                                        <input type="radio" class="radio-box" id="" name="" value="" checked>
+                                                        <input type="radio" class="radio-box" id="ins_type" name="ins_type" value="select" checked>
                                                         <input type="text" class="input-box" readonly value=""/>
                                                         <input type="text" class="input-box" readonly value=""/>
-                                                        <button class="sm-btn navy-btn">검색</button>
+                                                        <button class="sm-btn navy-btn" onClick="javascript:openWindowPop('<c:url value='/user/popInsSearch.do'/>','popup');" class="sm-btn white-btn">검색</button>
                                                     </div>
                                                     
                                                     <div class="radio-cont">
-                                                        <input type="radio" class="radio-box" id="" name="" value="">
+                                                        <input type="radio" class="radio-box" id="ins_type" name="ins_type" value="input">
                                                         <label for="">직접입력</label>
-                                                        <input type="text" class="input-box" value=""/>
+                                                        <input type="text" class="input-box" id="ins_input" name="ins_input"/>
                                                     </div>
             
                                                     <div class="radio-cont">
-                                                        <input type="radio" class="radio-box" id="" name="" value="">
+                                                        <input type="radio" class="radio-box" id="ins_type" name="ins_type" value="recruit">
                                                         <label for="">강사섭외 필요</label>
                                                     </div>
                                                     <p class="point ml20">* 이어줌인 교육의 경우, 강사들이 충분하지 않아 섭외가 어려울 수 있습니다.</p>
@@ -191,13 +214,13 @@
                                         <tr>
                                             <th>교육명</th>
                                             <td>
-                                                <input type="text" class="input-box" readonly value=""/>
+                                                <input type="text" class="input-box" readonly value="${result.CATEGORY3}"/>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>교육대상</th>
                                             <td>
-                                                <input type="text" class="input-box" readonly value=""/>
+                                                <input type="text" class="input-box" readonly value="${result.EDU_TARGET}"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -205,30 +228,34 @@
                                             <td>
                                                 <div class="tb-cont">
                                                     <div class="picker-wrap">
-                                                        <input type="text" id="datepickerDefault" class="input-box"/>
+                                                        <input type="text" id="edu_date" name="edu_date" class="input-box"/>
                                                     </div>
                                                     <div class="time-cont">
-                                                        <select class="select">
-                                                            <option>00</option>
-                                                            <option>01</option>
+                                                        <select class="select" id="start_hour" name="start_hour">
+                                                            <c:forEach var="i"  begin="0" end="23">
+														        <option value="${i}">${i>9?i:'0'}${i>9?'':i}</option>
+														    </c:forEach>
                                                         </select>
                                                         <span>시</span>
-                                                        <select class="select">
-                                                            <option>00</option>
-                                                            <option>01</option>
+                                                        <select class="select" id="start_min" name="start_min">
+                                                            <c:forEach var="i"  begin="0" end="60">
+														        <option value="${i}">${i>9?i:'0'}${i>9?'':i}</option>
+														    </c:forEach>
                                                         </select>
                                                         <span>분</span>
                                                     </div>
                                                     <span class="next-ico">~</span>
                                                     <div class="time-cont">
-                                                        <select class="select">
-                                                            <option>00</option>
-                                                            <option>01</option>
+                                                       <select class="select" id="end_hour" name="end_hour">
+                                                            <c:forEach var="i"  begin="0" end="23">
+														        <option value="${i}">${i>9?i:'0'}${i>9?'':i}</option>
+														    </c:forEach>
                                                         </select>
                                                         <span>시</span>
-                                                        <select class="select">
-                                                            <option>00</option>
-                                                            <option>01</option>
+                                                        <select class="select" id="end_min" name="end_min">
+                                                            <c:forEach var="i"  begin="0" end="60">
+														        <option value="${i}">${i>9?i:'0'}${i>9?'':i}</option>
+														    </c:forEach>
                                                         </select>
                                                         <span>분</span>
                                                     </div>
@@ -238,14 +265,14 @@
                                         <tr>
                                             <th>교육시간</th>
                                             <td>
-                                                <input type="text" class="input-box" value=""/>
+                                                <input type="text" class="input-box" value="${result.EDU_TIME}"/>
                                                 <span>분</span>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>교육인원</th>
                                             <td>
-                                                <input type="text" class="input-box" value=""/>
+                                                <input type="text" class="input-box" value="${result.EDU_GARDEN}"/>
                                                 <span>명</span>
                                                 <p class="point ml20">* 청소년 50명, 그 외 200명 신청 시 초과신청 불가 (비대면교육은 해당없음)</p>
                                             </td>

@@ -45,25 +45,39 @@
 	</select>
 	
 	<select id="getOrgView" parameterType="java.util.Map" resultType="java.util.Map">
-	SELECT  ER.EDU_NO, (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = ER.CATEGORY1_KEY) AS CATEGORY1 , 
-			(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = ER.CATEGORY2_KEY) AS CATEGORY2 , 
+	SELECT  ER.EDU_NO, IFNULL(ER.COPER_NM,ER.COPER_NM_AUTO) AS COPER_NM,
 			(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = ER.CATEGORY3_KEY) AS CATEGORY3 , 
-			ER.INST_NM, ER.TRAIN_S_DATE, ER.TRAIN_E_DATE, ER.EDU_METHOD,ER.EDU_TIME, ER.EDU_NOTICE,
-            ERD.EDU_INTRO, ERD.EDU_GOALS, ERD.EDU_CURR1, ERD.EDU_CURR2, ERD.EDU_CURR3,
-            ER.EDU_TARGET, ER.EDU_STATUS
-		FROM EDU_REGISTRATION ER LEFT OUTER JOIN
-			 EDU_REGISTRATION_DETAIL ERD  
-		ON ER.EDU_NO = ERD.EDU_NO
-		 WHERE 1=1
-        AND ER.EDU_NO = ${edu_no}
+			ER.EDU_TIME, ER.EDU_GARDEN, ER.EDU_TARGET,
+			ER.EDU_TARGET, ER.EDU_STATUS
+		FROM EDU_REGISTRATION ER
+        WHERE 1=1
+        AND EDU_SITE = 'off'
+		AND CATEGORY1_KEY = '7'
+		AND CATEGORY2_KEY = '14'
+		AND EXP_USE_YN = 'Y'
+        AND EDU_NO = ${edu_no}
 	</select>
 	
-	<select id="getBasketCheck" parameterType="java.util.Map" resultType="int">
-	SELECT  COUNT(BASKET_NO)
-		FROM EDU_BASKET
-		 WHERE 1=1
-		AND EDU_NO = ${edu_no}
-        AND USER_ID = #{UserAccount.user_id}
+	<select id="getInsSearch" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT a.INSTRUCTOR_IDX,
+			  (SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = b.AREA_CD) AS AREA_NM,
+			  b.USER_NM,
+              b.COPER_NM
+		 FROM EDU_INSTRUCTOR a,
+			  COM_USER b
+		WHERE 1=1
+        AND a.COM_USER_ID = b.USER_ID
+        AND a.STATUS = 1
+        AND a.USE_YN = 'Y'
+        <if test="area_nm !=null and area_nm != ''">
+	      	AND b.AREA_CD = ${area_nm}
+	      </if>
+	      <if test="ins_nm !=null and ins_nm != ''">
+	      	AND b.USER_NM LIKE CONCAT('%', #{ins_nm}, '%')
+	      </if>
+	      <if test="coper_nm !=null and coper_nm != ''">
+	      	AND b.COPER_NM LIKE CONCAT('%', #{coper_nm}, '%')
+	      </if>
 	</select>
 	
 	<insert id="basketInsert" parameterType="java.util.Map">	
