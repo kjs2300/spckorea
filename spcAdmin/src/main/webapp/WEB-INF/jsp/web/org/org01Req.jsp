@@ -33,36 +33,63 @@
   ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
 	});
  });
+ 
+ function email_chg(){
+	 $("#app_email2").val("");
+	 if($("#eml_sel").val() != ""){
+		 $("#app_email2").val($("#eml_sel").val());
+	 }
+ }
+ 
+ function insSelect(str){
+	var param = str.split(",");
+	$("#user_nm").val(param[2]);
+	$("#area_nm").val(param[1]);
+	$("#instructor_idx").val(param[0]);
+ }
+ 
  function fn_save(){
-	   if ($("#mbl_telno").val() == ""){			
-			alert("휴대폰을 입력하세요.");
-			$("#mbl_telno").focus();
+	 	if ($("#app_user_nm").val() == ""){			
+			alert("신청자를 입력하세요.");
+			$("#app_user_nm").focus();
 			return;
 		}
-	   if ($("#eml_addr1").val() == ""){			
+	 	if ($("#app_tel").val() == ""){			
+			alert("연락처를 입력하세요.");
+			$("#app_tel").focus();
+			return;
+		}
+	   if ($("#app_email1").val() == ""){			
 			alert("이메일을 입력하세요.");
-			$("#eml_addr1").focus();
+			$("#app_email1").focus();
 			return;
 		}	
-	   if ($("#eml_addr2").val() == ""){			
+	   if ($("#app_email2").val() == ""){			
 			alert("이메일을 입력하세요.");
-			$("#eml_addr2").focus();
+			$("#app_email2").focus();
 			return;
 		}	
-
-		var formData = new FormData(); 
-		formData.append("mbl_telno",   $("#mbl_telno").val());
-		formData.append("eml_addr1",   $("#eml_addr1").val());
-		formData.append("eml_addr2",   $("#eml_addr2").val());
-		formData.append("gubun",   	   "R");
-		formData.append("edu_no",   $("#edu_no").val());
-		
-			
+	   if ($("#edu_date").val() == ""){			
+			alert("교육일정을 입력하세요.");
+			$("#edu_date").focus();
+			return;
+		}
+	   if ($("#edu_garden").val() == ""){			
+			alert("교육인원을 입력하세요.");
+			$("#edu_garden").focus();
+			return;
+		}
+	   if ($("#edu_time").val() == ""){			
+			alert("교육시간을 입력하세요.");
+			$("#edu_time").focus();
+			return;
+		}
+	   
 		if(confirm("교육 신청을 하시겠습니까?")){
 				
 			$.ajax({	
-				data       : formData,
-			    url		   : "<c:url value='/user/sectorSave.do'/>",
+				data       : fn_getFormData("commonForm"),
+			    url		   : "<c:url value='/user/orgSave.do'/>",
 			    dataType   : "JSON",
 		        processData: false, 
 		        contentType: false,
@@ -109,7 +136,7 @@
 
 <!-- container  begin -->
                 <div id="container">
-
+				
                     <div class="tit-wrap">
                         <h1 class="h1-tit">교육신청</h1>
 
@@ -125,8 +152,12 @@
                     </div>
 
                     <div class="contents-wrap">
+                    <form  id="commonForm" name="commonForm"  method="post"  action="">
                         <input type="hidden" id="edu_no" name="edu_no" value="${edu_no}">
                         <input type="hidden" id="idx" name="idx" value="${idx}">
+                        <input type="hidden" id="category1_key" name="category1_key" value="7">
+                        <input type="hidden" id="category2_key" name="category2_key" value="14">
+                        <input type="hidden" id="category3_key" name="category3_key" value="${result.CATEGORY3_KEY}">
                         <div class="comp">
                             <h4 class="h4-tit">정보입력</h4>
                             <div class="table-wrap">
@@ -141,33 +172,34 @@
                                             <th>기관명</th>
                                             <td>
                                                 <div class="tb-cont">
-                                                    <select id="area_cd" name="area_cd" class="select">
-                                                        <option>지역선택</option>
-                                                        <c:forEach var="code" items="${codeList}" varStatus="status">
-															<option value='${code.CD}' <c:if test="${result.AREA_CD == code.CD}">selected</c:if>>${code.CD_NM}</option>
+                                                    <select id="area_cd" name="area_cd" class="select" readonly>
+                                                        <c:forEach var="code" items="${codeList}" varStatus="status" >
+                                                        	<c:if test="${result.AREA_CD == code.CD}">
+															<option value='${code.CD}' selected>${code.CD_NM}</option>
+															</c:if>
 														</c:forEach>
                                                     </select>
-                                                    <input type="text" class="input-box" value="${result.COPER_NM}"/>
+                                                    <input type="text" id="coper_nm" name="coper_nm" class="input-box" value="${result.COPER_NM}" readonly/>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>기관주소</th>
                                             <td>
-                                                <input type="text" class="input-box lg-width" readonly value=""/>
-                                                <button class="sm-btn navy-btn">주소검색</button>
+                                                <input type="text" id="coper_addr" name="coper_addr" class="input-box lg-width" readonly value="${result.ADDR}"/>
+                                                <!-- <button class="sm-btn navy-btn">주소검색</button> -->
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>신청자명</th>
                                             <td>
-                                                <input type="text" class="input-box" value=""/>
+                                                <input type="text" id="app_user_nm" name="app_user_nm" class="input-box"/>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>신청인 휴대폰</th>
                                             <td>
-                                                <input type="text" class="input-box lg-width" placeholder="- 없이 입력해주세요" value=""/>
+                                                <input type="text" id="app_tel" name="app_tel" class="input-box lg-width" placeholder="- 없이 입력해주세요"/>
                                                 <p class="point">* 연락 가능한 신청인의 휴대번호를 정확히 입력하시기 바랍니다.</p>
                                             </td>
                                         </tr>
@@ -175,13 +207,13 @@
                                             <th>신청인 이메일</th>
                                             <td>
                                                 <div class="tb-cont">
-                                                    <input type="text" class="input-box" value=""/>
+                                                    <input type="text" id="app_email1" name="app_email1" class="input-box" value=""/>
                                                     <span>@</span>
-                                                    <input type="text" class="input-box" value=""/>
-                                                    <select class="select">
+                                                    <input type="text" id="app_email2" name="app_email2" class="input-box" value=""/>
+                                                    <select class="select" id="eml_sel" name="eml_sel" onchange="email_chg();">
                                                         <option>직접입력</option>
-                                                        <option>naver.com</option>
-                                                        <option>gmail.com</option>
+                                                        <option value="naver.com">naver.com</option>
+                                            			<option value="gmail.com">gmail.com</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -192,8 +224,9 @@
                                                 <div class="tb-cont">
                                                     <div class="radio-cont">
                                                         <input type="radio" class="radio-box" id="ins_type" name="ins_type" value="select" checked>
-                                                        <input type="text" class="input-box" readonly value=""/>
-                                                        <input type="text" class="input-box" readonly value=""/>
+                                                        <input type="text" id="area_nm" name="area_nm" class="input-box" readonly/>
+                                                        <input type="text" id="user_nm" name="user_nm" class="input-box" readonly/>
+                                                        <input type="hidden" id="instructor_idx" name="instructor_idx"/>
                                                         <button class="sm-btn navy-btn" onClick="javascript:openWindowPop('<c:url value='/user/popInsSearch.do'/>','popup');" class="sm-btn white-btn">검색</button>
                                                     </div>
                                                     
@@ -214,13 +247,13 @@
                                         <tr>
                                             <th>교육명</th>
                                             <td>
-                                                <input type="text" class="input-box" readonly value="${result.CATEGORY3}"/>
+                                                <input type="text" id="edu_nm" name="edu_nm" class="input-box" readonly value="${result.CATEGORY3}"/>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>교육대상</th>
                                             <td>
-                                                <input type="text" class="input-box" readonly value="${result.EDU_TARGET}"/>
+                                                <input type="text" id="area_nm" name="area_nm" class="input-box" readonly value="${result.EDU_TARGET}"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -265,14 +298,14 @@
                                         <tr>
                                             <th>교육시간</th>
                                             <td>
-                                                <input type="text" class="input-box" value="${result.EDU_TIME}"/>
+                                                <input type="text" id="edu_time" name="edu_time" class="input-box" value="${result.EDU_TIME}"/>
                                                 <span>분</span>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>교육인원</th>
                                             <td>
-                                                <input type="text" class="input-box" value="${result.EDU_GARDEN}"/>
+                                                <input type="text" id="edu_garden" name="edu_garden" class="input-box" value="${result.EDU_GARDEN}"/>
                                                 <span>명</span>
                                                 <p class="point ml20">* 청소년 50명, 그 외 200명 신청 시 초과신청 불가 (비대면교육은 해당없음)</p>
                                             </td>
@@ -280,7 +313,7 @@
                                         <tr>
                                             <th>교육장소</th>
                                             <td>
-                                                <input type="text" class="input-box" value=""/>
+                                                <input type="text" id="edu_place" name="edu_place" class="input-box" value=""/>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -296,6 +329,7 @@
                         <!---- button end ---->
                         
 
+                	</form>
                     </div>
                 </div>
                 <!--  container end -->

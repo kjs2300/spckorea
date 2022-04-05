@@ -45,16 +45,18 @@
 	</select>
 	
 	<select id="getOrgView" parameterType="java.util.Map" resultType="java.util.Map">
-	SELECT  ER.EDU_NO, IFNULL(ER.COPER_NM,ER.COPER_NM_AUTO) AS COPER_NM,
-			(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = ER.CATEGORY3_KEY) AS CATEGORY3 , 
+	SELECT  ER.EDU_NO, CU.AREA_CD, CONCAT(CU.JUSO,CU.JUSO_DETAIL) AS ADDR ,IFNULL(ER.COPER_NM,ER.COPER_NM_AUTO) AS COPER_NM,
+			(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = ER.CATEGORY3_KEY) AS CATEGORY3, ER.CATEGORY3_KEY,
 			ER.EDU_TIME, ER.EDU_GARDEN, ER.EDU_TARGET,
 			ER.EDU_TARGET, ER.EDU_STATUS
-		FROM EDU_REGISTRATION ER
+		FROM EDU_REGISTRATION ER,
+			 COM_USER CU
         WHERE 1=1
-        AND EDU_SITE = 'off'
-		AND CATEGORY1_KEY = '7'
-		AND CATEGORY2_KEY = '14'
-		AND EXP_USE_YN = 'Y'
+        AND ER.EDU_SITE = 'off'
+		AND ER.CATEGORY1_KEY = '7'
+		AND ER.CATEGORY2_KEY = '14'
+		AND ER.EXP_USE_YN = 'Y'
+        AND ER.COPER_ID = CU.USER_ID
         AND EDU_NO = ${edu_no}
 	</select>
 	
@@ -80,46 +82,71 @@
 	      </if>
 	</select>
 	
-	<insert id="basketInsert" parameterType="java.util.Map">	
-		INSERT INTO EDU_BASKET(
-		  	  BASKET_NO
-		  	, EDU_NO
-		  	, USER_ID
-		  	, USER_NM
+	<insert id="orgSave" parameterType="java.util.Map">	
+		INSERT INTO EDU_SCHEDULE(
+		  	  CATEGORY1_KEY
+		  	, CATEGORY2_KEY
+		  	, CATEGORY3_KEY
+		  	, EDU_NAME
+		  	, EDU_START_DATE
+		  	, EDU_ORG_NAME
+		  	, EDU_TARGET
+		  	, EDU_NUMBER
+		  	, EDU_TEAC_NAME
+		  	, EDU_KEY
+		  	, REG_DT
 		  	, REG_ID
 		) VALUES (
-			  (SELECT MAX(a.BASKET_NO)+1 FROM EDU_BASKET a)
+			  #{category1_key}
+			, #{category2_key}
+			, #{category3_key}
+			, #{edu_nm}
+			, #{edu_date}
+			, #{coper_nm}
+			, #{area_nm}
+			, #{edu_garden}
+			, IFNULL(#{user_nm},#{ins_input},'')
 			, #{edu_no}
-			, #{UserAccount.user_id}
-			, #{UserAccount.user_nm}
+			, DATE_FORMAT(NOW(),'%x-%m-%d')
 			, #{UserAccount.user_id}
 		)	
 	</insert>
 	
-	<select id="getRegistCheck" parameterType="java.util.Map" resultType="int">
-	SELECT  COUNT(COUR_NO)
-		FROM EDU_COURSE_REGISTRATION
+	<select id="orgSaveSelectNo" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT  SCHEDULE_NO
+		FROM EDU_SCHEDULE
 		 WHERE 1=1
 		AND EDU_NO = ${edu_no}
-        AND USER_ID = #{UserAccount.user_id}
+		AND REG_DT = DATE_FORMAT(NOW(),'%x-%m-%d')
+        AND REG_ID = #{UserAccount.user_id}
 	</select>
 	
-	<insert id="registInsert" parameterType="java.util.Map">	
-		INSERT INTO EDU_COURSE_REGISTRATION(
-		  	  COUR_NO
-		  	, EDU_NO
-		  	, USER_ID
+	<insert id="orgSaveDtl" parameterType="java.util.Map">	
+		INSERT INTO EDU_SCHEDULE_DETAIL(
+		  	  SCHEDULE_NO
+		  	, COPER_AREA_CD
+		  	, COPER_ADDR
 		  	, USER_NM
-		  	, EML_ADDR
-		  	, MBL_TELNO
+		  	, USER_TELNO
+		  	, USER_EML
+		  	, INS_TYPE
+		  	, START_TIME
+		  	, END_TIME
+		  	, EDU_PLACE
+		  	, REG_DT
 		  	, REG_ID
 		) VALUES (
-			  (SELECT MAX(a.COUR_NO)+1 FROM EDU_COURSE_REGISTRATION a)
-			, #{edu_no}
-			, #{UserAccount.user_id}
-			, #{UserAccount.user_nm}
-			, CONCAT(#{eml_addr1},'@',#{eml_addr2})
-			, #{mbl_telno}
+			  #{schedule_no}
+			, #{area_cd}
+			, #{coper_addr}
+			, #{app_user_nm}
+			, #{app_tel}
+			, CONCAT(#{app_email1},'@',#{app_email2})
+			, #{ins_type}
+			, CONCAT(#{start_hour},':',#{start_min})
+			, CONCAT(#{end_hour},':',#{end_min})
+			, #{edu_place}
+			,DATE_FORMAT(NOW(),'%x-%m-%d')
 			, #{UserAccount.user_id}
 		)	
 	</insert>

@@ -16,6 +16,10 @@
 
  $(document).ready(function(){		
  });
+ function ins_checked(){
+	 opener.insSelect($("input[name='int_check']:checked").val());
+	 self.close();
+ }
 </script>
 <div class="pop-wrap">
         <div class="pop-header">
@@ -59,7 +63,7 @@
                     <tbody>
                         <c:forEach var="result" items="${resultList}" varStatus="status">
                         <tr>
-                            <td><input type="radio" class="radio-box" id="int_check" name="int_check" value="${result.INSTRUCTOR_IDX}"></td>
+                            <td><input type="radio" class="radio-box" id="int_check" name="int_check" value="${result.INSTRUCTOR_IDX},${result.AREA_NM},${result.USER_NM}"></td>
                             <td>${result.AREA_NM}</td>
                             <td>${result.USER_NM}</td>
                             <td>${result.COPER_NM}</td>
@@ -70,7 +74,7 @@
             </div>
         </div>
         <div class="pop-footer">
-            <button class="mid-btn navy-btn">확인</button>
-            <button class="mid-btn white-btn">취소</button>
+            <button class="mid-btn navy-btn" onClick="ins_checked();">확인</button>
+            <button class="mid-btn white-btn" onClick="self.close();">취소</button>
         </div>
     </div>

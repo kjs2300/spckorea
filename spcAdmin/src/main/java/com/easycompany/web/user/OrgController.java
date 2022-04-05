@@ -116,33 +116,7 @@ public class OrgController
 	
 	  return "popInsSearch";
   }
-  
-  @RequestMapping({"/orgSaveCheck.do"})
-  @ResponseBody
-  public Map<String, Object> orgSaveCheck(HttpServletRequest request, @RequestParam Map<String, Object> paramMap) throws Exception {
-	    int resultCnt = 0;
-	    Map<String, Object> result = new HashMap<String, Object>();
-	    try {
-	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
-	      if(paramMap.get("gubun").toString().equals("B")) {
-	    	  paramMap.put("sqlName", "getBasketCheck");	
-	      }else if(paramMap.get("gubun").toString().equals("R")) {
-	    	  paramMap.put("sqlName", "getRegistCheck");	
-	      }
-	      resultCnt = orgService.getSelectListCnt(paramMap);
-	      
-	      if(resultCnt == 0) {
-	    	  result.put("result", "SUCCESS");
-	      }else {
-	    	  result.put("result", "FAIL");	 
-	      }
-	    } catch (Exception e) {
-	      result.put("result", "FAIL");
-	    }
-	
-	    return result;
-  }
-  
+    
   @RequestMapping({"/orgSave.do"})
   @ResponseBody
   public Map<String, Object> orgSave(HttpServletRequest request, @RequestParam Map<String, Object> paramMap) throws Exception {
@@ -150,11 +124,14 @@ public class OrgController
 	    Map<String, Object> result = new HashMap<String, Object>();
 	    try {
 	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
-	      if(paramMap.get("gubun").toString().equals("B")) {
-	    	  paramMap.put("sqlName", "basketInsert");	
-	      }else if(paramMap.get("gubun").toString().equals("R")) {
-	    	  paramMap.put("sqlName", "registInsert");	
-	      }
+	      paramMap.put("sqlName", "orgSave");	
+	      resultCnt = orgService.insertData(paramMap);
+	      
+	      paramMap.put("sqlName", "orgSaveSelectNo");	
+		  Map<String, Object> resultMap = orgService.getSelectData(paramMap);
+		  paramMap.put("schedule_no", resultMap.get("SCHEDULE_NO"));	
+	      
+	      paramMap.put("sqlName", "orgSaveDtl");	
 	      resultCnt = orgService.insertData(paramMap);
 	      
 	      if(resultCnt > 0) {

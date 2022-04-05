@@ -117,7 +117,6 @@ $(document).ready(function(){
 
 
 
-
 	
 
 	
@@ -126,7 +125,17 @@ $(document).ready(function(){
 	
 });
 		
-		
+//폼데이터를 Json Arry로 직렬화
+function fn_getFormData(form) {
+    var unindexed_array = $(form).serializeArray();
+    var indexed_array = {};
+	
+    $.map(unindexed_array, function(n, i){
+        indexed_array[n['name']] = n['value'];
+    });
+	
+    return indexed_array;
+};
 
 
 
