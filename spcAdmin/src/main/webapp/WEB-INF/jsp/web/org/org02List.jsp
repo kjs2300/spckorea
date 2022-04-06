@@ -23,32 +23,26 @@
 	 $("[type='text']").val("");
  }
  
- function fn_detail(edu_no){
-	document.location = "<c:url value='/user/org01Req.do'/>"+"?edu_no="+edu_no;
- }	
  function fn_egov_link_page(pageNo){
 	 var frm = document.commonForm;
 	 $("#pageIndex").val(pageNo); 
- 	 frm.action = "<c:url value='/user/org01List.do'/>";
+ 	 frm.action = "<c:url value='/user/org02List.do'/>";
    	 frm.submit();
  }
 </script>
      <!-- container  begin -->
                 <div id="container">
-		    		<input type="hidden" id="idx" name="idx" value="${idx}">
 		    		<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
                 	
                     <div class="tit-wrap">
-                        <h1 class="h1-tit">교육신청</h1>
+                        <h1 class="h1-tit">기관회원 교육신청 현황</h1>
 
                         <div class="side-cont">
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                             <span>기관 회원 서비스</span>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                            <span>기관회원 교육신청</span>
-                            <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                            <span>교육신청</span>
+                            <span>기관회원 교육신청 현황</span>
                         </div>
                     </div>
 
@@ -77,10 +71,6 @@
                         <!---- tit-cont begin ---->
                         <div class="tit-cont">
                             <p class="total">전체 : <span>${totCnt}</span>건</p>
-                            <select class="select" id="sortType">
-                                <option >교육기간순</option>
-                                <option>교육등록순</option>
-                            </select>
                         </div>
                         <!---- tit-cont end ---->
 
@@ -88,28 +78,65 @@
                         <div class="comp mt20">
                             <div class="table-wrap">
                                 <table class="list-tb">
-                                    <caption>교육일시, 분류1, 분류2, 분류3, 기관명, 교육대상, 교육인원, 교육인원, 강사명 정보가 있는 테이블</caption>
+                                    <caption>교육명, 교육일시, 교육시간, 기관명, 교육대상, 강사, 강사섭외 유무, 상태 정보가 있는 테이블</caption>
                                     <colgroup>
-                                        <col width="8%"/>
-                                        <col width="14%"/>
+                                        <col width="6%"/>
                                         <col width="*"/>
+                                        <col width="15%"/>
                                         <col width="10%"/>
                                         <col width="10%"/>
-                                        <col width="14%"/>
+                                        <col width="9%"/>
+                                        <col width="10%"/>
+                                        <col width="10%"/>
                                         <col width="12%"/>
                                     </colgroup>
                                     <thead>
                                         <tr>
                                             <th>No.</th>
-                                            <th>기관명</th>
                                             <th>교육명</th>
-                                            <th>교육대상</th>
+                                            <th>교육일시</th>
                                             <th>교육시간</th>
-                                            <th>교육인원</th>
-                                            <th>교육신청</th>
+                                            <th>기관명</th>
+                                            <th>교육대상</th>
+                                            <th>강사</th>
+                                            <th>강사섭외<br/>유무</th>
+                                            <th>상태</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    	<tr>
+                                            <td>10</td>
+                                            <td class="tl">청소년 대상 자살예방 생명지킴이 교육</td>
+                                            <td>
+                                                <span class="block">2021-03-18</span>
+                                                <span class="block">13:00 ~ 15:00</span>
+                                            </td>
+                                            <td><span>120</span>분</td>
+                                            <td>중앙자살예방센터</td>
+                                            <td>성인</td>
+                                            <td>김형준</td>
+                                            <td><span>완료</span></td>
+                                            <td>
+                                                <span class="block">신청완료</span>
+                                                <button class="sm-btn navy-btn">신청취소</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>9</td>
+                                            <td class="tl">청소년 대상 자살예방 생명지킴이 교육</td>
+                                            <td>
+                                                <span class="block">2021-03-18</span>
+                                                <span class="block">13:00 ~ 15:00</span>
+                                            </td>
+                                            <td><span>120</span>분</td>
+                                            <td>중앙자살예방센터</td>
+                                            <td>성인</td>
+                                            <td>김형준</td>
+                                            <td><span class="link">섭외중</span></td>
+                                            <td>
+                                                <span class="block">신청취소</span>
+                                            </td>
+                                        </tr>
                                     	<c:forEach var="result" items="${resultList}" varStatus="status">
                                         <tr>
                                             <td>${status.index + 1}</td>

@@ -9,7 +9,7 @@
 		        a.EDU_TARGET,
 		        a.EDU_TIME,
 		        a.EDU_GARDEN,
-		        a.EDU_STATUS
+		        IFNULL((SELECT SCHEDULE_NO FROM EDU_SCHEDULE WHERE EDU_KEY = a.EDU_NO AND REG_ID = #{UserAccount.user_id}),a.EDU_STATUS) AS EDU_STATUS
 		FROM EDU_REGISTRATION a
 		WHERE EDU_SITE = 'off'
 		AND CATEGORY1_KEY = '7'
@@ -105,7 +105,7 @@
 			, #{coper_nm}
 			, #{area_nm}
 			, #{edu_garden}
-			, IFNULL(#{user_nm},#{ins_input},'')
+			, IFNULL(#{user_nm},#{ins_input})
 			, #{edu_no}
 			, DATE_FORMAT(NOW(),'%x-%m-%d')
 			, #{UserAccount.user_id}
@@ -116,7 +116,7 @@
 	SELECT  SCHEDULE_NO
 		FROM EDU_SCHEDULE
 		 WHERE 1=1
-		AND EDU_NO = ${edu_no}
+		AND EDU_KEY = ${edu_no}
 		AND REG_DT = DATE_FORMAT(NOW(),'%x-%m-%d')
         AND REG_ID = #{UserAccount.user_id}
 	</select>

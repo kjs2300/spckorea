@@ -19,4 +19,13 @@
 	       <put-attribute name="body" value="/WEB-INF/jsp/web/org/org01Req.jsp" />  
 	   </definition> 
 	   
+	   <definition name="org02List" extends="common-definition">  
+	       <put-attribute name="title" value="기관회원 - 교육신청현황" />  
+	       <put-attribute name="body" value="/WEB-INF/jsp/web/org/org02List.jsp" />  
+	   </definition> 
+	   
+	   <definition name="org03List" extends="common-definition">  
+	       <put-attribute name="title" value="기관회원 - 교육결과보고" />  
+	       <put-attribute name="body" value="/WEB-INF/jsp/web/org/org03List.jsp" />  
+	   </definition> 
   </tiles-definitions>

@@ -145,4 +145,68 @@ public class OrgController
 	
 	    return result;
   }
+  
+  @RequestMapping({"/org02List.do"})
+  public String org02List(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
+	  PaginationInfo paginationInfo = new PaginationInfo();
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
+	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+	  
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
+	  paramMap.put("offset",offset);
+	  
+	  paramMap.put("sqlName", "getOrgList");
+	  List<Map<String, Object>> list = orgService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+	  
+	  paramMap.put("sqlName", "getOrgListCnt");
+	  int totCnt = orgService.getSelectListCnt(paramMap);
+	  model.addAttribute("totCnt", totCnt);
+	  paginationInfo.setTotalRecordCount(totCnt);
+	  
+	  model.addAttribute("paginationInfo", paginationInfo);
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	  
+	  return "org02List";
+  }
+  
+  @RequestMapping({"/org03List.do"})
+  public String org03List(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
+	  PaginationInfo paginationInfo = new PaginationInfo();
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
+	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+	  
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
+	  paramMap.put("offset",offset);
+	  
+	  paramMap.put("sqlName", "getOrgList");
+	  List<Map<String, Object>> list = orgService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+	  
+	  paramMap.put("sqlName", "getOrgListCnt");
+	  int totCnt = orgService.getSelectListCnt(paramMap);
+	  model.addAttribute("totCnt", totCnt);
+	  paginationInfo.setTotalRecordCount(totCnt);
+	  
+	  model.addAttribute("paginationInfo", paginationInfo);
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	  
+	  return "org03List";
+  }
 }

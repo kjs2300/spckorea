@@ -84,15 +84,13 @@
 			$("#edu_time").focus();
 			return;
 		}
-	   
 		if(confirm("교육 신청을 하시겠습니까?")){
-				
 			$.ajax({	
-				data       : fn_getFormData("commonForm"),
+				data       : $("#commonForm").serialize(),
 			    url		   : "<c:url value='/user/orgSave.do'/>",
 			    dataType   : "JSON",
 		        processData: false, 
-		        contentType: false,
+ 		        cache    : false,
 				type	   : "POST",	
 		        success    : function(obj) {
 		        	commonCallBack(obj);				
@@ -101,14 +99,6 @@
 		    });
 		}
  }	
- 
- function email_chg(){
-	 $("#eml_addr2").val("");
-	 if($("#eml_sel").val() != ""){
-		 $("#eml_addr2").val($("#eml_sel").val());
-	 }
- }
- 
  function commonCallBack(obj){
 		if(obj != null){		
 			
@@ -130,7 +120,7 @@
 	}	
  
  	function fn_goList(){
-		document.location = "<c:url value='/user/sectorList.do'/>"+"?edu_no="+$('#edu_no').val()+"&idx="+$('#idx').val();
+		document.location = "<c:url value='/user/org01List.do'/>";
 	 }	
 </script>
 
@@ -227,7 +217,7 @@
                                                         <input type="text" id="area_nm" name="area_nm" class="input-box" readonly/>
                                                         <input type="text" id="user_nm" name="user_nm" class="input-box" readonly/>
                                                         <input type="hidden" id="instructor_idx" name="instructor_idx"/>
-                                                        <button class="sm-btn navy-btn" onClick="javascript:openWindowPop('<c:url value='/user/popInsSearch.do'/>','popup');" class="sm-btn white-btn">검색</button>
+                                                        <button type="button" class="sm-btn navy-btn" onClick="javascript:openWindowPop('<c:url value='/user/popInsSearch.do'/>','popup');" class="sm-btn white-btn">검색</button>
                                                     </div>
                                                     
                                                     <div class="radio-cont">
@@ -323,8 +313,8 @@
 
                         <!---- button begin ---->
                         <div class="btn-cont">
-                            <button class="lg-btn orange-btn" onClick="fn_save();">신청하기</button>
-                            <button class="lg-btn white-btn">목록</button>
+                            <button type="button" class="lg-btn orange-btn" onClick="fn_save();">신청하기</button>
+                            <button type="button" class="lg-btn white-btn" onClick="javascript:history.back();">목록</button>
                         </div>
                         <!---- button end ---->
                         

@@ -48,7 +48,7 @@ public class AdminInstructorController
   public String instructorAdm01List(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
 	  paramMap.put("pageSize", 10);
 	  paramMap.put("recordCountPerPage", 10);
-	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  paramMap.put("AdminAccount", request.getSession().getAttribute("AdminAccount"));
 	  if(!paramMap.containsKey("pageIndex")) {
 		  paramMap.put("pageIndex", 1);
 	  }
@@ -94,7 +94,7 @@ public class AdminInstructorController
   
   @RequestMapping({"/instructorAdm01View.do"})
   public String instructorAdm01View(@RequestParam Map<String, Object> paramMap, ModelMap model ,HttpServletRequest request) throws Exception {
-	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));  
+	  paramMap.put("AdminAccount", request.getSession().getAttribute("AdminAccount"));  
 	  
 	  paramMap.put("sqlName", "getCodeList");
 	  paramMap.put("code","32");
@@ -116,7 +116,7 @@ public class AdminInstructorController
 	    int resultCnt = 0;
 	    Map<String, Object> result = new HashMap<String, Object>();
 	    try {
-	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	      paramMap.put("AdminAccount", request.getSession().getAttribute("AdminAccount"));
 	      if(!paramMap.get("password").toString().equals("")) {
 	    	  String shaPassword = EgovFileScrty.encryptPassword(paramMap.get("password").toString(), paramMap.get("user_id").toString());
 	    	  paramMap.put("shaPassword",shaPassword);
