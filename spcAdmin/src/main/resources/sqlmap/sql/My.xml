@@ -192,12 +192,12 @@
 			</when>
 			<when
 				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
-				AND REG_DT = NOW()
+				AND a.REG_DT = NOW()
 			</when>
 			<when
 				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
 		      <![CDATA[
-		       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
+		       AND  a.REG_DT >= #{start_date} AND a.REG_DT <= #{end_date} 
 		       ]]>
 			</when>
 		</choose>
@@ -216,7 +216,7 @@
         AND TRAIN_S_DATE <= NOW() 
         ]]>
 		<if test="edu_status != ''">
-			AND COUR_STAT = 1
+			AND a.COUR_STAT = 1
 		</if>
 		<if test="category1_key != '' and category1_key != null">
 			AND b.CATEGORY1_KEY = #{category1_key}
@@ -232,12 +232,12 @@
 			</when>
 			<when
 				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
-				AND REG_DT = NOW()
+				AND a.REG_DT = NOW()
 			</when>
 			<when
 				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
 		      <![CDATA[
-		       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
+		       AND  a.REG_DT >= #{start_date} AND a.REG_DT <= #{end_date} 
 		       ]]>
 			</when>
 		</choose>
@@ -259,7 +259,6 @@
 			 EDU_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
 		AND a.USER_ID = #{UserAccount.user_id}
-		AND b.EDU_SITE = #{site}
 		<![CDATA[
 		AND TRAIN_S_DATE <= NOW() 
         ]]>
@@ -269,12 +268,12 @@
 			</when>
 			<when
 				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
-				AND REG_DT = NOW()
+				AND a.REG_DT = NOW()
 			</when>
 			<when
 				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
 		      <![CDATA[
-		       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
+		       AND  a.REG_DT >= #{start_date} AND a.REG_DT <= #{end_date} 
 		       ]]>
 			</when>
 		</choose>
@@ -374,11 +373,11 @@
 			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
 			</when>
 			<when test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
-				AND REG_DT = NOW()
+				AND a.REG_DT = NOW()
 			</when>
 			<when test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
 		      <![CDATA[
-		       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
+		       AND  a.REG_DT >= #{start_date} AND a.REG_DT <= #{end_date} 
 		       ]]>
 			</when>
 		</choose>
@@ -420,12 +419,12 @@
 			</when>
 			<when
 				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
-				AND REG_DT = NOW()
+				AND a.REG_DT = NOW()
 			</when>
 			<when
 				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
 		      <![CDATA[
-		       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
+		       AND  a.REG_DT >= #{start_date} AND a.REG_DT <= #{end_date} 
 		       ]]>
 			</when>
 		</choose>
