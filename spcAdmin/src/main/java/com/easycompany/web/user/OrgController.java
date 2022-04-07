@@ -65,11 +65,11 @@ public class OrgController
 	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
 	  
-	  paramMap.put("sqlName", "getOrgList");
+	  paramMap.put("sqlName", "getOrgStatList");
 	  List<Map<String, Object>> list = orgService.getSelectList(paramMap);
 	  model.addAttribute("resultList", list);
 	  
-	  paramMap.put("sqlName", "getOrgListCnt");
+	  paramMap.put("sqlName", "getOrgStatListCnt");
 	  int totCnt = orgService.getSelectListCnt(paramMap);
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);

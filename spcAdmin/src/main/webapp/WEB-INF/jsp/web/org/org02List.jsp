@@ -104,57 +104,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<tr>
-                                            <td>10</td>
-                                            <td class="tl">청소년 대상 자살예방 생명지킴이 교육</td>
-                                            <td>
-                                                <span class="block">2021-03-18</span>
-                                                <span class="block">13:00 ~ 15:00</span>
-                                            </td>
-                                            <td><span>120</span>분</td>
-                                            <td>중앙자살예방센터</td>
-                                            <td>성인</td>
-                                            <td>김형준</td>
-                                            <td><span>완료</span></td>
-                                            <td>
-                                                <span class="block">신청완료</span>
-                                                <button class="sm-btn navy-btn">신청취소</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>9</td>
-                                            <td class="tl">청소년 대상 자살예방 생명지킴이 교육</td>
-                                            <td>
-                                                <span class="block">2021-03-18</span>
-                                                <span class="block">13:00 ~ 15:00</span>
-                                            </td>
-                                            <td><span>120</span>분</td>
-                                            <td>중앙자살예방센터</td>
-                                            <td>성인</td>
-                                            <td>김형준</td>
-                                            <td><span class="link">섭외중</span></td>
-                                            <td>
-                                                <span class="block">신청취소</span>
-                                            </td>
-                                        </tr>
                                     	<c:forEach var="result" items="${resultList}" varStatus="status">
-                                        <tr>
+                                    	<tr>
                                             <td>${status.index + 1}</td>
-                                            <td>${result.COPER_NM_AUTO}</td>
-                                            <td class="tl">${result.CATEGORY3_NAME}</td>
-                                            <td>${result.EDU_TARGET}</td>
-                                            <td><span>${result.EDU_TIME}</span>분</td>
-                                            <td>최대<span>${result.EDU_GARDEN}</span>명</td>
+                                            <td class="tl">${result.EDU_NAME}</td>
                                             <td>
-                                            	<c:if test="${result.EDU_STATUS eq '신청중'}">
-                                            		<button class="sm-btn navy-btn" onClick="fn_detail('${result.EDU_NO}');">신청하기</button>
-                                            	</c:if>
+                                                <span class="block">${result.EDU_DATE}</span>
+                                                <span class="block">${result.EDU_DATETIME}</span>
+                                            </td>
+                                            <td><span>${result.EDU_TIME}</span>분</td>
+                                            <td>${result.EDU_ORG_NAME}</td>
+                                            <td>${result.EDU_TARGET}</td>
+                                            <td>${result.EDU_TEAC_NAME}</td>
+                                            <td><span>${result.INS_STATUS}</span></td>
+                                            <td>
+                                                <span class="block">${result.SCH_STATUS}</span>
+                                                <button class="sm-btn navy-btn">신청취소</button>
                                             </td>
                                         </tr>
                                         </c:forEach>
                                         <c:if test="${empty resultList }">
 								             <tr>
-								                 <td colspan='7'/>Data 없습니다.</td>
+								                 <td colspan='9'/>Data 없습니다.</td>
 								             </tr>
 								        </c:if>
                                     </tbody>
