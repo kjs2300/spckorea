@@ -26,7 +26,7 @@
             	
             	<input type="hidden" id="finish" name="finish">
 				<video id="myvideo" class="video-js vjs-big-play-centerd" controls preload="auto" width="1200" height="600" data-setup="{'autoplay': true}">
-					<source src="http://14.32.115.22:50080/lmseditor/video/1.mp4" type="video/mp4" />
+					<source src="http://14.32.115.22:30080/lmseditor/video/1.mp4" type="video/mp4" />
 				</video>
             </div>
             <!--  class-wrap end -->
