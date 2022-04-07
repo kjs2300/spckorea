@@ -147,7 +147,7 @@
 			, CONCAT(#{end_hour},':',#{end_min})
 			, #{edu_place}
 			,DATE_FORMAT(NOW(),'%x-%m-%d')
-			, #{UserAccount.user_id}
+			, #{UserAccount.user_id} 
 		)	
 	</insert>
 	
