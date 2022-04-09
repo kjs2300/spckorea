@@ -305,12 +305,13 @@
                                             <input type="text"  class="input-box"  id="coper_nm_auto" name="coper_nm_auto"  readonly value="${categoryForm.coper_nm_auto}"/>
                                             <button type="button" onClick="javascript:openWindowPop('<c:url value='/edu/orgPopSearch.do'/>','popup');" class="sm-btn blue-btn">검색</button>
                                         </div>
-                                          
+                                          <!--   
                                         <div class="radio-cont">
                                             <input type="radio" class="radio-box cdate" id="coper_check" name="coper_check" value="HAND" <c:if test="${categoryForm.coper_check =='HAND'  }">checked </c:if>>
                                             <label for="">직접입력</label>
                                             <input type="text" class="input-box" id="coper_nm" name="coper_nm"  value="${categoryForm.coper_nm}"/>
                                         </div>
+                                          -->
                                     </div>
                                 </td>
                             </tr>
