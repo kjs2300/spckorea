@@ -178,4 +178,22 @@
 			 EDU_SCHEDULE_DETAIL b
 		WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
 	</select>
+	
+	<select id="getInsStr" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT INS_APP_USER
+		FROM EDU_SCHEDULE_DETAIL
+		WHERE SCHEDULE_NO = #{sch_no}
+	</select>
+	
+	<select id="getInsSelectList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT b.USER_ID,b.USER_NM, CASE WHEN b.USER_SEX = 'M' THEN '남' ELSE '여' END AS USER_SEX,
+			   (SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = b.AREA_CD) AS AREA_NM, b.INSTRUCTOR_COPER_NM
+        FROM EDU_SCHEDULE_DETAIL a,
+			 COM_USER b
+        WHERE a.SCHEDULE_NO = #{sch_no}
+        AND b.USER_ID IN (
+				<foreach collection="ins_app_user" item="item" separator=",">
+					#{item}
+				</foreach>)
+	</select>
 </mapper>

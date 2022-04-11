@@ -29,6 +29,11 @@
  	 frm.action = "<c:url value='/user/org02List.do'/>";
    	 frm.submit();
  }
+ 
+ function openWindowPop(url, name){
+	    var options = 'top=10, left=10, width=1200px, height=800px, status=no, menubar=no, toolbar=no, resizable=no';
+	    window.open(url, name, options);
+	}	
 </script>
      <!-- container  begin -->
                 <div id="container">
@@ -116,9 +121,9 @@
                                             <td>${result.EDU_ORG_NAME}</td>
                                             <td>${result.EDU_TARGET}</td>
                                             <td>${result.EDU_TEAC_NAME}</td>
-                                            <td><span>${result.INS_STATUS}</span></td>
+                                            <td><span <c:if test="${result.INS_STATUS == '섭외중'}">onClick="javascript:openWindowPop('<c:url value='/user/popInsSelect.do'/>?sch_no=${result.SCHEDULE_NO}','popup');"</c:if>>${result.INS_STATUS}</span></td>
                                             <td>
-                                                <span class="block">${result.SCH_STATUS}</span>
+                                                <span class="block" >${result.SCH_STATUS}</span>
                                                 <button class="sm-btn navy-btn">신청취소</button>
                                             </td>
                                         </tr>
