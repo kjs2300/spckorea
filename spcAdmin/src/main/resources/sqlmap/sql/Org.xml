@@ -15,7 +15,7 @@
 		AND CATEGORY1_KEY = '7'
 		AND CATEGORY2_KEY = '14'
 		AND EXP_USE_YN = 'Y'
-		<choose>
+		<choose>                                                        
 			<when test="searchType !=null and searchType !='' and searchType =='coper' ">
 				AND COPER_NM_AUTO LIKE CONCAT('%', #{searchText}, '%')
 			</when>
@@ -58,7 +58,7 @@
 		AND ER.EXP_USE_YN = 'Y'
         AND ER.COPER_ID = CU.USER_ID
         AND EDU_NO = ${edu_no}
-	</select>
+	</select>																																																																																																																																																																																																																																																																																																																																																																																																
 	
 	<select id="getInsSearch" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT a.INSTRUCTOR_IDX,
@@ -103,7 +103,7 @@
 			, #{edu_nm}
 			, #{edu_date}
 			, #{coper_nm}
-			, #{area_nm}
+			, #{edu_target}
 			, #{edu_garden}
 			, IFNULL(#{user_nm},#{ins_input})
 			, #{edu_no}
@@ -150,7 +150,7 @@
 			, #{UserAccount.user_id} 
 		)	
 	</insert>
-	
+	                                                                                                                                              
 	<select id="getOrgStatList" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT a.SCHEDULE_NO,
 			   a.EDU_NAME,
@@ -160,8 +160,11 @@
                a.EDU_ORG_NAME,
                a.EDU_TARGET,
                a.EDU_TEAC_NAME,
-               b.INS_TYPE,
-               b.INS_STATUS,
+               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL THEN '섭외중'
+					WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL THEN '완료'
+					WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL THEN '완료'
+				END
+               AS INS_STATUS,
                b.SCH_STATUS
 		FROM EDU_SCHEDULE a,
 			 EDU_SCHEDULE_DETAIL b

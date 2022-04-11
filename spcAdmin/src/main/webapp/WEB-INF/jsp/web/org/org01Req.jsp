@@ -243,7 +243,7 @@
                                         <tr>
                                             <th>교육대상</th>
                                             <td>
-                                                <input type="text" id="area_nm" name="area_nm" class="input-box" readonly value="${result.EDU_TARGET}"/>
+                                                <input type="text" id="edu_target" name="edu_target" class="input-box" readonly value="${result.EDU_TARGET}"/>
                                             </td>
                                         </tr>
                                         <tr>
