@@ -261,4 +261,53 @@ public class OrgController
 	    return result;
   }
   
+  @RequestMapping({"/popAppCancel.do"})
+  public String popAppCancel(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  
+	  paramMap.put("sqlName", "getInsStr");
+	  Map<String, Object> map = orgService.getSelectData(paramMap);
+	  //String arr[] = map.get("INS_APP_USER").toString().split(",");
+	  
+	  if(map == null) {
+		  paramMap.put("ins_app_user", "");
+	  }else {
+		  String arr[] = map.get("INS_APP_USER").toString().split(",");
+		  paramMap.put("ins_app_user", arr);
+	  }
+	  
+	  paramMap.put("sqlName", "getInsSelectList");
+	  List<Map<String, Object>> list = orgService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+			  
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	
+	  return "popAppCancel";
+  }
+  
+  @RequestMapping({"/popResultReport.do"})
+  public String popResultReport(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  
+	  paramMap.put("sqlName", "getInsStr");
+	  Map<String, Object> map = orgService.getSelectData(paramMap);
+	  //String arr[] = map.get("INS_APP_USER").toString().split(",");
+	  
+	  if(map == null) {
+		  paramMap.put("ins_app_user", "");
+	  }else {
+		  String arr[] = map.get("INS_APP_USER").toString().split(",");
+		  paramMap.put("ins_app_user", arr);
+	  }
+	  
+	  paramMap.put("sqlName", "getInsSelectList");
+	  List<Map<String, Object>> list = orgService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+			  
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	
+	  return "popResultReport";
+  }
 }

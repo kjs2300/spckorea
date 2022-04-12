@@ -165,7 +165,14 @@
 					WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL THEN '완료'
 				END
                AS INS_STATUS,
-               b.SCH_STATUS
+               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL THEN ''
+					WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL THEN '신청완료'
+					WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL THEN '신청완료'
+					WHEN b.SCH_STATUS = 'cancel' THEN '신청취소'
+					WHEN b.SCH_STATUS != 'cancel' AND a.EDU_START_DATE > NOW() THEN '교육완료'
+					WHEN b.SCH_STATUS = 'submit' THEN '보고완료'
+				END
+               AS SCH_STATUS
 		FROM EDU_SCHEDULE a,
 			 EDU_SCHEDULE_DETAIL b
 		WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
@@ -193,10 +200,15 @@
         FROM EDU_SCHEDULE_DETAIL a,
 			 COM_USER b
         WHERE a.SCHEDULE_NO = #{sch_no}
-        AND b.USER_ID IN (
+        <if test="ins_app_user != '' and ins_app_user != null">
+        	AND b.USER_ID IN (
 				<foreach collection="ins_app_user" item="item" separator=",">
 					#{item}
 				</foreach>)
+        </if>
+        <if test="ins_app_user == ''">
+        	AND b.USER_ID = ''
+        </if>
 	</select>
 	
 	<update id="updateInsData" parameterType="java.util.Map">	

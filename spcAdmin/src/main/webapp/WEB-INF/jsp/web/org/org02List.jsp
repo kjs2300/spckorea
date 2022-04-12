@@ -124,7 +124,13 @@
                                             <td><span <c:if test="${result.INS_STATUS == '섭외중'}">style="cursor:pointer;" onClick="javascript:openWindowPop('<c:url value='/user/popInsSelect.do'/>?sch_no=${result.SCHEDULE_NO}','popup');"</c:if>>${result.INS_STATUS}</span></td>
                                             <td>
                                                 <span class="block" >${result.SCH_STATUS}</span>
-                                                <button class="sm-btn navy-btn">신청취소</button>
+                                                <c:if test="${result.SCH_STATUS == '교육완료'}">
+                                                	<button class="sm-btn navy-btn" onClick="javascript:openWindowPop('<c:url value='/user/popResultReport.do'/>?sch_no=${result.SCHEDULE_NO}','popup');">결과보고</button>
+                                                </c:if>
+                                                <c:if test="${result.SCH_STATUS != '보고완료' && result.SCH_STATUS != '교육완료'}">
+                                                	<button class="sm-btn navy-btn" onClick="javascript:openWindowPop('<c:url value='/user/popAppCancel.do'/>?sch_no=${result.SCHEDULE_NO}','popup');">신청취소</button>
+                                                </c:if>
+                                                
                                             </td>
                                         </tr>
                                         </c:forEach>
