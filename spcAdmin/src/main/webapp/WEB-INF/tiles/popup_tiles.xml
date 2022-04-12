@@ -33,6 +33,11 @@
        <put-attribute name="body" value="/WEB-INF/jsp/web/popup/insSearch.jsp" />  
    </definition>
    
+   <definition name="popInsSelect" extends="popUp-definition">  
+       <put-attribute name="title" value="강사 선택" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/popup/insSelect.jsp" />  
+   </definition>
+   
    <!--마이페이지 > 나의 강의실 -->
    <definition name="popMyClass" extends="popUp-definition">  
        <put-attribute name="title" value="나의 강의실" />  

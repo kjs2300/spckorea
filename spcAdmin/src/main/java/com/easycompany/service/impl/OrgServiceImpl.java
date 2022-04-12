@@ -34,4 +34,8 @@ public class OrgServiceImpl extends EgovAbstractServiceImpl  implements OrgServi
 	public int insertData(Map<String, Object> paramMap) throws Exception {
 		return OrgMapper.insertData(paramMap);
 	}
+	
+	public int updateData(Map<String, Object> paramMap) throws Exception {
+		return OrgMapper.updateData(paramMap);
+	}
 }

@@ -29,4 +29,8 @@ public class OrgMapper extends EgovAbstractMapper {
 	public int insertData(Map<String, Object> paramMap) throws DataAccessException {
 		return insert(this.nameSpace + "." + paramMap.get("sqlName"), paramMap);
 	}
+	
+	public int updateData(Map<String, Object> paramMap) throws DataAccessException {
+		return update(this.nameSpace + "." + paramMap.get("sqlName"), paramMap);
+	}
 }

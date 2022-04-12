@@ -186,8 +186,10 @@
 	</select>
 	
 	<select id="getInsSelectList" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT b.USER_ID,b.USER_NM, CASE WHEN b.USER_SEX = 'M' THEN '남' ELSE '여' END AS USER_SEX,
-			   (SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = b.AREA_CD) AS AREA_NM, b.INSTRUCTOR_COPER_NM
+		SELECT a.SCHEDULE_NO,b.USER_ID,b.USER_NM, 
+				CASE WHEN b.USER_SEX = 'M' THEN '남' ELSE '여' END AS USER_SEX,
+			   (SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = b.AREA_CD) AS AREA_NM, 
+			   b.INSTRUCTOR_COPER_NM
         FROM EDU_SCHEDULE_DETAIL a,
 			 COM_USER b
         WHERE a.SCHEDULE_NO = #{sch_no}
@@ -196,4 +198,16 @@
 					#{item}
 				</foreach>)
 	</select>
+	
+	<update id="updateInsData" parameterType="java.util.Map">	
+		UPDATE EDU_SCHEDULE
+		SET	EDU_TEAC_NAME = #{user_nm}
+		WHERE SCHEDULE_NO = #{schedule_no} 		
+	</update>
+	
+	<update id="updateInsDtlData" parameterType="java.util.Map">	
+		UPDATE EDU_SCHEDULE_DETAIL
+		SET	INS_STATUS = 'Y'
+		WHERE SCHEDULE_NO = #{schedule_no} 		
+	</update>
 </mapper>

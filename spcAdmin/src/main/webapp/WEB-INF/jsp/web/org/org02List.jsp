@@ -31,7 +31,7 @@
  }
  
  function openWindowPop(url, name){
-	    var options = 'top=10, left=10, width=1200px, height=800px, status=no, menubar=no, toolbar=no, resizable=no';
+	    var options = 'top=10, left=10, width=700px, height=600px, status=no, menubar=no, toolbar=no, resizable=no';
 	    window.open(url, name, options);
 	}	
 </script>
@@ -121,7 +121,7 @@
                                             <td>${result.EDU_ORG_NAME}</td>
                                             <td>${result.EDU_TARGET}</td>
                                             <td>${result.EDU_TEAC_NAME}</td>
-                                            <td><span <c:if test="${result.INS_STATUS == '섭외중'}">onClick="javascript:openWindowPop('<c:url value='/user/popInsSelect.do'/>?sch_no=${result.SCHEDULE_NO}','popup');"</c:if>>${result.INS_STATUS}</span></td>
+                                            <td><span <c:if test="${result.INS_STATUS == '섭외중'}">style="cursor:pointer;" onClick="javascript:openWindowPop('<c:url value='/user/popInsSelect.do'/>?sch_no=${result.SCHEDULE_NO}','popup');"</c:if>>${result.INS_STATUS}</span></td>
                                             <td>
                                                 <span class="block" >${result.SCH_STATUS}</span>
                                                 <button class="sm-btn navy-btn">신청취소</button>

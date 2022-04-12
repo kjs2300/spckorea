@@ -234,4 +234,31 @@ public class OrgController
 	
 	  return "popInsSelect";
   }
+  
+  @RequestMapping({"/updateInsData.do"})
+  @ResponseBody
+  public Map<String, Object> updateInsData(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+	    int resultCnt = 0;
+	    Map<String, Object> result = new HashMap<String, Object>();
+	    try {
+	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+
+	      paramMap.put("sqlName", "updateInsData");	
+	      resultCnt = orgService.updateData(paramMap);
+	      
+	      paramMap.put("sqlName", "updateInsDtlData");	
+	      resultCnt = orgService.updateData(paramMap);
+	      
+	      if(resultCnt > 0) {
+	    	  result.put("result", "SUCCESS");
+	      }else {
+	    	  result.put("result", "FAIL");	 
+	      }
+	    } catch (Exception e) {
+	      result.put("result", "FAIL");
+	    }
+	
+	    return result;
+  }
+  
 }
