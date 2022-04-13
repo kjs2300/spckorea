@@ -292,6 +292,49 @@ public class OrgController
 	  return "org02Report";
   }
   
+  @RequestMapping({"/courUserDel.do"})
+  @ResponseBody
+  public String courUserDel(HttpServletRequest request, @RequestParam(value="userArr[]") List<String> userList, @RequestParam Map<String, Object> paramMap) throws Exception {
+		int resultCnt = 0;
+		String result = "";
+		try {
+			paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+			paramMap.put("userList", userList); 
+			paramMap.put("sqlName", "courUserDel"); 
+			resultCnt = orgService.updateData(paramMap);
+		    result = (resultCnt > 0 ? "SUCCESS" : "FAIL");
+		    
+		} catch (Exception e) {
+			result = "FAIL";
+		}
+		
+		return result;
+	}
+  
+  @RequestMapping({"/courUserAtt.do"})
+  @ResponseBody
+  public String courUserAtt(HttpServletRequest request, @RequestParam(value="userArr[]") List<String> userList, @RequestParam Map<String, Object> paramMap) throws Exception {
+		int resultCnt = 0;
+		String result = "";
+		try {
+			paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+			paramMap.put("userList", userList); 
+			paramMap.put("sqlName", "courUserAtt"); 
+			resultCnt = orgService.updateData(paramMap);
+			
+			paramMap.put("sqlName", "scheduleStatUpdate"); 
+			resultCnt = orgService.updateData(paramMap);
+			
+		    result = (resultCnt > 0 ? "SUCCESS" : "FAIL");
+		    
+		} catch (Exception e) {
+			result = "FAIL";
+		}
+		
+		return result;
+	}
+  
+  
   @RequestMapping({"/org03List.do"})
   public String org03List(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
 	  paramMap.put("pageSize", 10);

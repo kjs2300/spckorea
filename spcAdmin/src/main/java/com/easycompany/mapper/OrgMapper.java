@@ -33,4 +33,8 @@ public class OrgMapper extends EgovAbstractMapper {
 	public int updateData(Map<String, Object> paramMap) throws DataAccessException {
 		return update(this.nameSpace + "." + paramMap.get("sqlName"), paramMap);
 	}
+	
+	public int deleteData(Map<String, Object> paramMap) throws DataAccessException {
+		return delete(this.nameSpace + "." + paramMap.get("sqlName"), paramMap);
+	}
 }

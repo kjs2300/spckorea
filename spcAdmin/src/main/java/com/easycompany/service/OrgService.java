@@ -15,4 +15,6 @@ public abstract interface OrgService
 	public int insertData(Map<String, Object> paramMap) throws Exception;
 	
 	public int updateData(Map<String, Object> paramMap) throws Exception;
+	
+	public int deleteData(Map<String, Object> paramMap) throws Exception;
 }

@@ -244,11 +244,12 @@
 	        b.USER_TELNO,
 	        b.USER_EML,
 	        a.EDU_TEAC_NAME,
-	        a.EDU_DATE,
+	        a.EDU_START_DATE,
 	        a.EDU_NAME,
 	        a.EDU_TARGET,
+	        (SELECT COUNT(*) FROM EDU_COURSE_REGISTRATION WHERE EDU_NO = a.EDU_KEY) AS EDU_NUMBER2,
 	        a.EDU_NUMBER,
-	        a.EDU_PLACE,
+	        b.EDU_PLACE,
 	        a.EDU_KEY
 		FROM EDU_SCHEDULE a,
 			 EDU_SCHEDULE_DETAIL b
@@ -257,7 +258,8 @@
 	</select>
 	
 	<select id="getEduAttList" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT  a.USER_NM,
+		SELECT  a.USER_ID,
+				a.USER_NM,
 				CASE WHEN b.USER_SEX = 'M' THEN '남자' ELSE '여자' END AS USER_SEX,
                 FN_GET_CD_NM1('238', b.JOB_CD) JOB_CD,
                 DATE_FORMAT(b.BIRTH_YMD,'%Y-%m-%d') AS BIRTH_YMD,
@@ -267,6 +269,34 @@
         FROM EDU_COURSE_REGISTRATION a,
 			 COM_USER b
 		WHERE a.USER_ID = b.USER_ID
+		AND a.USE_YN IS NULL
         AND a.EDU_NO = (SELECT EDU_KEY FROM EDU_SCHEDULE WHERE SCHEDULE_NO = ${sch_no})
 	</select>
+	
+	<update id="courUserDel" parameterType="java.util.Map">	
+		UPDATE EDU_COURSE_REGISTRATION
+		SET	USE_YN = 'N'
+		WHERE USER_ID IN (
+			<foreach collection="userList" item="item" separator=",">
+				#{item}
+			</foreach>
+		) 
+	</update>
+	
+	<update id="courUserAtt" parameterType="java.util.Map">	
+		UPDATE EDU_COURSE_REGISTRATION
+		SET	COUR_STAT = '1'
+		WHERE USER_ID IN (
+			<foreach collection="userList" item="item" separator=",">
+				#{item}
+			</foreach>
+		) 
+	</update>
+	
+	<update id="scheduleStatUpdate" parameterType="java.util.Map">	
+		UPDATE EDU_SCHEDULE_DETAIL
+		SET	SCH_STATUS = 'S'
+		WHERE SCHEDULE_NO = #{sch_no} 		
+	</update>
+	
 </mapper>

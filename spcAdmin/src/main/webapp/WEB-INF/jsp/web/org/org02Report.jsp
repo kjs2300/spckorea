@@ -14,79 +14,104 @@
 
  <script type="text/javaScript" language="javascript" defer="defer">
  $(document).ready(function(){		
-   $("#edu_date").datepicker({
-		  	dateFormat: 'yy-mm-dd' //달력 날짜 형태
-	       ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-  ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
-  ,changeYear: true //option값 년 선택 가능
-  ,changeMonth: true //option값  월 선택 가능                
-  ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-  ,buttonImage: "<c:url value='/images/common/ico_calendar.png'/>" //버튼 이미지 경로
-  ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
-  ,buttonText: "선택" //버튼 호버 텍스트              
-  ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
-  ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
-  ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
-  ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
-  ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
-  ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-  ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
-	});
+	 $('#checkAll').click(function(){
+		    var isChecked = this.checked;
+			$('input:checkbox[name="checkNo"]').each(function() {
+			this.checked = isChecked;
+	    });
+	 });
+	 $('#checkAll2').click(function(){
+		    var isChecked = this.checked;
+			$('input:checkbox[name="att_chk"]').each(function() {
+			this.checked = isChecked;
+	    });
+	 });
  });
- 
- function email_chg(){
-	 $("#app_email2").val("");
-	 if($("#eml_sel").val() != ""){
-		 $("#app_email2").val($("#eml_sel").val());
-	 }
- }
- 
- function insSelect(str){
-	var param = str.split(",");
-	$("#user_nm").val(param[2]);
-	$("#area_nm").val(param[1]);
-	$("#instructor_idx").val(param[0]);
- }
- 
- function fn_save(){
-		if(confirm("교육 신청을 하시겠습니까?")){
-			$.ajax({	
-				data       : $("#commonForm").serialize(),
-			    url		   : "<c:url value='/user/orgSave.do'/>",
-			    dataType   : "JSON",
-		        processData: false, 
- 		        cache    : false,
-				type	   : "POST",	
-		        success    : function(obj) {
-		        	commonCallBack(obj);				
-		        },	       
-		        error 	: function(xhr, status, error) {} 		        
-		    });
+  
+ function fn_delete(idx) {
+		var idxArray = new Array();
+
+		idxArray.push(idx);
+		if(confirm('삭제 하시겠습니까?')) {
+			setDel(idxArray);
 		}
- }	
- function commonCallBack(obj){
-		if(obj != null){		
-			
-			var result = obj.result;
-			
-			if(result == "SUCCESS"){				
-				alert("성공하였습니다.");				
-				fn_goList();				 
-			}else {				
-				alert("등록이 실패 했습니다.");	
-				return false;
-			}
+	}
+
+	var btnDel = function() {
+		var idxArray = new Array();
+
+		$("input[name=checkNo]:checked").each(function() {
+			idxArray.push($(this).val());
+		});
+		if(idxArray.length < 1){
+			alert("선택한 내역이 없습니다.");
+			return false;
 		}
-	}	
- 
- function openWindowPop(url, name){
-	    var options = 'top=10, left=10, width=700px, height=600px, status=no, menubar=no, toolbar=no, resizable=no';
-	    window.open(url, name, options);
-	}	
- 
- 	function fn_goList(){
-		document.location = "<c:url value='/user/org01List.do'/>";
-	 }	
+		if(confirm('삭제 하시겠습니까?')) {
+			setDel(idxArray);
+		}
+	};
+
+	var setDel = function(idxArray){
+	    $.ajax({
+	        url: "<c:url value='/user/courUserDel.do'/>",
+	        type: "POST",
+	        data: { "userArr" : idxArray },
+	        success: function(data) {
+	        	if(data == 'SUCCESS'){
+	        		alert("처리 완료하였습니다.");
+	        		location.reload();
+	        	}
+	        },
+	        error: function(data) {
+	        	console.log(JSON.stringify(data));
+	        	alert("처리중 오류가 발생했습니다.");
+	        }
+	    });
+	};
+	
+	
+	function fn_submit(idx) {
+		var idxArray = new Array();
+
+		idxArray.push(idx);
+		if(confirm('제출 하시겠습니까?')) {
+			setAtt(idxArray);
+		}
+	}
+
+	var btnSubmit = function() {
+		var idxArray = new Array();
+
+		$("input[name=att_chk]:checked").each(function() {
+			idxArray.push($(this).val());
+		});
+		if(idxArray.length < 1){
+			alert("선택한 내역이 없습니다.");
+			return false;
+		}
+		if(confirm('제출 하시겠습니까?')) {
+			setAtt(idxArray);
+		}
+	};
+
+	var setAtt = function(idxArray){
+	    $.ajax({
+	        url: "<c:url value='/user/courUserAtt.do'/>?sch_no="+$("#sch_no").val(),
+	        type: "POST",
+	        data: { "userArr" : idxArray },
+	        success: function(data) {
+	        	if(data == 'SUCCESS'){
+	        		alert("교육 결과 보고서가 정상적으로 제출되었습니다.\n [마이페이지]에서 확인이 가능합니다.");
+	        		document.location = "<c:url value='/user/org02List.do'/>";
+	        	}
+	        },
+	        error: function(data) {
+	        	console.log(JSON.stringify(data));
+	        	alert("처리중 오류가 발생했습니다.");
+	        }
+	    });
+	};
 </script>
 
 <!-- container  begin -->
@@ -105,14 +130,13 @@
                     </div>
 
                     <div class="contents-wrap">
-                    <form  id="commonForm" name="commonForm"  method="post"  action="">
                         <div class="comp">
                             <h4 class="h4-tit">교육 결과 보고</h4>
                             <button class="mid-btn white-btn">엑셀 다운로드</button>
                             
                             <div class="comp mt20">
                             <div class="table-wrap">
-            
+            					<input type="hidden" id="sch_no" name="sch_no" value="${sch_no}">
                                 <table class="detail-tb">
                                     <caption>기관명, 기관주소, 신청자명, 휴대폰, 이메일, 강사명, 교육일시, 교육명, 교육대상, 교육인원, 교육장소, 비고 정보가 있는 테이블</caption>
                                     <colgroup>
@@ -126,35 +150,35 @@
                                     <tbody>
                                         <tr>
                                             <th>기관명</th>
-                                            <td>중앙자살예방센터</td>
+                                            <td>${result.EDU_ORG_NAME}</td>
                                             <th>기관주소</th>
-                                            <td>서울 중구 을지로6</td>
+                                            <td>${result.COPER_ADDR}</td>
                                             <th>신청자명</th>
-                                            <td>이세훈</td>
+                                            <td>${result.USER_NM}</td>
                                         </tr>
                                         <tr>
                                             <th>휴대폰</th>
-                                            <td>01022545655</td>
+                                            <td>${result.USER_TELNO}</td>
                                             <th>이메일</th>
-                                            <td>spcedu@spckorea.or.kr</td>
+                                            <td>${result.USER_EML}</td>
                                             <th>강사명</th>
-                                            <td>이진영</td>
+                                            <td>${result.EDU_TEAC_NAME}</td>
                                         </tr>
                                         <tr>
                                             <th>교육일시</th>
-                                            <td>2021.10.06</td>
+                                            <td>${result.EDU_START_DATE}</td>
                                             <th>교육명</th>
-                                            <td>보고듣고말하기 2.0 기본형</td>
+                                            <td>${result.EDU_NAME}</td>
                                             <th>교육대상</th>
-                                            <td>성인</td>
+                                            <td>${result.EDU_TARGET}</td>
                                         </tr>
-                                        <tr></tr>
+                                        <tr>
                                             <th>교육인원</th>
-                                            <td><span>87</span>/<span>200</span></td>
+                                            <td><span>${result.EDU_NUMBER2}</span>/<span>${result.EDU_NUMBER}</span></td>
                                             <th>교육장소</th>
-                                            <td>대회의실</td>
+                                            <td>${result.EDU_PLACE}</td>
                                             <th>비고</th>
-                                            <td>서울에서 개최</td>
+                                            <td></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -164,7 +188,7 @@
                          <div class="comp">
                             <div class="tit-cont">
                                 <h4 class="h4-tit">생명지킴이 교육생 참석 여부</h4>
-                                <button class="mid-btn white-btn">선택삭제</button>
+                                <button class="mid-btn white-btn" onClick="btnDel();">선택삭제</button>
                             </div>
 
                             <div class="table-wrap">
@@ -186,7 +210,7 @@
                                     </colgroup>
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox" class="check-box"/></th>
+                                            <th><input type="checkbox" id="checkAll" name='checkAll' class="check-box"/></th>
                                             <th>No.</th>
                                             <th>이름</th>
                                             <th>성별</th>
@@ -197,131 +221,25 @@
                                             <th>주소</th>
                                             <th>
                                                 참석여부<br/>
-                                                <input type="checkbox" class="check-box"/>
+                                                <input type="checkbox" id="checkAll2" name='checkAll2' class="check-box"/>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    	<c:forEach var="result" items="${resultList}" varStatus="status">
                                         <tr>
-                                            <td><input type="checkbox" class="check-box"/></td>
-                                            <td>1</td>
-                                            <td>홍길동</td>
-                                            <td>남</td>
-                                            <td>교사</td>
-                                            <td>1970.10.05</td>
-                                            <td>honggildong@naver.com</td>
-                                            <td>01012345678</td>
-                                            <td class="tl">경기 성남시 분당구 판교로 264 더플래닛</td>
-                                            <td><input type="checkbox" class="check-box"/></td>
+                                            <td><input type="checkbox" class="check-box" id='checkNo' name='checkNo' value="${result.USER_ID}"/></td>
+                                            <td>${status.index + 1}</td>
+                                            <td>${result.USER_NM}</td>
+                                            <td>${result.USER_SEX}</td>
+                                            <td>${result.JOB_CD}</td>
+                                            <td>${result.BIRTH_YMD}</td>
+                                            <td>${result.EML_ADDR}</td>
+                                            <td>${result.MBL_TELNO}</td>
+                                            <td class="tl">${result.JUSO}</td>
+                                            <td><input type="checkbox" class="check-box" id="att_chk" name="att_chk" value="${result.USER_ID}"/></td>
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                        </tr>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -329,8 +247,8 @@
 
                         <!---- button begin ---->
                         <div class="btn-cont">
-                            <button class="lg-btn orange-btn">제출</button>
-                            <button class="lg-btn white-btn">목록</button>
+                            <button class="lg-btn orange-btn" onClick="btnSubmit();">제출</button>
+                            <button class="lg-btn white-btn" onClick="javascript:history.back();">목록</button>
                         </div>
                         <!---- button end ---->
 
