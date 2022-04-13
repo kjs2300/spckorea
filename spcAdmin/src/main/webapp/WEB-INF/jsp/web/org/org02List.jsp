@@ -30,6 +30,10 @@
    	 frm.submit();
  }
  
+ function fn_detail(sch_no){
+		document.location = "<c:url value='/user/org02Report.do'/>"+"?sch_no="+sch_no;
+	 }	
+ 
  function openWindowPop(url, name){
 	    var options = 'top=10, left=10, width=700px, height=600px, status=no, menubar=no, toolbar=no, resizable=no';
 	    window.open(url, name, options);
@@ -125,9 +129,9 @@
                                             <td>
                                                 <span class="block" >${result.SCH_STATUS}</span>
                                                 <c:if test="${result.SCH_STATUS == '교육완료'}">
-                                                	<button class="sm-btn navy-btn" onClick="javascript:openWindowPop('<c:url value='/user/popResultReport.do'/>?sch_no=${result.SCHEDULE_NO}','popup');">결과보고</button>
+                                                	<button class="sm-btn navy-btn" onClick="fn_detail('${result.SCHEDULE_NO}');">결과보고</button>
                                                 </c:if>
-                                                <c:if test="${result.SCH_STATUS != '보고완료' && result.SCH_STATUS != '교육완료'}">
+                                                <c:if test="${result.SCH_STATUS != '보고완료' && result.SCH_STATUS != '교육완료' && result.SCH_STATUS != '신청취소'}">
                                                 	<button class="sm-btn navy-btn" onClick="javascript:openWindowPop('<c:url value='/user/popAppCancel.do'/>?sch_no=${result.SCHEDULE_NO}','popup');">신청취소</button>
                                                 </c:if>
                                                 

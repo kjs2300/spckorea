@@ -43,11 +43,7 @@
        <put-attribute name="body" value="/WEB-INF/jsp/web/popup/appCancel.jsp" />  
    </definition>
    
-   <definition name="popResultReport" extends="popUp-definition">  
-       <put-attribute name="title" value="결과보고" />  
-       <put-attribute name="body" value="/WEB-INF/jsp/web/popup/resultReport.jsp" />  
-   </definition>
-   
+      
    <!--마이페이지 > 나의 강의실 -->
    <definition name="popMyClass" extends="popUp-definition">  
        <put-attribute name="title" value="나의 강의실" />  
