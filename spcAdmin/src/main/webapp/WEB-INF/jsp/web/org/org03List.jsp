@@ -29,6 +29,11 @@
  	 frm.action = "<c:url value='/user/org03List.do'/>";
    	 frm.submit();
  }
+ 
+ function fn_detail(sch_no){
+		document.location = "<c:url value='/user/org02Report.do'/>"+"?sch_no="+sch_no;
+	 }	
+
 </script>
      <!-- container  begin -->
                 <div id="container">
@@ -102,55 +107,30 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<tr>
-                                            <td>10</td>
-                                            <td class="tl">청소년 대상 자살예방 생명지킴이 교육</td>
-                                            <td>
-                                                <span class="block">2021-03-18</span>
-                                                <span class="block">13:00 ~ 15:00</span>
-                                            </td>
-                                            <td><span>120</span>분</td>
-                                            <td>중앙자살예방센터</td>
-                                            <td>성인</td>
-                                            <td>김형준</td>
-                                            <td>
-                                                <span class="block">교육완료</span>
-                                                <button class="sm-btn navy-btn">결과보고</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>9</td>
-                                            <td class="tl">청소년 대상 자살예방 생명지킴이 교육</td>
-                                            <td>
-                                                <span class="block">2021-03-18</span>
-                                                <span class="block">13:00 ~ 15:00</span>
-                                            </td>
-                                            <td><span>120</span>분</td>
-                                            <td>중앙자살예방센터</td>
-                                            <td>성인</td>
-                                            <td>김형준</td>
-                                            <td>
-                                                <span class="block">보고완료</span>
-                                            </td>
-                                        </tr>
                                     	<c:forEach var="result" items="${resultList}" varStatus="status">
-                                        <tr>
+                                    	<tr>
                                             <td>${status.index + 1}</td>
-                                            <td>${result.COPER_NM_AUTO}</td>
-                                            <td class="tl">${result.CATEGORY3_NAME}</td>
-                                            <td>${result.EDU_TARGET}</td>
-                                            <td><span>${result.EDU_TIME}</span>분</td>
-                                            <td>최대<span>${result.EDU_GARDEN}</span>명</td>
+                                            <td class="tl">${result.EDU_NAME}</td>
                                             <td>
-                                            	<c:if test="${result.EDU_STATUS eq '신청중'}">
-                                            		<button class="sm-btn navy-btn" onClick="fn_detail('${result.EDU_NO}');">신청하기</button>
-                                            	</c:if>
+                                                <span class="block">${result.EDU_DATE}</span>
+                                                <span class="block">${result.EDU_DATETIME}</span>
+                                            </td>
+                                            <td><span>${result.EDU_TIME}</span>분</td>
+                                            <td>${result.EDU_ORG_NAME}</td>
+                                            <td>${result.EDU_TARGET}</td>
+                                            <td>${result.EDU_TEAC_NAME}</td>
+                                            <td><span <c:if test="${result.INS_STATUS == '섭외중'}">style="cursor:pointer;" onClick="javascript:openWindowPop('<c:url value='/user/popInsSelect.do'/>?sch_no=${result.SCHEDULE_NO}','popup');"</c:if>>${result.INS_STATUS}</span></td>
+                                            <td>
+                                                <span class="block" >${result.SCH_STATUS}</span>
+                                                <c:if test="${result.SCH_STATUS == '교육완료'}">
+                                                	<button class="sm-btn navy-btn" onClick="fn_detail('${result.SCHEDULE_NO}');">결과보고</button>
+                                                </c:if>
                                             </td>
                                         </tr>
                                         </c:forEach>
                                         <c:if test="${empty resultList }">
 								             <tr>
-								                 <td colspan='7'/>Data 없습니다.</td>
+								                 <td colspan='8'/>Data 없습니다.</td>
 								             </tr>
 								        </c:if>
                                     </tbody>
