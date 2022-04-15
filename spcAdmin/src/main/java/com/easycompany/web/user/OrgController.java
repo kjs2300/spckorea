@@ -182,17 +182,6 @@ public class OrgController
   public String popInsSelect(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 	  
-	  paramMap.put("sqlName", "getInsStr");
-	  Map<String, Object> map = orgService.getSelectData(paramMap);
-	  //String arr[] = map.get("INS_APP_USER").toString().split(",");
-	  
-	  if(map == null) {
-		  paramMap.put("ins_app_user", "");
-	  }else {
-		  String arr[] = map.get("INS_APP_USER").toString().split(",");
-		  paramMap.put("ins_app_user", arr);
-	  }
-	  
 	  paramMap.put("sqlName", "getInsSelectList");
 	  List<Map<String, Object>> list = orgService.getSelectList(paramMap);
 	  model.addAttribute("resultList", list);
@@ -215,7 +204,10 @@ public class OrgController
 	      resultCnt = orgService.updateData(paramMap);
 	      
 	      paramMap.put("sqlName", "updateInsDtlData");	
-	      resultCnt = orgService.updateData(paramMap);
+	      resultCnt += orgService.updateData(paramMap);
+	      
+	      paramMap.put("sqlName", "updateInsAppData");	
+	      resultCnt += orgService.updateData(paramMap);
 	      
 	      if(resultCnt > 0) {
 	    	  result.put("result", "SUCCESS");
@@ -232,18 +224,7 @@ public class OrgController
   @RequestMapping({"/popAppCancel.do"})
   public String popAppCancel(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
-	  
-	  paramMap.put("sqlName", "getInsStr");
-	  Map<String, Object> map = orgService.getSelectData(paramMap);
-	  //String arr[] = map.get("INS_APP_USER").toString().split(",");
-	  
-	  if(map == null) {
-		  paramMap.put("ins_app_user", "");
-	  }else {
-		  String arr[] = map.get("INS_APP_USER").toString().split(",");
-		  paramMap.put("ins_app_user", arr);
-	  }
-	  
+	  	  
 	  paramMap.put("sqlName", "getInsSelectList");
 	  List<Map<String, Object>> list = orgService.getSelectList(paramMap);
 	  model.addAttribute("resultList", list);

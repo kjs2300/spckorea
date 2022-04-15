@@ -25,11 +25,12 @@
 		var param = radio_chk.split(",");
 		var sch_no = param[0];
 		var user_nm = param[1];
+		var user_id = param[2];
 		if(confirm("변경이 불가하오니 신중하게 선택하시기 바랍니다.\n선택하시겠습니까?")){
 			//{"schedule_no" : param[0], "user_nm" : param[1] },
 			$.ajax({	
 				data       : {},
-			    url		   : "<c:url value='/user/updateInsData.do'/>?schedule_no="+sch_no+"&user_nm="+user_nm,
+			    url		   : "<c:url value='/user/updateInsData.do'/>?schedule_no="+sch_no+"&user_nm="+user_nm+"&user_id="+user_id,
 			    dataType   : "JSON",
 				type	   : "POST",	
 			    processData: false,
@@ -85,7 +86,7 @@ function commonCallBack(obj){
                     <tbody>
                     	<c:forEach var="result" items="${resultList}" varStatus="status">
                         <tr>
-                            <td><input type="radio" class="radio-box" id="ins_check" name="ins_check" value="${result.SCHEDULE_NO},${result.USER_NM}"></td>
+                            <td><input type="radio" class="radio-box" id="ins_check" name="ins_check" value="${result.SCHEDULE_NO},${result.USER_NM},${result.USER_ID}"></td>
                             <td>${status.index + 1}</td>
                             <td>${result.USER_NM}</td>
                             <td>${result.USER_SEX}</td>

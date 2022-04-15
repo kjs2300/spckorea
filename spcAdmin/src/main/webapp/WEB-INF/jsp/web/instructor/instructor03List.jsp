@@ -38,15 +38,11 @@
 	 $("[type='text']").val("");
  }
  
- function fn_save(sch_no,app_user){
+ function fn_save(sch_no,edu_no){
 	 var formData = new FormData(); 
-	 
-		if(app_user == ""){
-			formData.append("app_user",   $("#user_id").val());
-		}else{
-			formData.append("app_user",   app_user+","+$("#user_id").val());
-		}
-		formData.append("sch_no",   sch_no);
+	 formData.append("app_user",   $("#user_id").val());
+	 formData.append("sch_no",   sch_no);
+	 formData.append("edu_no",   edu_no);
 		if(confirm("교육 활동 신청을 하시겠습니까?")){
 				
 			$.ajax({	
@@ -207,8 +203,8 @@
                                             <td class="tl">${result.EDU_NAME}</td>
                                             <td>${result.EDU_TARGET}</td>
                                             <td><span>${result.EDU_NUMBER}</span>명</td>
-                                            <td><c:if test="${result.INS_APP_CHECK == 'N'}">
-                                            	<button class="sm-btn white-btn" onClick="fn_save('${result.SCHEDULE_NO}','${result.INS_APP_USER}');">신청</button>
+                                            <td><c:if test="${result.INS_APP_CHECK != 'Y'}">
+                                            	<button class="sm-btn white-btn" onClick="fn_save('${result.SCHEDULE_NO}','${result.EDU_KEY}');">신청</button>
                                             	</c:if>
                                             </td>
                                         </tr>

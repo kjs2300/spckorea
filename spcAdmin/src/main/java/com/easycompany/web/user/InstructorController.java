@@ -175,7 +175,7 @@ public class InstructorController
 	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 
 	      paramMap.put("sqlName", "instructor03Save");	
-	      resultCnt = instructorService.updateData(paramMap);
+	      resultCnt = instructorService.insertData(paramMap);
 	      
 	      if(resultCnt > 0) {
 	    	  result.put("result", "SUCCESS");

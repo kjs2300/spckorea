@@ -187,13 +187,7 @@
 			 EDU_SCHEDULE_DETAIL b
 		WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
 	</select>
-	
-	<select id="getInsStr" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT INS_APP_USER
-		FROM EDU_SCHEDULE_DETAIL
-		WHERE SCHEDULE_NO = #{sch_no}
-	</select>
-	
+		
 	<select id="getInsSelectList" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT a.SCHEDULE_NO,b.USER_ID,b.USER_NM, 
 				CASE WHEN b.USER_SEX = 'M' THEN '남' ELSE '여' END AS USER_SEX,
@@ -202,15 +196,7 @@
         FROM EDU_SCHEDULE_DETAIL a,
 			 COM_USER b
         WHERE a.SCHEDULE_NO = #{sch_no}
-        <if test="ins_app_user != '' and ins_app_user != null">
-        	AND b.USER_ID IN (
-				<foreach collection="ins_app_user" item="item" separator=",">
-					#{item}
-				</foreach>)
-        </if>
-        <if test="ins_app_user == ''">
-        	AND b.USER_ID = ''
-        </if>
+        AND b.USER_ID IN (SELECT INS_USER FROM EDU_SCHEDULE_APP WHERE SCHEDULE_NO = #{sch_no})
 	</select>
 	
 	<update id="updateInsData" parameterType="java.util.Map">	
@@ -223,6 +209,13 @@
 		UPDATE EDU_SCHEDULE_DETAIL
 		SET	INS_STATUS = 'Y'
 		WHERE SCHEDULE_NO = #{schedule_no} 		
+	</update>
+	
+	<update id="updateInsAppData" parameterType="java.util.Map">	
+		UPDATE EDU_SCHEDULE_APP
+		SET	INS_CONFIRM = 'Y'
+		WHERE SCHEDULE_NO = #{schedule_no} 		
+		AND INS_USER = #{user_id}
 	</update>
 	
 	<update id="updateAppCancel" parameterType="java.util.Map">	

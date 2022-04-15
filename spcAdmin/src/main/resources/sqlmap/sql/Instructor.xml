@@ -98,9 +98,8 @@
 				END
                AS INS_STATUS,
                b.SCH_STATUS,
-               b.INS_APP_USER,
-               CASE WHEN b.INS_APP_USER LIKE CONCAT('%',#{user_id},'%') THEN 'Y'
-					ELSE 'N' END AS INS_APP_CHECK
+               a.EDU_KEY,
+               (SELECT 'Y' FROM EDU_SCHEDULE_APP WHERE INS_USER = #{UserAccount.user_id}) AS INS_APP_CHECK
 		FROM EDU_SCHEDULE a,
 			 EDU_SCHEDULE_DETAIL b
 		WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
@@ -164,11 +163,11 @@
 	    </if>
 	</select>
 	
-	<update id="instructor03Save" parameterType="java.util.Map">	
-		UPDATE EDU_SCHEDULE_DETAIL
-		SET	INS_APP_USER = #{app_user} 	
-		WHERE SCHEDULE_NO = #{sch_no} 		
-	</update>
+	<insert id="instructor03Save" parameterType="java.util.Map">	
+		INSERT INTO EDU_SCHEDULE_APP
+		(SCHEDULE_NO,EDU_KEY,INS_USER,REG_DT,REG_ID)
+		VALUES(#{sch_no},#{edu_no},#{app_user},DATE_FORMAT(NOW(),'%x-%m-%d'),#{UserAccount.user_id})
+	</insert>
 	
 	
 	
