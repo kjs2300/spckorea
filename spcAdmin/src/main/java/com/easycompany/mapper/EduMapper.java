@@ -176,6 +176,9 @@ public class EduMapper extends EgovAbstractMapper
     if ("eduInfoMangNoOrglineMangView".equals(categoryVo.getGubun2())) {
         sqlName = "getEduInfoOnlineMangViewList";
     }   
+    if ("lifeEduOffOrgList".equals(categoryVo.getGubun2())) {
+        sqlName = "getLifeEduOffOrgList";
+    }
     
     
     return selectList(this.nameSpace + "." + sqlName, categoryVo);
@@ -209,7 +212,9 @@ public class EduMapper extends EgovAbstractMapper
     if ("eduInfoMangNoOrglineMangView".equals(categoryVo.getGubun2())) {
         sqlName = "getEduInfoOnlineMangViewCount";
     } 
-    
+    if ("lifeEduOffOrgList".equals(categoryVo.getGubun2())) {
+        sqlName = "getLifeEduOffOrgListCount";
+    }
     return ((Integer)selectOne(this.nameSpace + "." + sqlName, categoryVo)).intValue();
   }
 

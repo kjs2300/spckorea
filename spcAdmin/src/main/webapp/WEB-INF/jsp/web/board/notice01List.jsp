@@ -32,6 +32,25 @@
      ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
      ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
 	});
+	 
+	 $('.link').bind('click', function(){
+		 	var frm = document.commonForm;
+		 
+		   	var board_idx  = $(this).data('idx');
+		   	$("#board_idx").val(board_idx);
+		   	
+		   	var type = $("#board_type").val();
+		   	if (type=="01"){
+				frm.action = "<c:url value='/user/notice01View.do'/>";	
+			}else if (type=="02"){
+				frm.action = "<c:url value='/user/notice02View.do'/>";		
+			}else if (type=="03"){
+				frm.action = "<c:url value='/user/notice03View.do'/>";	
+			}
+			
+			frm.submit();
+			
+	 });
  });
   
  function fn_clearBtn(){
@@ -40,13 +59,10 @@
 	 $("[type='text']").val("");
  }
  
- function fn_detail(edu_no){
-	document.location = "<c:url value='/user/sectorView.do'/>"+"?edu_no="+edu_no+"&idx="+$('#idx').val();
- }	
+
  function fn_egov_link_page(pageNo){
 	 var frm = document.commonForm;
 	 $("#pageIndex").val(pageNo); 
- 	 frm.action = "<c:url value='/user/sectorList.do'/>";
    	 frm.submit();
  }
 </script>
@@ -55,19 +71,29 @@
 		    		<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
                 	
                     <div class="tit-wrap">
-                        <h1 class="h1-tit">공지사항</h1>
+                        <h1 class="h1-tit">
+                          <c:if test="${adBoardVo.board_type =='01'}">공지사항</c:if>
+						  <c:if test="${adBoardVo.board_type =='02'}">자료실</c:if>
+						  <c:if test="${adBoardVo.board_type =='03'}">FAQ</c:if>
+                        </h1>
 
                         <div class="side-cont">
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                             <span>공지사항</span>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                            <span>공지사항</span>
+                            <span>
+							  <c:if test="${adBoardVo.board_type =='01'}">공지사항</c:if>
+							  <c:if test="${adBoardVo.board_type =='02'}">자료실</c:if>
+							  <c:if test="${adBoardVo.board_type =='03'}">FAQ</c:if>
+							</span>
                         </div>
                     </div>
 
                     <div class="contents-wrap">
 						<form  id="commonForm" name="commonForm"  method="post"  action="">
+						<input type="hidden" id="board_idx"   name="board_idx"  value="0"/>
+     					<input type="hidden" id="board_type"  name="board_type" value="${adBoardVo.board_type}">
                         <!---- search-wrap begin ---->
                         <div class="search-wrap">
                             <div class="search-cont">
@@ -124,7 +150,6 @@
                                     <col width="8%"/>
                                     <col width="*"/>
                                     <col width="12%"/>
-                                    <col width="14%"/>
                                     <col width="16%"/>
                                     <col width="12%"/>
                                 </colgroup>
@@ -133,7 +158,6 @@
                                         <th>No.</th>
                                         <th>제목</th>
                                         <th>작성자</th>
-                                        <th>첨부파일</th>
                                         <th>작성일</th>
                                         <th>조회수</th>
                                     </tr>
@@ -142,9 +166,8 @@
                                 	<c:forEach var="result" items="${resultList}" varStatus="status">
                                     <tr>
                                         <td><c:out value="${(adBoardVo.pageIndex-1) * adBoardVo.pageSize + (status.count)}"/></td>
-                                        <td class="tl"><a class="link" href="<c:url value='/adBoard/noticeReq.do?board_idx'/>">${result.title}</a></td>
+                                        <td class="tl"><a class="link" data-idx='${result.board_idx}' >${result.title}</a></td>
                                         <td>${result.reg_nm}</td>
-                                        <td><button class="sm-btn white-btn">다운로드</button></td>
                                         <td>${fn:substring(result.reg_dt,0,10) }</td>
                                         <td>${result.view_cnt}</td>
                                     </tr>

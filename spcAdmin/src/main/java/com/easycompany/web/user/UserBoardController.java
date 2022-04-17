@@ -53,6 +53,8 @@ public class UserBoardController {
 	@RequestMapping(value = "/notice01List.do")
 	public String notice01List(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 		
+		LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
+		
 		/** EgovPropertyService.sample */
 		adBoardVo.setPageUnit(propertiesService.getInt("pageUnit"));
 		adBoardVo.setPageSize(propertiesService.getInt("pageSize"));
@@ -79,7 +81,7 @@ public class UserBoardController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-			
+		model.addAttribute("sessionId",    loginvo);	
 		model.addAttribute("adBoardVo",   adBoardVo);
 		model.addAttribute("path",        request.getServletPath());
 
@@ -88,6 +90,17 @@ public class UserBoardController {
 	
 	@RequestMapping(value = "/notice01View.do")
 	public String notice01View(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
+		
+		LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
+		if(loginvo != null && loginvo.getUser_id() != null) {
+			adBoardVo.setReg_id(loginvo.getUser_id());	
+			adBoardVo.setUser_id(loginvo.getUser_id());
+			adBoardVo.setUser_nm(loginvo.getUser_nm());	
+		}
+		
+		//  조회수 증가
+		adBoardService.updateBoardViewCount(adBoardVo);
+		
 		
 		if(adBoardVo.getBoard_idx() != null) {
 			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
@@ -98,14 +111,29 @@ public class UserBoardController {
 			model.addAttribute("detailData",  detailData);			
 			
 		}
-		//model.addAttribute("sessionId",   loginvo);
+		
+		//이전글
+		adBoardVo.setGubun1("pre");		
+		AdBoardVo detailPreData = adBoardService.selectViewDetailBoard(adBoardVo);
+		model.addAttribute("detailPreData",   detailPreData);
+		
+		//다음글
+		adBoardVo.setGubun1("next");
+		AdBoardVo detailNextData = adBoardService.selectViewDetailBoard(adBoardVo);
+		model.addAttribute("detailNextData",   detailNextData);
+		
+		model.addAttribute("sessionId",   loginvo);
 		model.addAttribute("adBoardVo",   adBoardVo);
 		model.addAttribute("path",        request.getServletPath());
+		
 		return "notice01View";
 	}
 	
 	@RequestMapping(value = "/notice02List.do")
 	public String notice02List(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
+		
+		LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
+		
 		/** EgovPropertyService.sample */
 		adBoardVo.setPageUnit(propertiesService.getInt("pageUnit"));
 		adBoardVo.setPageSize(propertiesService.getInt("pageSize"));
@@ -128,37 +156,59 @@ public class UserBoardController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		//adBoardVo.setReg_id(loginvo.getId());		
+		model.addAttribute("sessionId",    loginvo);	
 		model.addAttribute("adBoardVo",   adBoardVo);
 		model.addAttribute("path",      request.getServletPath());
 
-		return "notice02List";
+		return "notice01List";
 	}
 	
 	@RequestMapping(value = "/notice02View.do")
 	public String notice02View(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 		
+		LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
+		if(loginvo != null && loginvo.getUser_id() != null) {
+			adBoardVo.setReg_id(loginvo.getUser_id());	
+			adBoardVo.setUser_id(loginvo.getUser_id());
+			adBoardVo.setUser_nm(loginvo.getUser_nm());	
+		}
+		
+		//  조회수 증가
+		adBoardService.updateBoardViewCount(adBoardVo);
+		
+		
 		if(adBoardVo.getBoard_idx() != null) {
-			adBoardVo.setBoard_type("02");
 			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
 			if(detailData != null ) {
 				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
 				model.addAttribute("resultFileList", files);
 			}
-			model.addAttribute("detailData",  detailData);
+			model.addAttribute("detailData",  detailData);			
 			
 		}
-		//model.addAttribute("sessionId",   loginvo);
+		
+		//이전글
+		adBoardVo.setGubun1("pre");		
+		AdBoardVo detailPreData = adBoardService.selectViewDetailBoard(adBoardVo);
+		model.addAttribute("detailPreData",   detailPreData);
+		
+		//다음글
+		adBoardVo.setGubun1("next");
+		AdBoardVo detailNextData = adBoardService.selectViewDetailBoard(adBoardVo);
+		model.addAttribute("detailNextData",   detailNextData);
+		
+		model.addAttribute("sessionId",   loginvo);
 		model.addAttribute("adBoardVo",   adBoardVo);
-		model.addAttribute("path",        request.getServletPath());
+		model.addAttribute("path",        request.getServletPath());		
 	
-		return "notice02View";
+		return "notice01View";
 	}
 	
 	@RequestMapping(value = "/notice03List.do")
 	public String notice03List(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 
-		//LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
+		LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
+		
 		/** EgovPropertyService.sample */
 		adBoardVo.setPageUnit(propertiesService.getInt("pageUnit"));
 		adBoardVo.setPageSize(propertiesService.getInt("pageSize"));
@@ -181,31 +231,52 @@ public class UserBoardController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		//adBoardVo.setReg_id(loginvo.getId());		
+		model.addAttribute("sessionId",    loginvo);	
 		model.addAttribute("adBoardVo",   adBoardVo);
 		model.addAttribute("path",      request.getServletPath());
 
-		return "notice03List";
+		return "notice01List";
 	}
 	
 	@RequestMapping(value = "/notice03View.do")
 	public String notice03View(@ModelAttribute("adBoardVo") AdBoardVo adBoardVo, ModelMap model, HttpServletRequest request) throws Exception {
 
+		LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
+		if(loginvo != null && loginvo.getUser_id() != null) {
+			adBoardVo.setReg_id(loginvo.getUser_id());	
+			adBoardVo.setUser_id(loginvo.getUser_id());
+			adBoardVo.setUser_nm(loginvo.getUser_nm());	
+		}
+		
+		//  조회수 증가
+		adBoardService.updateBoardViewCount(adBoardVo);
+		
+		
 		if(adBoardVo.getBoard_idx() != null) {
-			adBoardVo.setBoard_type("03");
 			AdBoardVo detailData = adBoardService.selectDetailBoard(adBoardVo);
 			if(detailData != null ) {
 				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
 				model.addAttribute("resultFileList", files);
 			}
-			model.addAttribute("detailData",  detailData);
+			model.addAttribute("detailData",  detailData);			
 			
 		}
-		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
-		//model.addAttribute("sessionId",   loginvo);
+		
+		//이전글
+		adBoardVo.setGubun1("pre");		
+		AdBoardVo detailPreData = adBoardService.selectViewDetailBoard(adBoardVo);
+		model.addAttribute("detailPreData",   detailPreData);
+		
+		//다음글
+		adBoardVo.setGubun1("next");
+		AdBoardVo detailNextData = adBoardService.selectViewDetailBoard(adBoardVo);
+		model.addAttribute("detailNextData",   detailNextData);
+		
+		model.addAttribute("sessionId",   loginvo);
 		model.addAttribute("adBoardVo",   adBoardVo);
 		model.addAttribute("path",        request.getServletPath());
-		return "notice03View";
+		
+		return "notice01View";
 	}
 	
 }

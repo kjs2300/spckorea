@@ -1560,31 +1560,48 @@
 			  LEFT OUTER
 			  JOIN EDU_CLASS_CATEGORY3 AS C ON (B.CATEGORY2_KEY = C.CATEGORY2_KEY AND C.SITE = B.SITE)
 			),
-		REGI_D AS 
+		EDU_REGISTRATION AS 
+		  (
+		  SELECT a.SCHEDULE_NO,A.edu_key, A.CATEGORY1_KEY, A.CATEGORY2_KEY,A.CATEGORY3_KEY,
+	             a.EDU_NAME,
+	             a.EDU_START_DATE AS train_s_date,
+	               CONCAT(SUBSTR(TIME(b.START_TIME),1,2),':',SUBSTR(TIME(b.START_TIME),4,2),'~',SUBSTR(TIME(b.END_TIME),1,2),':',SUBSTR(TIME(b.END_TIME),4,2)) AS EDU_DATETIME,
+	               (SELECT EDU_TIME FROM EDU_REGISTRATION WHERE EDU_NO = a.EDU_KEY) AS EDU_TIME,
+	             a.EDU_ORG_NAME coper_nm,
+	             a.EDU_TARGET ,
+	             a.EDU_TEAC_NAME inst_nm,
+	             a.EDU_NUMBER edu_garden,
+	             b.EDU_PLACE,
+	             a.REG_DT,
+	             CASE 
+	               WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL THEN '섭외중'
+	               WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL THEN '완료'
+	               WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL THEN '완료'
+	            END
+	               AS INS_STATUS,
+	             <![CDATA[
+	               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN ''
+						WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN '신청완료'
+						WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN '신청완료'
+						WHEN b.SCH_STATUS = 'C' THEN '신청취소'
+						WHEN b.SCH_STATUS IS NULL AND a.EDU_START_DATE <= NOW() THEN '교육완료'
+						WHEN b.SCH_STATUS = 'S' THEN '보고완료'
+					END
+	               AS SCH_STATUS
+	               ]]>             
+	      FROM EDU_SCHEDULE a,
+	          EDU_SCHEDULE_DETAIL b
+	      WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
+	      ),
+      REGI_D AS 
 		    (
-			SELECT  A.EDU_NO, A.EDU_SITE, A.CATEGORY1_KEY, A.CATEGORY2_KEY,A.CATEGORY3_KEY, B.CATEGORY1_NAME
-				   , B.CATEGORY2_NAME,B.CATEGORY3_NAME
- 				   , A.INST_NM
- 				   , A.APP_S_DATE TRAIN_S_DATE, A.APP_E_DATE TRAIN_E_DATE
- 				   , A.EDU_TARGET,A.EDU_TIME
-		           , A.EDU_GARDEN, A.EDU_STATUS,A.EDU_CONT,A.EDU_METHOD, A.EXP_USE_YN
-		           , A.COPER_NM , A.COPER_NM_AUTO, A.COPER_ID, A.COPER_CHECK,A.REG_DT
-		           , CASE
-			         WHEN A.COPER_CHECK = 'HAND'
-			         THEN A.COPER_NM
-			         WHEN A.COPER_CHECK = 'AUTO'
-			         THEN A.COPER_NM_AUTO
-			         ELSE A.COPER_NM_AUTO
-			        END AS COPER_NM1
+      SELECT  A.*,  B.CATEGORY1_NAME				   , B.CATEGORY2_NAME,B.CATEGORY3_NAME
 			  FROM EDU_REGISTRATION A, CLASS B
 			 WHERE A.CATEGORY1_KEY = B.CATEGORY1_KEY 
 			   AND A.CATEGORY2_KEY = B.CATEGORY2_KEY 
-			   AND A.CATEGORY3_KEY = B.CATEGORY3_KEY 
-			   AND A.EXP_USE_YN ='Y'
-		  	   AND A.EDU_STATUS IN ('신청중','신청취소','신청마감', '사용중지', '결과보고')
-			   AND A.EDU_SITE  IN('off')
-			   AND A.INST_NM IS NOT NULL   
-	        )
+			   AND A.CATEGORY3_KEY = B.CATEGORY3_KEY
+			   AND A.SCH_STATUS IN ('신청완료')
+			   )
 	    SELECT *
 		  FROM REGI_D
 	   	 WHERE CATEGORY3_NAME LIKE CONCAT('%', #{category3_name} ,'%')
@@ -1594,15 +1611,16 @@
 			</when>
 			<when
 				test="checkdate !=null and checkdate !='' and checkdate =='TODAY' ">
-				AND TRAIN_S_DATE = DATE_FORMAT(NOW(),'%x-%m-%d')
+				AND train_s_date = DATE_FORMAT(NOW(),'%x-%m-%d')
 			</when>
 			<when
 				test="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
 		   <![CDATA[
-		     AND  TRAIN_S_DATE >= #{train_s_date} AND TRAIN_E_DATE <= #{train_e_date} 
+		     AND  train_s_date >= #{train_s_date} AND train_s_date <= #{train_e_date} 
 		    ]]>
 			</when>
 		</choose>
+		ORDER BY TRAIN_S_DATE  DESC
 	   	 LIMIT #{recordCountPerPage} OFFSET #{offset}
 	</select>
 	
@@ -1619,34 +1637,218 @@
 			  LEFT OUTER
 			  JOIN EDU_CLASS_CATEGORY3 AS C ON (B.CATEGORY2_KEY = C.CATEGORY2_KEY AND C.SITE = B.SITE)
 			),
-		REGI_D AS 
+		EDU_REGISTRATION AS 
+		  (
+		  SELECT a.SCHEDULE_NO,A.edu_key, A.CATEGORY1_KEY, A.CATEGORY2_KEY,A.CATEGORY3_KEY,
+	             a.EDU_NAME,
+	             a.EDU_START_DATE AS train_s_date,
+	               CONCAT(SUBSTR(TIME(b.START_TIME),1,2),':',SUBSTR(TIME(b.START_TIME),4,2),'~',SUBSTR(TIME(b.END_TIME),1,2),':',SUBSTR(TIME(b.END_TIME),4,2)) AS EDU_DATETIME,
+	               (SELECT EDU_TIME FROM EDU_REGISTRATION WHERE EDU_NO = a.EDU_KEY) AS EDU_TIME,
+	              a.EDU_ORG_NAME coper_nm,
+	              a.EDU_TARGET ,
+	              a.EDU_TEAC_NAME inst_nm,
+	              a.EDU_NUMBER edu_garden,
+	               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL THEN '섭외중'
+	               WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL THEN '완료'
+	               WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL THEN '완료'
+	            END
+	               AS INS_STATUS,
+	              <![CDATA[
+	               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN ''
+						WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN '신청완료'
+						WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN '신청완료'
+						WHEN b.SCH_STATUS = 'C' THEN '신청취소'
+						WHEN b.SCH_STATUS IS NULL AND a.EDU_START_DATE <= NOW() THEN '교육완료'
+						WHEN b.SCH_STATUS = 'S' THEN '보고완료'
+					END
+	               AS SCH_STATUS
+	               ]]>            
+	      FROM EDU_SCHEDULE a,
+	          EDU_SCHEDULE_DETAIL b
+	      WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
+	      ),
+      REGI_D AS 
 		    (
-			SELECT A.EDU_SITE, A.CATEGORY1_KEY, A.CATEGORY2_KEY,A.CATEGORY3_KEY, B.CATEGORY1_NAME
-				   , B.CATEGORY2_NAME,B.CATEGORY3_NAME
- 				   , A.INST_NM
- 				   , A.APP_S_DATE TRAIN_S_DATE, A.APP_E_DATE TRAIN_E_DATE
- 				   , A.EDU_TARGET,A.EDU_TIME
-		           , A.EDU_GARDEN, A.EDU_STATUS,A.EDU_CONT,A.EDU_METHOD, A.EXP_USE_YN
-		           , A.COPER_NM , A.COPER_NM_AUTO, A.COPER_ID, A.COPER_CHECK,A.REG_DT
-		           , CASE
-			         WHEN A.COPER_CHECK = 'HAND'
-			         THEN A.COPER_NM
-			         WHEN A.COPER_CHECK = 'AUTO'
-			         THEN A.COPER_NM_AUTO
-			         ELSE A.COPER_NM_AUTO
-			        END AS COPER_NM1
+     		SELECT A.*,  B.CATEGORY1_NAME				   , B.CATEGORY2_NAME,B.CATEGORY3_NAME
 			  FROM EDU_REGISTRATION A, CLASS B
 			 WHERE A.CATEGORY1_KEY = B.CATEGORY1_KEY 
 			   AND A.CATEGORY2_KEY = B.CATEGORY2_KEY 
-			   AND A.CATEGORY3_KEY = B.CATEGORY3_KEY 
-			   AND A.EXP_USE_YN ='Y'
-		  	   AND A.EDU_STATUS IN ('신청중','신청취소','신청마감', '사용중지', '결과보고')
-			   AND A.EDU_SITE  IN('off')
-			   AND A.INST_NM IS NOT NULL   
-	        )
+			   AND A.CATEGORY3_KEY = B.CATEGORY3_KEY
+			   AND A.SCH_STATUS IN ('신청완료')
+			   )
 	    SELECT count(*)
 		  FROM REGI_D
 	   	 WHERE CATEGORY3_NAME LIKE CONCAT('%', #{category3_name} ,'%')
+		   <choose>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='ALL' ">
+			</when>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='TODAY' ">
+				AND train_s_date = DATE_FORMAT(NOW(),'%x-%m-%d')
+			</when>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
+		   <![CDATA[
+		     AND  train_s_date >= #{train_s_date} AND train_s_date <= #{train_e_date} 
+		    ]]>
+			</when>
+		</choose>
+	</select>
+	
+	
+	<select id="getLifeEduOffOrgList"		parameterType="com.easycompany.service.vo.CategoryVo"		resultType="com.easycompany.service.vo.CategoryVo">
+		/** com.easycompany.mapper.EduMapper.getLifeEduOffOrgList **/
+		WITH 
+		CLASS AS
+			(
+			SELECT A.CATEGORY1_KEY, B.CATEGORY2_KEY,C.CATEGORY3_KEY, A.CATEGORY1_NAME, 
+			  	   B.CATEGORY2_NAME,C.CATEGORY3_NAME,A.SITE
+			  FROM EDU_CLASS_CATEGORY1 AS A
+			  LEFT OUTER
+			  JOIN EDU_CLASS_CATEGORY2 AS B ON(A.CATEGORY1_KEY = B.CATEGORY1_KEY AND A.SITE = B.SITE)
+			  LEFT OUTER
+			  JOIN EDU_CLASS_CATEGORY3 AS C ON (B.CATEGORY2_KEY = C.CATEGORY2_KEY AND C.SITE = B.SITE)
+			),
+		EDU_REGISTRATION AS 
+		  (
+		  SELECT a.SCHEDULE_NO,A.edu_key, A.CATEGORY1_KEY, A.CATEGORY2_KEY,A.CATEGORY3_KEY,
+	             a.EDU_NAME,
+	             a.EDU_START_DATE AS train_s_date,
+	               CONCAT(SUBSTR(TIME(b.START_TIME),1,2),':',SUBSTR(TIME(b.START_TIME),4,2),'~',SUBSTR(TIME(b.END_TIME),1,2),':',SUBSTR(TIME(b.END_TIME),4,2)) AS EDU_DATETIME,
+	               (SELECT EDU_TIME FROM EDU_REGISTRATION WHERE EDU_NO = a.EDU_KEY) AS EDU_TIME,
+	             a.EDU_ORG_NAME coper_nm,
+	             a.EDU_TARGET ,
+	             a.EDU_TEAC_NAME inst_nm,
+	             a.EDU_NUMBER edu_garden,
+	             b.EDU_PLACE,
+	             a.REG_DT,
+	               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL THEN '섭외중'
+	               WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL THEN '완료'
+	               WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL THEN '완료'
+	            END
+	               AS INS_STATUS,
+	             <![CDATA[
+	               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN ''
+						WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN '신청완료'
+						WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN '신청완료'
+						WHEN b.SCH_STATUS = 'C' THEN '신청취소'
+						WHEN b.SCH_STATUS IS NULL AND a.EDU_START_DATE <= NOW() THEN '교육완료'
+						WHEN b.SCH_STATUS = 'S' THEN '보고완료'
+					END
+	               AS SCH_STATUS
+	               ]]>             
+	      FROM EDU_SCHEDULE a,
+	          EDU_SCHEDULE_DETAIL b
+	      WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
+	      ),
+      REGI_D AS 
+		    (
+      SELECT  A.*,  B.CATEGORY1_NAME				   , B.CATEGORY2_NAME,B.CATEGORY3_NAME
+			  FROM EDU_REGISTRATION A, CLASS B
+			 WHERE A.CATEGORY1_KEY = B.CATEGORY1_KEY 
+			   AND A.CATEGORY2_KEY = B.CATEGORY2_KEY 
+			   AND A.CATEGORY3_KEY = B.CATEGORY3_KEY
+			   AND A.SCH_STATUS IN ('신청완료')
+			   )
+	    SELECT *
+		  FROM REGI_D
+	   	 WHERE 1=1
+	   	  <choose>
+			<when test ="searchCondition !=null and searchCondition !='' and searchCondition =='INST_NM'        and searchKeyword !=null and searchKeyword !='' ">
+			   AND  INST_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
+			</when>
+			<when test ="searchCondition !=null and searchCondition !='' and searchCondition =='CATEGORY3_NAME' and searchKeyword !=null and searchKeyword !='' ">
+			  AND  CATEGORY3_NAME LIKE CONCAT('%', #{searchKeyword} ,'%')
+			</when>
+		  </choose>
+		  <choose>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='ALL' ">
+			</when>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='TODAY' ">
+				AND TRAIN_S_DATE = DATE_FORMAT(NOW(),'%x-%m-%d')
+			</when>
+			<when
+				test="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
+		   <![CDATA[
+		     AND  train_s_date >= #{train_s_date} AND train_s_date <= #{train_e_date} 
+		    ]]>
+			</when>
+		</choose>
+		<if test=" sort_ordr !=null and sort_ordr =='TRAIN_S_DATE'">
+		  ORDER BY TRAIN_S_DATE  DESC
+		</if>
+		<if test=" sort_ordr !=null and sort_ordr =='REG_DT'">
+		  ORDER BY REG_DT  DESC
+		 </if>
+	   	 LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+	
+	<select id="getLifeEduOffOrgListCount"		parameterType="com.easycompany.service.vo.CategoryVo"	resultType="int">
+		/** com.easycompany.mapper.EduMapper.getLifeEduOffOrgListCount **/
+		WITH 
+		CLASS AS
+			(
+			SELECT A.CATEGORY1_KEY, B.CATEGORY2_KEY,C.CATEGORY3_KEY, A.CATEGORY1_NAME, 
+			  	   B.CATEGORY2_NAME,C.CATEGORY3_NAME,A.SITE
+			  FROM EDU_CLASS_CATEGORY1 AS A
+			  LEFT OUTER
+			  JOIN EDU_CLASS_CATEGORY2 AS B ON(A.CATEGORY1_KEY = B.CATEGORY1_KEY AND A.SITE = B.SITE)
+			  LEFT OUTER
+			  JOIN EDU_CLASS_CATEGORY3 AS C ON (B.CATEGORY2_KEY = C.CATEGORY2_KEY AND C.SITE = B.SITE)
+			),
+		EDU_REGISTRATION AS 
+		  (
+		  SELECT a.SCHEDULE_NO,A.edu_key, A.CATEGORY1_KEY, A.CATEGORY2_KEY,A.CATEGORY3_KEY,
+	             a.EDU_NAME,
+	             a.EDU_START_DATE AS train_s_date,
+	               CONCAT(SUBSTR(TIME(b.START_TIME),1,2),':',SUBSTR(TIME(b.START_TIME),4,2),'~',SUBSTR(TIME(b.END_TIME),1,2),':',SUBSTR(TIME(b.END_TIME),4,2)) AS EDU_DATETIME,
+	               (SELECT EDU_TIME FROM EDU_REGISTRATION WHERE EDU_NO = a.EDU_KEY) AS EDU_TIME,
+	              a.EDU_ORG_NAME coper_nm,
+	              a.EDU_TARGET ,
+	              a.EDU_TEAC_NAME inst_nm,
+	              a.EDU_NUMBER edu_garden,
+	               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL THEN '섭외중'
+	               WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL THEN '완료'
+	               WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL THEN '완료'
+	            END
+	               AS INS_STATUS,
+	              <![CDATA[
+	               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN ''
+						WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN '신청완료'
+						WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN '신청완료'
+						WHEN b.SCH_STATUS = 'C' THEN '신청취소'
+						WHEN b.SCH_STATUS IS NULL AND a.EDU_START_DATE <= NOW() THEN '교육완료'
+						WHEN b.SCH_STATUS = 'S' THEN '보고완료'
+					END
+	               AS SCH_STATUS
+	               ]]>            
+	      FROM EDU_SCHEDULE a,
+	          EDU_SCHEDULE_DETAIL b
+	      WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
+	      ),
+      REGI_D AS 
+		    (
+     		SELECT A.*,  B.CATEGORY1_NAME				   , B.CATEGORY2_NAME,B.CATEGORY3_NAME
+			  FROM EDU_REGISTRATION A, CLASS B
+			 WHERE A.CATEGORY1_KEY = B.CATEGORY1_KEY 
+			   AND A.CATEGORY2_KEY = B.CATEGORY2_KEY 
+			   AND A.CATEGORY3_KEY = B.CATEGORY3_KEY
+			   AND A.SCH_STATUS IN ('신청완료')
+			   )
+	    SELECT count(*)
+		  FROM REGI_D
+	   	 WHERE 1=1
+	   	  <choose>
+			<when test ="searchCondition !=null and searchCondition !='' and searchCondition =='INST_NM'        and searchKeyword !=null and searchKeyword !='' ">
+			   AND  INST_NM  LIKE CONCAT('%', #{searchKeyword} ,'%')
+			</when>
+			<when test ="searchCondition !=null and searchCondition !='' and searchCondition =='CATEGORY3_NAME' and searchKeyword !=null and searchKeyword !='' ">
+			  AND  CATEGORY3_NAME LIKE CONCAT('%', #{searchKeyword} ,'%')
+			</when>
+		  </choose>
 		   <choose>
 			<when
 				test="checkdate !=null and checkdate !='' and checkdate =='ALL' ">
@@ -1658,7 +1860,7 @@
 			<when
 				test="checkdate !=null and checkdate !='' and checkdate =='TERM' ">
 		   <![CDATA[
-		     AND  TRAIN_S_DATE >= #{train_s_date} AND TRAIN_E_DATE <= #{train_e_date} 
+		     AND  TRAIN_S_DATE >= #{train_s_date} AND train_s_date <= #{train_e_date} 
 		    ]]>
 			</when>
 		</choose>

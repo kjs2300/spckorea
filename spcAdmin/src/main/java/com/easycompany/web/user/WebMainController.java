@@ -92,6 +92,15 @@ public class WebMainController
     model.addAttribute("imgList", imgList);
     model.addAttribute("mainVo",  mainVo);
     
+    //기관교육 가져오기
+    CategoryVo categoryVo = new CategoryVo();
+   
+    categoryVo.setRecordCountPerPage(5);
+    categoryVo.setOffset(0);
+    categoryVo.setGubun2("lifeEduOffOrgList");
+    List lifeEduOffOrgList = this.eduService.getEducationList(categoryVo);
+    model.addAttribute("lifeEduOffOrgList", lifeEduOffOrgList);
+	
     //공지사항 가져오기
     AdBoardVo adBoardVo = new AdBoardVo();
     adBoardVo.setBoard_type("01");
@@ -750,38 +759,8 @@ public class WebMainController
 		}
 		
 	   	categoryVo.setGubun1("R");
-	   	categoryVo.setGubun2("lifeEduOnLineList");
-	    
-	   	String edu_status ="신청중";
-	   	String edu_site   = "off";
-	   	int category1_key = 7;
-	   	int category2_key = 14;
-	   	
-	    //  온라인에서 Category1_key 1: 일반, 2: 실무자  3:강사
-	   	/*
-	   	on	1	1	12	일반	온라인교육	일반 온라인 교육1
-		on	1	1	13	일반	온라인교육	일반 온라인 교육2
-		on	1	2	14	일반	생명지킴이 강사 양성 교육	생명지킴이 양성교육1
-		on	3	7	15	강사	강사 보수 교육	강사교육1
-		on	2	3	16	실무자	실무자 역량 강화 교육	실무자 역량 강화 교육1
-		on	2	4	17	실무자	자살유족 서비스 제공 인력 교육	자살유족 서비스 제공 인력 교육1
-		on	2	5	18	실무자	광역주도형 심리부검 주면담원 양성교육	광역주도형 심리부검 주면담원 양성교육1
-		on	2	6	19	실무자	자살사후대응 전문가 양성교육	자살사후대응 전문가 양성교육1
-		off	4	8	20	일반	생명지킴이 강사 양성 교육	생명지킴이 강사 양성 교육1
-		off	5	9	21	실무자	실무자 역량 강화 교육	실무자 역량 강화 교육1
-		off	5	10	22	실무자	자살유족 서비스 제공 인력 교육	자살유족 서비스 제공 인력 교육1
-		off	5	11	23	실무자	광역주도형 심리부검 주면담원 양성교육	광역주도형 심리부검 주면담원 양성교육1
-		off	5	12	24	실무자	자살사후대응 전문가 양성교육	자살사후대응 전문가 양성교육1
-		off	7	14	1	기관	교육개설	보고듣고말하기 2.0 기본형
-
-	   	 */
-
-	   	categoryVo.setCategory1_key(category1_key);
-	   	categoryVo.setCategory2_key(category2_key);
-	    categoryVo.setEdu_site(edu_site);
-	    categoryVo.setEdu_status(edu_status);
-	  
-	    
+	   	categoryVo.setGubun2("lifeEduOffOrgList");
+	    	    
 	    categoryVo.setPageUnit(this.propertiesService.getInt("pageUnit"));
 	    categoryVo.setPageSize(this.propertiesService.getInt("pageSize"));
 

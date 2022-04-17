@@ -142,12 +142,12 @@
                                         <col width="5%"/>
                                         <col width="12%"/>
                                         <col width="8%"/>
-                                        <col width="16%"/>
+                                        <col width="10%"/>
                                         <col width="*"/>
                                         <col width="13%"/>
                                         <col width="9%"/>
                                         <col width="9%"/>
-                                        <col width="8%"/>
+                                        <col width="10%"/>
                                     </colgroup>
                                     <thead>
                                         <tr>

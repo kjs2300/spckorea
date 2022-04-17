@@ -82,7 +82,9 @@ public class CategoryVo extends MemberVo
   private String cour_finish;
   private String category3_name1;
   private int cnt;
-
+  
+  private String edu_datetime;
+  private String edu_place;
   
   public String getCoper_nm_auto()
   {
@@ -730,5 +732,21 @@ public int getCnt() {
  */
 public void setCnt(int cnt) {
 	this.cnt = cnt;
+}
+
+public String getEdu_datetime() {
+	return edu_datetime;
+}
+
+public void setEdu_datetime(String edu_datetime) {
+	this.edu_datetime = edu_datetime;
+}
+
+public String getEdu_place() {
+	return edu_place;
+}
+
+public void setEdu_place(String edu_place) {
+	this.edu_place = edu_place;
 }
 }

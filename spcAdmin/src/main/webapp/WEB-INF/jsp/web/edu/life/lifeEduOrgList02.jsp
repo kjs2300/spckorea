@@ -181,27 +181,31 @@
                    </c:if>               
                     
                     <span class="tag">${result.category2_name}</span>
-                    <h3 class="h3-tit" data-no="${result.edu_no}" data-site="${result.edu_site }"  >${result.category3_name}</h3>
+                    <h3 class="h3-tit" data-no="${result.edu_key}" data-site="${result.edu_site }"  >${result.category3_name}</h3>
                     <ul class="summary-cont">
                         <li>
+                            <label>교육기관 :</label>
+                            <span>${result.coper_nm}</span>
+                        </li>
+                        <li>
                             <label>교육대상 :</label>
-                            <span>${result.edu_method}</span>
+                            <span>${result.edu_target}</span>
                         </li>
                         <li>
-                            <label>교육인원 :</label>
-                            <span>${result.edu_garden}</span>명
+                            <label>교육일시:</label>
+                            <span>${result.train_s_date}</span></span>
                         </li>
                         <li>
-                            <label>교육기간 :</label>
-                            <span>${result.train_s_date}</span>~<span>${result.train_e_date}</span>
-                        </li>
-                        <li>
-                            <label>학습시간 :</label>
+                            <label>교육시간:</label>
                             <span>${result.edu_time}</span>분
                         </li>
                         <li>
-                            <label>강사명 :</label>
-                            <span>${result.inst_nm}</span>
+                            <label>교육인원 :</label>
+                            <span>${result.edu_garden}명</span>
+                        </li>
+                        <li>
+                            <label>교육장소 :</label>
+                            <span>${result.edu_place}</span>
                         </li>
                     </ul>
                   </li>
