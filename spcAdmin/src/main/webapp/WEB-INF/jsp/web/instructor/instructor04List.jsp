@@ -44,15 +44,15 @@
                             <ul class="summary-cont">
                                 <li>
                                     <label>소속기관 :</label>
-                                    <span>한국생명존중 희망재단</span>
+                                    <span>${result.COPER_NM}</span>
                                 </li>
                                 <li>
                                     <label>지역 :</label>
-                                    <span>서울</span>
+                                    <span>${result.AREA_NM}</span>
                                 </li>
                                 <li>
                                     <label>연락처 :</label>
-                                    <span>01044280505</span>
+                                    <span>${result.MBL_TELNO}</span>
                                 </li>
                             </ul>
 
@@ -62,15 +62,15 @@
                             <ul class="summary-cont">
                                 <li>
                                     <label>수료번호 :</label>
-                                    <span>교육 제21-0068호</span>
+                                    <span>${result.LICENSE_NUMBER}</span>
                                 </li>
                                 <li>
                                     <label>수료일 :</label>
-                                    <span>2021.07.15</span>
+                                    <span>${result.REG_DT}</span>
                                 </li>
                                 <li>
                                     <label>강사상태 :</label>
-                                    <span>활동강사</span>
+                                    <span>${result.STATUS}</span>
                                 </li>
                             </ul>
                         </div>
@@ -96,80 +96,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <c:forEach var="result" items="${resultList}" varStatus="status">
                                         <tr>
-                                            <td class="tl">보고듣고말하기2.0 기본형(120분)</td>
-                                            <td><input type="checkbox" class="check-box"/></td>
+                                            <td class="tl">${result.CATEGORY3_NAME}</td>
+                                            <td><input type="checkbox" class="check-box" <c:if test="${result.EDU_CD != null}">checked</c:if>/></td>
                                             <td>
-                                                <span>2019-07-15</span>~<span>2020-12-31</span></td>
+                                                <span>${result.AUTH_SDATE}</span>~<span>${result.AUTH_EDATE}</span></td>
                                         </tr>
-                                        <tr>
-                                            <td class="tl">보고듣고말하기 2.0 청년</td>
-                                            <td><input type="checkbox" class="check-box"/></td>
-                                            <td>
-                                                <span>2019-07-15</span>~<span>2020-12-31</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tl">보고듣고말하기 2.0 중년</td>
-                                            <td><input type="checkbox" class="check-box"/></td>
-                                            <td>
-                                                <span>2019-07-15</span>~<span>2020-12-31</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tl">보고듣고말하기 2.0 노인</td>
-                                            <td><input type="checkbox" class="check-box"/></td>
-                                            <td>
-                                                <span>2019-07-15</span>~<span>2020-12-31</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tl">보고듣고말하기 2.0 중학생</td>
-                                            <td><input type="checkbox" class="check-box"/></td>
-                                            <td>
-                                                <span>2019-07-15</span>~<span>2020-12-31</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tl">보고듣고말하기 2.0 고등학생</td>
-                                            <td><input type="checkbox" class="check-box"/></td>
-                                            <td>
-                                                <span>2019-07-15</span>~<span>2020-12-31</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tl">이어줌인 직장인</td>
-                                            <td><input type="checkbox" class="check-box"/></td>
-                                            <td>
-                                                <span>2019-07-15</span>~<span>2020-12-31</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tl">이어줌인 노인</td>
-                                            <td><input type="checkbox" class="check-box"/></td>
-                                            <td>
-                                                <span>2019-07-15</span>~<span>2020-12-31</span></td>
-                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table><!------  //20211224 수정  --------->
                             </div>
                         </div>
-
-                        <!---- page begin ---->
-                        <div class="page-wrap">
-                            <ul class="paging">
-                                <li><a>&lt;&lt;</a></li>
-                                <li><a>&lt;</a></li>
-                                <li class="on"><a>1</a></li>
-                                <li><a>2</a></li>
-                                <li><a>3</a></li>
-                                <li><a>4</a></li>
-                                <li><a>5</a></li>
-                                <li><a>6</a></li>
-                                <li><a>7</a></li>
-                                <li><a>8</a></li>
-                                <li><a>9</a></li>
-                                <li><a>10</a></li>
-                                <li><a>&gt;</a></li>
-                                <li><a>&gt;&gt;</a></li>
-                            </ul>
-                        </div>
-                        <!---- page end ---->
-
                     </div>
                 </div>
                 <!--  container end -->

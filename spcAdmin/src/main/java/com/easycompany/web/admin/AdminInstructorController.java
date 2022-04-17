@@ -85,6 +85,7 @@ public class AdminInstructorController
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
 	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("AdminAccount"));
 	  model.addAttribute("paginationInfo", paginationInfo);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
@@ -105,6 +106,7 @@ public class AdminInstructorController
 	  Map<String, Object> result = instructorService.getSelectData(paramMap);
 	  
 	  model.addAttribute("result", result);
+	  model.addAttribute("sessionId", request.getSession().getAttribute("AdminAccount"));
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
 	  return "instructorAdm01View";

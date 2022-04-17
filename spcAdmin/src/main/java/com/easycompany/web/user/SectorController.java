@@ -89,6 +89,7 @@ public class SectorController
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
 	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
 	  model.addAttribute("paginationInfo", paginationInfo);
 	  model.addAllAttributes(paramMap);
 	  
