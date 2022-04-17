@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
 <%@ taglib prefix="ui"     uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -18,7 +18,7 @@
   		
   	 <c:if test="${empty sessionId }">
 	  	var frm = document.commonForm;
-		frm.action = "<c:url value='/user/lifeEduOnLineList.do'/>";
+		frm.action = "<c:url value='/user/lifeEduOrgList02.do'/>";
 		frm.submit();
 	 </c:if>	
 	
@@ -34,12 +34,7 @@
 		});
  	});
  
-    /**  페이지 이동 */
-	function goOkPage(){	
-		var frm = document.commonForm;
-		frm.action = "<c:url value='/user/lifeEduOnLineList.do'/>";
-		frm.submit();
-	}
+ 
  
 	function fn_course(){	
 	 
@@ -130,9 +125,10 @@
 		}
 	}
 
+	   /**  페이지 이동 */
 	function goOkPage(){	
 		var frm = document.commonForm;
-		frm.action = "<c:url value='/user/lifeEduOnLineList.do'/>";
+		frm.action = "<c:url value='/user/lifeEduOrgList02.do'/>";
 		frm.submit();
 	}
      //-->
@@ -143,7 +139,7 @@
     <div id="container">
 
         <div class="tit-wrap">
-            <h1 class="h1-tit">온라인 생명 지킴이 교육</h1>
+            <h1 class="h1-tit">기관 생명 지킴이 교육</h1>
             <div class="side-cont">
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
@@ -151,22 +147,30 @@
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                 <span>교육신청</span>
                 <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                <span>온라인 생명 지킴이 교육</span>
+                <span>기관 생명 지킴이 교육</span>
             </div>
         </div>
 
      
            <!---- search-wrap begin ---->
        <form  id="commonForm" name="commonForm"  method="post"  action="">
-		<input type="hidden" id="gubun1"     name="gubun1"    value='I'/>
-	    <input type="hidden" id="gubun2"     name="gubun2"    value='${categoryVo.gubun2}'  />	
-	    <input type="hidden" id="edu_no"     name="edu_no"    value='${categoryVo.edu_no}'/>
-	    <input type="hidden" id="edu_site"   name="edu_site"  value='${categoryVo.edu_site}'/>
-	    <input type="hidden" id="eml_addr"   name="eml_addr"  />
+		<input type="hidden" id="gubun1"      name="gubun1"      value='I'/>
+	    <input type="hidden" id="gubun2"      name="gubun2"      value='${categoryVo.gubun2}'  />	
+	    <input type="hidden" id="edu_no"      name="edu_no"      value='${categoryVo.edu_no}'/>
+	    <input type="hidden" id="schedule_no" name="schedule_no" value='${categoryVo.schedule_no}'/>
+	    <input type="hidden" id="edu_site"    name="edu_site"    value='${categoryVo.edu_site}'/>
+	    <input type="hidden" id="eml_addr"    name="eml_addr"  />
 	    
 
 	    
-           <div class="contents-wrap">                        
+           <div class="contents-wrap">        
+           	<div class="tab-cont">
+                 <ul>
+                     <li class="on"><a href="${pageContext.request.contextPath}/user/lifeEduOrgList.do">교육 신청 방법</a></li>
+                     <li class="on">교육 신청</li>
+                 </ul>
+             </div>
+                             
                <div class="comp">
                    <h4 class="h4-tit">교육정보</h4>
                    <div class="table-wrap">
@@ -178,9 +182,9 @@
                           </colgroup>
                           <tbody>
                               <tr>
-                                  <th>교육분류</th>
+                                  <th>교육기관</th>
                                   <td>
-                                      <span> ${categoryForm.category1_name} > ${categoryForm.category2_name}</span>
+                                      <span> ${categoryForm.coper_nm} </span>
                                  </td>
                               </tr>
                               <tr>
@@ -188,24 +192,26 @@
                                   <td>${categoryForm.category3_name}</td>
                               </tr>
                               <tr>
-                                  <th>강사명</th>
-                                  <td>${categoryForm.inst_nm}</td>
-                              </tr>
-                              <tr>
-                                  <th>교육기간</th>
-                                  <td>${categoryForm.train_s_date} ~ ${categoryForm.train_e_date}</td>
-                              </tr>
-                              <tr>
-                                  <th>교육방식</th>
-                                  <td>${categoryForm.edu_method}</td>
-                              </tr>
-                              <tr>
                                   <th>교육대상</th>
                                   <td>${categoryForm.edu_target}</td>
                               </tr>
                               <tr>
-                                  <th>교육상태</th>
-                                  <td>${categoryForm.edu_status}</td>
+                                  <th>교육일시</th>
+                                  <td><span>${categoryForm.train_s_date}</span>
+                                    <span>${categoryForm.edu_datetime}</span>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <th>교육시간</th>
+                                  <td>${categoryForm.edu_time}분</td>
+                              </tr>
+                              <tr>
+                                  <th>교육인원</th>
+                                  <td>${categoryForm.edu_garden}명</td>
+                              </tr>
+                              <tr>
+                                  <th>교육장소</th>
+                                  <td>${categoryForm.edu_place}</td>
                               </tr>
                           </tbody>
                       </table>
@@ -269,8 +275,7 @@
                   <button type="button" onClick="fn_course();"; class="lg-btn orange-btn">신청하기</button>
                   <button type="button" onClick="history.back();" class="lg-btn white-btn">목록</button>
               </div>
-              <!---- button end ---->
-              
+              <!---- button end ---->         
 
           </div>
       </div>

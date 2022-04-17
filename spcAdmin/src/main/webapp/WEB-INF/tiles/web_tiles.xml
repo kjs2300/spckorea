@@ -113,7 +113,7 @@
    </definition> 
    
     <!--생명지킴이 교육신청 > 교육신청  > 기관 생명 지킴이 교육 -->
-   <definition name="lifeEduOrgReq" extends="common-definition">  
+   <definition name="lifeEduOrgReg" extends="common-definition">  
        <put-attribute name="title" value="기관 생명 지킴이 교육" />  
        <put-attribute name="body" value="/WEB-INF/jsp/web/edu/life/lifeEduOrgReg.jsp" />  
    </definition> 

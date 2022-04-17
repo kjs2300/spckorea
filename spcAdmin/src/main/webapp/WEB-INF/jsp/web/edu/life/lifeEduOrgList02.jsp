@@ -14,18 +14,68 @@
  <script type="text/javaScript" language="javascript" defer="defer">
  <!--
  $(document).ready(function(){
-	 $('.h3-tit').bind('click', function(){
-		 var site = $(this).data('site');
-		 var no = $(this).data('no');
-		 $("#edu_site").val(site);
-	     $("#edu_no").val(no);
-		 $("#category1_key").val(0);
- 		 $("#category2_key").val(0);
-		 $("#category3_key").val(0);
+
+	 $('.basket').bind('click', function(){
+		var frm = document.commonForm;
+		<c:if test="${empty sessionId }">
+		 alert('해당 교육은 회원 가입 후 사용이 가능합니다.\n회원 가입 후 이용해 주시기 바랍니다.');
+		 return;
+		</c:if>
+			
+		var edu_no      = $(this).data('no');
+		var schedule_no = $(this).data('schedule_no');
+		$("#edu_no").val(edu_no);
+	  	$("#schedule_no").val(schedule_no);
+	  	$("#gubun2").val('basket'); 
+	  	var msg = "장바구니에 담겠습니까?";
+		var yn = confirm(msg);	
+		if(yn){
+				
+			$.ajax({	
+				data     : $("#commonForm").serialize(),
+			    url		 : "<c:url value='/user/lifeEduOnLineSave.do'/>",
+		        dataType : "JSON",
+		        cache    : false,
+		        async    : false,
+				type	 : "POST",	
+		        success  : function(obj) {
+		        	commonCallBack(obj);				
+		        },	       
+		        error 	: function(xhr, status, error) {} 		        
+		    });
+		}	 
+		
+		function commonCallBack(obj){
+			
+			if(obj != null){		
+				var result = obj.result;			
+				if(result == "SUCCESS"){				
+					alert("장바구니에 담았습니다.");				
+				} else if(result == "EXIST"){				
+					alert("이미 담겼습니다.");	
+					return false;
+				}else {				
+					alert("등록이 실패 했습니다.");	
+					return false;
+				}
+			}
+		}
+	});
+	 
+	$('.course').bind('click', function(){
+		var frm = document.commonForm;
+		<c:if test="${empty sessionId }">
+		 alert('해당 교육은 회원 가입 후 사용이 가능합니다.\n회원 가입 후 이용해 주시기 바랍니다.');
+		 return;
+		</c:if>
+		
+		var edu_no      = $(this).data('no');
+		var schedule_no = $(this).data('schedule_no');
+		$("#edu_no").val(edu_no);
+	  	$("#schedule_no").val(schedule_no);
 		 
-		 var frm = document.commonForm;
-		 frm.action = "<c:url value='/user/lifeEduOrgInfo.do'/>";
-	   	 frm.submit();	   	 
+		frm.action = "<c:url value='/user/lifeEduOrgReg.do'/>";
+		frm.submit();	 
 	});
 	 
 	 $("#train_e_date, #train_s_date").datepicker({
@@ -48,13 +98,16 @@
  	});
  });
  
+ 
+ 
  function fn_search(){
 	 var frm = document.commonForm;
 
 	 
 	 var sort_ordr = $("select[name=sort_ordr] option:selected").val();  // 정렬		
   	 var searchCondition = $("select[name=searchCondition] option:selected").val();  //검색조건		
-  	 
+  	 var gubun3 = $("#gubun3").val();
+  	 $("#gubun2").val(gubun3); 
   	 $("#sort_ordr").val(sort_ordr);
   	 $("#searchCondition").val(searchCondition);
 	    
@@ -65,7 +118,8 @@
  /* pagination 페이지 링크 function */
  function fn_egov_link_page(pageNo){
 	 var frm = document.commonForm;
-
+	 var gubun3 = $("#gubun3").val();
+  	 $("#gubun2").val(gubun3); 
 	 var sort_ordr = $("select[name=sort_ordr] option:selected").val();  // 정렬		
   	 var searchCondition = $("select[name=searchCondition] option:selected").val();  //검색조건		
   	 
@@ -107,11 +161,13 @@
              
             <!---- search-wrap begin ---->
             <form  id="commonForm" name="commonForm"  method="post"  action="">
-			<input type="hidden" id="gubun1"     name="gubun1"    value='I'/>
-		    <input type="hidden" id="gubun2"     name="gubun2"    value='${categoryVo.gubun2}'  />	
-		    <input type="hidden" id="edu_site"   name="edu_site"  value='${categoryVo.edu_site}'/>
-		    <input type="hidden" id="edu_no"     name="edu_no"    value=0 />
-		    <input type="hidden" id="pageIndex"  name="pageIndex" value=1 />	
+			<input type="hidden" id="gubun1"      name="gubun1"      value='I'/>
+		    <input type="hidden" id="gubun2"      name="gubun2"      value='${categoryVo.gubun2}'  />	
+		    <input type="hidden" id="gubun3"      name="gubun3"      value='${categoryVo.gubun2}'  />
+		    <input type="hidden" id="edu_site"    name="edu_site"    value='${categoryVo.edu_site}'/>
+		    <input type="hidden" id="edu_no"      name="edu_no"      value=0 />
+		    <input type="hidden" id="schedule_no" name="schedule_no" value=0 />
+		    <input type="hidden" id="pageIndex"   name="pageIndex"   value=1 />	
 		    
             <div class="search-wrap">
 				<div class="search-cont">
@@ -182,6 +238,10 @@
                     
                     <span class="tag">${result.category2_name}</span>
                     <h3 class="h3-tit" data-no="${result.edu_key}" data-site="${result.edu_site }"  >${result.category3_name}</h3>
+                     <div class="btn-cont">
+                       <button class="sm-btn white-btn  basket" data-no="${result.edu_key}" data-schedule_no="${result.schedule_no }" >장바구니</button>
+                       <button class="sm-btn orange-btn course" data-no="${result.edu_key}" data-schedule_no="${result.schedule_no }" >수강신청</button>
+                   </div>
                     <ul class="summary-cont">
                         <li>
                             <label>교육기관 :</label>

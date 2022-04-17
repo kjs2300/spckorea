@@ -808,16 +808,13 @@ public class WebMainController
 		LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
 		  
 	   	categoryVo.setGubun1("R");
-	   	categoryVo.setGubun2("lifeEduOnLineReg");
+	   	categoryVo.setGubun2("lifeEduOffOrgReg");
 	   
 	    CategoryVo categoryForm = this.eduService.getEduCationDetail(categoryVo);
 	    model.addAttribute("categoryForm", categoryForm);
 	    
-	    List categoryFormSubList = this.eduService.getEduCationDetailSub(categoryVo);
-	    model.addAttribute("categoryFormSubList", categoryFormSubList);
-	    
 	    model.addAttribute("categoryVo",   categoryVo);
-	    model.addAttribute("path",       request.getServletPath());
+	    model.addAttribute("path",         request.getServletPath());
 	    model.addAttribute("sessionId",    loginvo);
 	    
 	    return "lifeEduOrgInfo";
@@ -834,7 +831,7 @@ public class WebMainController
 		LoginVo loginvo = (LoginVo)WebUtils.getSessionAttribute(request, "UserAccount");
 		  
 	   	categoryVo.setGubun1("R");
-	   	categoryVo.setGubun2("lifeEduOnLineReg");
+	   	categoryVo.setGubun2("lifeEduOffOrgReg");
 	   
 	    CategoryVo categoryForm = this.eduService.getEduCationDetail(categoryVo);
 	    model.addAttribute("categoryForm", categoryForm);

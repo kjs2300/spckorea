@@ -351,7 +351,10 @@
 		/** com.easycompany.mapper.EduMapper.getBasketExist **/
 	   SELECT COUNT(*) cnt
 		 FROM EDU_BASKET
-		WHERE EDU_NO = #{edu_no}
+		WHERE EDU_NO  = #{edu_no}
+		<if test=" schedule_no !=null and schedule_no  != 0">
+			AND SCHEDULE_NO = #{schedule_no}
+		</if>
 		  AND USER_ID = #{user_id}
 	</select>
 	
@@ -359,7 +362,10 @@
 		/** com.easycompany.mapper.EduMapper.getCourseExist **/
 		SELECT COUNT(*) cnt
 		  FROM EDU_COURSE_REGISTRATION
-		 WHERE EDU_NO = #{edu_no}
+		 WHERE EDU_NO  = #{edu_no}
+		 <if test=" schedule_no !=null and schedule_no != 0">
+			AND SCHEDULE_NO = #{schedule_no}
+		</if>
 		   AND USER_ID = #{user_id}
 	</select>
 	
@@ -1969,7 +1975,65 @@
 			   AND A.CATEGORY2_KEY = B.CATEGORY2_KEY 
 			   AND A.CATEGORY3_KEY = B.CATEGORY3_KEY 
 			   AND A.EXP_USE_YN ='Y'
-		  	   AND A.EDU_NO   =#{edu_no}
+		  	   AND A.EDU_NO = #{edu_no}
+	</select>
+	
+	<select id="getLifeEduOffOrgDetail"		parameterType="com.easycompany.service.vo.CategoryVo"		resultType="com.easycompany.service.vo.CategoryVo">
+		/** com.easycompany.mapper.EduMapper.getLifeEduOffOrgDetail **/
+		WITH 
+		CLASS AS
+			(
+			SELECT A.CATEGORY1_KEY, B.CATEGORY2_KEY,C.CATEGORY3_KEY, A.CATEGORY1_NAME, 
+			  	   B.CATEGORY2_NAME,C.CATEGORY3_NAME,A.SITE
+			  FROM EDU_CLASS_CATEGORY1 AS A
+			  LEFT OUTER
+			  JOIN EDU_CLASS_CATEGORY2 AS B ON(A.CATEGORY1_KEY = B.CATEGORY1_KEY AND A.SITE = B.SITE)
+			  LEFT OUTER
+			  JOIN EDU_CLASS_CATEGORY3 AS C ON (B.CATEGORY2_KEY = C.CATEGORY2_KEY AND C.SITE = B.SITE)
+			),
+		EDU_REGISTRATION AS 
+		  (
+		  SELECT a.SCHEDULE_NO,A.edu_key, A.CATEGORY1_KEY, A.CATEGORY2_KEY,A.CATEGORY3_KEY,
+	             a.EDU_NAME,
+	             a.EDU_START_DATE AS train_s_date,
+	               CONCAT(SUBSTR(TIME(b.START_TIME),1,2),':',SUBSTR(TIME(b.START_TIME),4,2),'~',SUBSTR(TIME(b.END_TIME),1,2),':',SUBSTR(TIME(b.END_TIME),4,2)) AS EDU_DATETIME,
+	               (SELECT EDU_TIME FROM EDU_REGISTRATION WHERE EDU_NO = a.EDU_KEY) AS EDU_TIME,
+	             a.EDU_ORG_NAME coper_nm,
+	             a.EDU_TARGET ,
+	             a.EDU_TEAC_NAME inst_nm,
+	             a.EDU_NUMBER edu_garden,
+	             b.EDU_PLACE,
+	             a.REG_DT,
+	               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL THEN '섭외중'
+	               WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL THEN '완료'
+	               WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL THEN '완료'
+	            END
+	               AS INS_STATUS,
+	             <![CDATA[
+	               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN ''
+						WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN '신청완료'
+						WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL AND b.SCH_STATUS IS NULL AND a.EDU_START_DATE > NOW() THEN '신청완료'
+						WHEN b.SCH_STATUS = 'C' THEN '신청취소'
+						WHEN b.SCH_STATUS IS NULL AND a.EDU_START_DATE <= NOW() THEN '교육완료'
+						WHEN b.SCH_STATUS = 'S' THEN '보고완료'
+					END
+	               AS SCH_STATUS
+	               ]]>             
+	      FROM EDU_SCHEDULE a,
+	          EDU_SCHEDULE_DETAIL b
+	      WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
+	      ),
+      REGI_D AS 
+		    (
+      SELECT  A.*,  B.CATEGORY1_NAME				   , B.CATEGORY2_NAME,B.CATEGORY3_NAME
+			  FROM EDU_REGISTRATION A, CLASS B
+			 WHERE A.CATEGORY1_KEY = B.CATEGORY1_KEY 
+			   AND A.CATEGORY2_KEY = B.CATEGORY2_KEY 
+			   AND A.CATEGORY3_KEY = B.CATEGORY3_KEY
+			   )
+	    SELECT *
+		  FROM REGI_D
+	   	 WHERE SCHEDULE_NO = #{schedule_no}
 	</select>
 	
 	<insert id="insertSchedule"		parameterType="com.easycompany.service.vo.CategoryVo">
@@ -2121,6 +2185,9 @@
 		INTO EDU_BASKET
 		( BASKET_NO
 		, EDU_NO
+		<if test=" schedule_no !=null and schedule_no  != 0">
+	    , SCHEDULE_NO
+		</if>
 		, USER_ID
 		, USER_NM
 		, REG_ID
@@ -2129,6 +2196,9 @@
 		(
 		  #{basket_no}
 		, #{edu_no}
+		<if test=" schedule_no !=null and schedule_no  != 0">
+		, #{schedule_no}
+		</if>
 		, #{user_id}
 		, #{user_nm}
 		, IFNULL(#{user_id},'SYSTEM')
@@ -2147,6 +2217,9 @@
 		INTO EDU_COURSE_REGISTRATION
 		( COUR_NO
 		, EDU_NO
+		<if test=" schedule_no !=null and schedule_no  != 0">
+	    , SCHEDULE_NO
+		</if>
 		, USER_ID
 		, USER_NM
 		, EML_ADDR
@@ -2157,6 +2230,9 @@
 		(
 		  #{cour_no}
 		, #{edu_no}
+		<if test=" schedule_no !=null and schedule_no  != 0">
+		, #{schedule_no}
+		</if>
 		, #{user_id}
 		, #{user_nm}
 		, #{eml_addr}

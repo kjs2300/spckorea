@@ -82,6 +82,7 @@ public class CategoryVo extends MemberVo
   private String cour_finish;
   private String category3_name1;
   private int cnt;
+  private int schedule_no;
   
   private String edu_datetime;
   private String edu_place;
@@ -748,5 +749,13 @@ public String getEdu_place() {
 
 public void setEdu_place(String edu_place) {
 	this.edu_place = edu_place;
+}
+
+public int getSchedule_no() {
+	return schedule_no;
+}
+
+public void setSchedule_no(int schedule_no) {
+	this.schedule_no = schedule_no;
 }
 }

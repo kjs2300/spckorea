@@ -307,8 +307,12 @@ public class EduMapper extends EgovAbstractMapper
     
     if ("lifeEduOnLineReg".equals(categoryVo.getGubun2())) {
         sqlName = "getLifeEduOnLineDetail";
-      }
+    }
 
+    if ("lifeEduOffOrgReg".equals(categoryVo.getGubun2())) {
+        sqlName = "getLifeEduOffOrgDetail";
+    }
+    
     return (CategoryVo)selectOne(this.nameSpace + "." + sqlName, categoryVo);
   }
 
