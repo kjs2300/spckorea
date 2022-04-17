@@ -89,7 +89,7 @@ model.addAttribute("path", request.getServletPath());
 	             <li>
 	                 <a href="#">자격관리</a>
 	                 <ul class="depth3">
-	                     <li><a href="${pageContext.request.contextPath}/instructor04List.do">강사자격정보</a></li>
+	                     <li><a href="${pageContext.request.contextPath}/user/instructor04List.do">강사자격정보</a></li>
 	                     <li><a href="${pageContext.request.contextPath}/user/instructor04lecture.do">강의내역</a></li>
 	                     <li><a href="${pageContext.request.contextPath}/user/instructor04absence.do">강사휴직신청</a></li>
 	                 </ul>

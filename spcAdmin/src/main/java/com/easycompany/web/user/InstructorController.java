@@ -64,6 +64,7 @@ public class InstructorController
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
 	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
 	  model.addAttribute("paginationInfo", paginationInfo);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
@@ -109,6 +110,7 @@ public class InstructorController
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
 	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
 	  model.addAttribute("paginationInfo", paginationInfo);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
@@ -157,6 +159,7 @@ public class InstructorController
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
 	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
 	  model.addAttribute("paginationInfo", paginationInfo);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
@@ -191,10 +194,19 @@ public class InstructorController
   
   @RequestMapping({"/instructor04List.do"})
   public String instructor04List(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  
+	  paramMap.put("sqlName", "getMyEduInfo");	
+	  Map<String, Object> result = instructorService.getSelectData(paramMap);
+	  model.addAttribute("result", result);
+	  
+	  paramMap.put("sqlName", "getMyEduAuthList");
+	  List<Map<String, Object>> list = instructorService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+	  	
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
-	  
-	  
 	  
 	  return "instructor04List";
   }

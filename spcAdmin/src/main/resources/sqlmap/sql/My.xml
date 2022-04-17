@@ -514,4 +514,132 @@
 		WHERE COUR_NO = #{cour_no}
 		  AND EDU_NO = #{edu_no}
 	</update><!--수정해야함-->
+	
+	<select id="getInsActList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT a.SCHEDULE_NO, a.EDU_START_DATE AS EDU_DATE,
+	       CONCAT(SUBSTR(TIME(b.START_TIME),1,2),':',SUBSTR(TIME(b.START_TIME),4,2),'~',SUBSTR(TIME(b.END_TIME),1,2),':',SUBSTR(TIME(b.END_TIME),4,2)) AS EDU_DATETIME,
+	       (SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = b.COPER_AREA_CD) AS AREA_NM,
+	       b.EDU_PLACE, a.EDU_ORG_NAME, a.EDU_NAME, a.EDU_TARGET, a.EDU_NUMBER, c.REG_DT, 
+	       CASE WHEN b.INS_STATUS IS NULL THEN '취소하기'
+				ELSE '변경불가' END AS INS_STATUS, 
+	       CASE WHEN c.INS_CONFIRM = 'Y' THEN '선택'
+				ELSE '미선택' END AS INS_CONFIRM, a.EDU_KEY
+		FROM EDU_SCHEDULE a,
+			 EDU_SCHEDULE_DETAIL b,
+		     EDU_SCHEDULE_APP c
+		WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
+		AND a.SCHEDULE_NO = c.SCHEDULE_NO
+		AND c.INS_USER = #{UserAccount.user_id}
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND EDU_START_DATE = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  EDU_START_DATE >= #{start_date} AND EDU_START_DATE <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<if test="edu_nm != '' and edu_nm != null">
+			AND a.EDU_NAME LIKE CONCAT('%',#{edu_nm},'%') 
+		</if>
+		<if test="area_nm != '' and area_nm != null">
+			AND b.COPER_AREA_CD = #{area_nm}
+		</if>
+		<if test="edu_org_name != '' and edu_org_name != null">
+			AND a.EDU_ORG_NAME LIKE CONCAT('%',#{edu_org_name},'%') 
+		</if>
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+	
+	<select id="getInsActListCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) 
+		FROM EDU_SCHEDULE a,
+			 EDU_SCHEDULE_DETAIL b,
+		     EDU_SCHEDULE_APP c
+		WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
+		AND a.SCHEDULE_NO = c.SCHEDULE_NO
+		AND c.INS_USER = #{UserAccount.user_id}
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND EDU_START_DATE = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  EDU_START_DATE >= #{start_date} AND EDU_START_DATE <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<if test="edu_nm != '' and edu_nm != null">
+			AND a.EDU_NAME LIKE CONCAT('%',#{edu_nm},'%') 
+		</if>
+		<if test="area_nm != '' and area_nm != null">
+			AND b.COPER_AREA_CD = #{area_nm}
+		</if>
+		<if test="edu_org_name != '' and edu_org_name != null">
+			AND a.EDU_ORG_NAME LIKE CONCAT('%',#{edu_org_name},'%') 
+		</if>
+	</select>
+	
+	<select id="getAreaList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT CD, CD_NM 
+		FROM COM_CD_MNG 
+		WHERE UP_CD_NO = '32'
+	</select>
+
+	<select id="getInsLeaveList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT INSTRUCTOR_LEAVE_IDX, 
+			   CASE WHEN STATUS = '1' THEN '승인'
+			   		ELSE '미승인' END AS STATUS, 
+			   REASON, 
+			   S_DATE, 
+			   E_DATE,
+			   REG_DT  
+		FROM EDU_INSTRUCTOR_LEAVE
+		WHERE INSTRUCTOR_IDX = (SELECT INSTRUCTOR_IDX FROM EDU_INSTRUCTOR WHERE COM_USER_ID = #{UserAccount.user_id})
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND REG_DT = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+	
+	<select id="getInsLeaveListCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) 
+		FROM EDU_INSTRUCTOR_LEAVE
+		WHERE INSTRUCTOR_IDX = (SELECT INSTRUCTOR_IDX FROM EDU_INSTRUCTOR WHERE COM_USER_ID = #{UserAccount.user_id})
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND EDU_START_DATE = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  EDU_START_DATE >= #{start_date} AND EDU_START_DATE <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+	</select>
+	
 </mapper>

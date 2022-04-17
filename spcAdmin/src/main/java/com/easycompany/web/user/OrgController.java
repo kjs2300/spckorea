@@ -74,6 +74,7 @@ public class OrgController
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
 	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
 	  model.addAttribute("paginationInfo", paginationInfo);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
@@ -171,6 +172,7 @@ public class OrgController
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
 	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
 	  model.addAttribute("paginationInfo", paginationInfo);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
@@ -341,6 +343,7 @@ public class OrgController
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
 	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
 	  model.addAttribute("paginationInfo", paginationInfo);
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
