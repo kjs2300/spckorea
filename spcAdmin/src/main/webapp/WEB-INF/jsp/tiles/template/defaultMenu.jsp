@@ -45,8 +45,8 @@ model.addAttribute("path", request.getServletPath());
     <li <c:if test="${fn:contains(path, '/edu/eduStatus') || fn:contains(path, '/edu/eduTitle') || fn:contains(path, '/edu/eduReport') }">  class="on" </c:if> >
         <a href="#">기관(결과보고)</a>
         <ul class="depth02-menu">
-            <li <c:if test="${fn:contains(path, '/edu/eduStatus')}">   class="active" </c:if>><a href="<c:url value='/edu/eduStatustList.do'/>">기관(결과보고)</a></li>
-            <li <c:if test="${fn:contains(path, '/edu/eduTitle')}">    class="active" </c:if>><a href="<c:url value='/edu/eduTitleList.do'/>">  교육신청 현황</a></li>
+            <li <c:if test="${fn:contains(path, '/edu/eduStatus')}">   class="active" </c:if>><a href="<c:url value='/edu/eduStatustList.do'/>">교육신청 현황</a></li>
+            <li <c:if test="${fn:contains(path, '/edu/eduTitle')}">    class="active" </c:if>><a href="<c:url value='/edu/eduTitleList.do'/>">교육명 별 신청자  </a></li>
             <li <c:if test="${fn:contains(path, '/edu/eduReport')}">   class="active" </c:if>><a href="<c:url value='/edu/eduReportList.do'/>"> 교육결과 보고</a></li>
         </ul>
     </li>
