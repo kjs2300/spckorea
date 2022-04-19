@@ -64,6 +64,7 @@
 		SELECT a.INSTRUCTOR_IDX,
 			  (SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = b.AREA_CD) AS AREA_NM,
 			  b.USER_NM,
+			  b.USER_ID,
               b.COPER_NM
 		 FROM EDU_INSTRUCTOR a,
 			  COM_USER b
@@ -93,6 +94,7 @@
 		  	, EDU_TARGET
 		  	, EDU_NUMBER
 		  	, EDU_TEAC_NAME
+		  	, EDU_TEAC_ID
 		  	, EDU_KEY
 		  	, REG_DT
 		  	, REG_ID
@@ -106,6 +108,7 @@
 			, #{edu_target}
 			, #{edu_garden}
 			, IFNULL(#{user_nm},#{ins_input})
+			, #{user_id}
 			, #{edu_no}
 			, DATE_FORMAT(NOW(),'%x-%m-%d')
 			, #{UserAccount.user_id}
@@ -201,7 +204,8 @@
 	
 	<update id="updateInsData" parameterType="java.util.Map">	
 		UPDATE EDU_SCHEDULE
-		SET	EDU_TEAC_NAME = #{user_nm}
+		SET	EDU_TEAC_NAME = #{user_nm},
+			EDU_TEAC_ID = #{user_id}
 		WHERE SCHEDULE_NO = #{schedule_no} 		
 	</update>
 	

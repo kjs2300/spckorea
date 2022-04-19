@@ -63,7 +63,7 @@
                     <tbody>
                         <c:forEach var="result" items="${resultList}" varStatus="status">
                         <tr>
-                            <td><input type="radio" class="radio-box" id="int_check" name="int_check" value="${result.INSTRUCTOR_IDX},${result.AREA_NM},${result.USER_NM}"></td>
+                            <td><input type="radio" class="radio-box" id="int_check" name="int_check" value="${result.INSTRUCTOR_IDX},${result.AREA_NM},${result.USER_NM},${result.USER_ID}"></td>
                             <td>${result.AREA_NM}</td>
                             <td>${result.USER_NM}</td>
                             <td>${result.COPER_NM}</td>
