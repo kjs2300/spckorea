@@ -50,7 +50,7 @@
  function fn_cancel(idx){
 	 if(confirm("정말로 취소하시겠습니까?")){
 		 $.ajax({
-		        url: "<c:url value='/my/deleteInsLeave.do'/>?ins_idx="+idx,
+		        url: "<c:url value='/my/deleteInsEdu.do'/>?cour_no="+idx,
 		        type: "POST",
 		        data: {},
 		        success: function(data) {
@@ -66,10 +66,22 @@
 		    });
 	 }
  } 
-	 function fn_egov_link_page(pageNo){
+ 
+	function fn_move(str) {
+	  	var frm = document.commonForm;
+		$("#site").val(str);  
+	   	frm.action = "<c:url value='/my/my01edu.do'/>";
+	  	frm.submit();
+    }
+	
+	function openWindowPop(url, name){
+	    var options = 'top=10, left=10, width=1200px, height=800px, status=no, menubar=no, toolbar=no, resizable=no';
+	    window.open(url, name, options);
+	}	
+	function fn_egov_link_page(pageNo){
 		 var frm = document.commonForm;
 		 $("#pageIndex").val(pageNo); 
-	 	 frm.action = "<c:url value='/my/my02absence.do'/>";
+	 	 frm.action = "<c:url value='/my/my01edu.do'/>";
 	   	 frm.submit();
 	 }
 </script>
@@ -77,7 +89,7 @@
             <div id="container">
 
                     <div class="tit-wrap">
-                        <h1 class="h1-tit">휴직 신청 내역</h1>
+                        <h1 class="h1-tit">강사 보수 교육 신청내역</h1>
 
                         <div class="side-cont">
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
@@ -86,12 +98,12 @@
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                             <span>강사</span>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                            <span>휴직 신청 내역</span>
+                            <span>강사 보수 교육 신청내역</span>
                         </div>
                     </div>
 
                     <div class="contents-wrap">
-						
+
                         <!---- search-wrap begin ---->
                         <form  id="commonForm" name="commonForm"  method="post"  action="">
 		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
@@ -119,66 +131,58 @@
                                 </div>
                             </div>
 
+							<div class="search-cont">
+                                <label>교육명 :</label>
+                                <div class="radio-cont">
+                                    <input type="radio" class="radio-box" id="eduSearch" name="eduSearch" value="ALL" checked>
+                                    <label for="">전체</label>
+                                </div>
+                                  
+                                <div class="radio-cont">
+                                    <input type="radio" class="radio-box" id="eduSearch" name="eduSearch" value="TEXT">
+                                    <input type="text" class="input-box" id="edu_nm" name="edu_nm" placeholder="직접입력" />
+                                </div>
+                            </div>
+                            
                             <div class="btn-cont">
                                 <button class="lg-btn orange-btn">검색</button>
                                 <button class="lg-btn navy-btn" onClick="fn_clear();">초기화</button>
                             </div>
                         </div>
                         </form>
-                        <!---- search-wrap end ---->
-
-                        <div class="btn-cont mb20">
-                            <!-- <button class="lg-btn white-btn">선택삭제</button> -->
-                        </div>
 
                         <div class="comp mt0">
                             <div class="table-wrap">
                                 <table class="list-tb">
-                                    <caption>휴직사유, 휴직기간, 신청일자, 승인여부, 취소 정보가 있는 테이블</caption>
+                                    <caption>교육명, 교육기간, 교육방식, 신청일자, 취소 정보가 있는 테이블</caption>
                                     <colgroup>
-                                        <col width="10%"/>
-                                        <col width="16%"/>
+                                        <col width="6%"/>
                                         <col width="*"/>
-                                        <col width="16%"/>
-                                        <col width="12%"/>
+                                        <col width="20%"/>
                                         <col width="14%"/>
+                                        <col width="13%"/>
+                                        <col width="13%"/>
                                         
                                     </colgroup>
                                     <thead>
                                         <tr>
                                             <th>No.</th>
-                                            <th>휴직사유</th>
-                                            <th>휴직기간</th>
+                                            <th>교육명</th>
+                                            <th>교육기간</th>
+                                            <th>교육방식</th>
                                             <th>신청일자</th>
-                                            <th>승인여부</th>
                                             <th>취소</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<tr>
-                                            <td>3</td>
-                                            <td>출산 및 육아</td>
-                                            <td><span class="block">2021. 10.03</span><span class="block">2022. 10.03</span></td>
-                                            <td>2021.09.12</td>
-                                            <td>승인</td>
-                                            <td><button class="sm-btn white-btn">취소하기</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>출산 및 육아</td>
-                                            <td><span class="block">2021. 10.03</span><span class="block">2022. 10.03</span></td>
-                                            <td>2021.09.12</td>
-                                            <td>미승인</td>
-                                            <td><button class="sm-btn white-btn">취소하기</button></td>
-                                        </tr>
                                     <c:forEach var="result" items="${resultList}" varStatus="status">
                                     	<tr>
                                             <td>${status.index + 1}</td>
-                                            <td>${result.REASON}</td>
-                                            <td><span class="block">${result.S_DATE}</span><span class="block">${result.E_DATE}</span></td>
+                                            <td class="tl">${result.CATEGORY3_KEY}</td>
+                                            <td><span class="block">${result.TRAIN_S_DATE}</span>~<span class="block">${result.TRAIN_S_DATE}</span></td>
+                                            <td><span>${result.EDU_METHOD}</span></td>
                                             <td>${result.REG_DT}</td>
-                                            <td>${result.STATUS}</td>
-                                            <td><button class="sm-btn white-btn" onClick="fn_cancel('${result.INSTRUCTOR_LEAVE_IDX}');">취소하기</button></td>
+                                            <td><button class="sm-btn white-btn" onClick="fn_cancel('${result.COUR_NO}');">취소하기</button></td>
                                         </tr>
                                     </c:forEach>
                                     <c:if test="${empty resultList }">
@@ -192,7 +196,7 @@
                         </div>
                             
     
-                        <div class="page-wrap">
+                           <div class="page-wrap">
 						     <ul class="paging">
 						         <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />
 						     </ul>

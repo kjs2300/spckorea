@@ -39,6 +39,35 @@
  			this.checked = isChecked;
  	    });
  	 });
+	 
+	 $('#category2_key').change(function(){
+			var val  = $(this).val();
+
+			if( val ==""){
+				return;
+			}
+			
+			$("#category3_key").val("");
+					
+			 $.ajax({	
+			    url     : "<c:url value='/user/category3list.do'/>",
+			    data    : $("#commonForm").serialize(),
+		        dataType: "JSON",
+		        cache   : false,
+				async   : true,
+				type	: "POST",	
+				success: function(data, opt, inx){
+				var option = '';
+				option += '<option value="0">선택 하세요</opton>'; //선택
+				$.each(data, function(i, ret){
+					option += '<option value="'+ret.CATEGORY3_KEY+'">'+ret.CATEGORY3_NAME+'</option>';		
+				});
+				$('select[name=category3_key]').html(option);						
+		        },	       
+		        error 	: function(xhr, status, error) {}
+		        
+		     });
+		 }); 
  });
  
  function fn_clear(){

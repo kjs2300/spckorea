@@ -242,7 +242,7 @@
 		FROM COM_USER a
 		WHERE a.USER_ID = #{user_id}
 	</select>
-	
+	   
 	<update id="updateUserData" parameterType="java.util.Map">	
 		UPDATE COM_USER
 		SET	USER_NM = #{user_nm}, 	

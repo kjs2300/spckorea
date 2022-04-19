@@ -360,9 +360,7 @@
 		AND TRAIN_S_DATE <= NOW() 
         ]]>
 		AND COUR_STAT = 1
-		<if test="category1_key != '' and category1_key != null">
-			AND b.CATEGORY1_KEY = #{category1_key}
-		</if>
+		AND b.CATEGORY1_KEY = '1'
 		<if test="category2_key != '' and category2_key != null">
 			AND b.CATEGORY2_KEY = #{category2_key}
 		</if>
@@ -405,9 +403,7 @@
 		AND TRAIN_S_DATE <= NOW() 
         ]]>
 		AND COUR_STAT = 1
-		<if test="category1_key != '' and category1_key != null">
-			AND b.CATEGORY1_KEY = #{category1_key}
-		</if>
+		AND b.CATEGORY1_KEY = '1'
 		<if test="category2_key != '' and category2_key != null">
 			AND b.CATEGORY2_KEY = #{category2_key}
 		</if>
@@ -631,15 +627,176 @@
 			</when>
 			<when
 				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
-				AND EDU_START_DATE = NOW()
+				AND REG_DT = NOW()
 			</when>
 			<when
 				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
 		      <![CDATA[
-		       AND  EDU_START_DATE >= #{start_date} AND EDU_START_DATE <= #{end_date} 
+		       AND  REG_DT >= #{start_date} AND REG_DT <= #{end_date} 
 		       ]]>
 			</when>
 		</choose>
 	</select>
 	
+	<delete id="deleteInsLeave" parameterType="java.util.Map">	
+		DELETE FROM EDU_INSTRUCTOR_LEAVE
+		WHERE INSTRUCTOR_LEAVE_IDX = #{ins_idx}
+	</delete>
+	
+	<select id="getInsEduList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT  a.COUR_NO, b.CATEGORY3_KEY,
+				b.TRAIN_S_DATE, b.TRAIN_E_DATE,
+                b.EDU_METHOD, a.REG_DT
+        FROM EDU_COURSE_REGISTRATION a,
+			 EDU_REGISTRATION b
+		WHERE a.EDU_NO = b.EDU_NO
+        AND b.CATEGORY1_KEY = '3' 
+        AND b.CATEGORY2_KEY = '7'
+        AND a.USER_ID = #{UserAccount.user_id}
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND a.REG_DT = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  a.REG_DT >= #{start_date} AND a.REG_DT <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<if test="edu_nm != '' and edu_nm != null and eduSearch =='TEXT'">
+			AND b.CATEGORY3_NAME LIKE CONCAT('%',#{edu_nm},'%') 
+		</if>
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+	
+	<select id="getInsEduListCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) 
+		FROM EDU_COURSE_REGISTRATION a,
+			 EDU_REGISTRATION b
+		WHERE a.EDU_NO = b.EDU_NO
+        AND b.CATEGORY1_KEY = '3' 
+        AND b.CATEGORY2_KEY = '7'
+        AND a.USER_ID = #{UserAccount.user_id}
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND a.REG_DT = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  a.REG_DT >= #{start_date} AND a.REG_DT <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<if test="edu_nm != '' and edu_nm != null and eduSearch =='TEXT'">
+			AND b.CATEGORY3_NAME LIKE CONCAT('%',#{edu_nm},'%') 
+		</if>
+	</select>
+	
+	<delete id="deleteInsEdu" parameterType="java.util.Map">	
+		DELETE FROM EDU_COURSE_REGISTRATION
+		WHERE COUR_NO = #{cour_no}
+	</delete>
+	
+	<select id="getInsWarrantList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT  (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY) AS CATEGORY1_NAME
+				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
+		        ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
+		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT, b.INST_NM
+		        ,a.USER_NM, a.COUR_NO, a.EDU_NO
+		        ,DATE_FORMAT(a.LICENSE_PBL_DATE,'%Y-%m-%d') AS LICENSE_PBL_DATE
+		        ,CASE a.LICENSE_PBL
+			 		WHEN 1 THEN '발급'
+			 		ELSE '미발급'
+				 END AS LICENSE_PBL         
+		FROM EDU_COURSE_REGISTRATION a, 
+			 EDU_REGISTRATION b
+		WHERE a.EDU_NO = b.EDU_NO
+		AND a.USER_ID = #{UserAccount.user_id}
+		<![CDATA[
+		AND TRAIN_S_DATE <= NOW() 
+        ]]>
+		AND COUR_STAT = 1
+		AND b.CATEGORY1_KEY = '3'
+		<if test="category2_key != '' and category2_key != null">
+			AND b.CATEGORY2_KEY = #{category2_key}
+		</if>
+		<if test="category3_key != '' and category3_key != null">
+			AND b.CATEGORY3_KEY = #{category3_key}
+		</if>
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND a.REG_DT = NOW()
+			</when>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  a.REG_DT >= #{start_date} AND a.REG_DT <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<choose>
+			<when test="license_pbl !=null and license_pbl !='' and license_pbl =='ALL' ">
+			</when>
+			<when test="license_pbl !=null and license_pbl !='' and license_pbl =='1' ">
+				AND LICENSE_PBL = '1'
+			</when>
+			<when test="license_pbl !=null and license_pbl !='' and license_pbl =='2' ">
+		      	AND LICENSE_PBL = '2'
+			</when>
+		</choose>
+		ORDER BY COUR_NO DESC
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+	
+	<select id="getInsWarrantListCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) 
+		FROM EDU_COURSE_REGISTRATION a, 
+			 EDU_REGISTRATION b
+		WHERE a.EDU_NO = b.EDU_NO
+		AND a.USER_ID = #{UserAccount.user_id}
+		<![CDATA[
+		AND TRAIN_S_DATE <= NOW() 
+        ]]>
+		AND COUR_STAT = 1
+		AND b.CATEGORY1_KEY = '3'
+		<if test="category2_key != '' and category2_key != null">
+			AND b.CATEGORY2_KEY = #{category2_key}
+		</if>
+		<if test="category3_key != '' and category3_key != null">
+			AND b.CATEGORY3_KEY = #{category3_key}
+		</if>
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND a.REG_DT = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  a.REG_DT >= #{start_date} AND a.REG_DT <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<choose>
+			<when test="license_pbl !=null and license_pbl !='' and license_pbl =='ALL' ">
+			</when>
+			<when test="license_pbl !=null and license_pbl !='' and license_pbl =='1' ">
+				AND LICENSE_PBL = '1'
+			</when>
+			<when test="license_pbl !=null and license_pbl !='' and license_pbl =='2' ">
+		      	AND LICENSE_PBL = '2'
+			</when>
+		</choose>
+	</select>
 </mapper>
