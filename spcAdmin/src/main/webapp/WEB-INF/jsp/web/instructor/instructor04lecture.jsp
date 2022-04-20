@@ -191,11 +191,11 @@
                             <ul class="summary-cont">
                                 <li>
                                     <label>당해년도 강의횟수 :</label>
-                                    <span>5</span>
+                                    <span>${allCount.CNT}</span>
                                 </li>
                                 <li>
                                     <label>총 누적 강의 횟수 :</label>
-                                    <span>23</span>
+                                    <span>${allCount.CNT}</span>
                                 </li>
                             </ul>
                         </div>
@@ -256,23 +256,10 @@
 
                         <!---- page begin ---->
                         <div class="page-wrap">
-                            <ul class="paging">
-                                <li><a>&lt;&lt;</a></li>
-                                <li><a>&lt;</a></li>
-                                <li class="on"><a>1</a></li>
-                                <li><a>2</a></li>
-                                <li><a>3</a></li>
-                                <li><a>4</a></li>
-                                <li><a>5</a></li>
-                                <li><a>6</a></li>
-                                <li><a>7</a></li>
-                                <li><a>8</a></li>
-                                <li><a>9</a></li>
-                                <li><a>10</a></li>
-                                <li><a>&gt;</a></li>
-                                <li><a>&gt;&gt;</a></li>
-                            </ul>
-                        </div>
+						     <ul class="paging">
+						         <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />
+						     </ul>
+						</div>
                         <!---- page end ---->
 
                     </div>

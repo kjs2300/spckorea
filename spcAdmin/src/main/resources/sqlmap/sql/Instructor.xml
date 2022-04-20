@@ -169,7 +169,141 @@
 		VALUES(#{sch_no},#{edu_no},#{app_user},DATE_FORMAT(NOW(),'%x-%m-%d'),#{UserAccount.user_id})
 	</insert>
 	
+	<select id="getInsLectureList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT a.SCHEDULE_NO, 
+			   a.EDU_NAME,
+			   a.EDU_START_DATE AS EDU_DATE,
+               CONCAT(SUBSTR(TIME(b.START_TIME),1,2),':',SUBSTR(TIME(b.START_TIME),4,2),'~',SUBSTR(TIME(b.END_TIME),1,2),':',SUBSTR(TIME(b.END_TIME),4,2)) AS EDU_DATETIME,
+               (SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = b.COPER_AREA_CD) AS AREA_NM,
+               a.EDU_ORG_NAME, b.EDU_PLACE, a.EDU_NUMBER,
+               a.EDU_TARGET, a.EDU_TEAC_NAME,
+               CASE WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NULL THEN '섭외중'
+					WHEN b.INS_TYPE = 'recruit' AND INS_STATUS IS NOT NULL THEN '완료'
+					WHEN b.INS_TYPE = 'select' AND INS_STATUS IS NULL THEN '완료'
+				END
+               AS INS_STATUS,
+               b.SCH_STATUS,
+               a.EDU_KEY,
+               (SELECT 'Y' FROM EDU_SCHEDULE_APP WHERE INS_USER = #{UserAccount.user_id}) AS INS_APP_CHECK
+		FROM EDU_SCHEDULE a,
+			 EDU_SCHEDULE_DETAIL b
+		WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
+        AND a.EDU_TEAC_ID = #{UserAccount.user_id}
+		<if test=" category1_key !=null and category1_key !=0">
+			AND a.CATEGORY1_KEY = #{category1_key} 
+		</if>
+		<if test=" category2_key !=null and category2_key !=0 ">
+			AND a.CATEGORY2_KEY = #{category2_key} 
+		</if>
+		<if test=" category3_key !=null and category3_key !=0">
+			AND a.CATEGORY3_KEY = #{category3_key} 
+		</if>
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND a.EDU_START_DATE = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  a.EDU_START_DATE >= #{start_date} AND a.EDU_START_DATE <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<if test="edu_name !=null and edu_name != ''">
+	      	AND a.EDU_NAME LIKE CONCAT('%', #{edu_name}, '%')
+	    </if>
+	    <if test="edu_name !=null and area_nm != ''">
+	      	AND b.COPER_AREA_CD = #{area_nm}
+	    </if>
+	    <if test="orgSearch !=null and orgSearch == 'TEXT'">
+	      	AND a.EDU_ORG_NAME LIKE CONCAT('%', #{edu_org_name}, '%')
+	    </if>
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
 	
+	<select id="getInsLectureListCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) 
+		 FROM EDU_SCHEDULE a,
+			 EDU_SCHEDULE_DETAIL b
+		WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
+        AND a.EDU_TEAC_ID = #{UserAccount.user_id}
+		<if test=" category1_key !=null and category1_key !=0">
+			AND a.CATEGORY1_KEY = #{category1_key} 
+		</if>
+		<if test=" category2_key !=null and category2_key !=0 ">
+			AND a.CATEGORY2_KEY = #{category2_key} 
+		</if>
+		<if test=" category3_key !=null and category3_key !=0">
+			AND a.CATEGORY3_KEY = #{category3_key} 
+		</if>
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND a.EDU_START_DATE = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  a.EDU_START_DATE >= #{start_date} AND a.EDU_START_DATE <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<if test="edu_name !=null and edu_name != ''">
+	      	AND a.EDU_NAME LIKE CONCAT('%', #{edu_name}, '%')
+	    </if>
+	    <if test="edu_name !=null and area_nm != ''">
+	      	AND b.COPER_AREA_CD = #{area_nm}
+	    </if>
+	    <if test="orgSearch !=null and orgSearch == 'TEXT'">
+	      	AND a.EDU_ORG_NAME LIKE CONCAT('%', #{edu_org_name}, '%')
+	    </if>
+	</select>
+	
+	<select id="getInsLectureAllCnt" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT COUNT(a.SCHEDULE_NO) AS ALL_CNT,
+			   COUNT(CASE WHEN DATE_FORMAT(a.EDU_START_DATE,'%x') = DATE_FORMAT(NOW(),'%x') THEN 1 END) AS CNT
+		FROM EDU_SCHEDULE a,
+			 EDU_SCHEDULE_DETAIL b
+		WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
+        AND a.EDU_TEAC_ID = #{UserAccount.user_id}
+        <if test=" category1_key !=null and category1_key !=0">
+			AND a.CATEGORY1_KEY = #{category1_key} 
+		</if>
+		<if test=" category2_key !=null and category2_key !=0 ">
+			AND a.CATEGORY2_KEY = #{category2_key} 
+		</if>
+		<if test=" category3_key !=null and category3_key !=0">
+			AND a.CATEGORY3_KEY = #{category3_key} 
+		</if>
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND a.EDU_START_DATE = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  a.EDU_START_DATE >= #{start_date} AND a.EDU_START_DATE <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<if test="edu_name !=null and edu_name != ''">
+	      	AND a.EDU_NAME LIKE CONCAT('%', #{edu_name}, '%')
+	    </if>
+	    <if test="edu_name !=null and area_nm != ''">
+	      	AND b.COPER_AREA_CD = #{area_nm}
+	    </if>
+	    <if test="orgSearch !=null and orgSearch == 'TEXT'">
+	      	AND a.EDU_ORG_NAME LIKE CONCAT('%', #{edu_org_name}, '%')
+	    </if>
+	</select>
 	
 	
 	<!-- 관리자 -->

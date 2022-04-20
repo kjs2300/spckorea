@@ -241,11 +241,15 @@ public class InstructorController
 	  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
 	  model.addAttribute("category1list", category1list);
 	  
-	  paramMap.put("sqlName", "getInsActList");
+	  paramMap.put("sqlName", "getInsLectureAllCnt");
+	  Map<String, Object> allCount = instructorService.getSelectData(paramMap);
+	  model.addAttribute("allCount", allCount);
+	  
+	  paramMap.put("sqlName", "getInsLectureList");
 	  List<Map<String, Object>> list = instructorService.getSelectList(paramMap);
 	  model.addAttribute("resultList", list);
 	  
-	  paramMap.put("sqlName", "getInsActListCnt");
+	  paramMap.put("sqlName", "getInsLectureListCnt");
 	  int totCnt = instructorService.getSelectListCnt(paramMap);
 	  model.addAttribute("totCnt", totCnt);
 	  paginationInfo.setTotalRecordCount(totCnt);
@@ -260,10 +264,15 @@ public class InstructorController
   
   @RequestMapping({"/instructor04absence.do"})
   public String instructor04absence(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
+paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  
+	  /*paramMap.put("sqlName", "getInsUserData");	
+	  Map<String, Object> result = instructorService.getSelectData(paramMap);
+	  model.addAttribute("result", result);*/
+	  	  	
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
-	  
-	  
 	  
 	  return "instructor04absence";
   }
