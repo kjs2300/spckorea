@@ -151,9 +151,9 @@
                                             <th>휴직기간</th>
                                             <td>
                                                 <div class="picker-wrap">
-                                                    <input type="text" id="s_date" class="input-box"/>
+                                                    <input type="text" id="s_date" name="s_date" class="input-box"/>
                                                     <span class="next-ico">-</span>
-                                                    <input type="text" id="e_date" class="input-box"/>
+                                                    <input type="text" id="e_date" name="e_date" class="input-box"/>
                                                 </div>
                                             </td>
                                         </tr>

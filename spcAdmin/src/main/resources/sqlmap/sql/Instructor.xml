@@ -305,57 +305,16 @@
 	    </if>
 	</select>
 	
-	<select id="getInsLectureAllCnt" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT COUNT(a.SCHEDULE_NO) AS ALL_CNT,
-			   COUNT(CASE WHEN DATE_FORMAT(a.EDU_START_DATE,'%x') = DATE_FORMAT(NOW(),'%x') THEN 1 END) AS CNT
-		FROM EDU_SCHEDULE a,
-			 EDU_SCHEDULE_DETAIL b
-		WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
-        AND a.EDU_TEAC_ID = #{UserAccount.user_id}
-        <if test=" category1_key !=null and category1_key !=0">
-			AND a.CATEGORY1_KEY = #{category1_key} 
-		</if>
-		<if test=" category2_key !=null and category2_key !=0 ">
-			AND a.CATEGORY2_KEY = #{category2_key} 
-		</if>
-		<if test=" category3_key !=null and category3_key !=0">
-			AND a.CATEGORY3_KEY = #{category3_key} 
-		</if>
-		<choose>
-			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
-			</when>
-			<when
-				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
-				AND a.EDU_START_DATE = NOW()
-			</when>
-			<when
-				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
-		      <![CDATA[
-		       AND  a.EDU_START_DATE >= #{start_date} AND a.EDU_START_DATE <= #{end_date} 
-		       ]]>
-			</when>
-		</choose>
-		<if test="edu_name !=null and edu_name != ''">
-	      	AND a.EDU_NAME LIKE CONCAT('%', #{edu_name}, '%')
-	    </if>
-	    <if test="edu_name !=null and area_nm != ''">
-	      	AND b.COPER_AREA_CD = #{area_nm}
-	    </if>
-	    <if test="orgSearch !=null and orgSearch == 'TEXT'">
-	      	AND a.EDU_ORG_NAME LIKE CONCAT('%', #{edu_org_name}, '%')
-	    </if>
-	</select>
-	
 	<insert id="instructor04Save" parameterType="java.util.Map">	
 		INSERT INTO EDU_INSTRUCTOR_LEAVE 
 		(INSTRUCTOR_IDX, REASON, S_DATE, E_DATE, REG_DT, REG_ID)
 		SELECT  a.INSTRUCTOR_IDX, 
-					'1' AS REASON,
-		            '2022-04-20' AS S_DATE,
-		            '2022-09-20' AS E_DATE,
+					#{reason} AS REASON,
+		            DATE_FORMAT(#{s_date},'%x-%m-%d') AS S_DATE,
+		            DATE_FORMAT(#{e_date},'%x-%m-%d') AS E_DATE,
 		            DATE_FORMAT(NOW(),'%x-%m-%d') AS REG_DT,
-		            'lms-test01' AS REG_ID
-			FROM EDU_INSTRUCTOR a WHERE a.COM_USER_ID = 'lms-test01'
+		            #{UserAccount.user_id} AS REG_ID
+			FROM EDU_INSTRUCTOR a WHERE a.COM_USER_ID = #{UserAccount.user_id}
 	</insert>
 	
 	
@@ -429,7 +388,7 @@
 		FROM COM_USER a
 		WHERE a.USER_ID = #{user_id}
 	</select>
-	   
+	
 	<update id="updateUserData" parameterType="java.util.Map">	
 		UPDATE COM_USER
 		SET	USER_NM = #{user_nm}, 	
@@ -471,5 +430,51 @@
 		      CLASS = #{class}    
 	</insert>
 	
+	<select id="getMyEduInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT b.COPER_NM,
+				(SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = b.AREA_CD) AS AREA_NM,
+				b.MBL_TELNO,
+				c.LICENSE_NUMBER,
+				b.REG_DT,
+				CASE WHEN a.STATUS = '1' THEN '활동강사'
+					 WHEN a.STATUS = '2' THEN '상실강사'
+					 WHEN a.STATUS = '3' THEN '휴직강사'
+				END AS STATUS
+		FROM EDU_INSTRUCTOR a,
+			 COM_USER b,
+		     EDU_USER_LICENSE c
+		WHERE a.COM_USER_ID = b.USER_ID
+		AND a.COM_USER_ID = c.USER_ID
+		AND c.CATEGORY1_KEY = '1'
+		AND c.CATEGORY2_KEY = '2'
+		AND a.COM_USER_ID = #{UserAccount.user_id}
+	</select>
 	
+	<select id="getMyEduAuthList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT  a.CATEGORY3_NAME,
+				b.EDU_CD,
+		        b.AUTH_SDATE,
+		        b.AUTH_EDATE
+		FROM (SELECT * 
+			FROM EDU_CLASS_CATEGORY3
+		    WHERE CATEGORY1_KEY = '7' 
+			AND CD_NO IS NOT NULL) a
+		    LEFT JOIN COM_USER_EDUINFO b
+		ON a.CD_NO = b.EDU_CD
+		AND a.CATEGORY1_KEY = '7' 
+		AND a.CD_NO IS NOT NULL 
+		AND b.USER_ID = #{UserAccount.user_id}
+		ORDER BY CAST(a.CD_NO AS unsigned)
+	</select>
+	
+	<select id="getlectureCount" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT SUM(CNT),SUM(CNT2), SUM(ALLCNT) FROM ( 
+        select (CASE WHEN DATE_FORMAT(EDU_START_DATE,'%d') = DATE_FORMAT('2022-04-20','%d') THEN 1  ELSE 0 END) AS CNT,
+				(CASE WHEN DATE_FORMAT(EDU_START_DATE,'%x') = DATE_FORMAT(NOW(),'%x') THEN 1  ELSE 0 END) AS CNT2,
+                1 AS ALLCNT
+		from EDU_SCHEDULE 
+        WHERE 1=1)
+        AND EDU_TEAC_ID = 'lms-test01'
+        <!-- 카운트확인 -->
+    </select>
 </mapper>

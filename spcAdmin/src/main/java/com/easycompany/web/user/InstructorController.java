@@ -264,7 +264,7 @@ public class InstructorController
   
   @RequestMapping({"/instructor04absence.do"})
   public String instructor04absence(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
-paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 	  
 	  /*paramMap.put("sqlName", "getInsUserData");	
 	  Map<String, Object> result = instructorService.getSelectData(paramMap);
