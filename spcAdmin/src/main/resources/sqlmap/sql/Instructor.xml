@@ -305,6 +305,59 @@
 	    </if>
 	</select>
 	
+	<select id="getInsLectureAllCnt" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT COUNT(a.SCHEDULE_NO) AS ALL_CNT,
+			   COUNT(CASE WHEN DATE_FORMAT(a.EDU_START_DATE,'%x') = DATE_FORMAT(NOW(),'%x') THEN 1 END) AS CNT
+		FROM EDU_SCHEDULE a,
+			 EDU_SCHEDULE_DETAIL b
+		WHERE a.SCHEDULE_NO = b.SCHEDULE_NO
+        AND a.EDU_TEAC_ID = #{UserAccount.user_id}
+        <if test=" category1_key !=null and category1_key !=0">
+			AND a.CATEGORY1_KEY = #{category1_key} 
+		</if>
+		<if test=" category2_key !=null and category2_key !=0 ">
+			AND a.CATEGORY2_KEY = #{category2_key} 
+		</if>
+		<if test=" category3_key !=null and category3_key !=0">
+			AND a.CATEGORY3_KEY = #{category3_key} 
+		</if>
+		<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				AND a.EDU_START_DATE = NOW()
+			</when>
+			<when
+				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[
+		       AND  a.EDU_START_DATE >= #{start_date} AND a.EDU_START_DATE <= #{end_date} 
+		       ]]>
+			</when>
+		</choose>
+		<if test="edu_name !=null and edu_name != ''">
+	      	AND a.EDU_NAME LIKE CONCAT('%', #{edu_name}, '%')
+	    </if>
+	    <if test="edu_name !=null and area_nm != ''">
+	      	AND b.COPER_AREA_CD = #{area_nm}
+	    </if>
+	    <if test="orgSearch !=null and orgSearch == 'TEXT'">
+	      	AND a.EDU_ORG_NAME LIKE CONCAT('%', #{edu_org_name}, '%')
+	    </if>
+	</select>
+	
+	<insert id="instructor04Save" parameterType="java.util.Map">	
+		INSERT INTO EDU_INSTRUCTOR_LEAVE 
+		(INSTRUCTOR_IDX, REASON, S_DATE, E_DATE, REG_DT, REG_ID)
+		SELECT  a.INSTRUCTOR_IDX, 
+					'1' AS REASON,
+		            '2022-04-20' AS S_DATE,
+		            '2022-09-20' AS E_DATE,
+		            DATE_FORMAT(NOW(),'%x-%m-%d') AS REG_DT,
+		            'lms-test01' AS REG_ID
+			FROM EDU_INSTRUCTOR a WHERE a.COM_USER_ID = 'lms-test01'
+	</insert>
+	
 	
 	<!-- 관리자 -->
 	
@@ -417,5 +470,6 @@
 		      STATUS = #{status},
 		      CLASS = #{class}    
 	</insert>
+	
 	
 </mapper>

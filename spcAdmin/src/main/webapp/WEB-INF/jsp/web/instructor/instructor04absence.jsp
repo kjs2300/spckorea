@@ -14,11 +14,68 @@
 
  <script type="text/javaScript" language="javascript" defer="defer">
  $(document).ready(function(){		
-
+	 $("#s_date, #e_date").datepicker({
+		  	dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	       ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+		  ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+		  ,changeYear: true //option값 년 선택 가능
+		  ,changeMonth: true //option값  월 선택 가능                
+		  ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+		  ,buttonImage: "<c:url value='/images/common/ico_calendar.png'/>" //버튼 이미지 경로
+		  ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+		  ,buttonText: "선택" //버튼 호버 텍스트              
+		  ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+		  ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+		  ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+		  ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+		  ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+		  ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+		  ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+	});
  });
- function fn_detail(edu_no){
-	document.location = "<c:url value='/user/sectorView.do'/>"+"?edu_no="+edu_no+"&idx="+$('#idx').val();
- }	
+ 
+ function fn_save(){
+	 var formData = new FormData($('#commonForm')[0]);
+		if(confirm("휴직 신청을 하시겠습니까?")){
+				
+			$.ajax({	
+				data       : formData,
+			    url		   : "<c:url value='/user/instructor04Save.do'/>",
+			    dataType   : "JSON",
+		        processData: false, 
+		        contentType: false,
+				type	   : "POST",	
+		        success    : function(obj) {
+		        	commonCallBack(obj);				
+		        },	       
+		        error 	: function(xhr, status, error) {} 		        
+		    });
+		}
+}	
+ 
+ function commonCallBack(obj){
+		if(obj != null){		
+			
+			var result = obj.result;
+			
+			if(result == "SUCCESS"){				
+				alert("성공하였습니다.");				
+				fn_load('R');				 
+			} else if(result == "EXIST"){				
+				alert("이미 등록 되었습니다.");	
+				return false;
+			}else {				
+				alert("등록이 실패 했습니다.");	
+				return false;
+			}
+		}
+	}
+
+	function fn_load(str) {
+		var frm = document.commonForm;
+		frm.action = "<c:url value='/user/instructor04absence.do'/>";    
+		frm.submit();
+	 }
 </script>
      <!-- container  begin -->
                 <div id="container">
@@ -37,7 +94,9 @@
                     </div>
 
                     <div class="contents-wrap">
-                        
+                        <form  id="commonForm" name="commonForm"  method="post"  action="">
+		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
+		    			<input type="hidden" id="user_id"  name="user_id" value="${UserAccount.user_id}" />
                         <div class="comp">
                             <div class="table-wrap">
                                 <table class="detail-tb">
@@ -49,41 +108,41 @@
                                     <tbody>
                                         <tr>
                                             <th>강사명</th>
-                                            <td>이지인</td>
+                                            <td>${UserAccount.user_nm}</td>
                                         </tr>
                                         <tr>
                                             <th>소속기관</th>
-                                            <td>한국생명존중희망재단</td>
+                                            <td>${UserAccount.coper_nm}</td>
                                         </tr>
                                         <tr>
                                             <th>주소</th>
-                                            <td>서울 중구 을지로 6 (을지로1가) 재능빌딩 11층</td>
+                                            <td>${UserAccount.juso} ${UserAccount.juso_detail}</td>
                                         </tr>
                                         <tr>
                                             <th>연락처</th>
-                                            <td>02-2203-0053</td>
+                                            <td>${UserAccount.mbl_telno}</td>
                                         </tr>
                                         <tr>
                                             <th>수료증번호</th>
-                                            <td>교육 제21-0068호</td>
+                                            <td>${UserAccount.instructor_license}</td>
                                         </tr>
                                         <tr>
                                             <th>휴직사유</th>
                                             <td>
                                                 <div class="radio-cont">
-                                                    <input type="radio" class="radio-box" id="" name="" value="">
+                                                    <input type="radio" class="radio-box" id="reason" name="reason" value="1">
                                                     <label for="">출산 및 육아</label>
                                                 </div>
                                                 <div class="radio-cont">
-                                                    <input type="radio" class="radio-box" id="" name="" value="">
+                                                    <input type="radio" class="radio-box" id="reason" name="reason" value="2">
                                                     <label for="">병가</label>
                                                 </div>
                                                 <div class="radio-cont">
-                                                    <input type="radio" class="radio-box" id="" name="" value="">
+                                                    <input type="radio" class="radio-box" id="reason" name="reason" value="3">
                                                     <label for="">해외연수</label>
                                                 </div>
                                                 <div class="radio-cont">
-                                                    <input type="radio" class="radio-box" id="" name="" value="">
+                                                    <input type="radio" class="radio-box" id="reason" name="reason" value="0">
                                                     <label for="">기타</label>
                                                 </div>
                                             </td>
@@ -92,9 +151,9 @@
                                             <th>휴직기간</th>
                                             <td>
                                                 <div class="picker-wrap">
-                                                    <input type="text" id="datepickerFrom" class="input-box"/>
+                                                    <input type="text" id="s_date" class="input-box"/>
                                                     <span class="next-ico">-</span>
-                                                    <input type="text" id="datepickerTo" class="input-box"/>
+                                                    <input type="text" id="e_date" class="input-box"/>
                                                 </div>
                                             </td>
                                         </tr>
@@ -119,10 +178,11 @@
                                 </table>
                             </div>
                         </div>
+                        </form>
 
                         <!---- button begin ---->
                         <div class="btn-cont">
-                            <button class="lg-btn orange-btn">신청하기</button>
+                            <button class="lg-btn orange-btn" onClick="fn_save();">신청하기</button>
                         </div>
                         <!---- button end ---->
                        

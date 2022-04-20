@@ -277,6 +277,29 @@ paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 	  return "instructor04absence";
   }
   
+  @RequestMapping({"/instructor04Save.do"})
+  @ResponseBody
+  public Map<String, Object> instructor04Save(HttpServletRequest request, @RequestParam Map<String, Object> paramMap) throws Exception {
+	    int resultCnt = 0;
+	    Map<String, Object> result = new HashMap<String, Object>();
+	    try {
+	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+
+	      paramMap.put("sqlName", "instructor04Save");	
+	      resultCnt = instructorService.insertData(paramMap); 
+	      
+	      if(resultCnt > 0) {
+	    	  result.put("result", "SUCCESS");
+	      }else {
+	    	  result.put("result", "FAIL");	 
+	      }
+	    } catch (Exception e) {
+	      result.put("result", "FAIL");
+	    }
+	
+	    return result;
+  }
+  
   @RequestMapping({"/instructor05List.do"})
   public String instructor05List(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
 	  model.addAttribute("path", request.getServletPath());
