@@ -14,11 +14,58 @@
 
  <script type="text/javaScript" language="javascript" defer="defer">
  $(document).ready(function(){		
-
+	 $("#s_date, #e_date").datepicker({
+		  	dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	       ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+		  ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+		  ,changeYear: true //option값 년 선택 가능
+		  ,changeMonth: true //option값  월 선택 가능                
+		  ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+		  ,buttonImage: "<c:url value='/images/common/ico_calendar.png'/>" //버튼 이미지 경로
+		  ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+		  ,buttonText: "선택" //버튼 호버 텍스트              
+		  ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+		  ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+		  ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+		  ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+		  ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+		  ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+		  ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+	});
  });
- function fn_detail(edu_no){
-	document.location = "<c:url value='/user/sectorView.do'/>"+"?edu_no="+edu_no+"&idx="+$('#idx').val();
- }	
+ 
+ function fn_clear(){
+	 $("#searchDate").eq(0).prop("checked",true);
+	 $("#searchCondition").eq(0).prop("checked",true);
+	 $("[type='text']").val("");
+ }
+ 
+ function fn_cancel(idx){
+	 if(confirm("정말로 취소하시겠습니까?")){
+		 $.ajax({
+		        url: "<c:url value='/my/deleteInsEdu.do'/>?cour_no="+idx,
+		        type: "POST",
+		        data: {},
+		        success: function(data) {
+		        	if(data == 'SUCCESS'){
+		        		alert("취소 하였습니다.");
+		        		location.reload();
+		        	}
+		        },
+		        error: function(data) {
+		        	console.log(JSON.stringify(data));
+		        	alert("처리중 오류가 발생했습니다.");
+		        }
+		    });
+	 }
+ } 
+ 
+ function fn_egov_link_page(pageNo){
+	 var frm = document.commonForm;
+	 $("#pageIndex").val(pageNo); 
+ 	 frm.action = "<c:url value='/user/instructor05List.do'/>";
+   	 frm.submit();
+ }
 </script>
      <!-- container  begin -->
                 <div id="container">
@@ -46,33 +93,37 @@
                         <!---- tab-cont end ---->
 
                         <!---- search-wrap begin ---->
+                        <form  id="commonForm" name="commonForm"  method="post"  action="">
+		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
                         <div class="search-wrap">
                             <div class="search-cont">
                                 <label>기간 :</label>
                                 <div class="picker-wrap">
-                                    <input type="text" id="datepickerFrom" class="input-box"/>
+                                    <input type="text" id="start_date" name="start_date" class="input-box" readonly value="${start_date}"/>
                                     <span class="next-ico">-</span>
-                                    <input type="text" id="datepickerTo" class="input-box"/>
-                                </div> 
+                                    <input type="text" id="end_date" name="end_date" class="input-box" readonly value="${end_date}"/>
+                                </div>
                             </div>
 
                             <div class="search-cont">
                                 <label>교육명 :</label>
                                 <div class="radio-cont">
-                                    <input type="radio" class="radio-box" id="" name="" value="" checked>
+                                    <input type="radio" class="radio-box" id="eduSearch" name="eduSearch" value="ALL" checked>
                                     <label for="">전체</label>
                                 </div>
+                                  
                                 <div class="radio-cont">
-                                    <input type="radio" class="radio-box" id="" name="" value="">
-                                    <input type="text" class="input-box" placeholder="직접입력"/>
+                                    <input type="radio" class="radio-box" id="eduSearch" name="eduSearch" value="TEXT">
+                                    <input type="text" class="input-box" id="edu_nm" name="edu_nm" placeholder="직접입력" />
                                 </div>
                             </div>
 
                             <div class="btn-cont">
                                 <button class="lg-btn orange-btn">검색</button>
-                                <button class="lg-btn navy-btn">초기화</button>
+                                <button class="lg-btn navy-btn" onClick="fn_clear();">초기화</button>
                             </div>
                         </div>
+                        </form>
                         <!---- search-wrap end ---->
 
                         
@@ -99,117 +150,38 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <c:forEach var="result" items="${resultList}" varStatus="status">
                                         <tr>
-                                            <td>3</td>
-                                            <td class="tl">보고듣고말하기2.0 기본형(120분)</td>
-                                            <td><span>2019-07-15</span>~<span>2020-12-31</span></td>
+                                            <td>${status.index + 1}</td>
+                                            <td class="tl">${result.EDU_NAME}</td>
+                                            <td><span>${result.TRAIN_S_DATE}</span>~<span>${result.TRAIN_E_DATE}</span></td>
                                             <td>
-                                                <span class="block">온라인 교육</span>
-                                                <span class="block">교육자료 배포</span>
+                                                <span class="block">${result.EDU_METHOD}</span>
                                             </td>
-                                            <td>교육중</td>
-                                            <td><button class="sm-btn navy-btn">신청하기</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td class="tl">보고듣고말하기2.0 기본형(120분)</td>
-                                            <td><span>2019-07-15</span>~<span>2020-12-31</span></td>
+                                            <td>${result.EDU_STATUS}</td>
                                             <td>
-                                                <span class="block">온라인 교육</span>
-                                                <span class="block">교육자료 배포</span>
+                                            <c:if test="${result.APP_CHK == 'Y'}">신청완료</c:if>
+                                            <c:if test="${result.APP_CHK != 'Y'}">
+                                            	<button class="sm-btn navy-btn">신청하기</button>
+                                            </c:if>
                                             </td>
-                                            <td>교육종료</td>
-                                            <td>신청완료</td>
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="tl"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                    </c:forEach>
+                                    <c:if test="${empty resultList }">
+							             <tr>
+							                 <td colspan='6'/>Data 없습니다.</td>
+							             </tr>
+							        </c:if>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
 
-                       <!---- page begin ---->
                        <div class="page-wrap">
-                        <ul class="paging">
-                            <li><a>&lt;&lt;</a></li>
-                            <li><a>&lt;</a></li>
-                            <li class="on"><a>1</a></li>
-                            <li><a>2</a></li>
-                            <li><a>3</a></li>
-                            <li><a>4</a></li>
-                            <li><a>5</a></li>
-                            <li><a>6</a></li>
-                            <li><a>7</a></li>
-                            <li><a>8</a></li>
-                            <li><a>9</a></li>
-                            <li><a>10</a></li>
-                            <li><a>&gt;</a></li>
-                            <li><a>&gt;&gt;</a></li>
-                        </ul>
-                    </div>
-                    <!---- page end ---->
+						     <ul class="paging">
+						         <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />
+						     </ul>
+						</div>
 
                     </div>
                 </div>

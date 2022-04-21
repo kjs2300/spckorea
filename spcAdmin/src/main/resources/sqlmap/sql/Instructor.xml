@@ -317,6 +317,66 @@
 			FROM EDU_INSTRUCTOR a WHERE a.COM_USER_ID = #{UserAccount.user_id}
 	</insert>
 	
+	<select id="getInsEduAppList" parameterType="java.util.Map" resultType="java.util.Map">
+		<![CDATA[
+		SELECT (select CATEGORY3_NAME From EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = a.CATEGORY3_KEY) AS EDU_NAME,
+				a.TRAIN_S_DATE, a.TRAIN_E_DATE,
+                a.EDU_METHOD, a.EDU_NO,
+                (CASE WHEN a.TRAIN_S_DATE <= NOW() AND a.TRAIN_E_DATE >= NOW() THEN '교육중' 
+					  WHEN a.TRAIN_E_DATE < NOW() THEN '교육종료'
+				 END) AS EDU_STATUS,
+				 ]]>
+                (CASE WHEN b.COUR_NO != '' THEN 'Y' END) AS APP_CHK
+        FROM (SELECT *
+				FROM EDU_REGISTRATION
+		        WHERE 1=1
+		        AND CATEGORY1_KEY = '3' 
+				AND CATEGORY2_KEY = '7')a 
+		LEFT JOIN EDU_COURSE_REGISTRATION b
+		ON a.EDU_NO = b.EDU_NO
+        AND b.USER_ID = #{UserAccount.user_id} 
+		<if test="start_date !=null and start_date !=''">
+		    <![CDATA[
+		     AND a.TRAIN_S_DATE <= #{start_date}
+		    ]]>
+		</if>
+		<if test="end_date !=null and end_date !=''">
+			<![CDATA[
+		     AND a.TRAIN_E_DATE >= #{end_date}
+		    ]]> 
+		</if>	
+		<if test="edu_nm != '' and edu_nm != null and eduSearch =='TEXT'">
+			AND a.CATEGORY3_KEY IN (SELECT CATEGORY3_KEY FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_NAME LIKE CONCAT('%',#{edu_nm},'%'))
+		</if>
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+		
+	</select>
+	
+	<select id="getInsEduAppListCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) 
+		FROM (SELECT *
+				FROM EDU_REGISTRATION
+		        WHERE 1=1
+		        AND CATEGORY1_KEY = '3' 
+				AND CATEGORY2_KEY = '7')a 
+		LEFT JOIN EDU_COURSE_REGISTRATION b
+		ON a.EDU_NO = b.EDU_NO
+        AND b.USER_ID = #{UserAccount.user_id} 
+		<if test="start_date !=null and start_date !=''">
+		    <![CDATA[
+		     AND a.TRAIN_S_DATE <= #{start_date}
+		    ]]>
+		</if>
+		<if test="end_date !=null and end_date !=''">
+			<![CDATA[
+		     AND a.TRAIN_E_DATE >= #{end_date}
+		    ]]> 
+		</if>	
+		<if test="edu_nm != '' and edu_nm != null and eduSearch =='TEXT'">
+			AND a.CATEGORY3_KEY IN (SELECT CATEGORY3_KEY FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_NAME LIKE CONCAT('%',#{edu_nm},'%'))
+		</if>
+	</select>
+	
 	
 	<!-- 관리자 -->
 	
