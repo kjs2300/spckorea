@@ -86,8 +86,14 @@
                         <!---- tab-cont begin ---->
                         <div class="tab-cont">
                             <ul>
-                                <li class="on"><a href="">신청하기</a></li>
-                                <li><a href="">학습하기</a></li>
+                            	<c:if test="${tapNo eq '1'}">
+                                <li class="on">신청하기</li>
+                                <li><a onClick="fn_move('2')">학습하기</a></li>
+                                </c:if>
+                                <c:if test="${tapNo eq '2'}">
+                                <li><a onClick="fn_move('1')">신청하기</a></li>
+                                <li class="on">학습하기</li>
+                                </c:if>
                             </ul>
                         </div>
                         <!---- tab-cont end ---->
@@ -129,6 +135,7 @@
                         
                         <div class="comp">
                             <div class="table-wrap">
+                            	<c:if test="${tapNo eq '1'}">
                                 <table class="list-tb">
                                     <caption>교육명, 교육기간, 교육방식, 교육상태, 신청하기 정보가 있는 테이블</caption>
                                     <colgroup>
@@ -174,6 +181,49 @@
 							        </c:if>
                                     </tbody>
                                 </table>
+                                </c:if>
+                                <c:if test="${tapNo eq '2'}">
+                                <table class="list-tb">
+                                    <caption>교육명, 교육기간, 교육방식, 교육상태, 신청하기 정보가 있는 테이블</caption>
+                                    <colgroup>
+                                        <col width="10%"/>
+                                        <col width="*"/>
+                                        <col width="16%"/>
+                                        <col width="16%"/>
+                                        <col width="12%"/>
+                                        <col width="12%"/>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>교육명</th>
+                                            <th>교육기간</th>
+                                            <th>교육방식</th>
+                                            <th>학습여부</th>
+                                            <th>나의 강의실</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach var="result" items="${resultList}" varStatus="status">
+                                        <tr>
+                                            <td>${status.index + 1}</td>
+                                            <td class="tl">${result.EDU_NAME}</td>
+                                            <td><span>${result.TRAIN_S_DATE}</span>~<span>${result.TRAIN_E_DATE}</span></td>
+                                            <td>
+                                                <span class="block">${result.EDU_METHOD}</span>
+                                            </td>
+                                            <td>${result.EDU_STATUS}</td>완료/미완료
+                                            <td><button class="sm-btn white-btn">바로가기</button></td>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:if test="${empty resultList }">
+							             <tr>
+							                 <td colspan='6'/>Data 없습니다.</td>
+							             </tr>
+							        </c:if>
+                                    </tbody>
+                                </table>
+                                </c:if>
                             </div>
                         </div>
 

@@ -341,6 +341,27 @@
 		  AND EDU_NO = #{edu_no}
 	</update>
 	
+	<update id="onclassUpdate2" parameterType="java.util.Map">	
+		INSERT INTO
+	      dm.product_t02 (
+	         column_name_1,
+	         column_name_2,
+	         column_name_3
+	      )
+	   VALUES (
+	      value_1,
+	      value_2,
+	      value_3'     
+	   )
+	   ON
+	      DUPLICATE KEY
+	   UPDATE
+	      column_name_1=value_1,
+	      column_name_2=value_2,
+	      column_name_3=value_3   
+	      
+	</update>
+	
 	<select id="getWarrantList" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT  (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY) AS CATEGORY1_NAME
 				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
