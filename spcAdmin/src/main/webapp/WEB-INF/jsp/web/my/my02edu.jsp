@@ -178,7 +178,7 @@
                                     <c:forEach var="result" items="${resultList}" varStatus="status">
                                     	<tr>
                                             <td>${status.index + 1}</td>
-                                            <td class="tl">${result.CATEGORY3_KEY}</td>
+                                            <td class="tl">${result.EDU_NAME}</td>
                                             <td><span class="block">${result.TRAIN_S_DATE}</span>~<span class="block">${result.TRAIN_S_DATE}</span></td>
                                             <td><span>${result.EDU_METHOD}</span></td>
                                             <td>${result.REG_DT}</td>

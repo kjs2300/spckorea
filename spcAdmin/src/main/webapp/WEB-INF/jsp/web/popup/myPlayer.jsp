@@ -19,7 +19,8 @@
     <!--  class-wrap begin -->
             <div class="class-wrap">
             	<input type="hidden" id="user_id" name="user_id" value="${UserAccount.user_id}">
-            	<input type="hidden" id="edu_no" name="edu_no" value="${edu_no}">
+            	<input type="hidden" id="edu_no" name="edu_no" value="${result.EDU_NO}">
+            	<input type="hidden" id="edu_sub_no" name="edu_sub_no" value="${edu_sub_no}">
             	<input type="hidden" id="cour_no" name="cour_no" value="${cour_no}">
             	<input type="hidden" id="cour_time" name="cour_time" value="${result.COUR_TIME}">
             	<input type="hidden" id="cour_stat" name="cour_stat" value="${result.COUR_STAT}">
@@ -105,7 +106,7 @@
 			url: "<c:url value='/my/onclassUpdate.do'/>",
 			cache: false,
 			async: false,
-			data: { cour_no: $("#cour_no").val(),edu_no: $("#edu_no").val(),cour_time: curTime,cour_stat: stat},
+			data: { cour_no: $("#cour_no").val(),edu_sub_no: $("#edu_sub_no").val(),edu_no: $("#edu_no").val(),cour_time: curTime,cour_stat: stat},
 			dataType: "json",
 			success: function(data) {
 				/* opener.location.reload();

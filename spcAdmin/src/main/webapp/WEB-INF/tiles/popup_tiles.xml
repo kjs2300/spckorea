@@ -50,6 +50,11 @@
        <put-attribute name="body" value="/WEB-INF/jsp/web/popup/myClass.jsp" />  
    </definition>
    
+   <definition name="popMyClassDetail" extends="popUp-definition">  
+       <put-attribute name="title" value="나의 강의실 상세" />  
+       <put-attribute name="body" value="/WEB-INF/jsp/web/popup/myClassDetail.jsp" />  
+   </definition>
+   
    <!--마이페이지 > 영상시청 -->
    <definition name="popMyPlayer" extends="popUp-definition">  
        <put-attribute name="title" value="영상시청" />  

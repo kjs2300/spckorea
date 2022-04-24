@@ -14,7 +14,7 @@
 
  <script type="text/javaScript" language="javascript" defer="defer">
  $(document).ready(function(){		
-	 $("#s_date, #e_date").datepicker({
+	 $("#start_date, #end_date").datepicker({
 		  	dateFormat: 'yy-mm-dd' //달력 날짜 형태
 	       ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
 		  ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
@@ -40,15 +40,15 @@
 	 $("[type='text']").val("");
  }
  
- function fn_cancel(idx){
-	 if(confirm("정말로 취소하시겠습니까?")){
+ function fn_save(idx){
+	 if(confirm("교육을 신청 하시겠습니까?")){
 		 $.ajax({
-		        url: "<c:url value='/my/deleteInsEdu.do'/>?cour_no="+idx,
+		        url: "<c:url value='/user/instructor05Save.do'/>?edu_no="+idx,
 		        type: "POST",
 		        data: {},
 		        success: function(data) {
-		        	if(data == 'SUCCESS'){
-		        		alert("취소 하였습니다.");
+		        	if(data.result == 'SUCCESS'){
+		        		alert("신청 하였습니다.");
 		        		location.reload();
 		        	}
 		        },
@@ -59,6 +59,13 @@
 		    });
 	 }
  } 
+ 
+ function fn_move(str) {
+	  	var frm = document.commonForm;
+		$("#tapNo").val(str);  
+	   	frm.action = "<c:url value='/user/instructor05List.do'/>";
+	  	frm.submit();
+ }
  
  function fn_egov_link_page(pageNo){
 	 var frm = document.commonForm;
@@ -101,6 +108,7 @@
                         <!---- search-wrap begin ---->
                         <form  id="commonForm" name="commonForm"  method="post"  action="">
 		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
+		    			<input type="hidden" id="tapNo" name="tapNo" class="input-box" value="${tapNo}"  />
                         <div class="search-wrap">
                             <div class="search-cont">
                                 <label>기간 :</label>
@@ -168,8 +176,8 @@
                                             <td>${result.EDU_STATUS}</td>
                                             <td>
                                             <c:if test="${result.APP_CHK == 'Y'}">신청완료</c:if>
-                                            <c:if test="${result.APP_CHK != 'Y'}">
-                                            	<button class="sm-btn navy-btn">신청하기</button>
+                                            <c:if test="${result.APP_CHK != 'Y' && result.EDU_STATUS == '교육중'}">
+                                            	<button class="sm-btn navy-btn" onClick="fn_save('${result.EDU_NO}')">신청하기</button>
                                             </c:if>
                                             </td>
                                         </tr>
@@ -212,8 +220,8 @@
                                             <td>
                                                 <span class="block">${result.EDU_METHOD}</span>
                                             </td>
-                                            <td>${result.EDU_STATUS}</td>완료/미완료
-                                            <td><button class="sm-btn white-btn">바로가기</button></td>
+                                            <td>${result.COUR_STAT}</td>
+                                            <td><button class="sm-btn white-btn" onClick="javascript:openWindowPop('<c:url value='/my/popMyClass.do'/>','popup');">바로가기</button></td>
                                         </tr>
                                     </c:forEach>
                                     <c:if test="${empty resultList }">

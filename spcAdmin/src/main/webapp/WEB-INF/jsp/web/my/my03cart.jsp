@@ -39,35 +39,6 @@
  			this.checked = isChecked;
  	    });
  	 });
-	 
-	 $('#category2_key').change(function(){
-			var val  = $(this).val();
-
-			if( val ==""){
-				return;
-			}
-			
-			$("#category3_key").val("");
-					
-			 $.ajax({	
-			    url     : "<c:url value='/user/category3list.do'/>",
-			    data    : $("#commonForm").serialize(),
-		        dataType: "JSON",
-		        cache   : false,
-				async   : true,
-				type	: "POST",	
-				success: function(data, opt, inx){
-				var option = '';
-				option += '<option value="0">선택 하세요</opton>'; //선택
-				$.each(data, function(i, ret){
-					option += '<option value="'+ret.CATEGORY3_KEY+'">'+ret.CATEGORY3_NAME+'</option>';		
-				});
-				$('select[name=category3_key]').html(option);						
-		        },	       
-		        error 	: function(xhr, status, error) {}
-		        
-		     });
-		 }); 
  });
  
  function fn_clear(){
@@ -98,14 +69,13 @@
 		if(confirm('삭제 처리하시겠습니까?')) {
 			setDel(idxArray);
 		}
-		
 	};
 
 	var setDel = function(idxArray){
 	    $.ajax({
-	        url: "<c:url value='/my/courDel.do'/>",
+	        url: "<c:url value='/my/cartDel.do'/>",
 	        type: "POST",
-	        data: { "cour_no" : idxArray },
+	        data: { "basket_no" : idxArray },
 	        success: function(data) {
 	        	if(data == 'SUCCESS'){
 	        		alert("처리 완료하였습니다.");
@@ -118,10 +88,10 @@
 	        }
 	    });
 	};
-	 function fn_egov_link_page(pageNo){
+	function fn_egov_link_page(pageNo){
 		 var frm = document.commonForm;
 		 $("#pageIndex").val(pageNo); 
-	 	 frm.action = "<c:url value='/my/my01status.do'/>";
+	 	 frm.action = "<c:url value='/my/my01cart.do'/>";
 	   	 frm.submit();
 	 }
 </script>
@@ -129,7 +99,7 @@
             <div id="container">
 
                     <div class="tit-wrap">
-                        <h1 class="h1-tit">신청현황</h1>
+                        <h1 class="h1-tit">장바구니</h1>
 
                         <div class="side-cont">
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
@@ -138,12 +108,12 @@
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                             <span>일반</span>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                            <span>신청현황</span>
+                            <span>장바구니</span>
                         </div>
                     </div>
 
                     <div class="contents-wrap">
-						
+
                         <!---- search-wrap begin ---->
                         <form  id="commonForm" name="commonForm"  method="post"  action="">
 		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
@@ -172,22 +142,17 @@
                             </div>
 
                             <div class="search-cont">
-                                <label>교육분류 :</label>
-                                <select class="select mr30"  id="category1_key" name="category1_key">
-										<option value='1' >일반</option>
-								</select>
-					            <select class="select"  id="category2_key" name="category2_key">
-					            	<option value='' >선택 하세요</option>
-									<c:forEach var="result" items="${category2list}" varStatus="status">
-										<option value='${result.CATEGORY2_KEY}' >${result.CATEGORY2_NAME}</option>
-									</c:forEach>
-					            </select>
-					            <select class="select lg-width"  id="category3_key" name="category3_key">
-					            	<option value='' >선택 하세요</option>
-									<c:forEach var="result" items="${category3list}" varStatus="status">
-										<option value='${result.CATEGORY3_KEY}' >${result.CATEGORY3_NAME}</option>
-									</c:forEach>
-					            </select>
+                                <label>교육명 :</label>
+                                <div class="radio-cont">
+                                    <input type="radio" class="radio-box" id="searchCondition" name="searchCondition" value="ALL" <c:if test="${searchCondition =='ALL' || empty searchCondition}">checked </c:if>>
+                                    <label for="">전체</label>
+                                </div>
+                                  
+                                <div class="radio-cont mr10">
+                                    <input type="radio" class="radio-box" id="searchCondition" name="searchCondition" value="EDUNAME" <c:if test="${searchCondition =='EDUNAME'}">checked </c:if>>
+                                    <label for="">내용</label>&nbsp;
+                                    <input type="text" class="input-box" id="searchKeyword" name="searchKeyword" placeholder="직접입력" value="${searchKeyword}"/>
+                                </div>
                             </div>
 
                             <div class="btn-cont">
@@ -199,50 +164,42 @@
                         <!---- search-wrap end ---->
 
                         <div class="btn-cont mb20">
-                            <!-- <button class="lg-btn white-btn">선택삭제</button> -->
+                            <button type="button" class="lg-btn white-btn" onClick="btnDel();">선택삭제</button>
                         </div>
-
                         <div class="comp mt0">
                             <div class="table-wrap">
                                 <table class="list-tb">
-                                    <caption>분류1, 분류2, 분류3(교육명), 강사명, 신청일, 취소 정보가 있는 테이블</caption>
+                                    <caption>교육명, 학습시간, 강사명, 상세보기, 삭제 정보가 있는 테이블</caption>
                                     <colgroup>
-                                    	<%-- <col width="8%"/> --%>
                                         <col width="8%"/>
-                                        <col width="10%"/>
-                                        <col width="14%"/>
+                                        <col width="8%"/>
                                         <col width="*"/>
-                                        <col width="10%"/>
-                                        <col width="10%"/>
-                                        <col width="10%"/>
+                                        <col width="14%"/>
+                                        <col width="12%"/>
+                                        <col width="12%"/>
+                                        <col width="12%"/>
                                     </colgroup>
                                     <thead>
                                         <tr>
-                                            <!-- <th><input type="checkbox" id="checkAll" name='checkAll' class="check-box"/></th> -->
+                                            <th><input type="checkbox" id="checkAll" name='checkAll' class="check-box"/></th>
                                             <th>No.</th>
-                                            <th>분류1</th>
-                                            <th>분류2</th>
-                                            <th>분류3(교육명)</th>
+                                            <th>교육명</th>
+                                            <th>학습시간</th>
                                             <th>강사명</th>
-                                            <th>신청일</th>
-                                            <th>취소</th>
+                                            <th>상세보기</th>
+                                            <th>삭제</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     <c:forEach var="result" items="${resultList}" varStatus="status">
                                         <tr>
-                                            <%-- <td><input type="checkbox" class="check-box" id='checkNo' name='checkNo' value="${result.BASKET_NO}"/></td> --%>
+                                            <td><input type="checkbox" class="check-box" id='checkNo' name='checkNo' value="${result.BASKET_NO}"/></td>
                                             <td>${status.index + 1}</td>
-                                            <td>${result.CATEGORY1_NAME}</td>
-                                            <td>${result.CATEGORY2_NAME}</td>
                                             <td class="tl">${result.CATEGORY3_NAME}</td>
+                                            <td><span>${result.EDU_TIME}</span>분</td>
                                             <td>${result.INST_NM}</td>
-                                            <td>${result.REG_DT}</td>
-                                            <td>
-                                            <c:if test="${result.CANCEL_CHECK == 'Y'}">
-                                            	<button  class="sm-btn white-btn" onClick="fn_delete('${result.COUR_NO}');">취소</button>
-                                            </c:if>
-                                            </td>
+                                            <td><button class="sm-btn navy-btn" onclick="location.href = '<c:url value='/user/lifeEduOnLineInfo.do' />?edu_no=${result.EDU_NO}';">상세보기</button></td>
+                                            <td><button class="sm-btn white-btn" onClick="fn_delete('${result.BASKET_NO}');">삭제</button></td>
                                         </tr>
                                     </c:forEach>
                                     <c:if test="${empty resultList }">
@@ -256,7 +213,7 @@
                         </div>
                             
     
-                        <div class="page-wrap">
+                         <div class="page-wrap">
 						     <ul class="paging">
 						         <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />
 						     </ul>

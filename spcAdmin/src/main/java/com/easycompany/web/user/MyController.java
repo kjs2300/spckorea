@@ -98,7 +98,6 @@ public class MyController
 			paramMap.put("sqlName", "deleteCart"); 
 			resultCnt = myService.deleteData(paramMap);
 		    result = (resultCnt > 0 ? "SUCCESS" : "FAIL");
-		    
 		} catch (Exception e) {
 			result = "FAIL";
 		}
@@ -117,7 +116,6 @@ public class MyController
 			paramMap.put("sqlName", "deleteCour"); 
 			resultCnt = myService.deleteData(paramMap);
 		    result = (resultCnt > 0 ? "SUCCESS" : "FAIL");
-		    
 		} catch (Exception e) {
 			result = "FAIL";
 		}
@@ -140,7 +138,6 @@ public class MyController
 	  
 	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
-	    
 	  paramMap.put("site", "on");
 	  paramMap.put("category1_key", "1");
 	  paramMap.put("sqlName", "getCategoryList2");
@@ -182,10 +179,7 @@ public class MyController
 	  
 	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
-	    	  
-	  
 	  paramMap.put("category1_key", "1");
-	  
 	  paramMap.put("sqlName", "getEduAllCnt");
 	  Map<String, Object> allCount = myService.getSelectData(paramMap);
 	  model.addAttribute("allCount", allCount);
@@ -252,27 +246,23 @@ public class MyController
   @RequestMapping({"/popMyWarrant.do"})
   public String popMyWarrant(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
-	  	  
 	  paramMap.put("sqlName", "getMyWarrant");
 	  model.addAttribute("result", myService.getSelectData(paramMap));
-	  
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
 	
-	    return "popMyWarrant";
+	  return "popMyWarrant";
   }
   
   @RequestMapping({"/popMyWarrantNum.do"})
   public String popMyWarrantNum(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
-	  	  
 	  paramMap.put("sqlName", "getMyWarrant");
 	  model.addAttribute("result", myService.getSelectData(paramMap));
-	  
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
 	
-	    return "popMyWarrantNum";
+	  return "popMyWarrantNum";
   }
   
   @RequestMapping({"/my01mylist.do"})
@@ -305,14 +295,12 @@ public class MyController
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
 	  
-	  
 	  return "my01mylist";
   }
   
   @RequestMapping({"/popMyClass.do"})
   public String popMyClass(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
-	  
 	  paramMap.put("sqlName", "getEduIngList");
 	  List<Map<String, Object>> ingList = myService.getSelectList(paramMap);
 	  model.addAttribute("ingList", ingList);
@@ -329,12 +317,29 @@ public class MyController
 	    return "popMyClass";
   }
   
+  @RequestMapping({"/popMyClassDetail.do"})
+  public String popMyClassDetail(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  paramMap.put("sqlName", "getCourInfo");
+	  model.addAttribute("result", myService.getSelectData(paramMap));
+	  
+	  paramMap.put("sqlName", "getCourSecList");
+	  List<Map<String, Object>> resultList = myService.getSelectList(paramMap);
+	  model.addAttribute("resultList", resultList);
+	  
+	  LocalDate today = LocalDate.now();
+	  paramMap.put("today", today);
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	
+	    return "popMyClassDetail";
+  }
+  
   @RequestMapping({"/popMyPlayer.do"})
   public String popMyPlayer(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 	  paramMap.put("sqlName", "getOnclassTime");
 	  model.addAttribute("result", myService.getSelectData(paramMap));
-	  
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
 	
@@ -349,9 +354,7 @@ public class MyController
 	    try {
 	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 	      paramMap.put("sqlName", "onclassUpdate");	
-    	  
 	      resultCnt = myService.updateData(paramMap);
-	      
 	      if(resultCnt < 1) {
 	    	  result.put("result", "SUCCESS");
 	      }else {
@@ -452,7 +455,6 @@ public class MyController
 			paramMap.put("sqlName", "deleteInsLeave"); 
 			resultCnt = myService.deleteData(paramMap);
 		    result = (resultCnt > 0 ? "SUCCESS" : "FAIL");
-		    
 		} catch (Exception e) {
 			result = "FAIL";
 		}
@@ -503,7 +505,6 @@ public class MyController
 			paramMap.put("sqlName", "deleteInsEdu"); 
 			resultCnt = myService.deleteData(paramMap);
 		    result = (resultCnt > 0 ? "SUCCESS" : "FAIL");
-		    
 		} catch (Exception e) {
 			result = "FAIL";
 		}
@@ -579,7 +580,205 @@ public class MyController
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
 	  
-	  
 	  return "my02mylist";
+  }
+  
+  @RequestMapping({"/my03info.do"})
+  public String my03info(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	  
+	  return "my03info";
+  }
+
+  @RequestMapping({"/my03cart.do"})
+  public String my03cart(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
+	  PaginationInfo paginationInfo = new PaginationInfo();
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
+	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+	  
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
+	  paramMap.put("offset",offset);
+	    	  
+	  paramMap.put("category1_key", "2");//일반:1,강사:3,실무자:2
+	  paramMap.put("sqlName", "getCartList");
+	  List<Map<String, Object>> list = myService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+	  
+	  paramMap.put("sqlName", "getCartListCnt");
+	  int totCnt = myService.getSelectListCnt(paramMap);
+	  model.addAttribute("totCnt", totCnt);
+	  paginationInfo.setTotalRecordCount(totCnt);
+	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
+	  model.addAttribute("paginationInfo", paginationInfo);
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	  
+	  return "my03cart";
+  }
+    
+  @RequestMapping({"/my03status.do"})
+  public String my03status(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
+	  PaginationInfo paginationInfo = new PaginationInfo();
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
+	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+	  
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
+	  paramMap.put("offset",offset);
+	    
+	  paramMap.put("site", "on");
+	  paramMap.put("category1_key", "2");
+	  paramMap.put("sqlName", "getCategoryList2");
+	  List<Map<String, Object>> category2list = sectorService.getSelectList(paramMap);
+	  model.addAttribute("category2list", category2list);
+	  
+	  paramMap.put("sqlName", "getStatusList");
+	  List<Map<String, Object>> list = myService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+	  
+	  paramMap.put("sqlName", "getStatusListCnt");
+	  int totCnt = myService.getSelectListCnt(paramMap);
+	  model.addAttribute("totCnt", totCnt);
+	  paginationInfo.setTotalRecordCount(totCnt);
+	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
+	  model.addAttribute("paginationInfo", paginationInfo);
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	  
+	  return "my03status";
+  }
+  
+  @RequestMapping({"/my03edu.do"})
+  public String my03edu(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
+	  if(!paramMap.containsKey("site")) {
+		  paramMap.put("site", "on");
+	  }
+	  PaginationInfo paginationInfo = new PaginationInfo();
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
+	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+	  
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
+	  paramMap.put("offset",offset);
+	    	  
+	  
+	  paramMap.put("category1_key", "2");
+	  
+	  paramMap.put("sqlName", "getEduAllCnt");
+	  Map<String, Object> allCount = myService.getSelectData(paramMap);
+	  model.addAttribute("allCount", allCount);
+	  
+	  paramMap.put("sqlName", "getCategoryList2");
+	  List<Map<String, Object>> category2list = sectorService.getSelectList(paramMap);
+	  model.addAttribute("category2list", category2list);
+	  
+	  paramMap.put("sqlName", "getEduList");
+	  List<Map<String, Object>> list = myService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+	  
+	  paramMap.put("sqlName", "getEduListCnt");
+	  int totCnt = myService.getSelectListCnt(paramMap);
+	  model.addAttribute("totCnt", totCnt);
+	  paginationInfo.setTotalRecordCount(totCnt);
+	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
+	  model.addAttribute("paginationInfo", paginationInfo);
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	  
+	  return "my03edu";
+  }
+  
+  @RequestMapping({"/my03warrant.do"})
+  public String my03warrant(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
+	  PaginationInfo paginationInfo = new PaginationInfo();
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
+	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+	  
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
+	  paramMap.put("offset",offset);
+	    	  
+	  paramMap.put("category1_key", "2");
+	  paramMap.put("sqlName", "getCategoryList2");
+	  List<Map<String, Object>> category2list = sectorService.getSelectList(paramMap);
+	  model.addAttribute("category2list", category2list);
+	  
+	  paramMap.put("sqlName", "getWarrantList");
+	  List<Map<String, Object>> list = myService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+	  
+	  paramMap.put("sqlName", "getWarrantListCnt");
+	  int totCnt = myService.getSelectListCnt(paramMap);
+	  model.addAttribute("totCnt", totCnt);
+	  paginationInfo.setTotalRecordCount(totCnt);
+	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
+	  model.addAttribute("paginationInfo", paginationInfo);
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	  
+	  return "my03warrant";
+  }
+  
+  @RequestMapping({"/my03mylist.do"})
+  public String my03mylist(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model, HttpServletRequest request) throws Exception{
+	  paramMap.put("pageSize", 10);
+	  paramMap.put("recordCountPerPage", 10);
+	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+	  if(!paramMap.containsKey("pageIndex")) {
+		  paramMap.put("pageIndex", 1);
+	  }
+	  PaginationInfo paginationInfo = new PaginationInfo();
+	  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+	  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
+	  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+	  
+	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
+	  paramMap.put("offset",offset);
+	    	  
+	  paramMap.put("sqlName", "getMyList");
+	  List<Map<String, Object>> list = myService.getSelectList(paramMap);
+	  model.addAttribute("resultList", list);
+	  
+	  paramMap.put("sqlName", "getMyListCnt");
+	  int totCnt = myService.getSelectListCnt(paramMap);
+	  model.addAttribute("totCnt", totCnt);
+	  paginationInfo.setTotalRecordCount(totCnt);
+	  
+	  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
+	  model.addAttribute("paginationInfo", paginationInfo);
+	  model.addAttribute("path", request.getServletPath());
+	  model.addAllAttributes(paramMap);
+	  
+	  return "my03mylist";
   }
 }

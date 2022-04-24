@@ -17,119 +17,51 @@
 	 $("#start_date, #end_date").datepicker({
 		  	dateFormat: 'yy-mm-dd' //달력 날짜 형태
 	       ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-        ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
-        ,changeYear: true //option값 년 선택 가능
-        ,changeMonth: true //option값  월 선택 가능                
-        ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-        ,buttonImage: "<c:url value='/images/common/ico_calendar.png'/>" //버튼 이미지 경로
-        ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
-        ,buttonText: "선택" //버튼 호버 텍스트              
-        ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
-        ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
-        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
-        ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
-        ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
-        ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-        ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
-  	});
+     ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+     ,changeYear: true //option값 년 선택 가능
+     ,changeMonth: true //option값  월 선택 가능                
+     ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+     ,buttonImage: "<c:url value='/images/common/ico_calendar.png'/>" //버튼 이미지 경로
+     ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+     ,buttonText: "선택" //버튼 호버 텍스트              
+     ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+     ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+     ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+     ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+     ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+     ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+     ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+	});
 	 
 	 $('#checkAll').click(function(){
 		    var isChecked = this.checked;
 			$('input:checkbox[name="checkNo"]').each(function() {
- 			this.checked = isChecked;
- 	    });
- 	 });
-	 
-	 $('#category2_key').change(function(){
-			var val  = $(this).val();
-
-			if( val ==""){
-				return;
-			}
-			
-			$("#category3_key").val("");
-					
-			 $.ajax({	
-			    url     : "<c:url value='/user/category3list.do'/>",
-			    data    : $("#commonForm").serialize(),
-		        dataType: "JSON",
-		        cache   : false,
-				async   : true,
-				type	: "POST",	
-				success: function(data, opt, inx){
-				var option = '';
-				option += '<option value="0">선택 하세요</opton>'; //선택
-				$.each(data, function(i, ret){
-					option += '<option value="'+ret.CATEGORY3_KEY+'">'+ret.CATEGORY3_NAME+'</option>';		
-				});
-				$('select[name=category3_key]').html(option);						
-		        },	       
-		        error 	: function(xhr, status, error) {}
-		        
-		     });
-		 }); 
+			this.checked = isChecked;
+	    });
+	 });
  });
- 
+  
  function fn_clear(){
 	 $("#searchDate").eq(0).prop("checked",true);
 	 $("#searchCondition").eq(0).prop("checked",true);
 	 $("[type='text']").val("");
  }
-  
- function fn_delete(idx) {
-		var idxArray = new Array();
-
-		idxArray.push(idx);
-		if(confirm('삭제 처리하시겠습니까?')) {
-			setDel(idxArray);
-		}
-	}
-
-	var btnDel = function() {
-		var idxArray = new Array();
-
-		$("input[name=checkNo]:checked").each(function() {
-			idxArray.push($(this).val());
-		});
-		if(idxArray.length < 1){
-			alert("선택한 내역이 없습니다.");
-			return false;
-		}
-		if(confirm('삭제 처리하시겠습니까?')) {
-			setDel(idxArray);
-		}
-		
-	};
-
-	var setDel = function(idxArray){
-	    $.ajax({
-	        url: "<c:url value='/my/courDel.do'/>",
-	        type: "POST",
-	        data: { "cour_no" : idxArray },
-	        success: function(data) {
-	        	if(data == 'SUCCESS'){
-	        		alert("처리 완료하였습니다.");
-	        		location.reload();
-	        	}
-	        },
-	        error: function(data) {
-	        	console.log(JSON.stringify(data));
-	        	alert("처리중 오류가 발생했습니다.");
-	        }
-	    });
-	};
-	 function fn_egov_link_page(pageNo){
-		 var frm = document.commonForm;
-		 $("#pageIndex").val(pageNo); 
-	 	 frm.action = "<c:url value='/my/my01status.do'/>";
-	   	 frm.submit();
-	 }
+ function openWindowPop(url, name){
+	    var options = 'top=10, left=10, width=810px, height=1200px, status=no, menubar=no, toolbar=no, resizable=no';
+	    window.open(url, name, options);
+	}	
+ function fn_egov_link_page(pageNo){
+	 var frm = document.commonForm;
+	 $("#pageIndex").val(pageNo); 
+ 	 frm.action = "<c:url value='/my/my01warrant.do'/>";
+   	 frm.submit();
+ }
 </script>
      <!-- container  begin -->
             <div id="container">
 
                     <div class="tit-wrap">
-                        <h1 class="h1-tit">신청현황</h1>
+                        <h1 class="h1-tit">수료증발급</h1>
 
                         <div class="side-cont">
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
@@ -138,12 +70,23 @@
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                             <span>일반</span>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                            <span>신청현황</span>
+                            <span>수료증발급</span>
                         </div>
                     </div>
 
                     <div class="contents-wrap">
-						
+
+                        <!---- tab-cont begin ---->
+                        <div class="tab-cont">
+                            <ul>
+                                <li class="on"><a href="">온라인</a></li>
+                                <li><a href="">오프라인</a></li>
+                                <li><a href="">기관</a></li>
+                            </ul>
+                        </div>
+                        <!---- tab-cont end ---->
+
+
                         <!---- search-wrap begin ---->
                         <form  id="commonForm" name="commonForm"  method="post"  action="">
 		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
@@ -156,7 +99,7 @@
                                 </div>
                                   
                                 <div class="radio-cont">
-                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="TODAY">
+                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="TODAY" <c:if test="${searchDate == 'TODAY'}">checked </c:if>>
                                     <label for="dateToday">오늘</label>
                                 </div>
                                 
@@ -190,6 +133,24 @@
 					            </select>
                             </div>
 
+                            <div class="search-cont">
+                                <label>수료증발급 :</label>
+                                <div class="radio-cont">
+                                    <input type="radio" class="radio-box" id="license_pbl" name="license_pbl" value="ALL" <c:if test="${license_pbl == 'ALL' || (empty license_pbl)}">checked </c:if>>
+                                    <label for="">전체</label>
+                                </div>
+                                  
+                                <div class="radio-cont">
+                                    <input type="radio" class="radio-box" id="license_pbl" name="license_pbl" value="1" <c:if test="${license_pbl == '1'}">checked </c:if>>
+                                    <label for="">발급</label>
+                                </div>
+                                
+                                <div class="radio-cont mr10">
+                                    <input type="radio" class="radio-box" id="license_pbl" name="license_pbl" value="2" <c:if test="${license_pbl == '2'}">checked </c:if>>
+                                    <label for="">미발급</label>
+                                </div>
+                            </div>
+
                             <div class="btn-cont">
                                 <button class="lg-btn orange-btn">검색</button>
                                 <button class="lg-btn navy-btn" onClick="fn_clear();">초기화</button>
@@ -198,56 +159,56 @@
                         </form>
                         <!---- search-wrap end ---->
 
-                        <div class="btn-cont mb20">
-                            <!-- <button class="lg-btn white-btn">선택삭제</button> -->
+                        <!---- tit-cont begin ---->
+                        <div class="tit-cont flex-left">
+                            <p class="total">전체 : <span>15</span>건</p>
+                            <p class="total">발급 : <span>10</span>건</p>
+                            <p class="total">미발급 : <span>5</span>건</p>
                         </div>
+                        <!---- tit-cont end ---->
 
                         <div class="comp mt0">
                             <div class="table-wrap">
                                 <table class="list-tb">
-                                    <caption>분류1, 분류2, 분류3(교육명), 강사명, 신청일, 취소 정보가 있는 테이블</caption>
+                                    <caption>분류1, 분류2, 분류3(교육명), 강사명, 수료증 발급현황, 수료증 발급일, 수료증 발급하기 정보가 있는 테이블</caption>
                                     <colgroup>
-                                    	<%-- <col width="8%"/> --%>
-                                        <col width="8%"/>
-                                        <col width="10%"/>
-                                        <col width="14%"/>
+                                        <col width="6%"/>
+                                        <col width="11%"/>
+                                        <col width="12%"/>
                                         <col width="*"/>
                                         <col width="10%"/>
                                         <col width="10%"/>
-                                        <col width="10%"/>
+                                        <col width="12%"/>
+                                        <col width="12%"/>
                                     </colgroup>
                                     <thead>
                                         <tr>
-                                            <!-- <th><input type="checkbox" id="checkAll" name='checkAll' class="check-box"/></th> -->
                                             <th>No.</th>
                                             <th>분류1</th>
                                             <th>분류2</th>
                                             <th>분류3(교육명)</th>
                                             <th>강사명</th>
-                                            <th>신청일</th>
-                                            <th>취소</th>
+                                            <th>수료증<br/>발급현황</th>
+                                            <th>수료증<br/>발급일</th>
+                                            <th>수료증<br/>발급하기</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     <c:forEach var="result" items="${resultList}" varStatus="status">
                                         <tr>
-                                            <%-- <td><input type="checkbox" class="check-box" id='checkNo' name='checkNo' value="${result.BASKET_NO}"/></td> --%>
                                             <td>${status.index + 1}</td>
                                             <td>${result.CATEGORY1_NAME}</td>
                                             <td>${result.CATEGORY2_NAME}</td>
                                             <td class="tl">${result.CATEGORY3_NAME}</td>
                                             <td>${result.INST_NM}</td>
-                                            <td>${result.REG_DT}</td>
-                                            <td>
-                                            <c:if test="${result.CANCEL_CHECK == 'Y'}">
-                                            	<button  class="sm-btn white-btn" onClick="fn_delete('${result.COUR_NO}');">취소</button>
-                                            </c:if>
-                                            </td>
+                                            <td>${result.LICENSE_PBL}</td>
+                                            <td>${result.LICENSE_PBL_DATE}</td>
+                                            <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyWarrant.do'/>?cour_no=${result.COUR_NO}&edu_no=${result.EDU_NO}','popup');" class="sm-btn white-btn">발급하기</button></td>
                                         </tr>
                                     </c:forEach>
                                     <c:if test="${empty resultList }">
 							             <tr>
-							                 <td colspan='7'/>Data 없습니다.</td>
+							                 <td colspan='8'/>Data 없습니다.</td>
 							             </tr>
 							        </c:if>
                                     </tbody>

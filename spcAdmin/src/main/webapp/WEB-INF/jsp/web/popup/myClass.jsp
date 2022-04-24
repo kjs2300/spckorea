@@ -16,10 +16,9 @@
  $(document).ready(function(){		
 	 	
  });
- function openWindowPop(url, name){
-	    var options = 'top=10, left=10, width=1200px, height=600px, status=no, menubar=no, toolbar=no, resizable=no';
-	    window.open(url, name, options);
-	}
+ function fn_detail(edu_no,cour_no){
+		document.location = "<c:url value='/my/popMyClassDetail.do'/>"+"?edu_no="+edu_no+"&cour_no="+cour_no;
+	 }	
 </script>
     <!--  class-wrap begin -->
             <div class="class-wrap">
@@ -81,7 +80,7 @@
                 <div class="comp"> <!---- 학습중인 교육  ---->
                     <div class="tit-cont">
                         <h4 class="h4-tit">학습중인 교육</h4>
-                        <button class="sm-btn white-btn">+ 더보기</button>
+                        <!-- <button class="sm-btn white-btn">+ 더보기</button> -->
                     </div>
                     
                     <div class="table-wrap class-table">
@@ -121,8 +120,8 @@
                                     <td>${list.INST_NM}</td>
                                     <td>${list.REG_DT}</td>
                                     <td>${list.EDU_TIME}분</td>
-                                    <td>${list.COUR_TIME_MIN}분 ${list.COUR_TIME_SEC}초</td>
-                                    <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyPlayer.do'/>?edu_no=${list.EDU_NO}&cour_no=${list.COUR_NO}','popup2');" class="sm-btn white-btn">바로가기</button></td>
+                                    <td>${list.COUR_TIME}</td>
+                                    <td><button type="button" onClick="fn_detail('${list.EDU_NO}','${list.COUR_NO}');" class="sm-btn white-btn">바로가기</button></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -134,7 +133,7 @@
                 <div class="comp"> <!---- 학습완료 교육  ---->
                     <div class="tit-cont">
                         <h4 class="h4-tit">학습완료 교육 <span class="point">(수료증 발급은 마이페이지에서 가능합니다.)</span></h4>
-                        <button class="sm-btn white-btn">+ 더보기</button>
+                        <!-- <button class="sm-btn white-btn">+ 더보기</button> -->
                     </div>
                     
                     <div class="table-wrap class-table">
@@ -174,7 +173,7 @@
                                     <td>${list.INST_NM}</td>
                                     <td>${list.REG_DT}</td>
                                     <td>${list.EDU_TIME}분</td>
-                                    <td>${list.COUR_TIME_MIN}분 ${list.COUR_TIME_SEC}초</td>
+                                    <td>${list.COUR_TIME}</td>
                                     <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyPlayer.do'/>?edu_no=${list.EDU_NO}&cour_no=${list.COUR_NO}','popup2');" class="sm-btn white-btn">바로가기</button></td>
                                 </tr>
                             </c:forEach>

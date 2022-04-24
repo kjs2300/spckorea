@@ -326,25 +326,31 @@
 					  WHEN a.TRAIN_E_DATE < NOW() THEN '교육종료'
 				 END) AS EDU_STATUS,
 				 ]]>
+				CASE b.COUR_STAT
+			 		WHEN 1 THEN '완료'
+			 		ELSE '미완료'
+				 END AS COUR_STAT,     
                 (CASE WHEN b.COUR_NO != '' THEN 'Y' END) AS APP_CHK
         FROM (SELECT *
 				FROM EDU_REGISTRATION
 		        WHERE 1=1
 		        AND CATEGORY1_KEY = '3' 
-				AND CATEGORY2_KEY = '7')a 
+				AND CATEGORY2_KEY = '7'
+				<if test="start_date !=null and start_date !=''">
+				    <![CDATA[
+				     AND TRAIN_S_DATE >= #{start_date}
+				    ]]>
+				</if>
+				<if test="end_date !=null and end_date !=''">
+					<![CDATA[
+				     AND TRAIN_E_DATE <= #{end_date}
+				    ]]> 
+				</if>	
+				)a 
 		LEFT JOIN EDU_COURSE_REGISTRATION b
 		ON a.EDU_NO = b.EDU_NO
         AND b.USER_ID = #{UserAccount.user_id} 
-		<if test="start_date !=null and start_date !=''">
-		    <![CDATA[
-		     AND a.TRAIN_S_DATE <= #{start_date}
-		    ]]>
-		</if>
-		<if test="end_date !=null and end_date !=''">
-			<![CDATA[
-		     AND a.TRAIN_E_DATE >= #{end_date}
-		    ]]> 
-		</if>	
+		
 		<if test="edu_nm != '' and edu_nm != null and eduSearch =='TEXT'">
 			AND a.CATEGORY3_KEY IN (SELECT CATEGORY3_KEY FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_NAME LIKE CONCAT('%',#{edu_nm},'%'))
 		</if>
@@ -358,26 +364,45 @@
 				FROM EDU_REGISTRATION
 		        WHERE 1=1
 		        AND CATEGORY1_KEY = '3' 
-				AND CATEGORY2_KEY = '7')a 
+				AND CATEGORY2_KEY = '7'
+				<if test="start_date !=null and start_date !=''">
+				    <![CDATA[
+				     AND TRAIN_S_DATE >= #{start_date}
+				    ]]>
+				</if>
+				<if test="end_date !=null and end_date !=''">
+					<![CDATA[
+				     AND TRAIN_E_DATE <= #{end_date}
+				    ]]> 
+				</if>	
+				)a 
 		LEFT JOIN EDU_COURSE_REGISTRATION b
 		ON a.EDU_NO = b.EDU_NO
         AND b.USER_ID = #{UserAccount.user_id} 
-		<if test="start_date !=null and start_date !=''">
-		    <![CDATA[
-		     AND a.TRAIN_S_DATE <= #{start_date}
-		    ]]>
-		</if>
-		<if test="end_date !=null and end_date !=''">
-			<![CDATA[
-		     AND a.TRAIN_E_DATE >= #{end_date}
-		    ]]> 
-		</if>	
 		<if test="edu_nm != '' and edu_nm != null and eduSearch =='TEXT'">
 			AND a.CATEGORY3_KEY IN (SELECT CATEGORY3_KEY FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_NAME LIKE CONCAT('%',#{edu_nm},'%'))
 		</if>
 	</select>
 	
-	
+	<insert id="instructor05Save" parameterType="java.util.Map">	
+		INSERT INTO EDU_COURSE_REGISTRATION(
+		  	  COUR_NO
+		  	, EDU_NO
+		  	, USER_ID
+		  	, USER_NM
+		  	, EML_ADDR
+		  	, MBL_TELNO
+		  	, REG_ID
+		) VALUES (
+			  (SELECT MAX(a.COUR_NO)+1 FROM EDU_COURSE_REGISTRATION a)
+			, #{edu_no}
+			, #{UserAccount.user_id}
+			, #{UserAccount.user_nm}
+			, #{UserAccount.eml_addr}
+			, #{UserAccount.mbl_telno}
+			, #{UserAccount.user_id}
+		)	
+	</insert>
 	<!-- 관리자 -->
 	
 	<select id="getInstructorAllCnt" parameterType="java.util.Map" resultType="java.util.Map">
@@ -416,10 +441,12 @@
 		                     WHEN CLASS = '4' THEN '기업' 
 						END
 				 FROM EDU_INSTRUCTOR WHERE COM_USER_ID = a.USER_ID) AS INS_CLASS
-			   ,'' AS EDU_COUNT
-			   ,'' AS EDU_ALL_COUNT
-			   ,'' AS EDU_COUNT
-			   ,'' AS LICENSE_DT
+			   ,(SELECT COUNT(*) FROM EDU_SCHEDULE WHERE EDU_TEAC_ID = a.USER_ID AND DATE_FORMAT(EDU_START_DATE,'%x') = DATE_FORMAT(NOW(),'%x')) AS EDU_COUNT
+			   ,(SELECT COUNT(*) FROM EDU_SCHEDULE WHERE EDU_TEAC_ID = a.USER_ID) AS EDU_ALL_COUNT
+			   ,(SELECT REG_DT FROM EDU_INSTRUCTOR WHERE COM_USER_ID = a.USER_ID) AS LICENSE_DT   
+               ,CASE WHEN (SELECT INS_OFF_STATUS FROM EDU_INSTRUCTOR WHERE COM_USER_ID = a.USER_ID) = '1' THEN '완료' ELSE '미완료' END AS INS_OFF_STATUS
+               ,CASE WHEN (SELECT COUNT(*) FROM EDU_COURSE_REGISTRATION WHERE USER_ID = a.USER_ID AND EDU_NO IN (SELECT EDU_NO FROM EDU_REGISTRATION WHERE CATEGORY1_KEY = '3' AND CATEGORY2_KEY = '7')) > 0 THEN '완료'
+					ELSE '미완료' END AS ON_CHK
 		FROM COM_USER a
 		where 1=1
 		AND a.EDU_AUTH_CD IN ('03','04')

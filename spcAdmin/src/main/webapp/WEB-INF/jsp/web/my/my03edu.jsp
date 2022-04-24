@@ -75,7 +75,7 @@
 	 $("#searchCondition").eq(0).prop("checked",true);
 	 $("[type='text']").val("");
  }
-  
+ 
  function fn_delete(idx) {
 		var idxArray = new Array();
 
@@ -103,9 +103,9 @@
 
 	var setDel = function(idxArray){
 	    $.ajax({
-	        url: "<c:url value='/my/courDel.do'/>",
+	        url: "<c:url value='/my/cartDel.do'/>",
 	        type: "POST",
-	        data: { "cour_no" : idxArray },
+	        data: { "basket_no" : idxArray },
 	        success: function(data) {
 	        	if(data == 'SUCCESS'){
 	        		alert("처리 완료하였습니다.");
@@ -118,10 +118,21 @@
 	        }
 	    });
 	};
-	 function fn_egov_link_page(pageNo){
+	function fn_move(str) {
+	  	var frm = document.commonForm;
+		$("#site").val(str);  
+	   	frm.action = "<c:url value='/my/my01edu.do'/>";
+	  	frm.submit();
+    }
+	
+	function openWindowPop(url, name){
+	    var options = 'top=10, left=10, width=1200px, height=800px, status=no, menubar=no, toolbar=no, resizable=no';
+	    window.open(url, name, options);
+	}	
+	function fn_egov_link_page(pageNo){
 		 var frm = document.commonForm;
 		 $("#pageIndex").val(pageNo); 
-	 	 frm.action = "<c:url value='/my/my01status.do'/>";
+	 	 frm.action = "<c:url value='/my/my01edu.do'/>";
 	   	 frm.submit();
 	 }
 </script>
@@ -129,7 +140,7 @@
             <div id="container">
 
                     <div class="tit-wrap">
-                        <h1 class="h1-tit">신청현황</h1>
+                        <h1 class="h1-tit">학습/교육현황</h1>
 
                         <div class="side-cont">
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_home.png" alt="홈 바로가기"/>
@@ -138,15 +149,32 @@
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
                             <span>일반</span>
                             <img src="${pageContext.request.contextPath}/user/images/common/ico_next.png" alt="다음 아이콘"/>
-                            <span>신청현황</span>
+                            <span>학습/교육현황</span>
                         </div>
                     </div>
 
                     <div class="contents-wrap">
-						
+
+                        <!---- tab-cont begin ---->
+                        <div class="tab-cont">
+                            <ul>
+                            	<c:if test="${site eq 'on'}">
+                                <li class="on">온라인</li>
+                                <li><a onClick="fn_move('off')">오프라인</a></li>
+                                </c:if>
+                                <c:if test="${site eq 'off'}">
+                                <li><a onClick="fn_move('on')">온라인</a></li>
+                                <li class="on">오프라인</li>
+                                </c:if>
+                            </ul>
+                        </div>
+                        <!---- tab-cont end ---->
+
                         <!---- search-wrap begin ---->
                         <form  id="commonForm" name="commonForm"  method="post"  action="">
 		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
+		    			<input type="hidden" id="site" name="site" class="input-box" value="${site}"  />
+                        
                         <div class="search-wrap">
                             <div class="search-cont">
                                 <label>기간 :</label>
@@ -156,7 +184,7 @@
                                 </div>
                                   
                                 <div class="radio-cont">
-                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="TODAY">
+                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="TODAY" <c:if test="${searchDate == 'TODAY'}">checked </c:if>>
                                     <label for="dateToday">오늘</label>
                                 </div>
                                 
@@ -190,6 +218,42 @@
 					            </select>
                             </div>
 
+                            <div class="search-cont">
+                                <label>학습현황 :</label>
+                                <c:if test="${site eq 'on'}">
+                                <div class="radio-cont">
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="" <c:if test="${edu_status == '' || empty edu_status}">checked </c:if>>
+                                    <label for="">전체</label>
+                                </div>
+                                  
+                                <div class="radio-cont">
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="2" <c:if test="${edu_status == '2'}">checked </c:if>>
+                                    <label for="">학습중</label>
+                                </div>
+                                
+                                <div class="radio-cont mr10">
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="1" <c:if test="${edu_status == '1'}">checked </c:if>>
+                                    <label for="">학습완료</label>
+                                </div>
+                                </c:if>
+                                <c:if test="${site eq 'off'}">
+                                <div class="radio-cont">
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="" <c:if test="${edu_status == '' || empty edu_status}">checked </c:if>>
+                                    <label for="">전체</label>
+                                </div>
+                                  
+                                <div class="radio-cont">
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="2" <c:if test="${edu_status == '2'}">checked </c:if>>
+                                    <label for="">교육중</label>
+                                </div>
+                                
+                                <div class="radio-cont mr10">
+                                    <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="1" <c:if test="${edu_status == '1'}">checked </c:if>>
+                                    <label for="">교육완료</label>
+                                </div>
+                                </c:if>
+                            </div>
+
                             <div class="btn-cont">
                                 <button class="lg-btn orange-btn">검색</button>
                                 <button class="lg-btn navy-btn" onClick="fn_clear();">초기화</button>
@@ -198,51 +262,59 @@
                         </form>
                         <!---- search-wrap end ---->
 
-                        <div class="btn-cont mb20">
-                            <!-- <button class="lg-btn white-btn">선택삭제</button> -->
+                        <!---- tit-cont begin ---->
+                        <div class="tit-cont flex-left">
+                        <c:if test="${site eq 'on'}">
+                            <p class="total">전체 : <span>${allCount.ALL_CNT}</span>건</p>
+                            <p class="total">학습중 : <span>${allCount.ING_CNT}</span>건</p>
+                            <p class="total">학습완료 : <span>${allCount.END_CNT}</span>건</p>
+                        </c:if>
+                        <c:if test="${site eq 'off'}">
+                            <p class="total">전체 : <span>${allCount.ALL_CNT}</span>건</p>
+                            <p class="total">교육중 : <span>${allCount.ING_CNT}</span>건</p>
+                            <p class="total">교육완료 : <span>${allCount.END_CNT}</span>건</p>
+                        </c:if>
                         </div>
+                        <!---- tit-cont end ---->
 
                         <div class="comp mt0">
                             <div class="table-wrap">
+                            	<c:if test="${site eq 'on'}">
                                 <table class="list-tb">
-                                    <caption>분류1, 분류2, 분류3(교육명), 강사명, 신청일, 취소 정보가 있는 테이블</caption>
+                                    <caption>분류1, 분류2, 분류3(교육명), 강사명, 신청일, 학습여부, 나의강의실 정보가 있는 테이블</caption>
                                     <colgroup>
-                                    	<%-- <col width="8%"/> --%>
-                                        <col width="8%"/>
-                                        <col width="10%"/>
+                                        <col width="6%"/>
+                                        <col width="12%"/>
                                         <col width="14%"/>
                                         <col width="*"/>
+                                        <col width="9%"/>
+                                        <col width="12%"/>
                                         <col width="10%"/>
-                                        <col width="10%"/>
-                                        <col width="10%"/>
+                                        <col width="12%"/>
                                     </colgroup>
                                     <thead>
                                         <tr>
-                                            <!-- <th><input type="checkbox" id="checkAll" name='checkAll' class="check-box"/></th> -->
                                             <th>No.</th>
                                             <th>분류1</th>
                                             <th>분류2</th>
                                             <th>분류3(교육명)</th>
                                             <th>강사명</th>
                                             <th>신청일</th>
-                                            <th>취소</th>
+                                            <th>학습여부</th>
+                                            <th>나의강의실</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     <c:forEach var="result" items="${resultList}" varStatus="status">
                                         <tr>
-                                            <%-- <td><input type="checkbox" class="check-box" id='checkNo' name='checkNo' value="${result.BASKET_NO}"/></td> --%>
                                             <td>${status.index + 1}</td>
                                             <td>${result.CATEGORY1_NAME}</td>
                                             <td>${result.CATEGORY2_NAME}</td>
                                             <td class="tl">${result.CATEGORY3_NAME}</td>
                                             <td>${result.INST_NM}</td>
                                             <td>${result.REG_DT}</td>
-                                            <td>
-                                            <c:if test="${result.CANCEL_CHECK == 'Y'}">
-                                            	<button  class="sm-btn white-btn" onClick="fn_delete('${result.COUR_NO}');">취소</button>
-                                            </c:if>
-                                            </td>
+                                            <td>${result.COUR_STAT}</td>
+                                            <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyClass.do'/>','popup');" class="sm-btn white-btn">바로가기</button></td>
                                         </tr>
                                     </c:forEach>
                                     <c:if test="${empty resultList }">
@@ -252,11 +324,55 @@
 							        </c:if>
                                     </tbody>
                                 </table>
+                                </c:if>
+                                <c:if test="${site eq 'off'}">
+                                <table class="list-tb">
+                                    <caption>분류1, 분류2, 분류3(교육명), 강사명, 신청일, 교육현황 정보가 있는 테이블</caption>
+                                    <colgroup>
+                                        <col width="8%"/>
+                                        <col width="12%"/>
+                                        <col width="17%"/>
+                                        <col width="*"/>
+                                        <col width="9%"/>
+                                        <col width="12%"/>
+                                        <col width="10%"/>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>분류1</th>
+                                            <th>분류2</th>
+                                            <th>분류3(교육명)</th>
+                                            <th>강사명</th>
+                                            <th>신청일</th>
+                                            <th>학습여부</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach var="result" items="${resultList}" varStatus="status">
+                                        <tr>
+                                            <td>${status.index + 1}</td>
+                                            <td>${result.CATEGORY1_NAME}</td>
+                                            <td>${result.CATEGORY2_NAME}</td>
+                                            <td class="tl">${result.CATEGORY3_NAME}</td>
+                                            <td>${result.INST_NM}</td>
+                                            <td>${result.REG_DT}</td>
+                                            <td>${result.OFF_STAT}</td>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:if test="${empty resultList }">
+							             <tr>
+							                 <td colspan='6'/>Data 없습니다.</td>
+							             </tr>
+							        </c:if>
+                                    </tbody>
+                                </table>
+                                </c:if>
                             </div>
                         </div>
                             
     
-                        <div class="page-wrap">
+                           <div class="page-wrap">
 						     <ul class="paging">
 						         <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />
 						     </ul>

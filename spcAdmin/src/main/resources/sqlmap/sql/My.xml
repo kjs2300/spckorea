@@ -248,8 +248,7 @@
 				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
 		        ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
 		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT, b.INST_NM, b.EDU_TIME
-		        ,IFNULL(TIME_FORMAT(SEC_TO_TIME(FLOOR(a.COUR_TIME)),'%i'),'00') AS COUR_TIME_MIN
-		        ,IFNULL(TIME_FORMAT(SEC_TO_TIME(FLOOR(a.COUR_TIME)),'%s'),'00') AS COUR_TIME_SEC
+                ,(SELECT TIME_FORMAT(SEC_TO_TIME(SUM(c.COUR_TIME)), '%H시간 %i분 %s초') FROM EDU_COURSE_ONLINE c WHERE c.COUR_NO = a.COUR_NO AND c.USER_ID = a.USER_ID) AS COUR_TIME
 		        ,a.USER_NM, a.COUR_NO, b.EDU_NO
 		        ,CASE a.COUR_STAT
 			 		WHEN 1 THEN '완료'
@@ -288,8 +287,7 @@
 				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
 		        ,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
 		        ,DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT, b.INST_NM, b.EDU_TIME
-		        ,TIME_FORMAT(SEC_TO_TIME(FLOOR(a.COUR_TIME)),'%i') AS COUR_TIME_MIN
-		        ,TIME_FORMAT(SEC_TO_TIME(FLOOR(a.COUR_TIME)),'%s') AS COUR_TIME_SEC
+                ,(SELECT TIME_FORMAT(SEC_TO_TIME(SUM(c.COUR_TIME)), '%H시간 %i분 %s초') FROM EDU_COURSE_ONLINE c WHERE c.COUR_NO = a.COUR_NO AND c.USER_ID = a.USER_ID) AS COUR_TIME
 		        ,a.USER_NM, a.COUR_NO, b.EDU_NO
 		        ,CASE a.COUR_STAT
 			 		WHEN 1 THEN '완료'
@@ -323,43 +321,65 @@
 		ORDER BY COUR_NO DESC
 	</select>
 	
+	<select id="getCourInfo" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT  (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY) AS CATEGORY1_NAME,
+				(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME,
+		        (SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME,
+		        b.INST_NM, DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT, b.EDU_TIME,
+                (SELECT COUNT(*) FROM EDU_COURSE_ONLINE WHERE COUR_NO = a.COUR_NO AND USER_ID = a.USER_ID AND COUR_STAT = '1') AS SECTOR_CNT1,
+                (SELECT COUNT(*) FROM EDU_REGISTRATION_DETAIL WHERE EDU_NO = b.EDU_NO) AS SECTOR_CNT2,
+                TIME_FORMAT(SEC_TO_TIME(SUM(c.COUR_TIME)), '%H시간 %i분 %s초') AS COUR_TIME,
+                CASE WHEN a.COUR_STAT = '1' THEN '학습완료'
+					 ELSE '학습중' END AS COUR_STAT
+		FROM EDU_COURSE_REGISTRATION a, 
+			 EDU_REGISTRATION b,
+             EDU_COURSE_ONLINE c
+		WHERE a.EDU_NO = b.EDU_NO
+        AND a.EDU_NO = c.EDU_NO
+        AND a.COUR_NO = c.COUR_NO
+		AND b.EDU_NO = #{edu_no}
+		AND a.COUR_NO = #{cour_no}
+        AND a.USER_ID = #{UserAccount.user_id}
+	</select>
+	
+	<select id="getCourSecList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT  b.EDU_SUB_NO, 
+				b.EDU_CURR1, 
+                b.EDU_CURR2,
+                b.FILE_ID,
+                b.EDU_ON_APP_TIME,
+                TIME_FORMAT(SEC_TO_TIME(a.COUR_TIME), '%H시간 %i분 %s초') AS COUR_TIME,
+                b.EDU_CON_URL,
+                CASE WHEN b.EDU_CON_STAT = '1' THEN '완료'
+					 ELSE '미완료' END AS EDU_CON_STAT
+        FROM EDU_COURSE_ONLINE a,
+			 EDU_REGISTRATION_DETAIL b
+		WHERE a.EDU_SUB_NO = b.EDU_SUB_NO
+		AND a.EDU_NO = #{edu_no}
+		AND a.COUR_NO = #{cour_no}
+        AND a.USER_ID = #{UserAccount.user_id}
+	</select>
+	
 	<select id="getOnclassTime" parameterType="java.util.Map" resultType="java.util.Map">
-	SELECT  COUR_TIME,COUR_STAT
-		FROM EDU_COURSE_REGISTRATION
-		 WHERE 1=1
-		  AND COUR_NO = #{cour_no}
-		  AND EDU_NO = #{edu_no}
+	SELECT  (SELECT COUR_TIME FROM EDU_COURSE_ONLINE WHERE USER_ID = #{UserAccount.user_id} AND EDU_SUB_NO = a.EDU_SUB_NO) AS COUR_TIME,
+		(SELECT COUR_STAT FROM EDU_COURSE_ONLINE WHERE USER_ID = #{UserAccount.user_id} AND EDU_SUB_NO = a.EDU_SUB_NO) AS COUR_STAT,
+        a.EDU_CON_URL, a.EDU_NO
+		FROM EDU_REGISTRATION_DETAIL a
+		WHERE 1=1
+		AND a.EDU_SUB_NO = #{edu_sub_no}
 	</select>
 
 	<update id="onclassUpdate" parameterType="java.util.Map">	
-		UPDATE EDU_COURSE_REGISTRATION
-		SET COUR_TIME = #{cour_time}, COUR_STAT = #{cour_stat}
-			<if test="cour_stat == '1' and category2_key != null">
-			,AND CHG_DT = NOW()
-			</if>
-		WHERE COUR_NO = #{cour_no}
-		  AND EDU_NO = #{edu_no}
-	</update>
-	
-	<update id="onclassUpdate2" parameterType="java.util.Map">	
-		INSERT INTO
-	      dm.product_t02 (
-	         column_name_1,
-	         column_name_2,
-	         column_name_3
-	      )
-	   VALUES (
-	      value_1,
-	      value_2,
-	      value_3'     
-	   )
-	   ON
+		INSERT INTO EDU_COURSE_ONLINE (
+			COUR_NO, EDU_NO, EDU_SUB_NO, USER_ID, COUR_TIME, COUR_STAT, REG_DT, REG_ID
+		)VALUES(
+			#{cour_no},#{edu_no},#{edu_sub_no},#{UserAccount.user_id},#{cour_time},#{cour_stat},DATE_FORMAT(NOW(),'%x-%m-%d'),#{UserAccount.user_id}
+		)
+		ON
 	      DUPLICATE KEY
 	   UPDATE
-	      column_name_1=value_1,
-	      column_name_2=value_2,
-	      column_name_3=value_3   
-	      
+	      COUR_TIME = #{cour_time},
+	      COUR_STAT = #{cour_stat}
 	</update>
 	
 	<select id="getWarrantList" parameterType="java.util.Map" resultType="java.util.Map">
@@ -381,7 +401,7 @@
 		AND TRAIN_S_DATE <= NOW() 
         ]]>
 		AND COUR_STAT = 1
-		AND b.CATEGORY1_KEY = '1'
+		AND b.CATEGORY1_KEY = #{category1_key}
 		<if test="category2_key != '' and category2_key != null">
 			AND b.CATEGORY2_KEY = #{category2_key}
 		</if>
@@ -424,7 +444,7 @@
 		AND TRAIN_S_DATE <= NOW() 
         ]]>
 		AND COUR_STAT = 1
-		AND b.CATEGORY1_KEY = '1'
+		AND b.CATEGORY1_KEY = #{category1_key}
 		<if test="category2_key != '' and category2_key != null">
 			AND b.CATEGORY2_KEY = #{category2_key}
 		</if>
@@ -616,7 +636,10 @@
 		SELECT INSTRUCTOR_LEAVE_IDX, 
 			   CASE WHEN STATUS = '1' THEN '승인'
 			   		ELSE '미승인' END AS STATUS, 
-			   REASON, 
+			   CASE WHEN REASON = '1' THEN '출산 및 육아'
+					WHEN REASON = '2' THEN '병가'
+                    WHEN REASON = '3' THEN '해외연수'
+                    ELSE '기타' END AS REASON, 
 			   S_DATE, 
 			   E_DATE,
 			   REG_DT  
@@ -665,60 +688,66 @@
 	</delete>
 	
 	<select id="getInsEduList" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT  a.COUR_NO, b.CATEGORY3_KEY,
-				b.TRAIN_S_DATE, b.TRAIN_E_DATE,
-                b.EDU_METHOD, a.REG_DT
-        FROM EDU_COURSE_REGISTRATION a,
-			 EDU_REGISTRATION b
+		SELECT (select CATEGORY3_NAME From EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = a.CATEGORY3_KEY) AS EDU_NAME,
+				a.TRAIN_S_DATE, a.TRAIN_E_DATE,
+                a.EDU_METHOD, a.EDU_NO, DATE_FORMAT(b.REG_DT,'%Y-%m-%d') AS REG_DT, b.COUR_NO
+        FROM (SELECT *
+				FROM EDU_REGISTRATION
+		        WHERE 1=1
+		        AND CATEGORY1_KEY = '3' 
+				AND CATEGORY2_KEY = '7'
+				<if test="edu_nm != '' and edu_nm != null and eduSearch =='TEXT'">
+					AND CATEGORY3_KEY IN (SELECT CATEGORY3_KEY from EDU_CLASS_CATEGORY3 WHERE CATEGORY3_NAME LIKE CONCAT('%',#{edu_nm},'%')) 
+				</if>
+				<choose>
+					<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+					</when>
+					<when test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+					<![CDATA[
+						AND TRAIN_S_DATE <= NOW() AND TRAIN_E_DATE >= NOW()
+					]]>
+					</when>
+					<when test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+				      <![CDATA[
+				       AND  TRAIN_S_DATE >= #{start_date} AND TRAIN_E_DATE <= #{end_date} 
+				       ]]>
+					</when>
+				</choose>
+				)a,
+			 EDU_COURSE_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
-        AND b.CATEGORY1_KEY = '3' 
-        AND b.CATEGORY2_KEY = '7'
-        AND a.USER_ID = #{UserAccount.user_id}
-		<choose>
-			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
-			</when>
-			<when
-				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
-				AND a.REG_DT = NOW()
-			</when>
-			<when
-				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
-		      <![CDATA[
-		       AND  a.REG_DT >= #{start_date} AND a.REG_DT <= #{end_date} 
-		       ]]>
-			</when>
-		</choose>
-		<if test="edu_nm != '' and edu_nm != null and eduSearch =='TEXT'">
-			AND b.CATEGORY3_NAME LIKE CONCAT('%',#{edu_nm},'%') 
-		</if>
+        AND b.USER_ID = #{UserAccount.user_id}
 		LIMIT #{recordCountPerPage} OFFSET #{offset}
 	</select>
 	
 	<select id="getInsEduListCnt" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(*) 
-		FROM EDU_COURSE_REGISTRATION a,
-			 EDU_REGISTRATION b
+		FROM (SELECT *
+				FROM EDU_REGISTRATION
+		        WHERE 1=1
+		        AND CATEGORY1_KEY = '3' 
+				AND CATEGORY2_KEY = '7'
+				<if test="edu_nm != '' and edu_nm != null and eduSearch =='TEXT'">
+					AND CATEGORY3_KEY IN (SELECT CATEGORY3_KEY from EDU_CLASS_CATEGORY3 WHERE CATEGORY3_NAME LIKE CONCAT('%',#{edu_nm},'%')) 
+				</if>
+				<choose>
+					<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+					</when>
+					<when test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+					<![CDATA[
+						AND TRAIN_S_DATE <= NOW() AND TRAIN_E_DATE >= NOW()
+					]]>
+					</when>
+					<when test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+				      <![CDATA[
+				       AND  TRAIN_S_DATE >= #{start_date} AND TRAIN_E_DATE <= #{end_date} 
+				       ]]>
+					</when>
+				</choose>
+				)a,
+			 EDU_COURSE_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
-        AND b.CATEGORY1_KEY = '3' 
-        AND b.CATEGORY2_KEY = '7'
-        AND a.USER_ID = #{UserAccount.user_id}
-		<choose>
-			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
-			</when>
-			<when
-				test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
-				AND a.REG_DT = NOW()
-			</when>
-			<when
-				test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
-		      <![CDATA[
-		       AND  a.REG_DT >= #{start_date} AND a.REG_DT <= #{end_date} 
-		       ]]>
-			</when>
-		</choose>
-		<if test="edu_nm != '' and edu_nm != null and eduSearch =='TEXT'">
-			AND b.CATEGORY3_NAME LIKE CONCAT('%',#{edu_nm},'%') 
-		</if>
+        AND b.USER_ID = #{UserAccount.user_id}
 	</select>
 	
 	<delete id="deleteInsEdu" parameterType="java.util.Map">	

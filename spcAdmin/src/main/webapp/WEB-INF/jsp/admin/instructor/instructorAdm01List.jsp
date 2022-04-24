@@ -325,8 +325,12 @@
                 <td>${result.AREA_NM}</td>
                 <td>${result.COPER_NM}</td>
                 <td>${result.LICENSE_DT}</td>
-                <td><span class="blue-txt">완료</span></td>
-                <td><span class="red-txt">미완료</span></td>
+                <td><c:if test="${result.INS_OFF_STATUS == '완료'}"><span class="blue-txt">완료</span></c:if>
+                	<c:if test="${result.INS_OFF_STATUS == '미완료'}"><span class="red-txt">미완료</span></c:if>
+                </td>
+                <td><c:if test="${result.ON_CHK == '완료'}"><span class="blue-txt">완료</span></c:if>
+                	<c:if test="${result.ON_CHK == '미완료'}"><span class="red-txt">미완료</span></c:if>
+                </td>
                 <td><button class="sm-btn blue-btn" onClick="fn_detail('${result.USER_ID}');">수정</button></td>
             </tr>
             </c:forEach>

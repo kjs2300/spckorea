@@ -316,6 +316,10 @@ public class InstructorController
 	  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 	  paramMap.put("offset",offset);
 	  	  
+	  if(!paramMap.containsKey("tapNo")) {
+		  paramMap.put("tapNo", "1");
+	  }
+	  
 	  paramMap.put("sqlName", "getInsEduAppList");
 	  List<Map<String, Object>> list = instructorService.getSelectList(paramMap);
 	  model.addAttribute("resultList", list);
@@ -331,5 +335,28 @@ public class InstructorController
 	  model.addAllAttributes(paramMap);
 	  
 	  return "instructor05List";
+  }
+  
+  @RequestMapping({"/instructor05Save.do"})
+  @ResponseBody
+  public Map<String, Object> instructor05Save(HttpServletRequest request, @RequestParam Map<String, Object> paramMap) throws Exception {
+	    int resultCnt = 0;
+	    Map<String, Object> result = new HashMap<String, Object>();
+	    try {
+	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
+
+	      paramMap.put("sqlName", "instructor05Save");	
+	      resultCnt = instructorService.insertData(paramMap); 
+	      
+	      if(resultCnt > 0) {
+	    	  result.put("result", "SUCCESS");
+	      }else {
+	    	  result.put("result", "FAIL");	 
+	      }
+	    } catch (Exception e) {
+	      result.put("result", "FAIL");
+	    }
+	
+	    return result;
   }
 }
