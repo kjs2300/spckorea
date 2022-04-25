@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="contents-wrap">
-
+ 						 <img class="img-box" src="${pageContext.request.contextPath}/user/images/contents/step_cont.png" alt="기관 생명 지킴이 교육 절차"/>
                     </div>
                 </div>
                 <!--  container end -->
