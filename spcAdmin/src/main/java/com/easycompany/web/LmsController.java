@@ -2,6 +2,7 @@ package com.easycompany.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +19,7 @@ import org.springframework.web.util.WebUtils;
 
 import com.easycompany.cmm.vo.LoginVo;
 import com.easycompany.service.LmsService;
+import com.easycompany.service.SectorService;
 import com.easycompany.service.vo.LmsVo;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
@@ -29,7 +31,10 @@ public class LmsController {
 	
 	@Autowired
 	private LmsService lmsService;
-	
+
+	@Autowired
+	private SectorService sectorService;
+	  
 	/** EgovPropertyService */
 	@Autowired
 	protected EgovPropertyService propertiesService;
@@ -38,49 +43,54 @@ public class LmsController {
 	private String filePath;
 	
 	@RequestMapping(value = "/contentsList.do")
-	public String contentsList(@ModelAttribute("lmsVo") LmsVo lmsVo, ModelMap model, HttpServletRequest request) throws Exception {
-
-		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
-		/** EgovPropertyService.sample */
-		lmsVo.setPageUnit(propertiesService.getInt("pageUnit"));
-		lmsVo.setPageSize(propertiesService.getInt("pageSize"));
+	public String contentsList(@RequestParam Map<String, Object> paramMap, ModelMap model, HttpServletRequest request) throws Exception {
+		  paramMap.put("pageSize", 10);
+		  paramMap.put("recordCountPerPage", 10);
+		  paramMap.put("UserAccount", request.getSession().getAttribute("AdminAccount"));
+		  if(!paramMap.containsKey("pageIndex")) {
+			  paramMap.put("pageIndex", 1);
+		  }
+		  PaginationInfo paginationInfo = new PaginationInfo();
+		  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+		  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
+		  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+		  
+		  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
+		  paramMap.put("offset",offset);
 		
-		/** pageing setting */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(lmsVo.getPageIndex());
-		paginationInfo.setRecordCountPerPage(lmsVo.getPageUnit());
-		paginationInfo.setPageSize(lmsVo.getPageSize());
-		
-		/***  offSet 설정  ***/
-		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
-		lmsVo.setOffset(offset);
-		
-		List<LmsVo> list = lmsService.contentsList(lmsVo);
-		model.addAttribute("resultList", list);
+		  paramMap.put("sqlName", "getCategoryList1");
+		  paramMap.put("site","off");
+		  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
+		  model.addAttribute("category1list", category1list);
+		  
+		  paramMap.put("sqlName", "contentsList");
+		  List<Map<String, Object>> list = lmsService.getSelectList(paramMap);
+		  model.addAttribute("resultList", list);
 			
+		  paramMap.put("sqlName", "contentsListCnt");
+		  int totCnt = lmsService.getSelectListCnt(paramMap);
+		  model.addAttribute("totCnt", totCnt);
+		  paginationInfo.setTotalRecordCount(totCnt);
 		
-		int totCnt = lmsService.contentsListCnt(lmsVo);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
-		
-		lmsVo.setReg_id(loginvo.getId());		
-		model.addAttribute("lmsVo",   lmsVo);
-		model.addAttribute("path",      request.getServletPath());
+		  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
+		  model.addAttribute("paginationInfo", paginationInfo);
+		  model.addAttribute("path", request.getServletPath());
+		  model.addAllAttributes(paramMap);
 
 		return "contentsList";
 	}
 	
 	@RequestMapping(value = "/contentsReq.do")
-	public String noticeReq(@ModelAttribute("lmsVo") LmsVo lmsVo, ModelMap model, HttpServletRequest request) throws Exception {
-		if(lmsVo.getContent_idx() > 0) {
-			LmsVo detailData = lmsService.selectDetailLms(lmsVo);
+	public String noticeReq(@RequestParam Map<String, Object> paramMap, ModelMap model, HttpServletRequest request) throws Exception {
+		//if(lmsVo.getContent_idx() > 0) {
+			//LmsVo detailData = lmsService.selectDetailLms(paramMap);
 //			if(detailData != null ) {
 //				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
 //				model.addAttribute("resultFileList", files);
 //			}
-			model.addAttribute("detailData",  detailData);
+			//model.addAttribute("detailData",  detailData);
 			model.addAttribute("path",      request.getServletPath());
-		}
+		//}
 		return "contentsReq";
 	}
 	
@@ -95,11 +105,11 @@ public class LmsController {
 			ArrayList<String> fileList = new ArrayList<>();
 			
 			if ("I".equals(lmsVo.getGubun1())) { // 저장
-				resultCnt = lmsService.contentsSave(lmsVo, file1, file2, request);
+				//resultCnt = lmsService.contentsSave(lmsVo, file1, file2, request);
 				lmsVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
 				
 			} else if("E".equals(lmsVo.getGubun1())) { // 수정
-				resultCnt = lmsService.updateContents(lmsVo);
+				//resultCnt = lmsService.updateContents(paramMap);
 //				String[] ArraysStr = adBoardVo.getCheckdstr().split(",");
 //		    	  if(ArraysStr.length >0){
 //		    		  BoardVo boardVo = new BoardVo();
@@ -138,35 +148,35 @@ public class LmsController {
 	}
 	
 	@RequestMapping(value = "/studentList.do")
-	public String studentList(@ModelAttribute("lmsVo") LmsVo lmsVo, ModelMap model, HttpServletRequest request) throws Exception {
-
-		LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
-		/** EgovPropertyService.sample */
-		lmsVo.setPageUnit(propertiesService.getInt("pageUnit"));
-		lmsVo.setPageSize(propertiesService.getInt("pageSize"));
+	public String studentList(@RequestParam Map<String, Object> paramMap, ModelMap model, HttpServletRequest request) throws Exception {
+		  paramMap.put("pageSize", 10);
+		  paramMap.put("recordCountPerPage", 10);
+		  paramMap.put("UserAccount", request.getSession().getAttribute("AdminAccount"));
+		  if(!paramMap.containsKey("pageIndex")) {
+			  paramMap.put("pageIndex", 1);
+		  }
+		  PaginationInfo paginationInfo = new PaginationInfo();
+		  paginationInfo.setCurrentPageNo(Integer.parseInt(paramMap.get("pageIndex").toString()));
+		  paginationInfo.setRecordCountPerPage(Integer.parseInt(paramMap.get("recordCountPerPage").toString()));
+		  paginationInfo.setPageSize(Integer.parseInt(paramMap.get("pageSize").toString()));
+		  
+		  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
+		  paramMap.put("offset",offset);
 		
-		/** pageing setting */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(lmsVo.getPageIndex());
-		paginationInfo.setRecordCountPerPage(lmsVo.getPageUnit());
-		paginationInfo.setPageSize(lmsVo.getPageSize());
-		
-		/***  offSet 설정  ***/
-		int offset = ((paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getPageSize());
-		lmsVo.setOffset(offset);
-		
-		List<LmsVo> list = lmsService.contentsList(lmsVo);
-		model.addAttribute("resultList", list);
+		  paramMap.put("sqlName", "contentsList");
+		  List<Map<String, Object>> list = lmsService.getSelectList(paramMap);
+		  model.addAttribute("resultList", list);
 			
+		  paramMap.put("sqlName", "contentsListCnt");
+		  int totCnt = lmsService.getSelectListCnt(paramMap);
+		  model.addAttribute("totCnt", totCnt);
+		  paginationInfo.setTotalRecordCount(totCnt);
 		
-		int totCnt = lmsService.contentsListCnt(lmsVo);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
-		
-		lmsVo.setReg_id(loginvo.getId());		
-		model.addAttribute("lmsVo",   lmsVo);
-		model.addAttribute("path",      request.getServletPath());
-
+		  model.addAttribute("sessionId", request.getSession().getAttribute("UserAccount"));
+		  model.addAttribute("paginationInfo", paginationInfo);
+		  model.addAttribute("path", request.getServletPath());
+		  model.addAllAttributes(paramMap);
+		  
 		return "studentList";
 	}
 

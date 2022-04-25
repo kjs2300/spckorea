@@ -1,6 +1,7 @@
 package com.easycompany.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,14 +11,13 @@ import com.easycompany.service.vo.LmsVo;
 
 public interface LmsService {
 
-	List<LmsVo> contentsList(LmsVo lmsVo);
-
-	int contentsListCnt(LmsVo lmsVo);
-
-	LmsVo selectDetailLms(LmsVo lmsVo);
-
-	int contentsSave(LmsVo lmsVo, MultipartFile file1, MultipartFile file2, HttpServletRequest request);
-
-	int updateContents(LmsVo lmsVo);
-
+	public List<Map<String, Object>> getSelectList(Map<String, Object> paramMap) throws Exception;
+	
+	public Map<String, Object> getSelectData(Map<String, Object> paramMap) throws Exception;
+	
+	public int getSelectListCnt(Map<String, Object> paramMap);
+	
+	public int insertData(Map<String, Object> paramMap) throws Exception;
+	
+	public int updateData(Map<String, Object> paramMap) throws Exception;
 }
