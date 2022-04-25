@@ -55,9 +55,7 @@
                 ER.INST_NM, ER.TRAIN_S_DATE, ER.TRAIN_E_DATE, ER.EDU_METHOD,ER.EDU_TIME, ER.EDU_NOTICE
 		  FROM EDU_REGISTRATION ER
 		 WHERE 1=1
-		<if test=" site != ''">
-		    AND EDU_SITE = #{site}
-		</if>
+		 AND EDU_SITE = #{site}
 		<if test=" category1_key !=null and category1_key !=0">
 			AND ER.CATEGORY1_KEY = #{category1_key} 
 		</if>
@@ -91,9 +89,7 @@
 		SELECT COUNT(*) 
 		  FROM EDU_REGISTRATION ER
 		 WHERE 1=1
-		<if test=" site != ''">
-		    AND EDU_SITE = #{site}
-		</if>
+		 AND EDU_SITE = #{site}
 		<if test=" category1_key !=null and category1_key !=0">
 			AND ER.CATEGORY1_KEY = #{category1_key} 
 		</if>

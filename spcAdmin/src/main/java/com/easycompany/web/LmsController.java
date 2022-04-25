@@ -59,7 +59,7 @@ public class LmsController {
 		  paramMap.put("offset",offset);
 		
 		  paramMap.put("sqlName", "getCategoryList1");
-		  paramMap.put("site","off");
+		  paramMap.put("site","on");
 		  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
 		  model.addAttribute("category1list", category1list);
 		  
@@ -82,15 +82,19 @@ public class LmsController {
 	
 	@RequestMapping(value = "/contentsReq.do")
 	public String noticeReq(@RequestParam Map<String, Object> paramMap, ModelMap model, HttpServletRequest request) throws Exception {
-		//if(lmsVo.getContent_idx() > 0) {
-			//LmsVo detailData = lmsService.selectDetailLms(paramMap);
-//			if(detailData != null ) {
-//				List<BoardVo> files = adBoardService.selectFileList(adBoardVo);
-//				model.addAttribute("resultFileList", files);
-//			}
-			//model.addAttribute("detailData",  detailData);
-			model.addAttribute("path",      request.getServletPath());
-		//}
+		if(paramMap.get("flag").equals("U")) {			  
+		  	paramMap.put("sqlName", "selectDetailLms");	
+			Map<String, Object> result = lmsService.getSelectData(paramMap);
+		  	model.addAttribute("result", result);
+		}
+		paramMap.put("sqlName", "getCategoryList1");
+		paramMap.put("site","on");
+		List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
+		model.addAttribute("category1list", category1list);
+		  
+	  	model.addAttribute("path", request.getServletPath());
+		model.addAllAttributes(paramMap);
+		
 		return "contentsReq";
 	}
 	

@@ -64,12 +64,22 @@ public class SectorController
 	  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
 	  model.addAttribute("category1list", category1list);
 	  
-	  switch(paramMap.get("idx").toString()) {
-		  case "01":paramMap.put("category1_key", "1");paramMap.put("category2_key", "2"); break;
-		  case "02":paramMap.put("category1_key", "2");paramMap.put("category2_key", "3"); break;
-		  case "03":paramMap.put("category1_key", "2");paramMap.put("category2_key", "4"); break;
-		  case "04":paramMap.put("category1_key", "2");paramMap.put("category2_key", "5"); break;
-		  case "05":paramMap.put("category1_key", "2");paramMap.put("category2_key", "6"); break;
+	  if(paramMap.get("site").equals("on")) {
+		  switch(paramMap.get("idx").toString()) {
+			  case "01":paramMap.put("category1_key", "1");paramMap.put("category2_key", "2"); break;
+			  case "02":paramMap.put("category1_key", "2");paramMap.put("category2_key", "3"); break;
+			  case "03":paramMap.put("category1_key", "2");paramMap.put("category2_key", "4"); break;
+			  case "04":paramMap.put("category1_key", "2");paramMap.put("category2_key", "5"); break;
+			  case "05":paramMap.put("category1_key", "2");paramMap.put("category2_key", "6"); break;
+		  }
+	  }else {
+		  switch(paramMap.get("idx").toString()) {
+			  case "01":paramMap.put("category1_key", "4");paramMap.put("category2_key", "8"); break;
+			  case "02":paramMap.put("category1_key", "5");paramMap.put("category2_key", "9"); break;
+			  case "03":paramMap.put("category1_key", "5");paramMap.put("category2_key", "10"); break;
+			  case "04":paramMap.put("category1_key", "5");paramMap.put("category2_key", "11"); break;
+			  case "05":paramMap.put("category1_key", "5");paramMap.put("category2_key", "12"); break;
+		  }
 	  }
 	  
 	  paramMap.put("sqlName", "getCategoryList2");

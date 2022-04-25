@@ -328,15 +328,12 @@
 		        b.INST_NM, DATE_FORMAT(a.REG_DT,'%Y-%m-%d') AS REG_DT, b.EDU_TIME,
                 (SELECT COUNT(*) FROM EDU_COURSE_ONLINE WHERE COUR_NO = a.COUR_NO AND USER_ID = a.USER_ID AND COUR_STAT = '1') AS SECTOR_CNT1,
                 (SELECT COUNT(*) FROM EDU_REGISTRATION_DETAIL WHERE EDU_NO = b.EDU_NO) AS SECTOR_CNT2,
-                TIME_FORMAT(SEC_TO_TIME(SUM(c.COUR_TIME)), '%H시간 %i분 %s초') AS COUR_TIME,
+                (SELECT IFNULL(TIME_FORMAT(SEC_TO_TIME(SUM(COUR_TIME)), '%H시간 %i분 %s초'),0) FROM EDU_COURSE_ONLINE WHERE EDU_NO = a.EDU_NO AND COUR_NO = a.COUR_NO) AS COUR_TIME,
                 CASE WHEN a.COUR_STAT = '1' THEN '학습완료'
 					 ELSE '학습중' END AS COUR_STAT
 		FROM EDU_COURSE_REGISTRATION a, 
-			 EDU_REGISTRATION b,
-             EDU_COURSE_ONLINE c
+			 EDU_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
-        AND a.EDU_NO = c.EDU_NO
-        AND a.COUR_NO = c.COUR_NO
 		AND b.EDU_NO = #{edu_no}
 		AND a.COUR_NO = #{cour_no}
         AND a.USER_ID = #{UserAccount.user_id}
@@ -346,18 +343,15 @@
 		SELECT  b.EDU_SUB_NO, 
 				b.EDU_CURR1, 
                 b.EDU_CURR2,
+                b.EDU_CURR3,
                 b.FILE_ID,
                 b.EDU_ON_APP_TIME,
-                TIME_FORMAT(SEC_TO_TIME(a.COUR_TIME), '%H시간 %i분 %s초') AS COUR_TIME,
+                (SELECT IFNULL(TIME_FORMAT(SEC_TO_TIME(SUM(COUR_TIME)), '%H시간 %i분 %s초'),0) FROM EDU_COURSE_ONLINE WHERE EDU_NO = b.EDU_NO AND COUR_NO = #{cour_no} AND USER_ID = #{UserAccount.user_id}) AS COUR_TIME,
                 b.EDU_CON_URL,
                 CASE WHEN b.EDU_CON_STAT = '1' THEN '완료'
 					 ELSE '미완료' END AS EDU_CON_STAT
-        FROM EDU_COURSE_ONLINE a,
-			 EDU_REGISTRATION_DETAIL b
-		WHERE a.EDU_SUB_NO = b.EDU_SUB_NO
-		AND a.EDU_NO = #{edu_no}
-		AND a.COUR_NO = #{cour_no}
-        AND a.USER_ID = #{UserAccount.user_id}
+        FROM EDU_REGISTRATION_DETAIL b
+		WHERE b.EDU_NO = #{edu_no}
 	</select>
 	
 	<select id="getOnclassTime" parameterType="java.util.Map" resultType="java.util.Map">

@@ -141,7 +141,6 @@
 			                        </c:forEach>
                                 </select>
                                 <select class="select" id="site" name="site">
-                                    <option value="">전체</option>
                                     <option value="on" <c:if test="${site == 'on'}">selected</c:if>>온라인</option>
                                     <option value="off" <c:if test="${site == 'off'}">selected</c:if>>오프라인</option>
                                 </select>

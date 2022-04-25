@@ -33,17 +33,23 @@
 		<if test=" category3_key !=null and category3_key != '' and searchCondition == 'CATEGORY'">
 			AND a.CATEGORY3_KEY = #{category3_key} 
 		</if>
-	      <![CDATA[
+	      
 	      <if test="edu_status != null and edu_status == '1'">
+	      	<![CDATA[
 	      	AND b.TRAIN_S_DATE > NOW()
+	      	 ]]>
 	      </if>
 	      <if test="edu_status != null and edu_status == '2'">
+	      	<![CDATA[
 	      	AND b.TRAIN_S_DATE <= NOW() AND b.TRAIN_E_DATE >= NOW()
+	      	 ]]>
 	      </if>
 	      <if test="edu_status != null and edu_status == '3'">
+	      	<![CDATA[
 	      	AND b.TRAIN_E_DATE > NOW()
+	      	 ]]>
 	      </if>
-	       ]]>
+	      
 	      <if test="con_chk != null and con_chk == '1'">
 	      	AND b.FILE_ID IS NOT NULL
 	      </if>
@@ -61,29 +67,47 @@
 
 
 	<select id="contentsListCnt" parameterType="java.util.Map" resultType="int">
-    	/**  com.easycompany.mapper.LmsMapper.contentsListCnt **/
 		 SELECT COUNT(*) cnt
-	       FROM edu_lms
-	     WHERE USE_YN = 'Y'
-	      <if test="searchCondition !=null and searchCondition == 'ALL'">
-	      	AND (TITLE LIKE CONCAT('%', #{searchKeyword}, '%') OR REG_ID LIKE CONCAT('%', #{searchKeyword}, '%') OR CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%'))
+	     FROM EDU_REGISTRATION a,
+			 EDU_REGISTRATION_DETAIL b
+		WHERE a.EDU_NO = b.EDU_NO
+		AND a.EDU_SITE = 'on'
+	      <if test=" category1_key !=null and category1_key != '' and searchCondition == 'CATEGORY'">
+			AND a.CATEGORY1_KEY = #{category1_key} 
+		</if>
+		<if test=" category2_key !=null and category2_key != '' and searchCondition == 'CATEGORY'">
+			AND a.CATEGORY2_KEY = #{category2_key} 
+		</if>
+		<if test=" category3_key !=null and category3_key != '' and searchCondition == 'CATEGORY'">
+			AND a.CATEGORY3_KEY = #{category3_key} 
+		</if>
+	      
+	      <if test="edu_status != null and edu_status == '1'">
+	      	<![CDATA[
+	      	AND b.TRAIN_S_DATE > NOW()
+	      	 ]]>
 	      </if>
-	      <if test="searchCondition !=null and searchCondition == 'TITLE'">
-	      	AND TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+	      <if test="edu_status != null and edu_status == '2'">
+	      	<![CDATA[
+	      	AND b.TRAIN_S_DATE <= NOW() AND b.TRAIN_E_DATE >= NOW()
+	      	 ]]>
 	      </if>
-	      <if test="searchCondition !=null and searchCondition == 'REG_NM'">
-	      	AND REG_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+	      <if test="edu_status != null and edu_status == '3'">
+	      	<![CDATA[
+	      	AND b.TRAIN_E_DATE > NOW()
+	      	 ]]>
 	      </if>
-	      <if test="searchCondition !=null and searchCondition == 'CONTENTS'">
-	      	AND CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%')
+	      
+	      <if test="con_chk != null and con_chk == '1'">
+	      	AND b.FILE_ID IS NOT NULL
+	      </if>
+	      <if test="con_chk != null and con_chk == '2'">
+	      	AND b.FILE_ID IS NULL
 	      </if>
 	      <if test="searchDate !=null and searchDate != 'ALL'">
 	      	<![CDATA[
-		       AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) >= #{start_date} AND CAST( DATE_FORMAT( REG_DT, '%Y-%m-%d' ) AS CHAR(19)) <= #{end_date} 
+		       AND b.TRAIN_S_DATE >= #{start_date} AND b.TRAIN_E_DATE <= #{end_date} 
 	        ]]>
-	      </if>
-	      <if test="edu_status !=null and edu_status != 'ALL'">
-	      	AND EDU_STATUS = #{edu_status}
 	      </if>
 	</select>
 	

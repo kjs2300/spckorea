@@ -12,8 +12,8 @@
 <h1 class="h1-tit">콘텐츠 ${ not empty detailData.content_idx ? "수정" : "등록"}</h1>
 
 <form id="commonForm" name="commonForm" method="post" enctype="Multipart/form-data">
-	<input type="hidden" name="content_idx" id="content_idx" value="${ not empty detailData.content_idx ? detailData.content_idx : '0'}">
-	<input type="hidden" id="gubun1"  name="gubun1"  />
+	<input type="hidden" name="edu_sub_no" id="edu_sub_no" value="${edu_sub_no}">
+	<input type="hidden" id="flag"  name="flag" value="${flag}"/>
 	<input type="hidden" id="checkdstr"      name="checkdstr"      class="input-box" value=''/>
 	<input type="hidden" id="file_seq"       name="file_seq"       class="input-box" value=0/>
 	<div class="table-wrap">
@@ -27,24 +27,29 @@
 	            <tr>
 	                <th>분류1,2</th>
 	                <td>
-	                    <select class="select mr30">
-	                        <option>분류1</option>
-	                        <option>일반</option>
-	                        <option>기관</option>
-	                        <option>강사</option>
-	                        <option>실무자</option>
-	                    </select>
-	                    <select class="select">
-	                        <option>분류2</option>
-	                    </select>
+	                    <select class="select"  id="category1_key" name="category1_key">
+			            	<option value='' >선택 하세요</option>
+							<c:forEach var="result" items="${category1list}" varStatus="status">
+								<option value='${result.CATEGORY1_KEY}' >${result.CATEGORY1_NAME}</option>
+							</c:forEach>
+			            </select>
+			                           <select class="select"  id="category2_key" name="category2_key">
+			            	<option value='' >선택 하세요</option>
+							<c:forEach var="result" items="${category2list}" varStatus="status">
+								<option value='${result.CATEGORY2_KEY}' >${result.CATEGORY2_NAME}</option>
+							</c:forEach>
+			            </select>
 	                </td>
 	            </tr>
 	            <tr>
 	                <th>교육명(분류3)</th>
 	                <td>
-	                    <select class="select lg-width">
-	                        <option>교육명</option>
-	                    </select>
+	                    <select class="select lg-width"  id="category3_key" name="category3_key">
+			            	<option value='' >선택 하세요</option>
+							<c:forEach var="result" items="${category3list}" varStatus="status">
+								<option value='${result.CATEGORY3_KEY}' >${result.CATEGORY3_NAME}</option>
+							</c:forEach>
+			            </select>
 	                </td>
 	            </tr>
 	            <tr>
@@ -134,6 +139,63 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	$('#category1_key').change(function(){
+		var val  = $(this).val();
+
+		if( val ==""){
+			return;
+		}
+		
+		$("#category2_key").val("");
+				
+		 $.ajax({	
+		    url     : "<c:url value='/user/category2list.do'/>",
+		    data    : $("#commonForm").serialize(),
+	        dataType: "JSON",
+	        cache   : false,
+			async   : true,
+			type	: "POST",	
+			success: function(data, opt, inx){
+			var option = '';
+			option += '<option value="0">선택 하세요</opton>'; //선택
+			$.each(data, function(i, ret){
+				option += '<option value="'+ret.CATEGORY2_KEY+'">'+ret.CATEGORY2_NAME+'</option>';		
+			});
+			$('select[name=category2_key]').html(option);						
+	        },	       
+	        error 	: function(xhr, status, error) {}
+	        
+	     });
+	 });
+ 
+ $('#category2_key').change(function(){
+		var val  = $(this).val();
+
+		if( val ==""){
+			return;
+		}
+		
+		$("#category3_key").val("");
+				
+		 $.ajax({	
+		    url     : "<c:url value='/user/category3list.do'/>",
+		    data    : $("#commonForm").serialize(),
+	        dataType: "JSON",
+	        cache   : false,
+			async   : true,
+			type	: "POST",	
+			success: function(data, opt, inx){
+			var option = '';
+			option += '<option value="0">선택 하세요</opton>'; //선택
+			$.each(data, function(i, ret){
+				option += '<option value="'+ret.CATEGORY3_KEY+'">'+ret.CATEGORY3_NAME+'</option>';		
+			});
+			$('select[name=category3_key]').html(option);						
+	        },	       
+	        error 	: function(xhr, status, error) {}
+	        
+	     });
+	 });
 });
 
 function fn_save(gubun1){
