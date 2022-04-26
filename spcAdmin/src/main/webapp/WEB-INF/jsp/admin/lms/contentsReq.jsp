@@ -9,10 +9,11 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
-<h1 class="h1-tit">콘텐츠 ${ not empty detailData.content_idx ? "수정" : "등록"}</h1>
+<h1 class="h1-tit">콘텐츠 수정</h1>
 
 <form id="commonForm" name="commonForm" method="post" enctype="Multipart/form-data">
-	<input type="hidden" name="edu_sub_no" id="edu_sub_no" value="${edu_sub_no}">
+	<input type="hidden" name="object_id" id="object_id" value="${edu_sub_no}">
+	<input type="hidden" id="file_gubun"  name="file_gubun" value="lmsContents"/>
 	<input type="hidden" id="flag"  name="flag" value="${flag}"/>
 	<input type="hidden" id="checkdstr"      name="checkdstr"      class="input-box" value=''/>
 	<input type="hidden" id="file_seq"       name="file_seq"       class="input-box" value=0/>
@@ -26,13 +27,7 @@
 	        <tbody>
 	            <tr>
 	                <th>분류1,2</th>
-	                <td>
-	                    <select class="select"  id="category1_key" name="category1_key">
-			            	<option value='' >선택 하세요</option>
-							<c:forEach var="result" items="${category1list}" varStatus="status">
-								<option value='${result.CATEGORY1_KEY}' >${result.CATEGORY1_NAME}</option>
-							</c:forEach>
-			            </select>
+	                <td>${result.CATEGORY1_NAME} / ${result.CATEGORY2_NAME}
 			                           <select class="select"  id="category2_key" name="category2_key">
 			            	<option value='' >선택 하세요</option>
 							<c:forEach var="result" items="${category2list}" varStatus="status">
@@ -43,37 +38,24 @@
 	            </tr>
 	            <tr>
 	                <th>교육명(분류3)</th>
-	                <td>
-	                    <select class="select lg-width"  id="category3_key" name="category3_key">
-			            	<option value='' >선택 하세요</option>
-							<c:forEach var="result" items="${category3list}" varStatus="status">
-								<option value='${result.CATEGORY3_KEY}' >${result.CATEGORY3_NAME}</option>
-							</c:forEach>
-			            </select>
-	                </td>
+	                <td>${result.CATEGORY3_NAME}</td>
 	            </tr>
 	            <tr>
 	                <th>차시</th>
-	                <td>
-	                    <input type="text" class="input-box" id="lms_cnt" name="lms_cnt" value="${detailData.lms_cnt}"/>
-	                    <span>회</span>
-	                </td>
+	                <td>${result.EDU_CURR1}</td>
 	            </tr>
 	            <tr>
 	                <th>차시명</th>
-	                <td><input type="text" class="input-box lg-width" id="lms_title" name="lms_title" value="${detailData.lms_title}"/></td>
+	                <td>${result.EDU_CURR2}</td>
 	            </tr>
 	            <tr>
 	                <th>강의시간</th>
-	                <td>
-	                    <input type="text" class="input-box" id="edu_time" name="edu_time" value="${detailData.edu_time}"/>
-	                    <span>분</span>
-	                </td>
+	                <td>${result.EDU_CURR3} <span>분</span></td>
 	            </tr>
 	            <tr>
 	                <th>교육 인증시간</th>
 	                <td>
-	                    <input type="text" class="input-box" id="edu_time_cf" name="edu_time_cf" value="${detailData.edu_time_cf}"/>
+	                    <input type="text" class="input-box" id="edu_app_time" name="edu_app_time" value="${result.EDU_ON_APP_TIME}"/>
 	                    <span>분</span>
 	                </td>
 	            </tr>
@@ -128,12 +110,7 @@
 </form>
 
 <div class="btn-cont">
-	<c:if test="${empty detailData.content_idx }">
-     		<button type="button" class="mid-btn blue-btn"   onClick="javascript:fn_save('I');">저장</button>
-     </c:if>
-     <c:if test="${not empty detailData.content_idx }">
-     		<button type="button" class="mid-btn blue-btn"   onClick="javascript:fn_save('E');">저장</button>
-     </c:if>
+    <button type="button" class="mid-btn blue-btn"   onClick="javascript:fn_save();">저장</button>
     <button class="mid-btn white-btn" onClick="javascript:history.back();">취소</button>
 </div>
 
@@ -198,11 +175,8 @@ $(document).ready(function() {
 	 });
 });
 
-function fn_save(gubun1){
+function fn_save(){
 	var formData = new FormData($('#commonForm')[0]);
-	
-
-	$("#gubun1").val(gubun1); 
 	
 	var title       = $("#title").val();
 	var reg_id = $("#reg_id").val();
@@ -213,11 +187,7 @@ function fn_save(gubun1){
 	}
 
 	var msg = "콘텐츠 등록 하시겠습니까?";
-	if (gubun1 == "E"){
-		msg = "콘텐츠 수정 하시겠습니까?";
-	}
 	formData.append("file1",    $("input[name=file1]")[0].files[0]);
-	formData.append("file2",    $("input[name=file2]")[0].files[0]);
 		
 		var yn = confirm(msg);	
 		if(yn){

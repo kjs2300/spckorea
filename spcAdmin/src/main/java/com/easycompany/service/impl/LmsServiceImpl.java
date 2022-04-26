@@ -17,6 +17,7 @@ import com.easycompany.mapper.InstructorMapper;
 import com.easycompany.mapper.LmsMapper;
 import com.easycompany.service.LmsService;
 import com.easycompany.service.vo.BoardVo;
+import com.easycompany.service.vo.CategoryVo;
 import com.easycompany.service.vo.LmsVo;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -46,5 +47,22 @@ public class LmsServiceImpl extends EgovAbstractServiceImpl implements LmsServic
 	
 	public int updateData(Map<String, Object> paramMap) throws Exception {
 		return lmsMapper.updateData(paramMap);
+	}
+	
+	public int insertCommonFile(Map<String, Object> paramMap, Map<String, Object> fileSave, int gubun) {
+		  int cnt = 0;
+		  if (fileSave != null) {
+			  paramMap.put("file_id",(String)fileSave.get("file_uuid"));
+			  paramMap.put("file_name",(String)fileSave.get("file_name"));
+			  paramMap.put("file_full_path",(String)fileSave.get("file_full_path"));
+			  paramMap.put("file_size",(String)fileSave.get("file_size"));
+			  if(gubun == 1) {
+			        cnt = this.lmsMapper.insertCommonFile(paramMap);
+			  }else {
+			        cnt = this.lmsMapper.updateCommonFile(paramMap);
+			  }
+		  }
+		  
+	    return cnt;
 	}
 }

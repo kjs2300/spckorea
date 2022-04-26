@@ -1,6 +1,8 @@
 package com.easycompany.web;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.WebUtils;
 
+import com.easycompany.cmm.util.FileUtil;
 import com.easycompany.cmm.vo.LoginVo;
 import com.easycompany.service.LmsService;
 import com.easycompany.service.SectorService;
@@ -63,6 +66,10 @@ public class LmsController {
 		  List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
 		  model.addAttribute("category1list", category1list);
 		  
+		  paramMap.put("sqlName", "contentsAllCnt");	
+		  Map<String, Object> result = lmsService.getSelectData(paramMap);
+		  model.addAttribute("count", result);  
+			
 		  paramMap.put("sqlName", "contentsList");
 		  List<Map<String, Object>> list = lmsService.getSelectList(paramMap);
 		  model.addAttribute("resultList", list);
@@ -82,16 +89,9 @@ public class LmsController {
 	
 	@RequestMapping(value = "/contentsReq.do")
 	public String noticeReq(@RequestParam Map<String, Object> paramMap, ModelMap model, HttpServletRequest request) throws Exception {
-		if(paramMap.get("flag").equals("U")) {			  
-		  	paramMap.put("sqlName", "selectDetailLms");	
-			Map<String, Object> result = lmsService.getSelectData(paramMap);
-		  	model.addAttribute("result", result);
-		}
-		paramMap.put("sqlName", "getCategoryList1");
-		paramMap.put("site","on");
-		List<Map<String, Object>> category1list = sectorService.getSelectList(paramMap);
-		model.addAttribute("category1list", category1list);
-		  
+		paramMap.put("sqlName", "selectDetailLms");	
+		Map<String, Object> result = lmsService.getSelectData(paramMap);
+		model.addAttribute("result", result);  
 	  	model.addAttribute("path", request.getServletPath());
 		model.addAllAttributes(paramMap);
 		
@@ -100,55 +100,47 @@ public class LmsController {
 	
 	@RequestMapping(value = "/contentsSave.do")
 	@ResponseBody
-	public LmsVo contentsSave(HttpServletRequest request, LmsVo lmsVo, @RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2) throws Exception {
+	public Map<String, Object> contentsSave(HttpServletRequest request, @RequestParam Map<String, Object> paramMap, @RequestParam("file1") MultipartFile file1) throws Exception {
 		int resultCnt = 0;
+		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			
-			LoginVo loginvo = (LoginVo) WebUtils.getSessionAttribute(request, "AdminAccount");
-			
-			ArrayList<String> fileList = new ArrayList<>();
-			
-			if ("I".equals(lmsVo.getGubun1())) { // 저장
-				//resultCnt = lmsService.contentsSave(lmsVo, file1, file2, request);
-				lmsVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
-				
-			} else if("E".equals(lmsVo.getGubun1())) { // 수정
-				//resultCnt = lmsService.updateContents(paramMap);
-//				String[] ArraysStr = adBoardVo.getCheckdstr().split(",");
-//		    	  if(ArraysStr.length >0){
-//		    		  BoardVo boardVo = new BoardVo();
-//		    		  for (String s : ArraysStr) {
-//		    	        	if(!StringUtil.isEmpty(s)) {
-//		    	        		boardVo.setFile_seq(Integer.parseInt(s));
-//		    	        		BoardVo fileCategoryVo = adBoardService.selectFile(boardVo);
-//		    	                fileList.add(fileCategoryVo.getFile_full_path());
-//		    	        	}        	
-//		    	      }   
-//		    	  }
-//		          
-//		          //파일업로드
-//		    	  if (multipartFile !=null && multipartFile.size() > 0) {
-//		      		fileSavelist = FileUtil.uploadFileMulti(multipartFile, request, fileAddpath); 
-//		      	  }
-//		    	  
-//		    	  //파일 추가, 정보업데이트
-//		          resultCnt = adBoardService.updateBoard(adBoardVo, fileSavelist);
-//		          
-//		          //성공 시 파일 삭제
-//		          if(resultCnt > 0) {
-//			       	   if (fileList !=null && fileList.size() > 0) {
-//			       		for (String fileFullPath : fileList) {
-//			       			FileUtil.deleteFile(request, fileFullPath);
-//			            }
-//			       	  }
-//			      }
-				lmsVo.setResult(resultCnt > 0 ? "SUCCESS" : "FAIL");
-			}
-//			
+			paramMap.put("UserAccount", request.getSession().getAttribute("AdminAccount"));
+		    paramMap.put("sqlName", "updateContents");	
+		    resultCnt = lmsService.updateData(paramMap);
+		      
+		    String fileAddpath  = this.filePath + File.separator + paramMap.get("file_gubun");
+		    Map<String, Object> fileSave = null;
+		    if (file1 != null) {
+		    	fileSave = FileUtil.uploadFile(file1, fileAddpath, request); 
+		    	resultCnt = this.lmsService.insertCommonFile(paramMap, fileSave, 1);
+	    	}     
+		    
+		    if(resultCnt < 1) {
+		        result.put("result", "SUCCESS");
+		    }else {
+		        result.put("result", "FAIL");	 
+		    }
 		} catch (Exception e) {
-			lmsVo.setResult("FAIL");
+		    result.put("result", "FAIL");
 		}
-		return lmsVo;
+		return result;
+	}
+	
+	@RequestMapping({"/contentsDel.do"})
+    @ResponseBody
+    public String contentsDel(HttpServletRequest request, @RequestParam(value="basket_no[]") List<Long> basketList, @RequestParam Map<String, Object> paramMap) throws Exception {
+		int resultCnt = 0;
+		String result = "";
+		try {
+			paramMap.put("UserAccount", request.getSession().getAttribute("AdminAccount"));
+			paramMap.put("sqlName", "deleteContents"); 
+			resultCnt = lmsService.updateData(paramMap);
+		    result = (resultCnt > 0 ? "SUCCESS" : "FAIL");
+		} catch (Exception e) {
+			result = "FAIL";
+		}
+		
+		return result;
 	}
 	
 	@RequestMapping(value = "/studentList.do")
@@ -167,11 +159,15 @@ public class LmsController {
 		  int offset = (paginationInfo.getCurrentPageNo() - 1) * paginationInfo.getRecordCountPerPage();
 		  paramMap.put("offset",offset);
 		
-		  paramMap.put("sqlName", "contentsList");
+		  paramMap.put("sqlName", "studentAllCnt");	
+		  Map<String, Object> result = lmsService.getSelectData(paramMap);
+		  model.addAttribute("count", result);  
+		  
+		  paramMap.put("sqlName", "studentList");
 		  List<Map<String, Object>> list = lmsService.getSelectList(paramMap);
 		  model.addAttribute("resultList", list);
 			
-		  paramMap.put("sqlName", "contentsListCnt");
+		  paramMap.put("sqlName", "studentListCnt");
 		  int totCnt = lmsService.getSelectListCnt(paramMap);
 		  model.addAttribute("totCnt", totCnt);
 		  paginationInfo.setTotalRecordCount(totCnt);

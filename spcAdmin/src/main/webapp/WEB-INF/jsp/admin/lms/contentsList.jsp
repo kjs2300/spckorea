@@ -12,7 +12,7 @@
 <h1 class="h1-tit">콘텐츠/교육자료 등록</h1>
 
 <div class="search-wrap">
-	<form id="listForm" name="listForm" target="_self" action="/lms/contentsList.do" method="post" onsubmit="">
+	<form id="commonForm" name="commonForm" target="_self" action="/lms/contentsList.do" method="post" onsubmit="">
     <input type="hidden" id="edu_sub_no"   name="edu_sub_no"  value="${edu_sub_no}"/>
     <input type="hidden" id="gubun1"      name="gubun1"     value='I'   />
 	    <div class="search-cont search-sub">
@@ -109,11 +109,11 @@
 
 <div class="btn-cont mb20">
     <dl class="count-txt">
-        <dt>전체 <span>56</span></dt>
-        <dt class="blue-txt">진행중<span>115</span></dt>
+        <dt>전체 <span>${count.ALLCNT}</span></dt>
+        <dt class="blue-txt">진행중<span>${count.STATUS2}</span></dt>
         
-        <dt class="red-txt">대기중 <span>15</span></dt>
-        <dt class="gray-txt">종료 <span>10</span></dt>
+        <dt class="red-txt">대기중 <span>${count.STATUS1}</span></dt>
+        <dt class="gray-txt">종료 <span>${count.STATUS3}</span></dt>
     </dl>
 
     <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/lms/contentsReq.do' />'; ">등록</button>
@@ -277,7 +277,7 @@ function fn_egov_link_page(pageNo){
 }
  
 function fn_edit(key1) {
- 	var frm = document.listForm;
+ 	var frm = document.commonForm;
  	$("#edu_sub_no").val(key1);
   	frm.action = "<c:url value='/lms/contentsReq.do'/>?flag=I";
  	frm.submit();

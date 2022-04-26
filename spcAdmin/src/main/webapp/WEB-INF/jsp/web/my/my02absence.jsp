@@ -104,7 +104,7 @@
                                 </div>
                                   
                                 <div class="radio-cont">
-                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="TODAY">
+                                    <input type="radio" class="radio-box" id="searchDate" name="searchDate" value="TODAY" <c:if test="${searchDate == 'TODAY'}">checked </c:if>>
                                     <label for="dateToday">오늘</label>
                                 </div>
                                 
