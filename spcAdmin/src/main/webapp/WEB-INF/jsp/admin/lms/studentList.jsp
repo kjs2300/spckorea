@@ -46,7 +46,7 @@
 			if( val ==""){
 				return;
 			}
-			
+			 
 			$("#category3_key").val("");
 					
 			 $.ajax({	
