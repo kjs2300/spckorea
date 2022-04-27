@@ -203,7 +203,9 @@
                                             <td>${result.INST_NM}</td>
                                             <td>${result.LICENSE_PBL}</td>
                                             <td>${result.LICENSE_PBL_DATE}</td>
-                                            <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyWarrant.do'/>?cour_no=${result.COUR_NO}&edu_no=${result.EDU_NO}','popup');" class="sm-btn white-btn">발급하기</button></td>
+                                            <td>
+                                            	<button onClick="javascript:openWindowPop('<c:url value='/my/popMyWarrant.do'/>?cour_no=${result.COUR_NO}&edu_no=${result.EDU_NO}','popup');" class="sm-btn white-btn">발급하기</button>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                     <c:if test="${empty resultList }">

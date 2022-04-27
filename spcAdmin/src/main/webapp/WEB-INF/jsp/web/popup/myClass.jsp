@@ -174,7 +174,7 @@
                                     <td>${list.REG_DT}</td>
                                     <td>${list.EDU_TIME}분</td>
                                     <td>${list.COUR_TIME}</td>
-                                    <td><button onClick="javascript:openWindowPop('<c:url value='/my/popMyPlayer.do'/>?edu_no=${list.EDU_NO}&cour_no=${list.COUR_NO}','popup2');" class="sm-btn white-btn">바로가기</button></td>
+                                    <td><button type="button" onClick="javascript:openWindowPop('<c:url value='/my/popMyPlayer.do'/>?edu_no=${list.EDU_NO}&cour_no=${list.COUR_NO}','popup2');" class="sm-btn white-btn">바로가기</button></td>
                                 </tr>
                             </c:forEach>
                             </tbody>

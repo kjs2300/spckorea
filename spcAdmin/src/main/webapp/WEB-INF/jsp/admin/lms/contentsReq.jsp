@@ -83,27 +83,6 @@
 	                    </div>
 	                </td>
 	            </tr>
-	            <tr>
-	                <th>교육현황</th>
-	                <td>
-	                    <div class="tb-cont">
-	                        <div class="radio-cont">
-	                            <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="I" <c:if test="${detailData.edu_status == 'I'}">checked </c:if>>
-	                            <label for="">진행중(노출)</label>
-	                        </div>
-	                          
-	                        <div class="radio-cont">
-	                            <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="D" <c:if test="${detailData.edu_status == 'D'}">checked </c:if>>
-	                            <label for="">대기중(미노출)</label>
-	                        </div>
-	                        
-	                        <div class="radio-cont mr10">
-	                            <input type="radio" class="radio-box" id="edu_status" name="edu_status" value="D" <c:if test="${detailData.edu_status == 'D'}">checked </c:if>>
-	                            <label for="">종료</label>
-	                        </div>
-	                    </div>
-	                </td>
-	            </tr>
 	        </tbody>
 	    </table>
 	</div>

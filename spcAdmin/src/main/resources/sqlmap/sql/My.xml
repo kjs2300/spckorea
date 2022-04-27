@@ -348,8 +348,7 @@
                 b.EDU_ON_APP_TIME,
                 (SELECT IFNULL(TIME_FORMAT(SEC_TO_TIME(SUM(COUR_TIME)), '%H시간 %i분 %s초'),0) FROM EDU_COURSE_ONLINE WHERE EDU_NO = b.EDU_NO AND COUR_NO = #{cour_no} AND USER_ID = #{UserAccount.user_id}) AS COUR_TIME,
                 b.EDU_CON_URL,
-                CASE WHEN b.EDU_CON_STAT = '1' THEN '완료'
-					 ELSE '미완료' END AS EDU_CON_STAT
+                (SELECT (CASE WHEN COUR_STAT = '1' THEN '완료' ELSE '미완료' END) FROM EDU_COURSE_ONLINE WHERE EDU_SUB_NO = b.EDU_SUB_NO) AS COUR_STAT
         FROM EDU_REGISTRATION_DETAIL b
 		WHERE b.EDU_NO = #{edu_no}
 	</select>
@@ -376,6 +375,26 @@
 	      COUR_STAT = #{cour_stat}
 	</update>
 	
+	<select id="onclassFinishCheck" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT (SELECT COUNT(*) from EDU_REGISTRATION_DETAIL WHERE EDU_NO = a.EDU_NO) AS ALLCNT,
+				SUM(CASE WHEN COUR_STAT = '1' THEN 1 ELSE 0 END) AS CNT
+        FROM EDU_COURSE_ONLINE a WHERE a.USER_ID = #{UserAccount.user_id}
+	</select>
+	
+	<update id="onclassFinish" parameterType="java.util.Map">	
+		UPDATE EDU_COURSE_REGISTRATION
+		SET COUR_STAT = '1', CHG_DT = NOW()
+		WHERE COUR_NO = #{cour_no}
+		  AND EDU_NO = #{edu_no}
+	</update>
+	
+	<update id="myWarrantUpdate" parameterType="java.util.Map">	
+		UPDATE EDU_COURSE_REGISTRATION
+		SET LICENSE_PBL = '1', LICENSE_PBL_DATE = NOW()
+		WHERE COUR_NO = #{cour_no}
+		  AND EDU_NO = #{edu_no}
+	</update><!--수정해야함-->
+	
 	<select id="getWarrantList" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT  (SELECT CATEGORY1_NAME FROM EDU_CLASS_CATEGORY1 WHERE CATEGORY1_KEY = b.CATEGORY1_KEY) AS CATEGORY1_NAME
 				,(SELECT CATEGORY2_NAME FROM EDU_CLASS_CATEGORY2 WHERE CATEGORY2_KEY = b.CATEGORY2_KEY) AS CATEGORY2_NAME
@@ -386,7 +405,7 @@
 		        ,CASE a.LICENSE_PBL
 			 		WHEN 1 THEN '발급'
 			 		ELSE '미발급'
-				 END AS LICENSE_PBL         
+				 END AS LICENSE_PBL      
 		FROM EDU_COURSE_REGISTRATION a, 
 			 EDU_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
@@ -474,22 +493,23 @@
 	<select id="getMyWarrant" parameterType="java.util.Map" resultType="java.util.Map">
 	SELECT  a.USER_NM, a.USER_ID
 			,(SELECT CATEGORY3_NAME FROM EDU_CLASS_CATEGORY3 WHERE CATEGORY3_KEY = b.CATEGORY3_KEY) AS CATEGORY3_NAME
-			,DATE_FORMAT(a.CHG_DT,'%Y') AS DATE_Y
-			,DATE_FORMAT(a.CHG_DT,'%m') AS DATE_M
-			,DATE_FORMAT(a.CHG_DT,'%d') AS DATE_D
+            ,DATE_FORMAT(IFNULL(a.CHG_DT,NOW()),'%Y년 %m월 %d일') AS DATE1
             ,DATE_FORMAT(NOW(), '%y') AS NOWYEAR
-            ,c.LICENSE_NUMBER
+            ,(SELECT LICENSE_NUMBER FROM EDU_USER_LICENSE WHERE COUR_NO = a.COUR_NO AND EDU_NO = a.EDU_NO) AS LICENSE_NUMBER
             ,(SELECT COPER_NM FROM COM_USER WHERE USER_ID = a.USER_ID) AS COPER_NM
-            ,DATE_FORMAT(c.REG_DT,'%Y') AS CDATE_Y
-			,DATE_FORMAT(c.REG_DT,'%m') AS CDATE_M
-			,DATE_FORMAT(c.REG_DT,'%d') AS CDATE_D
+            ,(SELECT DATE_FORMAT(REG_DT,'%Y년 %m월 %d일') FROM EDU_USER_LICENSE WHERE COUR_NO = a.COUR_NO AND EDU_NO = a.EDU_NO) AS DATE2
+			,a.LICENSE_PBL
+			,a.LICENSE_PBL_DATE
+            ,CASE WHEN b.CATEGORY2_KEY = '2' OR b.CATEGORY2_KEY = '8' THEN '번호'
+				  WHEN b.CATEGORY2_KEY = '4' OR b.CATEGORY2_KEY = '10' THEN '번호'
+                  WHEN b.CATEGORY2_KEY = '5' OR b.CATEGORY2_KEY = '11' THEN '번호'
+                  WHEN b.CATEGORY2_KEY = '6' OR b.CATEGORY2_KEY = '12' THEN '번호'
+                  ELSE '일반' END AS LICENSE_GUBUN
+			,(SELECT LICENSE_IDX FROM EDU_USER_LICENSE WHERE COUR_NO = a.COUR_NO) AS LICENSE_CHK   
 		FROM EDU_COURSE_REGISTRATION a,
-			 EDU_REGISTRATION b,
-             EDU_USER_LICENSE c
+			 EDU_REGISTRATION b
 		 WHERE 1=1
 		  AND a.EDU_NO = b.EDU_NO
-		  AND a.EDU_NO = c.EDU_NO
-          AND a.COUR_NO = c.COUR_NO
 		  AND a.COUR_NO = #{cour_no}
 		  AND a.EDU_NO = #{edu_no}
 	</select>
@@ -535,16 +555,6 @@
 			</when>
 		</choose>
 	</select>
-	
-	<update id="myWarrantUpdate" parameterType="java.util.Map">	
-		UPDATE EDU_COURSE_REGISTRATION
-		SET COUR_TIME = #{cour_time}, COUR_STAT = #{cour_stat}
-			<if test="cour_stat == '1' and category2_key != null">
-			,AND CHG_DT = NOW()
-			</if>
-		WHERE COUR_NO = #{cour_no}
-		  AND EDU_NO = #{edu_no}
-	</update><!--수정해야함-->
 	
 	<select id="getInsActList" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT a.SCHEDULE_NO, a.EDU_START_DATE AS EDU_DATE,

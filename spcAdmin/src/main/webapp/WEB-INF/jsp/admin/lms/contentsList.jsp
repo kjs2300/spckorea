@@ -116,7 +116,7 @@
         <dt class="gray-txt">종료 <span>${count.STATUS3}</span></dt>
     </dl>
 
-    <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/lms/contentsReq.do' />'; ">등록</button>
+    <%-- <button class="mid-btn blue-btn" onclick="location.href = '<c:url value='/lms/contentsReq.do' />'; ">등록</button> --%>
 </div>
 
 <div class="table-wrap scroll-wrap">

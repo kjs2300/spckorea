@@ -46,6 +46,10 @@
  <script type="text/javaScript" language="javascript" defer="defer">
 
  $(document).ready(function(){		
+	 if($("#license_chk").val() == ""){
+		 alert("해당 수료증 발급이 되지 않았습니다.");
+		 self.close();
+	 }
 	 imgShot();
  });
  function imgShot(){
@@ -67,6 +71,7 @@
      link.click();
  }
 </script>
+<input type="hidden" id="license_chk" name="license_chk" value="${result.LICENSE_CHK}">
 <input type="hidden" id="print_name" name="print_name" value="${result.USER_NM}">
 <input type="hidden" id="print_url" name="print_url">
 
@@ -79,7 +84,7 @@
         <p class="title mb10">소속 :<span>${result.COPER_NM}</span></p>
         <p class="name">이름 : <span>${result.USER_NM}</span></p>
         <p class="des">귀하는 한국생명존중희망재단에서 실시한<br/>전문가 양성과정 (<span>${result.CATEGORY3_NAME}</span>) 교육을<br/>수료하였기에 이 증서를 수여합니다.</p>
-        <p class="date mb0"><span>${result.CDATE_Y}</span>년<span>${result.CDATE_M}</span>월<span>${result.CDATE_D}</span>일</p>
+        <p class="date mb0"><span>${result.DATE2}</span></p>
     </div>
 
     <div class="warrant-foot">

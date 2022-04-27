@@ -247,11 +247,29 @@ public class MyController
   public String popMyWarrant(@RequestParam Map<String, Object> paramMap, DefaultVO vo, ModelMap model ,HttpServletRequest request)  throws Exception {
 	  paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 	  paramMap.put("sqlName", "getMyWarrant");
-	  model.addAttribute("result", myService.getSelectData(paramMap));
+	  Map<String, Object> result = myService.getSelectData(paramMap);
+	  model.addAttribute("result", result);
+	  if(result.get("LICENSE_GUBUN").toString().equals("번호") && result.get("LICENSE_CHK") != null) {
+		  if(!result.containsKey("LICENSE_PBL_DATE")) {
+			  paramMap.put("sqlName", "myWarrantUpdate");	
+		      myService.updateData(paramMap);
+		  }
+	  }
+	  
+	  if(result.get("LICENSE_GUBUN").toString().equals("일반")) {
+		  if(!result.containsKey("LICENSE_PBL_DATE")) {
+			  paramMap.put("sqlName", "myWarrantUpdate");	
+		      myService.updateData(paramMap);
+		  }
+	  }
+      
 	  model.addAttribute("path", request.getServletPath());
 	  model.addAllAttributes(paramMap);
-	
-	  return "popMyWarrant";
+	  if(result.get("LICENSE_GUBUN").toString().equals("일반")) {
+		  return "popMyWarrant";
+	  }else {
+		  return "popMyWarrantNum";
+	  }
   }
   
   @RequestMapping({"/popMyWarrantNum.do"})
@@ -355,6 +373,14 @@ public class MyController
 	      paramMap.put("UserAccount", request.getSession().getAttribute("UserAccount"));
 	      paramMap.put("sqlName", "onclassUpdate");	
 	      resultCnt = myService.updateData(paramMap);
+	      
+	      paramMap.put("sqlName", "onclassFinishCheck");
+	      Map<String, Object> cntMap = myService.getSelectData(paramMap);
+	      if(cntMap.get("ALLCNT") == cntMap.get("CNT")) {
+	    	  paramMap.put("sqlName", "onclassFinish");	
+		      resultCnt = myService.updateData(paramMap);
+	      }
+	      
 	      if(resultCnt < 1) {
 	    	  result.put("result", "SUCCESS");
 	      }else {

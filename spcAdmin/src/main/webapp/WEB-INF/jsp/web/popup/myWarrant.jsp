@@ -43,7 +43,7 @@
 </style>
  <script type="text/javaScript" language="javascript" defer="defer">
 
- $(document).ready(function(){		
+ $(document).ready(function(){	
 	 imgShot();
  });
  function imgShot(){
@@ -74,7 +74,7 @@
         <p class="name"><span>${result.USER_NM}</span>님</p>
         <p class="title">교육명 :<span> ${result.CATEGORY3_NAME}</span></p>
         <p class="des">한국생명존중희망재단에서 시행하는 <br/>생명지킴이교육을성실하게 마쳤으며,<br/>향후 생명지킴이로서의 역할을 충실히 <br/>이행 할 준비가 되어 있으므로 이 수료증을 드립니다.</p>
-        <p class="date"><span>${result.DATE_Y}</span>년<span>${result.DATE_M}</span>월<span>${result.DATE_D}</span>일</p>
+        <p class="date"><span>${result.DATE1}</span></p>
     </div>
 
     
