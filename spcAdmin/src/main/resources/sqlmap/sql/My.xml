@@ -378,7 +378,9 @@
 	<select id="onclassFinishCheck" parameterType="java.util.Map" resultType="java.util.Map">
 	SELECT (SELECT COUNT(*) from EDU_REGISTRATION_DETAIL WHERE EDU_NO = a.EDU_NO) AS ALLCNT,
 				SUM(CASE WHEN COUR_STAT = '1' THEN 1 ELSE 0 END) AS CNT
-        FROM EDU_COURSE_ONLINE a WHERE a.USER_ID = #{UserAccount.user_id}
+        FROM EDU_COURSE_ONLINE a 
+        WHERE a.USER_ID = #{UserAccount.user_id}
+        AND a.COUR_NO = #{cour_no}
 	</select>
 	
 	<update id="onclassFinish" parameterType="java.util.Map">	

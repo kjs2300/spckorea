@@ -165,11 +165,7 @@
                                             <th>신청서 첨부</th>
                                             <td>
                                                 <div class="upload-box">
-                                                    <input type="file" />
-                                                    <button class="sm-btn black-btn">삭제</button>
-                                                    <label>
-                                                        파일명: <span>2021년 강사 교육 안내</span>
-                                                    </label>
+                                                    <input type="file" id="file1" name="file1"/>
                                                     <p class="point">파일크기 200MB 이하</p>
                                                 </div>
                                             </td>

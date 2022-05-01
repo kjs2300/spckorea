@@ -105,17 +105,22 @@ public class LmsController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			paramMap.put("UserAccount", request.getSession().getAttribute("AdminAccount"));
-		    paramMap.put("sqlName", "updateContents");	
-		    resultCnt = lmsService.updateData(paramMap);
+		    
 		      
 		    String fileAddpath  = this.filePath + File.separator + paramMap.get("file_gubun");
 		    Map<String, Object> fileSave = null;
 		    if (file1 != null) {
-		    	fileSave = FileUtil.uploadFile(file1, fileAddpath, request); 
-		    	resultCnt = this.lmsService.insertCommonFile(paramMap, fileSave, 1);
+		    	if(file1.getSize() > 0) {
+		    		fileSave = FileUtil.uploadFile(file1, fileAddpath, request); 
+			    	resultCnt = this.lmsService.insertCommonFile(paramMap, fileSave, 1);
+			    	paramMap.put("file_id", fileSave.get("file_uuid"));
+		    	}
 	    	}     
 		    
-		    if(resultCnt < 1) {
+		    paramMap.put("sqlName", "updateContents");	
+		    resultCnt = lmsService.updateData(paramMap);
+		    
+		    if(resultCnt > 0) {
 		        result.put("result", "SUCCESS");
 		    }else {
 		        result.put("result", "FAIL");	 
@@ -128,7 +133,7 @@ public class LmsController {
 	
 	@RequestMapping({"/contentsDel.do"})
     @ResponseBody
-    public String contentsDel(HttpServletRequest request, @RequestParam(value="basket_no[]") List<Long> basketList, @RequestParam Map<String, Object> paramMap) throws Exception {
+    public String contentsDel(HttpServletRequest request, @RequestParam Map<String, Object> paramMap) throws Exception {
 		int resultCnt = 0;
 		String result = "";
 		try {

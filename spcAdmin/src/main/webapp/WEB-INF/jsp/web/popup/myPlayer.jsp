@@ -56,7 +56,7 @@
 				}
 			});
 			
-			myPlayer.on("seeking", function(event){
+			/* myPlayer.on("seeking", function(event){
 				if(currentTime < myPlayer.currentTime()){
 					myPlayer.currentTime(currentTime);
 				}
@@ -65,7 +65,7 @@
 				if(currentTime < myPlayer.currentTime()){
 					myPlayer.currentTime(currentTime);
 				}
-			});
+			}); */
 			myPlayer.on('ended', function() {
 				classUpdate(1);
 				$("#finish").val("Y");

@@ -28,11 +28,6 @@
 	            <tr>
 	                <th>분류1,2</th>
 	                <td>${result.CATEGORY1_NAME} / ${result.CATEGORY2_NAME}
-			                           <select class="select"  id="category2_key" name="category2_key">
-			            	<option value='' >선택 하세요</option>
-							<c:forEach var="result" items="${category2list}" varStatus="status">
-								<option value='${result.CATEGORY2_KEY}' >${result.CATEGORY2_NAME}</option>
-							</c:forEach>
 			            </select>
 	                </td>
 	            </tr>
@@ -55,30 +50,29 @@
 	            <tr>
 	                <th>교육 인증시간</th>
 	                <td>
-	                    <input type="text" class="input-box" id="edu_app_time" name="edu_app_time" value="${result.EDU_ON_APP_TIME}"/>
+	                    <input type="text" class="input-box" id="edu_on_app_time" name="edu_on_app_time" value="${result.EDU_ON_APP_TIME}"/>
 	                    <span>분</span>
 	                </td>
 	            </tr>
 	            <tr>
 	                <th>콘텐츠 등록</th>
 	                <td>
-	                    <div class="upload-box">
-	                        <input type="file" id="file1" name="file1"/>
-	                        <button class="sm-btn black-btn">삭제</button>
-	                        <label>파일명: <span>2021년 강사 안내문</span></label>
-	                        <button class="sm-btn white-btn">미리보기</button>
-	                        <span class="point">권장사이즈 : 10MB이내</span>
-	                    </div>
+	                   <input type="text" class="input-box" id="edu_con_url" name="edu_con_url" value="${result.EDU_CON_URL}"/>
 	                </td>
 	            </tr>
 	            <tr>
 	                <th>교육자료 등록</th>
 	                <td>
 	                    <div class="upload-box">
-	                        <input type="file" id="file2" name="file2"/>
-	                        <button class="sm-btn black-btn">삭제</button>
-	                        <label>파일명: <span>2021년 강사 안내문</span></label>
-	                        <button class="sm-btn white-btn">미리보기</button>
+	                    	<input type="hidden" class="input-box" id="file_id" name="file_id" value="${result.FILE_ID}"/>
+	                    	<c:if test="${result.FILE_NAME == null}">
+	                    		<input type="file" id="file1" name="file1"/>
+	                    	</c:if>
+	                        <c:if test="${result.FILE_NAME != null}">
+	                    		<button type="button" class="sm-btn black-btn" onClick="fn_delete('${result.FILE_ID}');">삭제</button>
+	                        <label>파일명: <span>${result.FILE_NAME}</span></label>
+	                        <input type="file" id="file1" name="file1" style="display:none;"/>
+	                    	</c:if>
 	                        <span class="point">권장사이즈 : 10MB이내</span>
 	                    </div>
 	                </td>
@@ -154,19 +148,32 @@ $(document).ready(function() {
 	 });
 });
 
+function fn_delete(file_id){
+	var formData = new FormData($('#commonForm')[0]);
+
+	var msg = "파일을 삭제 하시겠습니까?";
+		var yn = confirm(msg);	
+		if(yn){
+			$.ajax({	
+				data     : formData,
+			    url		 : "<c:url value='/lms/contentsDel.do'/>?file_id="+file_id,
+		        dataType : "JSON",
+				type	 : "POST",
+				processData: false, 
+		        contentType: false,
+		        success  : function(obj) {
+		        	location.reload();			
+		        },	       
+		        error 	: function(xhr, status, error) {} 		        
+		    });
+		}
+	}
+	
 function fn_save(){
 	var formData = new FormData($('#commonForm')[0]);
-	
-	var title       = $("#title").val();
-	var reg_id = $("#reg_id").val();
-	   
-    if (title == ""){			
-		alert("제목을 입력해주세요");
-		return;
-	}
 
 	var msg = "콘텐츠 등록 하시겠습니까?";
-	formData.append("file1",    $("input[name=file1]")[0].files[0]);
+	formData.append("file1",    $("input[name=file1]")[0]);
 		
 		var yn = confirm(msg);	
 		if(yn){

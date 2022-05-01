@@ -471,27 +471,15 @@
 	</select>
 	
 	<select id="getInstructorView" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT a.*
+		SELECT a.*, CASE
+					   WHEN a.USER_SEX = 'M' THEN '남자'
+					   WHEN a.USER_SEX = 'W' THEN '여자'
+					   ELSE a.USER_SEX
+				      END AS USER_SEX_NM
 		FROM COM_USER a
 		WHERE a.USER_ID = #{user_id}
 	</select>
-	
-	<update id="updateUserData" parameterType="java.util.Map">	
-		UPDATE COM_USER
-		SET	USER_NM = #{user_nm}, 	
-		<if test="password != null and password != ''">
-			PASSWORD = #{shaPassword}, 	
-		</if>
-			TELNO = #{telno},
-			MBL_TELNO = #{mbl_telno},
-			FAXNO = #{faxno},
-			EML_ADDR = CONCAT(#{eml_addr1},'@',#{eml_addr2}),
-			USER_SEX = #{user_sex},
-			AREA_CD = #{area_cd},
-			COPER_NM = #{coper_nm}
-		WHERE USER_ID = #{user_id} 		
-	</update>
-	
+		
 	<insert id="updateInstructorData" parameterType="java.util.Map">	
 		 INSERT INTO
       		EDU_INSTRUCTOR (

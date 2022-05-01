@@ -117,7 +117,7 @@
                                     <td><a class="link">다운로드</a></td>
                                     <td><span>${list.EDU_CURR3}</span>분</td>
                                     <td><span>${list.COUR_TIME}</span>분</td>
-                                    <td>${list.EDU_CON_STAT}</td>
+                                    <td>${list.COUR_STAT}</td>
                                     <td><button class="sm-btn white-btn" onClick="javascript:openWindowPop('<c:url value='/my/popMyPlayer.do'/>?edu_sub_no=${list.EDU_SUB_NO}&cour_no=${cour_no}','popup2');">바로가기</button></td>
                                 </tr>
                             </c:forEach>

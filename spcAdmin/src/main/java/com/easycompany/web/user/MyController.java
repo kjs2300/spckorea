@@ -376,7 +376,7 @@ public class MyController
 	      
 	      paramMap.put("sqlName", "onclassFinishCheck");
 	      Map<String, Object> cntMap = myService.getSelectData(paramMap);
-	      if(cntMap.get("ALLCNT") == cntMap.get("CNT")) {
+	      if(cntMap.get("ALLCNT").toString().equals(cntMap.get("CNT").toString())) {
 	    	  paramMap.put("sqlName", "onclassFinish");	
 		      resultCnt = myService.updateData(paramMap);
 	      }

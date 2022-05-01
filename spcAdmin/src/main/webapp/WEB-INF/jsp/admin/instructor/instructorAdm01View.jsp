@@ -105,64 +105,27 @@ function fn_goList(){
                             </tr>
                             <tr>
                                 <th>이름</th>
-                                <td><input type="text" id="user_nm" name="user_nm" class="input-box lg-width" value="${result.USER_NM}"/></td>
-                            </tr>
-                            <tr>
-                                <th>비밀번호</th>
-                                <td>
-                                    <input type="text" id="password" name="password" class="input-box lg-width" value=""/>
-                                    <span class="point">변경 할 경우에만 입력하세요.</span>
-                                </td>
+                                <td>${result.USER_NM}</td>
                             </tr>
                             <tr>
                                 <th>전화번호</th>
-                                <td>
-                                    <input type="text" id="telno" name="telno" class="input-box lg-width" placeholder="- 없이 입력해주세요" value="${result.TELNO}"/>
-                                </td>
+                                <td>${result.TELNO}</td>
                             </tr>
                             <tr>
                                 <th>휴대폰</th>
-                                <td>
-                                    <input type="text" id="mbl_telno" name="mbl_telno" class="input-box lg-width" placeholder="- 없이 입력해주세요" value="${result.MBL_TELNO}"/>
-                                </td>
+                                <td>${result.MBL_TELNO}</td>
                             </tr>
                             <tr>
                                 <th>팩스번호</th>
-                                <td>
-                                    <input type="text" id="faxno" name="faxno" class="input-box lg-width" placeholder="- 없이 입력해주세요" value="${result.FAXNO}"/>
-                                </td>
+                                <td>${result.FAXNO}</td>
                             </tr>
                             <tr>
                                 <th>이메일</th>
-                                <td>
-                                    <div class="tb-cont">
-                                    	<c:set var="email" value="${fn:split(result.EML_ADDR, '@')}" />
-                                        <input type="text" id="eml_addr1" name="eml_addr1" class="input-box" value="${email[0]}"/>
-                                        <span>@</span>
-                                        <input type="text" id="eml_addr2" name="eml_addr2" class="input-box" value="${email[1]}"/>
-                                        <select class="select" id="eml_sel" name="eml_sel" onchange="email_chg();">
-                                            <option>직접입력</option>
-                                            <option value="naver.com">naver.com</option>
-                                            <option value="gmail.com">gmail.com</option>
-                                        </select>
-                                    </div>
-                                </td>
+                                <td>${result.EML_ADDR}</td>
                             </tr>
                             <tr>
                                 <th>성별</th>
-                                <td>
-                                    <div class="tb-cont">
-                                        <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="user_sex" name="user_sex" value="M" <c:if test="${result.USER_SEX == 'M'}">checked</c:if>>
-                                            <label>남자</label>
-                                        </div>
-                                          
-                                        <div class="radio-cont">
-                                            <input type="radio" class="radio-box" id="user_sex" name="user_sex" value="W" <c:if test="${result.USER_SEX == 'W'}">checked</c:if>>
-                                            <label>여자</label>
-                                        </div>
-                                    </div>
-                                </td>
+                                <td>${result.USER_SEX_NM}</td>
                             </tr>
                         </tbody>
                     </table>

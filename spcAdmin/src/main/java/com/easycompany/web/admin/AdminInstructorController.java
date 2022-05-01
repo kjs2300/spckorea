@@ -123,8 +123,6 @@ public class AdminInstructorController
 	    	  String shaPassword = EgovFileScrty.encryptPassword(paramMap.get("password").toString(), paramMap.get("user_id").toString());
 	    	  paramMap.put("shaPassword",shaPassword);
 	      }
-	      paramMap.put("sqlName", "updateUserData");	
-	      resultCnt = instructorService.updateData(paramMap);
 	      
 	      paramMap.put("sqlName", "updateInstructorData");	
 	      resultCnt = instructorService.insertData(paramMap);
