@@ -192,7 +192,7 @@ function fn_egov_link_page(pageNo){
 	 $("#pageIndex").val(pageNo); 
 	 frm.action = "<c:url value='/adm/instructorAdm04List.do'/>";
   	 frm.submit();
-}
+} 
  
 function fn_edit(idx) {
 	var formData = new FormData($('#commonForm')[0]);
