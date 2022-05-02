@@ -305,7 +305,7 @@
 	    </if>
 	</select>
 	
-	<insert id="instructor04Save" parameterType="java.util.Map">	
+	<insert id="instructor04Save" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="instructor_leave_idx">	
 		INSERT INTO EDU_INSTRUCTOR_LEAVE 
 		(INSTRUCTOR_IDX, REASON, S_DATE, E_DATE, REG_DT, REG_ID)
 		SELECT  a.INSTRUCTOR_IDX, 
@@ -552,4 +552,103 @@
         AND EDU_TEAC_ID = 'lms-test01'
         <!-- 카운트확인 -->
     </select>
+
+    <select id="getInsLeaveList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT * FROM (
+			SELECT c.USER_NM, c.USER_ID,
+				   (SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = c.AREA_CD) AS AREA_NM, 
+			       (SELECT LICENSE_NUMBER FROM EDU_USER_LICENSE WHERE CATEGORY1_KEY = '3' AND CATEGORY2_KEY = '7' AND USER_ID = c.USER_ID) AS LICENSE_NUMBER,
+			       c.INSTRUCTOR_COPER_NM,
+			       CASE WHEN a.REASON = '1' THEN '출산 및 육아' 
+					   WHEN a.REASON = '2' THEN '병가' 
+					   WHEN a.REASON = '3' THEN '해외연수' 
+					   WHEN a.REASON = '4' THEN '기타' END AS REASON,
+			       c.JUSO, c.MBL_TELNO, c.EML_ADDR, 
+			       (SELECT FILE_NAME FROM EDU_FILE WHERE FILE_GUBUN = 'insLeave' AND FILE_KEY = a.INSTRUCTOR_LEAVE_IDX) AS FILE_NAME,
+			       (SELECT FILE_ID FROM EDU_FILE WHERE FILE_GUBUN = 'insLeave' AND FILE_KEY = a.INSTRUCTOR_LEAVE_IDX) AS FILE_ID,
+			       CASE WHEN a.STATUS = '1' THEN '승인'
+						ELSE '미승인' END AS INS_STATUS,
+					a.INSTRUCTOR_LEAVE_IDX
+			FROM EDU_INSTRUCTOR_LEAVE a,
+				 EDU_INSTRUCTOR b,
+			     COM_USER c
+			WHERE a.INSTRUCTOR_IDX = b.INSTRUCTOR_IDX
+			AND b.COM_USER_ID = c.USER_ID
+			<if test="reason !=null and reason !='' and reason !='ALL' ">
+				AND a.REASON = #{reason}
+			</if>
+			<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				 
+				<![CDATA[ AND a.S_DATE <= NOW() AND a.E_DATE >= NOW() ]]>
+			</when>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[ AND  a.S_DATE >= #{start_date} AND a.E_DATE <= #{end_date} ]]>
+			</when>
+		</choose>
+		) tb
+		WHERE 1=1
+		<if test="ins_type !=null and ins_type !='' and ins_type !='ALL' ">
+			AND tb.USER_NM LIKE CONCAT('%',#{ins_nm},'%')
+		</if>
+		<if test="area_nm !=null and area_nm !=''">
+			AND tb.AREA_NM LIKE CONCAT('%',#{area_nm},'%')
+		</if>
+		
+		LIMIT #{recordCountPerPage} OFFSET #{offset}
+	</select>
+
+	<select id="getInsLeaveListCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) 
+		FROM (
+			SELECT c.USER_NM, c.USER_ID,
+				   (SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = c.AREA_CD) AS AREA_NM, 
+			       (SELECT LICENSE_NUMBER FROM EDU_USER_LICENSE WHERE CATEGORY1_KEY = '3' AND CATEGORY2_KEY = '7' AND USER_ID = c.USER_ID) AS LICENSE_NUMBER,
+			       c.INSTRUCTOR_COPER_NM,
+			       CASE WHEN a.REASON = '1' THEN '출산 및 육아' 
+					   WHEN a.REASON = '2' THEN '병가' 
+					   WHEN a.REASON = '3' THEN '해외연수' 
+					   WHEN a.REASON = '4' THEN '기타' END AS REASON,
+			       c.JUSO, c.MBL_TELNO, c.EML_ADDR, 
+			       (SELECT FILE_NAME FROM EDU_FILE WHERE FILE_GUBUN = 'insLeave' AND FILE_KEY = a.INSTRUCTOR_LEAVE_IDX) AS FILE_NAME,
+			       (SELECT FILE_ID FROM EDU_FILE WHERE FILE_GUBUN = 'insLeave' AND FILE_KEY = a.INSTRUCTOR_LEAVE_IDX) AS FILE_ID,
+			       CASE WHEN a.STATUS = '1' THEN '승인'
+						ELSE '미승인' END AS INS_STATUS,
+					a.INSTRUCTOR_LEAVE_IDX
+			FROM EDU_INSTRUCTOR_LEAVE a,
+				 EDU_INSTRUCTOR b,
+			     COM_USER c
+			WHERE a.INSTRUCTOR_IDX = b.INSTRUCTOR_IDX
+			AND b.COM_USER_ID = c.USER_ID
+			<if test="reason !=null and reason !='' and reason !='ALL' ">
+				AND a.REASON = #{reason}
+			</if>
+			<choose>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='ALL' ">
+			</when>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='TODAY' ">
+				 
+				<![CDATA[ AND a.S_DATE <= NOW() AND a.E_DATE >= NOW() ]]>
+			</when>
+			<when test="searchDate !=null and searchDate !='' and searchDate =='CHECK' ">
+		      <![CDATA[ AND  a.S_DATE >= #{start_date} AND a.E_DATE <= #{end_date} ]]>
+			</when>
+		</choose>
+		) tb
+		WHERE 1=1
+		<if test="ins_type !=null and ins_type !='' and ins_type !='ALL' ">
+			AND tb.USER_NM LIKE CONCAT('%',#{ins_nm},'%')
+		</if>
+		<if test="area_nm !=null and area_nm !=''">
+			AND tb.AREA_NM LIKE CONCAT('%',#{area_nm},'%')
+		</if>
+	</select>
+	
+	<update id="instructorAdm04App" parameterType="java.util.Map">
+		UPDATE EDU_INSTRUCTOR_LEAVE 
+		   SET STATUS = 1
+ 		 WHERE INSTRUCTOR_LEAVE_IDX = #{idx}
+	</update>
 </mapper>

@@ -104,7 +104,7 @@ public class LmsController {
 		int resultCnt = 0;
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			paramMap.put("UserAccount", request.getSession().getAttribute("AdminAccount"));
+			paramMap.put("AdminAccount", request.getSession().getAttribute("AdminAccount"));
 		    
 		      
 		    String fileAddpath  = this.filePath + File.separator + paramMap.get("file_gubun");

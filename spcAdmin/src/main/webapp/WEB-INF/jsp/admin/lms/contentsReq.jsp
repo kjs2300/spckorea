@@ -28,7 +28,6 @@
 	            <tr>
 	                <th>분류1,2</th>
 	                <td>${result.CATEGORY1_NAME} / ${result.CATEGORY2_NAME}
-			            </select>
 	                </td>
 	            </tr>
 	            <tr>

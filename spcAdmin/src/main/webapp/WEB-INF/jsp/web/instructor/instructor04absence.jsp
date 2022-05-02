@@ -37,7 +37,7 @@
  function fn_save(){
 	 var formData = new FormData($('#commonForm')[0]);
 		if(confirm("휴직 신청을 하시겠습니까?")){
-				
+			formData.append("file1",    $("input[name=file1]")[0]);		
 			$.ajax({	
 				data       : formData,
 			    url		   : "<c:url value='/user/instructor04Save.do'/>",
@@ -94,9 +94,11 @@
                     </div>
 
                     <div class="contents-wrap">
-                        <form  id="commonForm" name="commonForm"  method="post"  action="">
+                        <form  id="commonForm" name="commonForm"  method="post"  action="" enctype="Multipart/form-data">
 		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
 		    			<input type="hidden" id="user_id"  name="user_id" value="${UserAccount.user_id}" />
+		    			<input type="hidden" id="file_seq" name="file_seq" class="input-box" value=0/>
+						<input type="hidden" id="file_gubun"  name="file_gubun" value="insLeave"/>
                         <div class="comp">
                             <div class="table-wrap">
                                 <table class="detail-tb">

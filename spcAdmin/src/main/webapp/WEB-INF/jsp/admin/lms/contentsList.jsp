@@ -13,6 +13,7 @@
 
 <div class="search-wrap">
 	<form id="commonForm" name="commonForm" target="_self" action="/lms/contentsList.do" method="post" onsubmit="">
+    <input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
     <input type="hidden" id="edu_sub_no"   name="edu_sub_no"  value="${edu_sub_no}"/>
     <input type="hidden" id="gubun1"      name="gubun1"     value='I'   />
 	    <div class="search-cont search-sub">
