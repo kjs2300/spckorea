@@ -212,7 +212,7 @@ function fn_edit(idx) {
 		        	commonCallBack(obj);				
 		        },	       
 		        error 	: function(xhr, status, error) {} 		        
-		    }); 
+		    });  
 		}
 }
 
