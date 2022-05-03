@@ -423,35 +423,34 @@
 	</select>
 	
 	<select id="getInstructorList" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT a.* 
-			   ,(SELECT CD_NM FROM COM_CD_MNG WHERE UP_CD_NO = '32' AND CD = a.AREA_CD) AS AREA_NM
-			   ,CASE
-					   WHEN a.USER_SEX = 'M' THEN '남자'
-					   WHEN a.USER_SEX = 'W' THEN '여자'
-					   ELSE a.USER_SEX
-				      END AS USER_SEX_NM
-			   ,(SELECT CASE WHEN STATUS = '1' THEN '활동' 
-						 WHEN STATUS = '2' THEN '상실' 
-	                     WHEN STATUS = '3' THEN '휴직' 
-					END
-				 FROM EDU_INSTRUCTOR WHERE COM_USER_ID = a.USER_ID) AS INS_STATUS
-			   ,(SELECT CASE WHEN CLASS = '1' THEN '일반' 
-							 WHEN CLASS = '2' THEN '실무자' 
-		                     WHEN CLASS = '3' THEN '기관' 
-		                     WHEN CLASS = '4' THEN '기업' 
-						END
-				 FROM EDU_INSTRUCTOR WHERE COM_USER_ID = a.USER_ID) AS INS_CLASS
-			   ,(SELECT COUNT(*) FROM EDU_SCHEDULE WHERE EDU_TEAC_ID = a.USER_ID AND DATE_FORMAT(EDU_START_DATE,'%x') = DATE_FORMAT(NOW(),'%x')) AS EDU_COUNT
-			   ,(SELECT COUNT(*) FROM EDU_SCHEDULE WHERE EDU_TEAC_ID = a.USER_ID) AS EDU_ALL_COUNT
-			   ,(SELECT REG_DT FROM EDU_INSTRUCTOR WHERE COM_USER_ID = a.USER_ID) AS LICENSE_DT   
-               ,CASE WHEN (SELECT INS_OFF_STATUS FROM EDU_INSTRUCTOR WHERE COM_USER_ID = a.USER_ID) = '1' THEN '완료' ELSE '미완료' END AS INS_OFF_STATUS
-               ,CASE WHEN (SELECT COUNT(*) FROM EDU_COURSE_REGISTRATION WHERE USER_ID = a.USER_ID AND EDU_NO IN (SELECT EDU_NO FROM EDU_REGISTRATION WHERE CATEGORY1_KEY = '3' AND CATEGORY2_KEY = '7')) > 0 THEN '완료'
-					ELSE '미완료' END AS ON_CHK
-		FROM COM_USER a
-		where 1=1
-		AND a.EDU_AUTH_CD IN ('03','04')
+		SELECT CASE WHEN b.STATUS = '1' THEN '활동' 
+			   WHEN b.STATUS = '2' THEN '상실' 
+		       WHEN b.STATUS = '3' THEN '휴직' 
+			END AS INS_STATUS,
+	       a.USER_ID,
+	       CASE WHEN b.CLASS = '1' THEN '일반' 
+			   WHEN b.CLASS = '2' THEN '실무자' 
+			   WHEN b.CLASS = '3' THEN '기관' 
+			   WHEN b.CLASS = '4' THEN '기업' 
+		   END AS INS_CLASS,
+		   CASE
+			   WHEN a.USER_SEX = 'M' THEN '남자'
+			   WHEN a.USER_SEX = 'W' THEN '여자'
+			   ELSE a.USER_SEX
+			  END AS USER_SEX_NM,	
+		   a.EML_ADDR, a.MBL_TELNO, a.INSTRUCTOR_COPER_NM,    
+	       b.REG_DT AS LICENSE_DT, 
+	       CASE WHEN (SELECT INS_OFF_STATUS FROM EDU_INSTRUCTOR WHERE COM_USER_ID = a.USER_ID) = '1' THEN '완료' ELSE '미완료' END AS INS_OFF_STATUS,
+	       CASE WHEN (SELECT COUNT(*) FROM EDU_COURSE_REGISTRATION WHERE USER_ID = a.USER_ID AND EDU_NO IN (SELECT EDU_NO FROM EDU_REGISTRATION WHERE CATEGORY1_KEY = '3' AND CATEGORY2_KEY = '7')) > 0 THEN '완료'
+				ELSE '미완료' END AS ON_CHK,
+		   a.INSTRUCTOR_IDX
+			FROM EDU_INSTRUCTOR b,
+				 COM_USER a
+			where 1=1
+	        AND b.COM_USER_ID = a.USER_ID
+			AND a.EDU_AUTH_CD IN ('03','04')
 		<if test=" category3_key !=null and category3_key !=0 and category_chk == 'ALL'">
-			AND a.USER_ID IN (SELECT DISTINCT USER_ID FROM COM_USER_EDUINFO WHERE EDU_CD = #{category3_key})
+			AND a.USER_ID IN (SELECT DISTINCT USER_ID FROM COM_USER_EDUINFO WHERE CAST(EDU_CD AS unsigned) = #{category3_key})
 		</if>
 		LIMIT #{recordCountPerPage} OFFSET #{offset}
 	</select>

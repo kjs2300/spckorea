@@ -168,7 +168,7 @@
         <h3 class="h3-tit">지역</h3>
 
         <div class="radio-cont">
-            <input type="text" id="area_keyin" name="area_keyin" class="input-box" placeholder="직접입력"/>
+            <input type="text" id="area_nm" name="area_nm" class="input-box" placeholder="직접입력" value="${area_nm}"/>
         </div>
     </div>
 
@@ -176,7 +176,7 @@
         <h3 class="h3-tit">강사명</h3>
         
         <div class="radio-cont">
-            <input type="text" class="input-box" placeholder="직접입력"/>
+            <input type="text" id="ins_nm" name="ins_nm" value="${ins_nm}" class="input-box" placeholder="직접입력"/>
         </div>
     </div>
 
@@ -323,7 +323,7 @@
                 <td>${result.EDU_COUNT}</td>
                 <td>${result.EDU_ALL_COUNT}</td>
                 <td>${result.AREA_NM}</td>
-                <td>${result.COPER_NM}</td>
+                <td>${result.INSTRUCTOR_COPER_NM}</td>
                 <td>${result.LICENSE_DT}</td>
                 <td><c:if test="${result.INS_OFF_STATUS == '완료'}"><span class="blue-txt">완료</span></c:if>
                 	<c:if test="${result.INS_OFF_STATUS == '미완료'}"><span class="red-txt">미완료</span></c:if>
