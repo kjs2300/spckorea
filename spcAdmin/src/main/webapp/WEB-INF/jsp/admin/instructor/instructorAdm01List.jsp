@@ -322,7 +322,7 @@
                 <td>${result.MBL_TELNO}</td>
                 <td>${result.EDU_COUNT}</td>
                 <td>${result.EDU_ALL_COUNT}</td>
-                <td>${result.AREA_NM}</td>
+                <td>${result.AREA_NM}</td> 
                 <td>${result.INSTRUCTOR_COPER_NM}</td>
                 <td>${result.LICENSE_DT}</td>
                 <td><c:if test="${result.INS_OFF_STATUS == '완료'}"><span class="blue-txt">완료</span></c:if>
