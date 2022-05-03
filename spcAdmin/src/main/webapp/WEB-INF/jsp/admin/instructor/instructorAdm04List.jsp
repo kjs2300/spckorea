@@ -190,7 +190,7 @@ function fn_clear(){
 function fn_egov_link_page(pageNo){
 	 var frm = document.commonForm;
 	 $("#pageIndex").val(pageNo); 
-	 frm.action = "<c:url value='/adm/instructorAdm04List.do'/>";
+	 frm.action = "<c:url value='/inst/instructorAdm04List.do'/>";
   	 frm.submit();
 } 
  
@@ -203,7 +203,7 @@ function fn_edit(idx) {
 		if(yn){
 			$.ajax({	
 				data     : formData,
-			    url		 : "<c:url value='/adm/instructorAdm04App.do'/>?idx="+idx,
+			    url		 : "<c:url value='/inst/instructorAdm04App.do'/>?idx="+idx,
 		        dataType : "JSON",
 				type	 : "POST",
 				processData: false, 
@@ -232,7 +232,7 @@ function commonCallBack(obj){
 }	
 
 function fn_goList(){
-	document.location = "<c:url value='/adm/instructorAdm04List.do'/>";
+	document.location = "<c:url value='/inst/instructorAdm04List.do'/>";
  }	
 
 </script>

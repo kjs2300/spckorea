@@ -60,7 +60,7 @@
 			
 			if(result == "SUCCESS"){				
 				alert("성공하였습니다.");				
-				fn_load('R');				 
+				location.reload();			 
 			} else if(result == "EXIST"){				
 				alert("이미 등록 되었습니다.");	
 				return false;
@@ -70,12 +70,12 @@
 			}
 		}
 	}
-
-	function fn_load(str) {
-		var frm = document.commonForm;
-		frm.action = "<c:url value='/user/instructor04absence.do'/>";    
-		frm.submit();
-	 }
+ function fn_egov_link_page(pageNo){
+	 var frm = document.commonForm;
+	 $("#pageIndex").val(pageNo); 
+ 	 frm.action = "<c:url value='/user/instructor04absence.do'/>";
+   	 frm.submit();
+ }
 </script>
      <!-- container  begin -->
                 <div id="container">
