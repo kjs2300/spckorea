@@ -103,7 +103,7 @@ public class AdminInstructorController
 	  paramMap.put("sqlName", "getInsAuthList");
 	  List<Map<String, Object>> authList = instructorService.getSelectList(paramMap);
 	  model.addAttribute("authList", authList);
-	  
+	   
 	  paramMap.put("sqlName", "getInstructorView");	
 	  Map<String, Object> result = instructorService.getSelectData(paramMap);
 	  
