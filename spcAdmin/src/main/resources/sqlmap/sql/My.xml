@@ -18,7 +18,7 @@
 		ORDER BY BASKET_NO DESC
 		LIMIT #{recordCountPerPage} OFFSET #{offset}
 	</select>
-
+ 
 	<select id="getCartListCnt" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(*) 
 		 FROM EDU_BASKET a, 
