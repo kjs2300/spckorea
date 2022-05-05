@@ -9,7 +9,11 @@
 			 EDU_REGISTRATION b
 		WHERE 1=1
 		AND a.EDU_NO = b.EDU_NO
-		AND b.CATEGORY1_KEY = #{category1_key}
+		AND b.CATEGORY1_KEY IN (
+			<foreach collection="category1_key_arr" item="item" separator=",">
+				#{item}
+			</foreach>
+		)
 		AND a.USER_ID = #{UserAccount.user_id}
 		ORDER BY BASKET_NO DESC
 		LIMIT #{recordCountPerPage} OFFSET #{offset}
@@ -21,7 +25,11 @@
 			 EDU_REGISTRATION b
 		WHERE 1=1
 		AND a.EDU_NO = b.EDU_NO
-		AND b.CATEGORY1_KEY = #{category1_key}
+		AND b.CATEGORY1_KEY IN (
+			<foreach collection="category1_key_arr" item="item" separator=",">
+				#{item}
+			</foreach>
+		)
 		AND a.USER_ID = #{UserAccount.user_id}
 	</select>
 	
@@ -124,6 +132,7 @@
 				 EDU_REGISTRATION b
 			WHERE a.EDU_NO = b.EDU_NO
 			AND a.USER_ID = #{UserAccount.user_id}
+			AND b.EDU_SITE = #{site}
 			<![CDATA[
 			AND TRAIN_S_DATE <= NOW() 
 	        ]]>
@@ -257,6 +266,7 @@
 		FROM EDU_COURSE_REGISTRATION a, 
 			 EDU_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
+        AND b.CATEGORY1_KEY IN ('1','2','3')
 		AND a.USER_ID = #{UserAccount.user_id}
 		<![CDATA[
 		AND TRAIN_S_DATE <= NOW() 
@@ -296,6 +306,7 @@
 		FROM EDU_COURSE_REGISTRATION a, 
 			 EDU_REGISTRATION b
 		WHERE a.EDU_NO = b.EDU_NO
+        AND b.CATEGORY1_KEY IN ('1','2','3')
 		AND a.USER_ID = #{UserAccount.user_id}
 		<![CDATA[
 		AND TRAIN_S_DATE <= NOW() 
@@ -348,7 +359,7 @@
                 b.EDU_ON_APP_TIME,
                 (SELECT IFNULL(TIME_FORMAT(SEC_TO_TIME(SUM(COUR_TIME)), '%H시간 %i분 %s초'),0) FROM EDU_COURSE_ONLINE WHERE EDU_NO = b.EDU_NO AND COUR_NO = #{cour_no} AND USER_ID = #{UserAccount.user_id}) AS COUR_TIME,
                 b.EDU_CON_URL,
-                (SELECT (CASE WHEN COUR_STAT = '1' THEN '완료' ELSE '미완료' END) FROM EDU_COURSE_ONLINE WHERE EDU_SUB_NO = b.EDU_SUB_NO) AS COUR_STAT
+                (SELECT (CASE WHEN COUR_STAT = '1' THEN '완료' ELSE '미완료' END) FROM EDU_COURSE_ONLINE WHERE EDU_SUB_NO = b.EDU_SUB_NO AND COUR_NO = #{cour_no}) AS COUR_STAT
         FROM EDU_REGISTRATION_DETAIL b
 		WHERE b.EDU_NO = #{edu_no}
 	</select>

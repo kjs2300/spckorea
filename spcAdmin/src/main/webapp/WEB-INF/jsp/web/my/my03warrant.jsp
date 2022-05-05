@@ -53,7 +53,7 @@
  function fn_egov_link_page(pageNo){
 	 var frm = document.commonForm;
 	 $("#pageIndex").val(pageNo); 
- 	 frm.action = "<c:url value='/my/my01warrant.do'/>";
+ 	 frm.action = "<c:url value='/my/my03warrant.do'/>";
    	 frm.submit();
  }
 </script>

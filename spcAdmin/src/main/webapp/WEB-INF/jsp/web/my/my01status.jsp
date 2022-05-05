@@ -118,6 +118,14 @@
 	        }
 	    });
 	};
+	
+	function fn_move(str) {
+	  	var frm = document.commonForm;
+		$("#site").val(str);  
+	   	frm.action = "<c:url value='/my/my01status.do'/>";
+	  	frm.submit();
+    }
+	
 	 function fn_egov_link_page(pageNo){
 		 var frm = document.commonForm;
 		 $("#pageIndex").val(pageNo); 
@@ -144,9 +152,26 @@
 
                     <div class="contents-wrap">
 						
+						<!---- tab-cont begin ---->
+                        <div class="tab-cont">
+                            <ul>
+                            	<c:if test="${site eq 'on'}">
+                                <li class="on">온라인</li>
+                                <li><a onClick="fn_move('off')">오프라인</a></li>
+                                </c:if>
+                                <c:if test="${site eq 'off'}">
+                                <li><a onClick="fn_move('on')">온라인</a></li>
+                                <li class="on">오프라인</li>
+                                </c:if>
+                            </ul>
+                        </div>
+                        <!---- tab-cont end ---->
+                        
                         <!---- search-wrap begin ---->
                         <form  id="commonForm" name="commonForm"  method="post"  action="">
 		    			<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
+		    			<input type="hidden" id="site" name="site" class="input-box" value="${site}"  />
+                        
                         <div class="search-wrap">
                             <div class="search-cont">
                                 <label>기간 :</label>
@@ -172,10 +197,17 @@
                             </div>
 
                             <div class="search-cont">
-                                <label>교육분류 :</label>
+                                <label>분류 :</label>
+                                <c:if test="${site eq 'on'}">
                                 <select class="select mr30"  id="category1_key" name="category1_key">
 										<option value='1' >일반</option>
 								</select>
+								</c:if>
+								<c:if test="${site eq 'off'}">
+                                <select class="select mr30"  id="category1_key" name="category1_key">
+										<option value='4' >일반</option>
+								</select>
+								</c:if>
 					            <select class="select"  id="category2_key" name="category2_key">
 					            	<option value='' >선택 하세요</option>
 									<c:forEach var="result" items="${category2list}" varStatus="status">

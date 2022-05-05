@@ -43,7 +43,7 @@
  
  function insSelect(str){
 	var param = str.split(",");
-	$("#user_id").val(param[2]);
+	$("#user_id").val(param[3]);
 	$("#user_nm").val(param[2]);
 	$("#area_nm").val(param[1]);
 	$("#instructor_idx").val(param[0]);
