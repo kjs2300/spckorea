@@ -48,7 +48,7 @@
 				type	: "POST",	
 				success: function(data, opt, inx){
 				var option = '';
-				option += '<option value="0">선택 하세요</opton>'; //선택
+				option += '<option value="">선택 하세요</opton>'; //선택
 				$.each(data, function(i, ret){
 					option += '<option value="'+ret.CATEGORY3_KEY+'">'+ret.CATEGORY3_NAME+'</option>';		
 				});
@@ -79,11 +79,12 @@
     <div class="search-cont  search-sub full-width">
         <h1 class="h1-tit">강사 활동 현황</h1>
 
-
                 <div class="search-wrap">
+                <form id="commonForm" name="commonForm" target="_self" action="" method="post" onsubmit="">
+        		<input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
                     <div class="search-cont  search-sub full-width">
                         <h3 class="h3-tit">교육구분</h3>
-
+						
                         <div class="radio-cont">
                             <input type="radio" class="radio-box" id="category_type" name="category_type" value="ALL" <c:if test="${category_type == 'ALL' || (empty category_type)}">checked </c:if>>
                             <label for="">전체</label>
@@ -94,7 +95,7 @@
                                 <option value='7' >기관</option>
                             </select>
                             <select class="select" id="category2_key" name="category2_key">
-                                <option>선택 하세요</option>
+                                <option value="">선택 하세요</option>
                                 <c:forEach var="result" items="${category2list}" varStatus="status">
 									<option value='${result.CATEGORY2_KEY}' >${result.CATEGORY2_NAME}</option>
 								</c:forEach>
@@ -210,19 +211,19 @@
                         <button class="search-btn">검색</button>
                         <button class="search-btn white-btn ml20" onClick="fn_clear();">초기화</button>
                     </div>
-
+					</form>
                 </div>
                 
                 <div class="btn-cont mb20">
-                    <dl class="count-txt">
+                    <!-- <dl class="count-txt">
                         <dt>전체 <span>180</span></dt>
                         <dt class="green-txt">활동<span>115</span></dt>
                         <dt class="gray-txt">상실(일반) <span>10</span></dt>
                         <dt class="purple-txt">휴직 <span>15</span></dt>
-                    </dl>
+                    </dl> -->
 
                     <button class="mid-btn black-btn">엑셀다운</button>
-                    <button class="mid-btn white-btn">선택삭제</button>
+                    <!-- <button class="mid-btn white-btn">선택삭제</button> -->
                 </div>
                 
                 <div class="table-wrap scroll-wrap">
@@ -295,6 +296,9 @@
 					                 <td colspan='16'/>Data 없습니다.</td>
 					             </tr>
 					        </c:if>
+                        </tbody>
+                    </table>
+                </div>
                       <div class="page-wrap">
 						     <ul class="paging">
 						         <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />

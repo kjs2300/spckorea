@@ -11,7 +11,7 @@
 
                 <div class="search-wrap">
                 	<h1 class="h1-tit">강사 휴직 신청</h1>
-                	<form id="commonForm" name="commonForm" target="_self" action="/lms/contentsList.do" method="post" onsubmit="">
+                	<form id="commonForm" name="commonForm" target="_self" action="" method="post" onsubmit="">
                     <input type="hidden" id="pageIndex"  name="pageIndex" value=1 />
                     <div class="search-cont search-sub">
                         <h3 class="h3-tit">연장사유</h3>
